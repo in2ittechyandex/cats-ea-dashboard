@@ -1,0 +1,38 @@
+<ng-container *ngIf="dataProvider.data.length>0 else blankDiv">
+  <!-- <button (click)="downloadCSV()">CSV</button>  *ngIf="display else blankDiv" -->
+  <a href="javascript:;"  class="btn btn-md btn-circle float-right mt-1"
+    (click)="downloadCSV()"><i class="fa fa-download" aria-hidden="true"></i></a>
+
+  <div id="{{chartUniqueId}}" class="box-content" style="border:1px solid #ddd;">
+    <div class="month">
+      <ul>
+        <li class="prev" (click)="clickPrevious();" style="cursor: pointer;"><i class="fa fa-caret-left" aria-hidden="true"></i></li>
+        <li class="next" (click)="clickNext();" style="cursor: pointer;"><i class="fa fa-caret-right" aria-hidden="true"></i></li>
+        <li> {{monthYear}} </li>
+      </ul>
+    </div>
+    <ul class="weekdays">
+      <li *ngFor="let day_ of  days;">{{day_}}</li>
+    </ul>
+    <ul class="days">
+      <li *ngFor="let rc_ of prevDates;let bcndx = index"><span [style.color]="'#aaa'">{{rc_['dtp_']}}&nbsp;</span></li>
+      <li *ngFor="let d_ of data;let i=index" (click)="clickOnChart($event,d_)">{{d_['Date']|dateconv}} <span class="tickets tooltip1"
+          [style.background-color]="d_['Color']"><span class="tooltiptext">
+            <ng-container *ngIf="(d_['Priority'] | prioritySep); let priStep_">
+              <p style="color:red;"><i class="fa fa-circle"></i> Critical - {{priStep_['Critical']}}</p>
+              <p style="color:orange;"><i class="fa fa-circle"></i> High - {{priStep_['High']}}</p>
+              <p style="color:#e4df00;"><i class="fa fa-circle"></i> Mod - {{priStep_['Mod']}}</p>
+              <p style="color:green;"><i class="fa fa-circle"></i> Low - {{priStep_['Low']}}</p>
+              <p style="color:grey;"><i class="fa fa-circle"></i> Request - {{priStep_['Request']}}</p>
+            </ng-container>
+          </span> {{d_['Count']}}</span></li>
+
+      <li *ngFor="let rc_ of afterDates;let bcndx = index" ><span [style.color]="'#aaa'">{{rc_['dta_']}}&nbsp;</span></li>
+
+    </ul>
+  </div>
+</ng-container>		
+
+<ng-template #blankDiv>
+  <div class="IN2container"> No Data Available</div>
+</ng-template>

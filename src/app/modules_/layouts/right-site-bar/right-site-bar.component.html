@@ -1,0 +1,22 @@
+<div class="theme-panel theme-panel-md" [ngClass]="{'active': pageSettings.openRightSideBar}">
+        <a href="javascript:;" data-click="theme-panel-expand" class="theme-collapse-btn"><i  [ngClass]="(themeConf_.selectedTheme == 'apple') ?'ion-ios-cog':'fa fa-cog'" (click)="onToggleRightSideBar();"></i></a>
+        <div class="theme-panel-content">
+                <h5 class="m-t-0">Color Theme</h5>
+                <ul class="theme-list clearfix" *ngFor="let cLst of themeConf_.selectThemeColorList;">
+                        <li [ngClass]="{'active': (themeConf_.selectedColor == c.class)}" (click)="changeColor(c.class);"
+                                *ngFor="let c of cLst;">
+                                <a href="javascript:;" class="{{c.css}}" data-title="{{c.Title}}" title="{{c.Title}}">&nbsp;</a></li>
+                </ul>
+
+                <div class="divider"></div>
+                <h5>TEMPLATES</h5>
+                <div class="theme-version">
+                        <span *ngFor="let theme of themeConf_.availableThemes">
+                                <a href="javascript:;" (click)="changeTheme(theme.css);" [ngClass]="{'active': (themeConf_.selectedTheme == theme.css)}">
+                                        <span class="theme_margin" [ngStyle]="{'background-image':'url('+(theme.icon)+')'}"></span>
+
+                                </a>
+                        </span>
+                </div>
+        </div>
+</div>

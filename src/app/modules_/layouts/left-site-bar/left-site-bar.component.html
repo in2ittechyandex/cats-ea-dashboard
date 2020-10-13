@@ -1,0 +1,128 @@
+<div id="sidebar" class="sidebar">
+  <!-- begin sidebar scrollbar -->
+  <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 100%;">
+    <div data-scrollbar="true" data-height="100%" data-init="true" style="overflow: hidden; width: auto; height: 100%;">
+      <!-- begin sidebar user -->
+      <ul class="nav">
+        <li class="nav-profile" style="display:none;">
+          <a href="javascript:;" data-toggle="nav-profile">
+            <div class="cover with-shadow"></div>
+            <div class="image">
+              <span>{{loggedUser?.name.slice(0,1).toUpperCase()}}</span>
+            </div>
+            <div class="info">
+              iDashboard
+            </div>
+          </a>
+        </li>
+        <li>
+          <ul class="nav nav-profile">
+            <li><a href="javascript:;"><i class="fa fa-cog"></i> Settings</a></li>
+            <li><a href="javascript:;"><i class="fa fa-pencil-alt"></i> Send Feedback</a></li>
+            <li><a href="javascript:;"><i class="fa fa-question-circle"></i> Helps</a></li>
+          </ul>
+        </li>
+      </ul>
+      <!-- end sidebar user -->
+      <!-- begin sidebar nav -->
+      <ul class="nav" id="style-4" style="max-height: 470px;overflow: auto;">
+       
+        <li [ngClass]="{'active':(selectedTab == '/dashboard/home')}">
+          <a [routerLink]="['/dashboard/home']" routerLinkActive="active" [routerLinkActiveOptions]="'{exact:true}'">
+            <i class="fas fa-home fa-sm"></i>
+            <span>Summary</span>
+          </a>
+        </li>
+
+        <li  *ngFor="let tabs of tabList;let i=index;" [ngClass]="{'active':(selectedTab == '/dashboard/custom-widget/'+(tabs.id))}">
+          <a (click)="navidateTo(tabs.id);">
+            <i class="fas fa-chart-area fa-sm" [ngClass]="(themeConf_.selectedTheme == 'apple') ?'bg-'+(themeConf_.selectedColor):''"></i>
+            <span>{{tabs.name}} <i (click)="clickUpdateTab(tabs,ndx);" class="fa fa-edit close_report_icon float-right"></i></span>
+          </a>
+        </li>
+
+        <!-- <li (click)="resetCreateTabModal();open(modalDialog);">
+          <a href="javascript:;">
+            <i class="fa fa-plus-circle"></i>
+            <span>Create Tab <span class="label label-theme m-l-5">NEW</span></span>
+          </a>
+        </li> -->
+
+        <li><a href="javascript:;" class="sidebar-minify-btn" data-click="sidebar-minify" (click)="toggleMinified()"><i
+              class="fa fa-angle-double-left"></i></a></li>
+      </ul>
+    </div>
+   </div>
+
+</div>
+
+<ng-template #modalDialog let-c="close" let-d="dismiss">
+  <div class="modal-header" [ngClass]=" (themeConf_.selectedColor) ? 'bg-'+themeConf_.selectedColor : ''">
+    <h4 class="modal-title">Add New Tab</h4>
+    <button type="button" class="close" (click)="d('Cross click')">×</button>
+  </div>
+  <div class="modal-body">
+    <form class="form-horizontal" name="addTab" #f="ngForm">
+      <div class="form-group row">
+        <label class="col-md-3 col-form-label">Tab Name <sup style="color:red">*</sup></label>
+        <div class="col-md-9">
+          <input type="text" #tabName="ngModel" minLength="1" maxLength="24" [required]="'true'" name="tabName"
+            [(ngModel)]="model_addnewTab.name" class="form-control" placeholder="Tab Name">
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-md-3 col-form-label">Description</label>
+        <div class="col-md-9">
+          <textarea name="tabDescription" #tabDescription="ngModel" [(ngModel)]="model_addnewTab.description" class="form-control"
+            placeholder="Description"></textarea>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-primary bg-black" style="border-color:#000000;" (click)="c('Close click')">Close</button>
+    <a href="javascript:;" *ngIf="f.form.valid" (click)="createTab()" class="btn btn-success" [ngClass]="[(themeConf_.selectedColor == 'default') ? '':'bg-'+themeConf_.selectedColor]">Add
+      Tab</a>
+  </div>
+</ng-template>
+
+
+<!-- start MOdal Edit Tab Details-->
+<ng-template #modalDialogUpdateTab let-c="close" let-d="dismiss">
+  <div class="modal-header" [ngClass]=" (themeConf_.selectedColor) ? 'bg-'+themeConf_.selectedColor : ''">
+    <h4 class="modal-title">Update Tab</h4>
+    <button type="button" class="close" (click)="d('Cross click')">×</button>
+  </div>
+  <div class="modal-body">
+    <form class="form-horizontal" name="updateTab" #f="ngForm">
+      <div class="form-group row">
+        <label class="col-md-3 col-form-label">Tab Name <sup style="color:red">*</sup></label>
+        <div class="col-md-9">
+          <input type="text" #tabName="ngModel" minLength="1" maxLength="24" [required]="'true'" name="tabName"
+            [(ngModel)]="model_updateTab.name" class="form-control" placeholder="Tab Name">
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-md-3 col-form-label">Description</label>
+        <div class="col-md-9">
+          <textarea name="tabDescription" [(ngModel)]="model_updateTab.description" class="form-control" placeholder="Description"></textarea>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-md-3 col-form-label">Active</label>
+        <div class=" col-md-9 switcher m-b-5">
+          <input type="checkbox" [(ngModel)]="model_updateTab.status" name="switcher_checkbox_1" id="switcher_checkbox_1"
+            checked="" value="1">
+          <label for="switcher_checkbox_1"></label>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-white" (click)="c('Close click')">Close</button>
+    <a href="javascript:;" *ngIf="f.form.valid" (click)="updateTabDetails(model_updateTab);" class="btn btn-primary"
+      [ngClass]="[(themeConf_.selectedColor == 'default') ? '':'bg-'+themeConf_.selectedColor]">Update
+      Tab</a>
+  </div>
+</ng-template>

@@ -1,0 +1,83 @@
+<!-- begin panel -->
+<div class="panel" [ngClass]="[ (this.expand) ? 'panel-expand': '', (this.reload) ? 'panel-loading': '', (this.panelClass) ? this.panelClass : '', (this.variant) ? 'panel-' + this.variant : 'panel-inverse' ]"
+  *ngIf="!this.remove">
+  <!-- begin panel-heading -->
+  <div class="panel-heading bg-{{themeConf_.selectedColor}}">
+<ng-container *ngIf="!this.noButton && !expand">
+  <div class="panel-heading-btn">
+    <a href="javascript:;" *ngIf="this.buttonArr.indexOf('back')>-1" class="btn btn-xs btn-icon btn-circle btn-danger"
+      (click)="clickOnBack()"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
+    <a href="javascript:;" *ngIf="this.buttonArr.indexOf('forecast')>-1" class="btn btn-xs btn-icon btn-circle btn-info"
+      (click)="clickOnForecast()"><i title="ForeCast" class="fa fa-cloud"></i></a>
+    <a href="javascript:;" *ngIf="this.buttonArr.indexOf('expand')>-1" class="btn btn-xs btn-icon btn-circle btn-default"
+      (click)="panelExpand()"><i title="Expand" class="fa fa-expand"></i></a>
+    <a href="javascript:;" *ngIf="this.buttonArr.indexOf('reload')>-1" class="btn btn-xs btn-icon btn-circle btn-success"
+      (click)="panelReload()"><i title="Reload" class="fa fa-redo"></i></a>
+    <a href="javascript:;" *ngIf="this.buttonArr.indexOf('collapse')>-1" class="btn btn-xs btn-icon btn-circle btn-warning"
+      (click)="panelCollapse()"><i title="Collapse" class="fa fa-minus"></i></a>
+    <a href="javascript:;" *ngIf="this.buttonArr.indexOf('print')>-1" class="btn btn-xs btn-icon btn-circle btn-primary"
+      (click)="printPanelChart()"><i title="Print" class="fa fa-print"></i></a>
+    <a href="javascript:;" *ngIf="this.buttonArr.indexOf('remove')>-1" class="btn btn-xs btn-icon btn-circle btn-danger"
+      (click)="panelRemove()"><i title="Close" class="fa fa-times"></i></a>
+  </div>
+</ng-container>
+
+<ng-container *ngIf="!this.noButton && expand">
+  <div class="panel-heading-btn">
+    <a href="javascript:;" *ngIf="this.buttonExpand.indexOf('back')>-1" class="btn btn-xs btn-icon btn-circle btn-danger"
+      (click)="clickOnBack()"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
+    <a href="javascript:;" *ngIf="this.buttonExpand.indexOf('forecast')>-1" class="btn btn-xs btn-icon btn-circle btn-info"
+      (click)="clickOnForecast()"><i title="ForeCast" class="fa fa-cloud"></i></a>
+      <a href="javascript:;" *ngIf="this.buttonExpand.indexOf('reload')>-1" class="btn btn-xs btn-icon btn-circle btn-success"
+        (click)="panelReload()"><i title="Reload" class="fa fa-redo"></i></a>
+    <a href="javascript:;" *ngIf="this.buttonExpand.indexOf('expand')>-1" class="btn btn-xs btn-icon btn-circle btn-default"
+      (click)="panelExpand()"><i title="Expand" class="fa fa-expand"></i></a>
+    <a href="javascript:;" *ngIf="this.buttonExpand.indexOf('collapse')>-1" class="btn btn-xs btn-icon btn-circle btn-warning"
+      (click)="panelCollapse()"><i title="Collapse" class="fa fa-minus"></i></a>
+    <a href="javascript:;" *ngIf="this.buttonExpand.indexOf('print')>-1" class="btn btn-xs btn-icon btn-circle btn-primary"
+      (click)="printPanelChart()"><i title="Print" class="fa fa-print"></i></a>
+    <a href="javascript:;" *ngIf="this.buttonExpand.indexOf('remove')>-1" class="btn btn-xs btn-icon btn-circle btn-danger"
+      (click)="panelRemove()"><i title="Close" class="fa fa-times"></i></a>
+  </div>
+</ng-container>
+
+
+
+    <!-- triggers="mouseenter:mouseleave" placement="top" ngbPopover="{{title}}"
+      popoverTitle="Popover on top" -->
+    <h4 class="panel-title" *ngIf="this.title" > {{ title }}
+    </h4>
+    <ng-content select="[header]"></ng-content>
+  </div>
+  <!-- end panel-heading -->
+
+  <!-- begin before-body -->
+  <ng-content select="[beforeBody]"></ng-content>
+  <!-- end before-body -->
+
+  <!-- begin panel-body -->
+  <div class="panel-body" [ngClass]="[ (this.collapse) ? 'd-none': '', (this.bodyClass) ? this.bodyClass : '' ]" *ngIf="!this.noBody">
+    <ng-content></ng-content>
+    <div class="panel-loader" *ngIf="this.reload"><span class="spinner-small"></span></div>
+  </div>
+  <!-- end panel-body -->
+
+  <!-- begin no-body -->
+  <ng-content select="[noBody]"></ng-content>
+  <!-- end no-body -->
+
+  <!-- begin outside-body -->
+  <ng-content select="[outsideBody]"></ng-content>
+  <!-- end outside-body -->
+
+  <!-- begin panel-footer -->
+  <div class="panel-footer" #panelFooter [hidden]="!showFooter" [ngClass]="[ (this.footerClass) ? this.footerClass : '' ]">
+    <ng-content select="[footer]"></ng-content>
+  </div>
+  <!-- end panel-footer -->
+
+  <!-- begin after-footer -->
+  <ng-content select="[afterFooter]"></ng-content>
+  <!-- end after-footer -->
+</div>
+<!-- end panel -->

@@ -1,0 +1,32 @@
+.IN2container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    font-size: 20px;
+    font-weight: 600;
+}
+.table{margin-bottom: 0px;}
+#tab_w_25 .tab-content{padding: 0 15px !important;}
+table{width:100%;}
+table tr{width:100%; float:left;}
+table tr th{float:left; padding:.75rem .3rem;  text-align:center; border-top:0px !important; text-transform: uppercase;}
+table tr th:first-child{text-align:left;}
+table tr th:last-child{text-align: center;}
+table tr td{float: left; padding: .5rem .3rem;}
+
+
+table tbody tr td:first-child, table thead tr th:first-child {width:49%; text-align:left;}
+table tbody tr td:last-child{text-align: right;}
+table tbody tr td {width:17%; text-align: center;}
+table tbody tr td .fa.fa-arrow-up{color: Red !important;}
+table tbody tr td .fa.fa-arrow-down{color: green !important;}
+
+table tbody, table thead {display:block;}
+table tbody {overflow:auto; height:258px; clear: both;} 
+
+/* for slim scroll */
+#style-4::-webkit-scrollbar-track{-webkit-box-shadow:inset 0 0 6px rgba(0,0,0,0.3); background-color:#ddd; border-radius:15px; height:10px;}
+#style-4::-webkit-scrollbar{width:5px; background-color:F5F5F5; height:7px; border-radius:15px; height:100px;}
+#style-4::-webkit-scrollbar-thumb{background-color:#666; border:2px solid #666; border-radius:15px;
+height:10px;}

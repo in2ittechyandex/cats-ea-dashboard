@@ -1,0 +1,505 @@
+.modal-lg {
+    max-width: 971px;
+    margin-left: 15%;
+    margin-top: 5%;
+}
+
+.custompanel {
+    margin-bottom: 20px !important;
+    background-color: #fff !important;
+    border: none !important;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, .15) !important;
+    border-radius: 3px !important;
+}
+
+.contextmenu {
+    position: absolute;
+}
+
+.box {
+    position: absolute;
+    border: none !important;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, .15) !important;
+    border-radius: 3px !important;
+}
+
+table.table1 tr td {
+    float: none;
+}
+
+.chart_table table tbody,
+.chart_table table thead {
+    display: block;
+}
+
+.chart_table table tbody {
+    overflow: auto;
+    height: 220px;
+    clear: both;
+}
+
+.chart_table table tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+}
+
+.filter_by>ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    justify-content: space-around;
+}
+
+.filter_by ul li {
+    margin: 10px 5px;
+    text-align: center;
+}
+
+.filter_by ul.dropdown-menu.show {
+    left: 0px !important;
+}
+
+.filter_by ul.dropdown-menu li {
+    margin: 0px;
+    text-align: left;
+    padding: 2px;
+}
+
+.filter_by ul.dropdown-menu>li>a {
+    position: relative;
+    padding-left: 30px;
+}
+
+.filter_by ul.dropdown-menu>li>a input[type=checkbox] {
+    position: absolute;
+    margin-left: -18px;
+    margin-top: 2px;
+}
+
+.filter_by .btn-group {
+    display: block;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.filter_by .btn-group button.btn {
+    width: calc(100% - 40px);
+    background-color: #ececec;
+}
+
+.filter_by .btn-group>a {
+    width: 40px;
+    background-color: #ececec;
+}
+
+.container1 {
+    display: block;
+    position: relative;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.container1 label {
+    padding-left: 45px;
+}
+
+
+/* Hide the browser's default checkbox */
+
+.container1 input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+
+/* Create a custom checkbox */
+
+.checkmark {
+    position: absolute;
+    top: 0;
+    left: 15px;
+    height: 20px;
+    width: 20px;
+    background-color: #dddddd;
+}
+
+
+/* When the checkbox is checked, add a blue background */
+
+input:checked~.checkmark {
+    background-color: #2196F3;
+}
+
+
+/* Create the checkmark/indicator (hidden when not checked) */
+
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+
+/* Show the checkmark when checked */
+
+input:checked~.checkmark:after {
+    display: block;
+}
+
+
+/* Style the checkmark/indicator */
+
+.checkmark:after {
+    left: 8px;
+    top: 4px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+
+.ddsummary_customcs {
+    top: 37px!important;
+    /* right:0% !important;*/
+    z-index: 9999 !important;
+    left: 85% !important;
+}
+
+.summarydialog {
+    border: none;
+    box-shadow: 0 5px 30px 0 rgba(0, 0, 0, .25);
+    padding: .5rem 0;
+    top: 37px !important;
+    z-index: 9999 !important;
+    left: 85% !important;
+}
+
+.btn {
+    color: #fff;
+}
+
+.In2_top_filter .dropdown-menu {
+    left: 0px !important;
+}
+
+.In2_top_filter .gf_box {
+    float: left;
+}
+
+.In2_top_filter .box-inner {
+    width: 600px;
+    padding: 0px;
+    margin-right: 10px;
+    float: left;
+}
+
+.amcharts-chart-div>a {
+    display: none !important;
+    background: #fff;
+}
+
+.box .modal-body a.dropdown-item {
+    padding: 5px !important;
+    white-space: pre-wrap;
+}
+
+.modal-footer a:hover {
+    color: #ffffff;
+}
+
+.modal-header .close {
+    padding: 2px 15px;
+    color: #ffffff;
+    font-weight: 700;
+    margin: -8px -15px -12px 0;
+}
+
+.In2SubMenu {
+    display: inline-block;
+    width: 100%;
+    height: 30px;
+    /* margin-left: .255em; */
+    vertical-align: .255em;
+}
+
+.scroll_div {
+    max-height: 200px;
+    width: 270px;
+    overflow: auto
+}
+
+
+/* ag grid related */
+
+.test-container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.test-header {
+    font-size: 11px;
+    font-weight: 700;
+    color: #4e5c68;
+}
+
+
+/**
+Tab filters
+
+*/
+
+.nav-tabs {
+    background-color: #2d353c!important;
+}
+
+.rows {
+    width: 100%;
+    display: inline-flex;
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+.has-search .form-control {
+    padding-left: 2rem;
+}
+
+.has-search .form-control-feedback {
+    position: absolute;
+    z-index: 2;
+    display: block;
+    width: 2rem;
+    height: 2rem;
+    line-height: 2rem;
+    text-align: center;
+    pointer-events: none;
+    color: #aaa;
+}
+
+.form-group {
+    margin-bottom: 0rem!important;
+}
+
+
+/* .form-control-sm{height:28px;} */
+
+.table_sm td {
+    padding: .5rem;
+}
+
+.table_sm th {
+    font-weight: 600;
+    padding: .5rem;
+}
+
+
+/* CSS for mailto: */
+
+ul.tagit {
+    padding: 1px 5px;
+    overflow: auto;
+    margin-left: inherit;
+    /* usually we don't want the regular ul margins. */
+    margin-right: inherit;
+}
+
+ul.tagit li {
+    display: block;
+    float: left;
+    margin: 2px 5px 2px 0;
+}
+
+ul.tagit li.tagit-choice {
+    position: relative;
+    line-height: inherit;
+}
+
+input.tagit-hidden-field {
+    display: none;
+}
+
+ul.tagit li.tagit-choice-read-only {
+    padding: .2em .5em .2em .5em;
+}
+
+ul.tagit li.tagit-choice-editable {
+    padding: .2em 18px .2em .5em;
+}
+
+ul.tagit li.tagit-new {
+    padding: .25em 4px .25em 0;
+}
+
+ul.tagit li.tagit-choice a.tagit-label {
+    cursor: pointer;
+    text-decoration: none;
+}
+
+ul.tagit li.tagit-choice .tagit-close {
+    cursor: pointer;
+    position: absolute;
+    right: .1em;
+    top: 50%;
+    margin-top: -8px;
+    line-height: 17px;
+}
+
+
+/* used for some custom themes that don't need image icons */
+
+ul.tagit li.tagit-choice .tagit-close .text-icon {
+    display: none;
+}
+
+ul.tagit li.tagit-choice input {
+    display: block;
+    float: left;
+    margin: 2px 5px 2px 0;
+}
+
+ul.tagit input[type="text"] {
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    border: none;
+    margin: 0;
+    padding: 0;
+    width: inherit;
+    background-color: inherit;
+    outline: none;
+}
+
+
+/*21 nov 2019 arti*/
+
+.checkbox.emailcheck label:before {
+    border-radius: 4px;
+    border: 1px solid #333;
+    background-color: #aeaeaf;
+}
+
+.ml-custom {
+    margin-left: 4.5rem!important;
+}
+
+.checkbox.emailcheck label {
+    font-weight: 400;
+    padding-left: 20px;
+}
+
+.colon {
+    font-size: 2rem;
+    line-height: 1.8rem;
+    text-align: center;
+}
+
+
+/* .col-form-label{font-size:.7rem} */
+
+.deskwid88 {
+    max-width: 88%;
+    flex: 0 0 88%;
+}
+
+.deskwid12 {
+    max-width: 12%;
+    flex: 0 0 12%;
+}
+
+@media (max-width:767px) {
+    .deskwid88 {
+        width: 100%;
+        max-width: 75%;
+        flex: 0 0 75%;
+    }
+    .deskwid12 {
+        width: 100%;
+        max-width: 25%;
+        flex: 0 0 25%;
+    }
+}
+
+.tab-alignment>ngb-tabset {
+    width: 100%;
+}
+
+.tab-alignment table tr td {
+    color: #656565;
+    font-weight: 400;
+}
+
+.tab-alignment .tab-content {
+    margin-bottom: 0px !important;
+}
+
+.nav-tabs+.tab-content {
+    margin-bottom: 0px !important;
+}
+
+#target_allSaturation_gridSmart {
+    background: #eee;
+    width: 200px;
+    /* max-height:300px; */
+    padding: 5px;
+    display: none;
+    right: 22px;
+    position: absolute;
+    border-radius: 5px;
+    margin-top: 5px;
+    z-index: 99999;
+    /* overflow: auto;                                           */
+}
+
+.In2_pivotOptions_gridSmart {
+    max-height: 260px;
+    overflow: auto;
+}
+
+.style-4_gridSmart::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    background-color: #ddd;
+    border-radius: 15px;
+    height: 10px;
+}
+
+.style-4_4_gridSmart::-webkit-scrollbar {
+    width: 5px;
+    background-color: F5F5F5;
+    height: 7px;
+    border-radius: 15px;
+    height: 100px;
+}
+
+.style-4_4_gridSmart::-webkit-scrollbar-thumb {
+    background-color: #666;
+    border: 2px solid #666;
+    border-radius: 15px;
+    height: 100px;
+}
+
+.download-default {
+    color: #ffffff !important;
+    background: #343a40 !important;
+    border-color: #888888 !important;
+    padding: 2px 6px !important;
+    margin: 3px 0;
+}
+
+.btnDisabled {
+    cursor: not-allowed !important;
+}

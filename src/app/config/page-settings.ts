@@ -1,0 +1,30 @@
+"use strict";
+var pageSettings = {
+  pageSidebarMinified: false,
+  pageContentFullHeight: false,
+  pageContentFullWidth: false,
+  pageContentInverseMode: false,
+  pageWithFooter: false,
+  pageWithoutSidebar: false,
+  pageSidebarRight: false,
+  pageSidebarRightCollapsed: false,
+  pageSidebarTwo: false,
+  pageSidebarWide: false,
+  pageSidebarTransparent: false,
+  pageSidebarLight: false,
+  pageTopMenu: false,
+  pageEmpty: false,
+  pageBodyWhite: false,
+  pageMegaMenu: false,
+  pageLanguageBar: false,
+  pageMobileSidebarToggled: false,
+  pageMobileSidebarFirstClicked: false,
+  pageMobileSidebarRightToggled: false,
+  pageMobileSidebarRightFirstClicked: false,
+  pageMobileTopMenuToggled: false,
+  pageMobileMegaMenuToggled: false,
+  openRightSideBar:false
+};
+
+
+export default pageSettings;

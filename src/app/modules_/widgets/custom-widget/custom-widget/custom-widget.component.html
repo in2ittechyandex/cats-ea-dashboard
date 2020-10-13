@@ -1,0 +1,980 @@
+<!-- begin breadcrumb -->
+<ol class="breadcrumb pull-right">
+    <li class="breadcrumb-item">
+        <button (click)="open(modalDialog,'lg')" class="btn btn-md " [ngClass]="[(themeConf_.selectedColor == 'default') ? 'bg-black':'bg-'+themeConf_.selectedColor]">Add Reports
+      &nbsp;
+      <i class="fa fa-plus-circle" aria-hidden="true"></i>
+    </button>
+    </li>
+</ol>
+
+<div class="In2_top_filter">
+    <div class="pull-right" style="margin-right:10px;">
+        <button type="button" (click)="onGlobalFilterToggle();" class="slide-toggle btn btn-md" [ngClass]="[(themeConf_.selectedColor == 'default') ? 'bg-black':'bg-'+themeConf_.selectedColor]">Filters
+      <i class="fa fa-filter" aria-hidden="true"></i>
+    </button>
+    </div>
+    <div class="gf_box pull-right" style="display:none">
+        <div class="box-inner">
+            <div class="pull-right" style="margin-right:10px;">
+                <div class="button-group">
+                    <button type="button" class="btn btn-md" (click)="onGlobalFilterChange();onGlobalFilterToggle();" [ngClass]="[(themeConf_.selectedColor == 'default') ? 'bg-black':'bg-'+themeConf_.selectedColor]">Apply</button>
+                </div>
+            </div>
+             <div class="pull-right" style="margin-right:10px;">
+                <div class="button-group">
+                    <app-time-filter [configStyle]="{'width':'220','bgColor':'#ececec','border':'1px solid #ccc' ,'customRanges':dateFillter_customRanges ,'startDate':dateFilter_startDate ,'endDate':dateFilter_endDate ,'timeType':dateFilter_timeType ,'timePicker':true}">
+                    </app-time-filter>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<h1 class="page-header" style="font-size: 16px">{{userTab_ ?userTab_.name :''}}</h1>
+<div class="m-b-10 f-s-10" style="margin-top: -2em;;"><b class="text-inverse">{{userTab_ ? userTab_.description :''}}
+    &nbsp;</b></div>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div id="accordion" class="card-accordion">
+            <div class="card">
+                <div class="card-header text-white pointer-cursor" [ngClass]="[
+              (summaryCollapsed) ? 'collapsed':'' ,
+               (themeConf_.selectedColor == 'default') ? 'bg-black':'bg-'+themeConf_.selectedColor
+                 ]" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false">
+                    <i [ngClass]="summaryCollapsed ? 'fa fa-caret-square-down':'fa fa-caret-square-up'" (click)="summaryCollapsed = (!summaryCollapsed)"></i>&nbsp;
+
+                    <div class="pull-right">
+                        <i class="fa fa-plus-circle" id="{{_smry.identifier}}" (click)="openAddSummaryTab(modalDialogSummaryAdd,'lg');"></i>&nbsp;
+                    </div>
+
+                </div>
+                <div id="collapseOne" class="collapse" [ngClass]="{'show':(!summaryCollapsed)}" data-parent="#accordion">
+                    <div class="card-body pb-0">
+                        <div class="row" *ngIf="userTab_">
+                            <ng-container *ngFor="let summary of userTab_.summarReportUrl; let sndx_ = index;">
+                                <div class="col-lg-3 col-md-6" *ngIf="summary.isSummaryLoaded">
+                                    <div class="widget widget-stats " [ngClass]="getSummaryHtmlConf(sndx_,'color')" (click)="getSumarytickets(summary,sndx_)">
+                                        <!-- <div class="stats-icon stats-icon-lg"><i [ngClass]="getSummaryHtmlConf(sndx_,'icon')"></i></div> -->
+                                        <div class="stats-content">
+                                            <div class="stats-title In2_summary_title">
+                                                <ng-container *ngIf="summary.link !=''">
+                                                    <a href="{{summary.link}}" style="color:#fff;text-decoration: none;" target="blank">{{summary.name}}</a>
+                                                </ng-container>
+                                                <ng-container *ngIf="summary.link ==''">{{summary.name}} &nbsp;</ng-container>
+                                                <button type="button" class="close" (click)="removeSummaryFromtab(summary,sndx_)">×</button>
+                                            </div>
+                                            <div class="stats-number">{{summary.summaryData}}</div>
+                                            <div class="stats-progress progress">
+                                            </div>
+                                            <div class="stats-desc In2_summary_title">{{summary.title}}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </ng-container>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <!-- end card -->
+        </div>
+
+        <!-- end #accordion -->
+    </div>
+</div>
+
+<div class="row" *ngIf="userTab_">
+    <div class="col-md-{{report_.colSpan}}" [attr.id]="getWidgetId(report_)" *ngFor="let report_ of userTab_.reportUrl;let i=index" >
+        <panel title="{{report_.name}}" [dataObj]="{ report:report_,index:i}" [buttonArr]="loadPanelButtons(report_)" [reload]="!report_.isChartLoaded" (event)="getPanelEvent($event);">
+            <ngb-tabset [destroyOnHide]="false">
+                <!-- <ng-container *ngIf="report_.chartType && report_.chartType !== 'grid' && (report_.isChartLoaded && !report_.isMultilevelDrill)"> -->
+                <ngb-tab>
+                    <ng-template ngbTabTitle>
+                        <span class="d-sm-none" id="chart-report-{{i}}">Chart</span>
+                        <span class="d-sm-block d-none">Chart </span>
+                    </ng-template>
+                    <ng-template ngbTabContent>
+                        <ng-template [ngIf]="report_.isChartLoaded && !report_.isMultilevelDrill">
+                            <div [ngSwitch]="report_.chartType" *ngIf="report_.isChartLoaded" (contextmenu)="onContextMenu($event)">
+                                <ng-template [ngSwitchCase]="'pie'">
+                                    <cats-am-pie-chart [chartUniqueId]="('widgetChart-'+i)" [reportSequence]="i" [reportId]="report_.reportId" [chartType]="'pie'" [dataProvider]="report_.chartData" [chartTitleName]="report_.title" [widthPer]="widthPer" [heightPixel]="heightPixel" [theme]="themeConf_.getAmChartsTheme()"
+                                        (rightClickDetection)="onRightClickDetection($event)" (leftClickDetection)="onLeftClickDetection($event)">
+                                    </cats-am-pie-chart>
+                                </ng-template>
+
+                                <ng-template [ngSwitchCase]="'donut'">
+                                    <cats-am4-donut-chart [chartUniqueId]="('widgetChart-'+i)" [reportSequence]="i" [reportId]="report_.reportId" [chartType]="'pie'" [dataProvider]="report_.chartData" [chartTitleName]="report_.title" [widthPer]="widthPer" [heightPixel]="heightPixel" [theme]="themeConf_.getAmChartsTheme()"
+                                        (rightClickDetection)="onRightClickDetection($event)" (leftClickDetection)="onLeftClickDetection($event)">
+                                    </cats-am4-donut-chart>
+                                </ng-template>
+
+                                <ng-template [ngSwitchCase]="'msbar3d'">
+                                    <cats-am-msbar3d-chart [chartUniqueId]="('widgetChart-'+i)" [reportSequence]="i" [reportId]="report_.reportId" [chartType]="'msbar3d'" [dataProvider]="report_.chartData" [chartTitleName]="report_.title" [widthPer]="widthPer" [heightPixel]="heightPixel"
+                                        [theme]="themeConf_.getAmChartsTheme()" (rightClickDetection)="onRightClickDetection($event)" (leftClickDetection)="onLeftClickDetection($event)">
+                                    </cats-am-msbar3d-chart>
+                                </ng-template>
+
+                                <ng-template [ngSwitchCase]="'stack3d'">
+                                    <cats-am4-stacked-xy3dchart [chartUniqueId]="('widgetChart-'+i)" [reportSequence]="i" [reportId]="report_.reportId" [chartType]="'msbar3d'" [dataProvider]="report_.chartData" [chartTitleName]="report_.title" [widthPer]="widthPer" [heightPixel]="heightPixel"
+                                        [theme]="themeConf_.getAmChartsTheme()" (rightClickDetection)="onRightClickDetection($event)" (leftClickDetection)="onLeftClickDetection($event)">
+                                    </cats-am4-stacked-xy3dchart>
+                                </ng-template>
+
+                                <ng-template [ngSwitchCase]="'heat'">
+                                    <!-- {{report_.chartData | json}} -->
+                                    <cats-am-heat-chart [chartUniqueId]="('widgetChart-'+i)" [reportSequence]="i" [reportId]="report_.reportId" [chartType]="'heat'" [dataProvider]="report_.chartData" [chartTitleName]="report_.title" [widthPer]="widthPer" [heightPixel]="heightPixel" (rightClickDetection)="onRightClickDetection($event)"
+                                        (leftClickDetection)="onLeftClickDetection($event)">
+                                    </cats-am-heat-chart>
+                                    <!-- <cats-am4-stack-horizontalbar-charts></cats-am4-stack-horizontalbar-charts> -->
+                                </ng-template>
+
+                                <ng-template [ngSwitchCase]="'calendar'">
+                                    <cats-tick-calender [chartUniqueId]="('widgetChart-'+i)" [reportSequence]="i" [reportId]="report_.reportId" [chartType]="'heat'" [dataProvider]="report_.chartData" (onClickNext)="calenderChartClickNext($event)" (onClickPrev)="calenderChartClickPrev($event)"
+                                        [chartTitleName]="report_.title" [widthPer]="widthPer" [heightPixel]="heightPixel" (leftClickDetection)="onLeftClickDetection($event)">
+                                    </cats-tick-calender>
+                                </ng-template>
+
+                                <ng-template [ngSwitchCase]="'funnel'">
+                                    <cats-am-funnel-chart [chartUniqueId]="('widgetChart-'+i)" [reportSequence]="i" [reportId]="report_.reportId" [chartType]="'funnel'" [dataProvider]="report_.chartData" [chartTitleName]="report_.title" [widthPer]="widthPer" [heightPixel]="heightPixel"
+                                        [theme]="themeConf_.getAmChartsTheme()" (rightClickDetection)="onRightClickDetection($event)" (leftClickDetection)="onLeftClickDetection($event)">
+                                    </cats-am-funnel-chart>
+                                </ng-template>
+
+                                <ng-template [ngSwitchCase]="'bar'">
+                                    <cats-am-bar-chart [chartUniqueId]="('widgetChart-'+i)" [reportSequence]="i" [reportId]="report_.reportId" [chartType]="'bar'" [dataProvider]="report_.chartData" [chartTitleName]="report_.title" [widthPer]="widthPer" [heightPixel]="heightPixel" [theme]="themeConf_.getAmChartsTheme()"
+                                        (rightClickDetection)="onRightClickDetection($event)" (leftClickDetection)="onLeftClickDetection($event)">
+                                    </cats-am-bar-chart>
+                                </ng-template>
+
+                                <ng-template [ngSwitchCase]="'stack'">
+                                    <cats-am-stack-chart [chartUniqueId]="('widgetChart-'+i)" [reportSequence]="i" [reportId]="report_.reportId" [chartType]="'bar'" [dataProvider]="report_.chartData" [chartTitleName]="report_.title" [widthPer]="widthPer" [heightPixel]="heightPixel" [theme]="themeConf_.getAmChartsTheme()"
+                                        (rightClickDetection)="onRightClickDetection($event)" (leftClickDetection)="onLeftClickDetection($event)">
+                                    </cats-am-stack-chart>
+                                    <!-- <cats-am-tabular-chart [chartUniqueId]="('widgetChart-'+i)" [reportSequence]="i" [reportId]="report_.reportId" [chartType]="'heat'"
+                    [dataProvider]="report_.chartData" [chartTitleName]="report_.title" [widthPer]="widthPer" [heightPixel]="heightPixel"></cats-am-tabular-chart> -->
+                                </ng-template>
+
+                                <!-- <ng-template [ngSwitchCase]="'grid'">
+                  <cats-am-report-data [chartUniqueId]="('widgetChart-'+i)" [reportSequence]="i" [reportId]="report_.reportId" [chartType]="'heat'"
+                    [dataProvider]="report_.chartData" [chartTitleName]="report_.title" [widthPer]="widthPer" [heightPixel]="heightPixel">
+                  </cats-am-report-data>
+                </ng-template> -->
+                                <!-- WARNING : GRID to TABULAR CONVERT-->
+                                <ng-template [ngSwitchCase]="'grid'">
+                                    <cats-am-tabular-chart [chartUniqueId]="('widgetChart-'+i)" [reportSequence]="i" [reportId]="report_.reportId" [chartType]="'heat'" [dataProvider]="report_.chartData" [chartTitleName]="report_.title" [widthPer]="widthPer" [heightPixel]="heightPixel" (rightClickDetection)="onRightClickDetection($event)"
+                                        (leftClickDetection)="onLeftClickDetection($event)"></cats-am-tabular-chart>
+                                </ng-template>
+
+                                <ng-template [ngSwitchCase]="'area'">
+                                    <cats-am-area-chart [chartUniqueId]="('widgetChart-'+i)" [reportSequence]="i" [reportId]="report_.reportId" [chartType]="'bar'" [dataProvider]="report_.chartData" [chartTitleName]="report_.title" [widthPer]="widthPer" [heightPixel]="heightPixel" [theme]="themeConf_.getAmChartsTheme()"
+                                        (rightClickDetection)="onRightClickDetection($event)" (leftClickDetection)="onLeftClickDetection($event)">
+                                    </cats-am-area-chart>
+                                </ng-template>
+                                <ng-template [ngSwitchCase]="'msbar'">
+                                    <cats-am-msbar-chart [chartUniqueId]="('widgetChart-'+i)" [reportSequence]="i" [reportId]="report_.reportId" [chartType]="'bar'" [dataProvider]="report_.chartData" [chartTitleName]="report_.title" [widthPer]="widthPer" [heightPixel]="heightPixel" [theme]="themeConf_.getAmChartsTheme()"
+                                        (rightClickDetection)="onRightClickDetection($event)" (leftClickDetection)="onLeftClickDetection($event)">
+                                    </cats-am-msbar-chart>
+                                </ng-template>
+                                <ng-template [ngSwitchCase]="'line'">
+                                    <cats-am-line-chart [chartUniqueId]="('widgetChart-'+i)" [reportSequence]="i" [reportId]="report_.reportId" [chartType]="'bar'" [dataProvider]="report_.chartData" [chartTitleName]="report_.title" [widthPer]="widthPer" [heightPixel]="heightPixel" [theme]="themeConf_.getAmChartsTheme()"
+                                        (rightClickDetection)="onRightClickDetection($event)" (leftClickDetection)="onLeftClickDetection($event)">
+                                    </cats-am-line-chart>
+                                </ng-template>
+
+                                <ng-template [ngSwitchCase]="'performance-in-out'">
+                                    <cats-am-performace-in-out-chart [chartUniqueId]="('widgetChart-'+i)" [reportSequence]="i" [reportId]="report_.reportId" [chartType]="'bar'" [dataProvider]="report_.chartData" [chartTitleName]="report_.title" [widthPer]="widthPer" [heightPixel]="heightPixel">
+                                    </cats-am-performace-in-out-chart>
+                                </ng-template>
+
+                                <ng-template ngSwitchDefault> Blank Page Chart IS Not Supported </ng-template>
+                            </div>
+                        </ng-template>
+
+                        <ng-template [ngIf]="report_.isChartLoaded && report_.isMultilevelDrill">
+                            <div [ngSwitch]="report_.mlChartData.chartType" *ngIf="report_.isMultiLevelChartLoaded" (contextmenu)="onContextMenu($event)">
+                                <ng-template [ngSwitchCase]="'pie'">
+                                    <cats-am-pie-chart [chartUniqueId]="('widgetChartMLDD-'+i)" [reportSequence]="i" [reportId]="report_.reportId" [chartType]="'pie'" [dataProvider]="report_.mlChartData.chartData" [chartTitleName]="report_.mlChartData.name" [widthPer]="widthPer" [heightPixel]="heightPixel"
+                                        (rightClickDetection)="onRightClickDetection($event)" (leftClickDetection)="onLeftClickDetection($event)">
+                                    </cats-am-pie-chart>
+                                </ng-template>
+
+                                <ng-template [ngSwitchCase]="'donut'">
+                                    <cats-am4-donut-chart [chartUniqueId]="('widgetChartMLDD-'+i)" [reportSequence]="i" [reportId]="report_.reportId" [chartType]="'pie'" [dataProvider]="report_.mlChartData.chartData" [chartTitleName]="report_.mlChartData.name" [widthPer]="widthPer" [heightPixel]="heightPixel"
+                                        (rightClickDetection)="onRightClickDetection($event)" (leftClickDetection)="onLeftClickDetection($event)">
+                                    </cats-am4-donut-chart>
+                                </ng-template>
+
+                                <ng-template [ngSwitchCase]="'bar'">
+                                    <cats-am-bar-chart [chartUniqueId]="('widgetChartMLDD-'+i)" [reportSequence]="i" [reportId]="report_.reportId" [chartType]="'bar'" [dataProvider]="report_.mlChartData.chartData" [chartTitleName]="report_.mlChartData.name" [widthPer]="widthPer" [heightPixel]="heightPixel"
+                                        (rightClickDetection)="onRightClickDetection($event)" (leftClickDetection)="onLeftClickDetection($event)">
+                                    </cats-am-bar-chart>
+                                </ng-template>
+                                <ng-template [ngSwitchCase]="'line'">
+                                    <cats-am-line-chart [chartUniqueId]="('widgetChartMLDD-'+i)" [reportSequence]="i" [reportId]="report_.reportId" [chartType]="'bar'" [dataProvider]="report_.mlChartData.chartData" [chartTitleName]="report_.mlChartData.name" [widthPer]="widthPer" [heightPixel]="heightPixel"
+                                        (rightClickDetection)="onRightClickDetection($event)" (leftClickDetection)="onLeftClickDetection($event)">
+                                    </cats-am-line-chart>
+                                </ng-template>
+                                <ng-template [ngSwitchCase]="'stack'">
+                                    <cats-am-stack-chart [chartUniqueId]="('widgetChartMLDD-'+i)" [reportSequence]="i" [reportId]="report_.reportId" [chartType]="'bar'" [dataProvider]="report_.mlChartData.chartData" [chartTitleName]="report_.mlChartData.name" [widthPer]="widthPer" [heightPixel]="heightPixel"
+                                        (rightClickDetection)="onRightClickDetection($event)" (leftClickDetection)="onLeftClickDetection($event)">
+                                    </cats-am-stack-chart>
+                                </ng-template>
+
+                                <ng-template [ngSwitchCase]="'stack3d'">
+                                    <cats-am4-stacked-xy3dchart [chartUniqueId]="('widgetChartMLDD-'+i)" [reportSequence]="i" [reportId]="report_.reportId" [chartType]="'bar'" [dataProvider]="report_.mlChartData.chartData" [chartTitleName]="report_.mlChartData.name" [widthPer]="widthPer"
+                                        [heightPixel]="heightPixel" (rightClickDetection)="onRightClickDetection($event)" (leftClickDetection)="onLeftClickDetection($event)">
+                                    </cats-am4-stacked-xy3dchart>
+                                </ng-template>
+
+
+                                <ng-template [ngSwitchCase]="'area'">
+                                    <cats-am-area-chart [chartUniqueId]="('widgetChartMLDD-'+i)" [reportSequence]="i" [reportId]="report_.reportId" [chartType]="'bar'" [dataProvider]="report_.mlChartData.chartData" [chartTitleName]="report_.mlChartData.name" [widthPer]="widthPer" [heightPixel]="heightPixel"
+                                        (rightClickDetection)="onRightClickDetection($event)" (leftClickDetection)="onLeftClickDetection($event)">
+                                    </cats-am-area-chart>
+                                </ng-template>
+                                <ng-template [ngSwitchCase]="'msbar'">
+                                    <cats-am-msbar-chart [chartUniqueId]="('widgetChartMLDD-'+i)" [reportSequence]="i" [reportId]="report_.reportId" [chartType]="'msbar'" [dataProvider]="report_.mlChartData.chartData" [chartTitleName]="report_.mlChartData.name" [widthPer]="widthPer" [heightPixel]="heightPixel"
+                                        (rightClickDetection)="onRightClickDetection($event)" (leftClickDetection)="onLeftClickDetection($event)">
+                                    </cats-am-msbar-chart>
+                                </ng-template>
+                                <ng-template ngSwitchDefault> This Chart Type Is Not Supported </ng-template>
+                            </div>
+                        </ng-template>
+
+                        <ng-template [ngIf]="!report_.isChartLoaded">
+                            <div [style.width.%]="'100'" [style.height.px]="'300'"> Loading ...
+                            </div>
+                        </ng-template>
+                    </ng-template>
+                </ngb-tab>
+                <!-- </ng-container> -->
+                <ng-container *ngIf="report_.chartType && report_.chartType != 'grid'">
+                    <ngb-tab>
+                        <ng-template ngbTabTitle>
+                            <span class="d-sm-none">Data</span>
+                            <span class="d-sm-block d-none">Data</span>
+                        </ng-template>
+                        <ng-template ngbTabContent>
+                            <ng-container *ngIf="!report_.isMultilevelDrill">
+                                <ng-container *ngTemplateOutlet="chartsTableData;context:{'chartType':report_.chartType ,'chartData':report_.chartData}">
+                                </ng-container>
+                            </ng-container>
+                            <ng-container *ngIf="report_.isMultilevelDrill">
+                                <ng-container *ngTemplateOutlet="chartsTableData;context:{'chartType':report_.mlChartData.chartType ,'chartData':report_.mlChartData.chartData}">
+                                </ng-container>
+                            </ng-container>
+                        </ng-template>
+                    </ngb-tab>
+                </ng-container>
+                <ng-container *ngIf="(report_.filters && report_.filters !=null) && report_.filters.length>0">
+                    <ngb-tab>
+                        <ng-template ngbTabTitle>
+                            <span class="d-sm-none">Filters</span>
+                            <span class="d-sm-block d-none">Filters</span>
+                        </ng-template>
+                        <ng-template ngbTabContent>
+                            <div class="row filter_by">
+                                <div [ngClass]="getFilterClass(report_.colSpan)" *ngFor="let fl_ of report_.filters;let fndx_ = index;">
+                                    <ng-container>
+                                        <ng-container *ngTemplateOutlet="repFilters;context:{'filterObj':fl_,'rNdx':i,'fNdx':fndx_}">
+                                        </ng-container>
+                                    </ng-container>
+                                </div>
+                                <div class="col-md-12 form-group">
+                                    <a href="javascript:;" (click)="submitFilter(report_,report_.filters,i);" [ngClass]="[(themeConf_.selectedColor == 'default') ? 'bg-black col-md-2 offset-sm-5':'bg-'+themeConf_.selectedColor]" [style.color]="'#fff'" class="btn">Go</a>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </ngb-tab>
+                </ng-container>
+                <!-- <ngb-tab>
+          <ng-template ngbTabTitle>
+            <span class="d-sm-none">Social</span>
+            <span class="d-sm-block d-none">Social</span>
+          </ng-template>
+          <ng-template ngbTabContent>
+            <div class="row">
+              <div class="clearfix m-b-10 m-t-15 text-center" style="margin:0 auto;">
+                <a href="javascript:;" [style.color]="'#fff'" [style.background-color]="'#3f729b'"
+                  [style.border-color]="'rgba(0,0,0,0.2)'"
+                  class="btn btn-sm btn-instagram btn-social-icon  m-r-10 m-b-5" title="Share"><span
+                    class="fa fa-share-alt"></span></a>
+                <a href="javascript:;" [style.color]="'#fff'" [style.background-color]="'#720e9e'"
+                  [style.border-color]="'rgba(0,0,0,0.2)'" class="btn btn-sm btn-social-icon btn-yahoo m-r-10 m-b-5"
+                  title="download"><span class="fa fa-download"></span></a>
+                <a href="javascript:;" [style.color]="'#fff'" [style.background-color]="'#2672ec'"
+                  [style.border-color]="'rgba(0,0,0,0.2)'" class="btn btn-sm btn-social-icon btn-microsoft m-r-10 m-b-5"
+                  title="Print"><span class="fa fa-print"></span></a>
+              </div>
+            </div>
+          </ng-template>
+        </ngb-tab> -->
+            </ngb-tabset>
+        </panel>
+    </div>
+</div>
+
+<!-- reportFilter Start-->
+<ng-template #repFilters let-fl_="filterObj" let-i="rNdx" let-fndx_="fNdx">
+    <div class="btn-group">
+        <button type="button" class="btn btn-default">
+      {{fl_.name}}</button>
+        <a href="javascript:;" class="btn btn-default dropdown-toggle" id="{{'Rep_'+i+':Fil_'+fndx_}}" (click)="showDD($event,fl_)"></a>
+        <ul class="dropdown-menu pull-right" style="height: 125px;overflow-y: scroll;" click-outside [listening]="fl_.isListenOnBlur" [Ident]="'Rep_'+i+':Fil_'+fndx_" (clickOutSide)="detectClickOutSide($event)">
+            <ng-container>
+                <ng-container *ngTemplateOutlet="repFiltersList;context:{'filterObj':fl_,'rNdx':i,'fNdx':fndx_}"></ng-container>
+            </ng-container>
+        </ul>
+    </div>
+</ng-template>
+<!-- reportFilter Exit-->
+
+<!-- Report Filter List Start-->
+<ng-template #repFiltersList let-fl_="filterObj" let-i="rNdx" let-fndx_="fNdx">
+    <li class="container1" *ngFor="let flVal_ of fl_.editFilters; let fvndx_ = index;" [type]="flVal_">
+        <label class="">{{flVal_.displayName}}
+      <input type="checkbox" [id]="'repId_'+i+'_fil'+fndx_" [name]="'rep_'+i+'_fil'+fndx_" [(ngModel)]="flVal_.value"
+        [checked]="flVal_.value" (ngModelChange)="onFilterChange(fvndx_,i,fndx_)" />
+      <span class="checkmark" [ngClass]="(flVal_.value) ?'bg-'+(themeConf_.selectedColor):''"></span>
+    </label>
+    </li>
+</ng-template>
+<!-- Report Filter List End-->
+
+<ng-template #chartsTableData let-chartData="chartData" let-chartType="chartType">
+    <div class="row filter_by">
+        <div class="table-responsive chart_table" *ngIf="(chartData.data && chartData.data.length>0) else blankData">
+            <table class="table table-striped mb-0">
+                <thead>
+                    <tr>
+                        <ng-container *ngIf="['line','stack','msbar','msbar3d','stack3d','area' ,'grid'].indexOf(chartType)>-1">
+                            <th [style.width.%]="(100/(chartData.config.yAxes.length+1))">{{chartData.config.xAxesTitle | uppercase}}
+                            </th>
+                            <th [style.width.%]="(100/(chartData.config.yAxes.length+1))" nowrap="" *ngFor="let y of chartData.config.yAxes">{{y | uppercase}} </th>
+                            <!-- ({{chartData.config.yAxesTitle}}) -->
+                        </ng-container>
+                        <ng-container *ngIf="['bar','pie','funnel','donut'].indexOf(chartType)>-1">
+                            <th [style.width.%]="(100/2)">{{chartData.config.xAxesTitle | uppercase}}</th>
+                            <th [style.width.%]="(100/2)" nowrap="">{{chartData.config.yAxesTitle | uppercase}}</th>
+                        </ng-container>
+
+                        <ng-container *ngIf="['calendar'].indexOf(chartType)>-1">
+                            <th [style.width.%]="(100/6)">{{chartData.config.sortKey | uppercase}}</th>
+                            <th [style.width.%]="(100/6)" nowrap="">Critical</th>
+                            <th [style.width.%]="(100/6)" nowrap="">High</th>
+                            <th [style.width.%]="(100/6)" nowrap="">Mod</th>
+                            <th [style.width.%]="(100/6)" nowrap="">Low</th>
+                            <th [style.width.%]="(100/6)" nowrap="">Request</th>
+                        </ng-container>
+
+                        <ng-container *ngIf="['heat'].indexOf(chartType)>-1">
+                            <th [style.width.%]="(100/7)">Day-Hour</th>
+                            <th [style.width.%]="(100/7)" nowrap="">Low</th>
+                            <th [style.width.%]="(100/7)" nowrap="">Modrate</th>
+                            <th [style.width.%]="(100/7)" nowrap="">High</th>
+                            <th [style.width.%]="(100/7)" nowrap="">Critical</th>
+                            <th [style.width.%]="(100/7)" nowrap="">Request</th>
+                        </ng-container>
+                    </tr>
+                </thead>
+                <tbody id="style-4" style="max-height:268px; overflow:auto;">
+                    <ng-container *ngFor="let cdata_ of chartData.data;let cndx=index;">
+                        <tr>
+                            <ng-container *ngIf="['line','stack','msbar','msbar3d','stack3d','area','grid'].indexOf(chartType)>-1">
+                                <td [style.width.%]="(100/(chartData.config.yAxes.length+1))">{{cdata_[chartData.config.xAxes]}}</td>
+                                <td [style.width.%]="(100/(chartData.config.yAxes.length+1))" *ngFor="let y of chartData.config.yAxes">
+                                    {{chartDataPartValues(cdata_[y]?cdata_[y]:0 ,chartData.config)}}
+                                </td>
+                            </ng-container>
+                            <ng-container *ngIf="['bar','pie','funnel','donut'].indexOf(chartType)>-1">
+                                <td [style.width.%]="(100/2)">{{cdata_[chartData.config.titleField]}}</td>
+                                <!-- <td [style.width.%]="(100/2)">{{cdata_[chartData.config.valueField]}}</td> -->
+                                <td [style.width.%]="(100/2)">
+                                    {{chartDataPartValues(cdata_[chartData.config.valueField] ,chartData.config)}}</td>
+
+                            </ng-container>
+
+                            <ng-container *ngIf="['calendar'].indexOf(chartType)>-1">
+                                <ng-container *ngIf="(cdata_['Priority'] | prioritySep); let priStep_">
+                                    <td [style.width.%]="(100/6)">{{cdata_[chartData.config.sortKey]}}</td>
+                                    <td [style.width.%]="(100/6)">{{priStep_['Critical']}}</td>
+                                    <td [style.width.%]="(100/6)">{{priStep_['High']}}</td>
+                                    <td [style.width.%]="(100/6)">{{priStep_['Mod']}}</td>
+                                    <td [style.width.%]="(100/6)">{{priStep_['Low']}}</td>
+                                    <td [style.width.%]="(100/6)">{{priStep_['Request']}}</td>
+                                </ng-container>
+                            </ng-container>
+
+                            <ng-container *ngIf="['heat'].indexOf(chartType)>-1">
+                                <ng-container>
+                                    <th [style.width.%]="(100/7)">{{cdata_['Time']}}</th>
+                                    <th [style.width.%]="(100/7)" nowrap="">{{cdata_['Low']}}</th>
+                                    <th [style.width.%]="(100/7)" nowrap="">{{cdata_['Modrate']}}</th>
+                                    <th [style.width.%]="(100/7)" nowrap="">{{cdata_['High']}}</th>
+                                    <th [style.width.%]="(100/7)" nowrap="">{{cdata_['Critical']}}</th>
+                                    <th [style.width.%]="(100/7)" nowrap="">{{cdata_['Request']}}</th>
+                                </ng-container>
+                            </ng-container>
+                        </tr>
+                    </ng-container>
+                </tbody>
+            </table>
+        </div>
+        <ng-template #blankData>
+            <div class="IN2containerData"> No Data Available</div>
+        </ng-template>
+    </div>
+</ng-template>
+
+<!-- End Model Add widget -->
+<ng-template #modalDialog let-c="close" let-d="dismiss">
+    <div class="modal-header" [ngClass]="[(themeConf_.selectedColor == 'default') ? 'bg-black':'bg-'+themeConf_.selectedColor]">
+        <h4 class="modal-title" style="color:#fff;">Add Reports</h4>
+        <button type="button" class="close" (click)="d('Cross click');clearModalAddReports();" style="color:#fff;">×</button>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-lg-4 ui-sortable">
+                <div class="panel " style="
+        margin-bottom: 20px !important;
+        background-color: #fff !important;
+        border: none !important;
+        box-shadow: 0 2px 10px rgba(0,0,0,.15) !important;
+        border-radius: 3px !important;">
+                    <div class="panel-body panel-form">
+                        <hr>
+                        <form name="addReportForm" #f="ngForm" class="form-horizontal form-bordered">
+                            <div class="form-group row">
+                                <label class="col-md-4 col-form-label">Category
+                  <sup style="color:#FF0000">*</sup>
+                </label>
+                                <div class="col-md-8">
+                                    <select name="choose-category" ngModel [(ngModel)]="modAddReports_.selCategory" (change)="onCategorySelect($event.target.value, 1)" class="form-control" #selCategory="ngModel" name="selCategory" [required]="'true'">
+                    <option value="">Select Category</option>
+                    <option *ngFor="let category of modAddReports_.categories" value={{category.id}}>
+                      {{category.categoryName}}</option>
+                  </select>
+                                </div>
+                                <!-- <div *ngIf="!f.form.controls['selCategory'].valid && f.form.controls['selCategory'].touched">Category is required</div> -->
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-4 col-form-label">Report
+                  <sup style="color:#FF0000">*</sup>
+                </label>
+                                <div class="col-md-8">
+                                    <select name="choose-reports" [(ngModel)]="modAddReports_.selReport" (change)="onReportSelect($event.target.value)" class="form-control" #selReport="ngModel" name="selReport" [required]="'true'">
+                    <option value="">Select Report</option>
+                    <option *ngFor="let report of modAddReports_.reports" value={{report.id}}>{{report.name}}</option>
+                  </select>
+                                </div>
+                                <!-- <div *ngIf="!f.form.controls['selReport'].valid && f.form.controls['selReport'].touched">Report is required</div> -->
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-4 col-form-label">Chart Type
+                  <sup style="color:#FF0000">*</sup>
+                </label>
+                                <div class="col-md-8">
+                                    <select name="choose-charts" [(ngModel)]="modAddReports_.selChartType" (change)="onChartSelect($event.target.value)" class="form-control" #selChartType="ngModel" name="selChartType" [required]="'true'">
+                    <option value="">Select Chart Type</option>
+                    <option *ngFor="let chart of modAddReports_.charts" value={{chart.id}}>
+                      {{chart.chart_name | titlecase}}</option>
+                  </select>
+                                </div>
+                                <!-- <div *ngIf="!f.form.controls['selChartType'].valid && f.form.controls['selChartType'].touched">Chart Type is required</div> -->
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-4 col-form-label">Column Span
+                  <sup style="color:#FF0000">*</sup>
+                </label>
+                                <div class="col-md-8">
+                                    <select #selCoumnSpan="ngModel" name="selCoumnSpan" [(ngModel)]="modAddReports_.selCoumnSpan" class="form-control" [required]="'true'">
+                    <option value="">Select Column Span</option>
+                    <option *ngFor="let colspan of modAddReports_.colspan" value={{colspan.id}}>{{colspan.value}}
+                    </option>
+                  </select>
+                                </div>
+                                <!-- <div *ngIf="!f.form.controls['selCoumnSpan'].valid && f.form.controls['selCoumnSpan'].touched">Column Span is required</div> -->
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-md-4 col-form-label">Name
+                  <sup style="color:#FF0000">*</sup>
+                </label>
+                                <div class="col-md-8">
+                                    <input type="text" [(ngModel)]="modAddReports_.selReportName" #selReportName="ngModel" name="selReportName" class="form-control" [required]="'true'" />
+                                </div>
+                                <!-- <div *ngIf="!f.form.controls['selReportName'].valid && f.form.controls['selReportName'].touched">Report Name is required</div> -->
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-8 ui-sortable">
+                <div class="panel" style="margin-bottom:20px !important; background-color:#fff !important;
+        border:none !important; box-shadow:0 2px 10px rgba(0,0,0,.15) !important; border-radius:3px !important;">
+                    <div class="panel-body">
+                        <!-- <h5 class="panel-heading-btn" style="color: #006699;margin-right: 270px;">Preview</h5> -->
+                        <div>
+                            <img [src]="(modAddReports_.selChartType == '')?'assets/charts/bar.JPG':'assets/charts/'+chartIdNameMap[modAddReports_.selChartType]+'.JPG'" alt="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- *ngIf="f.form.valid" -->
+    <div class="modal-footer">
+        <a href="javascript:;" id="closeAddReportButton" class="btn btn-default text-black" data-dismiss="modal" (click)="d('Cross click');clearModalAddReports();">Cancel</a>
+        <a href="javascript:;" (click)="addReportToTab()" class="btn btn-md bg-black">Add Reports</a>
+    </div>
+</ng-template>
+<!-- End Model Add widget -->
+<ng-template #modalDialogSchedule let-c="close" let-d="dismiss">
+    <div class="modal-header" [ngClass]="[(themeConf_.selectedColor == 'default') ? 'bg-black':'bg-'+themeConf_.selectedColor]">
+        <h4 class="modal-title" style="color:#fff;">Schedule Reports</h4>
+        <button type="button" class="close" (click)="d('Cross click');clearModalAddScheduleReports();" style="color:#fff;">×</button>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-5 ui-sortable">
+                <div class="panel" style="box-shadow:0 2px 10px rgba(0,0,0,.15) !important; margin-bottom:0;">
+                    <div class="panel-body panel-form">
+                        <form name="addReportForm" #f="ngForm" class="form-horizontal form-bordered">
+                            <div class="form-group row">
+                                <label class="col-md-4 col-form-label">Category
+                  <sup style="color:#FF0000">*</sup>
+                </label>
+                                <div class="col-md-8">
+                                    <!-- {{modAddScheduleReports_ | json}} -->
+                                    <select name="choose-category" ngModel [(ngModel)]="modAddScheduleReports_.selCategory" (change)="onCategorySelect($event.target.value,2)" class="form-control" #selCategory="ngModel" name="selCategory" [required]="'true'">
+                    <option value="">Select Category</option>
+                    <option *ngFor="let category of modAddScheduleReports_.categories" value={{category.id}}>
+                      {{category.categoryName}}</option>
+                  </select>
+                                </div>
+                                <!-- <div *ngIf="!f.form.controls['selCategory'].valid && f.form.controls['selCategory'].touched">Category is required</div> -->
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-4 col-form-label">Report
+                  <sup style="color:#FF0000">*</sup>
+                </label>
+                                <div class="col-md-8">
+                                    <select name="choose-reports" [(ngModel)]="modAddScheduleReports_.selReport" (change)="onReportSelect($event.target.value)" class="form-control" #selReport="ngModel" name="selReport" [required]="'true'">
+                    <option value="">Select Report</option>
+                    <option *ngFor="let report of modAddScheduleReports_.reports" value={{report.id}}>{{report.name}}
+                    </option>
+                  </select>
+                                </div>
+                                <!-- <div *ngIf="!f.form.controls['selReport'].valid && f.form.controls['selReport'].touched">Report is required</div> -->
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-md-4 col-form-label">Schedule Name
+                  <sup style="color:#FF0000">*</sup>
+                </label>
+                                <div class="col-md-8">
+                                    <input type="text" [(ngModel)]="modAddScheduleReports_.selscheduleReportName" #selscheduleReportName="ngModel" name="selscheduleReportName" class="form-control" [required]="'true'" />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-4 col-form-label">Email
+                  <sup style="color:#FF0000">*</sup>
+                </label>
+                                <div class="col-md-8">
+                                    <input type="text" [(ngModel)]="modAddScheduleReports_.selemail" #selemail="ngModel" name="selemail" class="form-control" [required]="'true'" />
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-md-4 col-form-label">Date Range
+                  <sup style="color:#FF0000">*</sup>
+                </label>
+                                <div class="col-md-8">
+                                    <div class="button-group">
+                                        <!-- <app-time-filter [configStyle]="{'width':'220','bgColor':'#ececec','border':'1px solid #ccc','customRanges': ['Today','Yesterday','Last 7 Days','Last Month','This Month'], num: 2}">
+                    </app-time-filter> -->
+
+                                        <app-time-filter [configStyle]="{'width':'220','bgColor':'#ececec','border':'1px solid #ccc' ,'customRanges':dateFillter_customRanges , 'timePicker':true , 'startDate':dateFilter_startDate ,'endDate':dateFilter_endDate ,'timeType':dateFilter_timeType}">
+                                        </app-time-filter>
+
+                                    </div>
+                                    <!-- <input type="text" class="form-control" [required]="'true'" /> -->
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-4 col-form-label">Format
+                  <sup style="color:#FF0000">*</sup>
+                </label>
+                                <div class="col-md-8">
+                                    <select name="choose-reports" [(ngModel)]="modAddScheduleReports_.selFormat" #selFormat="ngModel" name="selFormat" class="form-control" [required]="'true'">
+                    <option value="">Select Format</option>
+                    <option value="xslx">Excel</option>
+                    <option value="pdf">PDF</option>
+                  </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-4 col-form-label">Schedule Date
+                  <sup style="color:#FF0000">*</sup>
+                </label>
+                                <div class="col-md-8">
+                                    <div class="input-group" daterangepicker [options]="singlePicker" (selected)="singleSelect($event)">
+                                        <span class="form-control uneditable-input" name="daterange">
+                      {{ singleDate | date:'M/dd/y' }}
+                    </span>
+                                        <span class="input-group-btn">
+                      <a type="button" class="btn btn-default">
+                        <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
+                      </a>
+                    </span>
+                                    </div>
+                                </div>
+                                <!-- <div class="container-fluid">
+                  <ngbd-datepicker-popup></ngbd-datepicker-popup>
+                </div> -->
+                                <!-- <div class="col-md-8">
+                 <input class="form-control" type="date" [(ngModel)]="modAddScheduleReports_.scheduleDate" scheduleDate="scheduleDate" name="scheduleDate" [required]="'true'" />
+                </div> -->
+                                <!-- <mat-form-field>
+                    <input matInput [matDatepicker] = "picker" placeholder = "Choose a date">
+                    <mat-datepicker-toggle matSuffix [for] = "picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                 </mat-form-field> -->
+                                <!-- <div class="col-md-8">
+                  <div class="button-group">
+                    <app-time-filter [configStyle]="{'width':'220','bgColor':'#ececec','border':'1px solid #ccc','customRanges': ['Today','Yesterday','Last 7 Days','Last Month','This Month'], num: 2}">
+                    </app-time-filter>
+                  </div>
+                </div> -->
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-4 col-form-label">Schedule Time
+                  <sup style="color:#FF0000">*</sup>
+                </label>
+                                <div class="col-md-8">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <select class="form-control p-0" [(ngModel)]="modAddScheduleReports_.selHH" #selHH="ngModel" name="selScheduleTime" class="form-control" [required]="'true'">
+                        <option value="">HH</option>
+                        <option value="00">00</option>
+                        <option value="01">01</option>
+                        <option value="02">02</option>
+                        <option value="03">03</option>
+                        <option value="04">04</option>
+                        <option value="05">05</option>
+                        <option value="06">06</option>
+                        <option value="07">07</option>
+                        <option value="08">08</option>
+                        <option value="09">09</option>
+                        <option value="10">10</option>
+                        <option value="11">11</option>
+                        <!-- <option value="12">12</option> -->
+                      </select>
+                                        </div>
+                                        <div class="col-md-4 px-0">
+                                            <select class="form-control p-0" [(ngModel)]="modAddScheduleReports_.selMM" #selMM="ngModel" #selScheduleTime="ngModel" class="form-control" name="minutes" [required]="'true'">
+                        <option value="">MM</option>
+                        <option>00</option>
+                        <option>05</option>
+                        <option>10</option>
+                        <option>15</option>
+                        <option>20</option>
+                        <option>25</option>
+                        <option>30</option>
+                        <option>35</option>
+                        <option>40</option>
+                        <option>45</option>
+                        <option>50</option>
+                        <option>55</option>
+                      </select>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <select class="form-control p-0" [(ngModel)]="modAddScheduleReports_.selAMPM" #selScheduleTime="ngModel" name="selScheduleTime" #selAMPM="ngModel" class="form-control" [required]="'true'">
+                        <option value="AM">AM</option>
+                        <option value="PM">PM</option>
+                      </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                            <div class="form-group row">
+                                <label class="col-md-4 col-form-label">Is Recurring
+                  <sup style="color:#FF0000">*</sup>
+                </label>
+                                <div class="col-md-8">
+                                    <select name="" class="form-control" [(ngModel)]="modAddScheduleReports_.selIsRecurring" #selIsRecurring="ngModel" name="selIsRecurring" class="form-control" [required]="'true'">
+                    <option value="1">Yes</option>
+                    <option value="0">No</option>
+                  </select>
+                                </div>
+                            </div>
+
+                            <!-- <div class="form-group row">
+                <div class="col-md-12 d-flex py-2" style="justify-content:space-around;">
+                  <a class="btn btn-md btn-primary btn-sm" href="javascript:;">Schedule</a>
+                  <a class="btn btn-md btn-primary btn-sm" href="javascript:;">Download</a>
+                </div>
+              </div> -->
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-7 ui-sortable">
+                <div class="panel" style="box-shadow:0 2px 10px rgba(0,0,0,.15) !important; margin-bottom:0px;">
+                    <div class="panel-body" style="height: 584px; ">
+                        <div class="table-responsive chart_table1">
+                            <table class="table table-striped mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>Schedule Name</th>
+                                        <!-- <th>Email</th> -->
+                                        <th>Schedule Date</th>
+                                        <th>Schedule Time</th>
+                                        <!-- <th>Time</th> -->
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="style-1" style="max-height:468px; overflow:auto;">
+                                    <tr *ngFor="let schedule of globalFilterModal.ScheduleReport">
+                                        <td>{{schedule.scheduleName}}</td>
+                                        <!-- <td>{{schedule.email}}</td> -->
+                                        <td>{{schedule.scheduleDate | date:'shortDate'}}</td>
+                                        <td>{{schedule.scheduleTime}}</td>
+                                        <!-- <td>{{schedule.startDate | date:'shortTime'}}&nbsp;{{schedule.endDate | date:'shortTime'}}</td> -->
+                                        <td>Active</td>
+                                        <td>
+                                            <i class="fa fa-edit green mr-2" (click)="updateScheduleReport(schedule)"></i>
+                                            <i class="fa fa-trash red" (click)="deleteScheduleReport(schedule)"></i>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+
+                        <!-- 
+            <div><img [src]="(modAddReports_.selChartType == '')?'assets/charts/bar.JPG':'assets/charts/'+chartIdNameMap[modAddReports_.selChartType]+'.JPG'"
+                alt="" ></div> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- *ngIf="f.form.valid" -->
+    <div class="modal-footer">
+        <a href="javascript:;" id="closeAddReportButton" class="btn btn-default text-black" data-dismiss="modal" (click)="d('Cross click');clearModalAddReports();">Cancel</a>
+        <a class="btn btn-md btn-primary" (click)="download('1213')">Download</a>
+        <a href="javascript:;" (click)="addScheduleReportToTab()" class="btn btn-md bg-black">Schedule Reports</a>
+    </div>
+</ng-template>
+
+<!-- Open Dialog RightClick start-->
+<ng-template *ngIf="TootTipStr_.open then goHome"></ng-template>
+<ng-template #goHome>
+    <div class="box" [style.top.px]="TootTipStr_.top" [style.left.px]="TootTipStr_.left" style="box-shadow: 4px 5px 7px 2px #ccc !important;z-index: 999999999">
+        <div class="modal-header" [ngClass]="[(themeConf_.selectedColor == 'default' || themeConf_.selectedColor == 'black') ? 'bg-primary':'bg-'+themeConf_.selectedColor]">
+            <h6 class="modal-title text-white" style="font-weight:700;">Action</h6>
+            <button type="button" class="close" (click)="TootTipStr_.open = !TootTipStr_.open">×</button>
+        </div>
+
+        <!-- max-width: 250px;
+    overflow-y: scroll;
+    max-height: 300px; -->
+        <div class="modal-body" [style.overflow-y]="'scroll'" [style.background]="'#fff'" [style.max-width.px]="'250'" [style.max-height.px]="'300'" [style.padding.px]="'0 15'">
+            <div class="row">
+                <a href="javascript:;" (click)="onTootlTipSelect(drillTT_,TootTipStr_.reportId,TootTipStr_.reportSequence)" *ngFor="let drillTT_ of TootTipStr_.ddItems ; let ddINdx=index" class="dropdown-item">
+                    <i class="fa fa-th-large"></i> {{drillTT_.name}}</a>
+            </div>
+        </div>
+        <!-- <div class="modal-footer">
+        </div> -->
+    </div>
+</ng-template>
+<!-- Open Dialog RightClick Exit-->
+
+<!-- Modal Add Summary Start-->
+<ng-template #modalDialogSummaryAdd let-c="close" let-d="dismiss">
+    <div class="modal-header" [ngClass]="[(themeConf_.selectedColor == 'default') ? 'bg-black':'bg-'+themeConf_.selectedColor]">
+        <h5 class="modal-title" style="color: #fff;">Add Summary</h5>
+        <button type="button" class="close" (click)="d('Cross click')" style="color: #fff;">×</button>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-lg-6 ui-sortable">
+                <div class="panel " style="
+          margin-bottom: 20px !important;
+          background-color: #fff !important;
+          border: none !important;
+          box-shadow: 0 2px 10px rgba(0,0,0,.15) !important;
+          border-radius: 3px !important;
+      ">
+                    <div class="panel-body panel-form">
+                        <hr>
+                        <form class="form-horizontal form-bordered">
+                            <div class="form-group row">
+                                <label class="col-md-4 col-form-label">Category</label>
+                                <div class="col-md-8">
+                                    <select name="choose-category" [(ngModel)]="modAddSummary_.selSummaryCategory" (change)="onSummaryCategorySelect($event.target.value)" class="form-control" id="first-choice">
+                    <option value="">Select Category</option>
+                    <option *ngFor="let category of modAddSummary_.summaryCategory" value={{category.id}}>
+                      {{category.categoryName}}</option>
+                  </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-4 col-form-label">Summary Report</label>
+                                <div class="col-md-8">
+                                    <select name="choose-reports" [(ngModel)]="modAddSummary_.selSummaryReport" class="form-control" id="second-choice">
+                    <option value="">Select Report</option>
+                    <option *ngFor="let report of modAddSummary_.summaryReport" value={{report.id}}>{{report.name}}
+                    </option>
+                  </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-4 col-form-label">Name</label>
+                                <div class="col-md-8">
+                                    <input type="text" [(ngModel)]="modAddSummary_.selSummaryName" name="report-custom-name" maxlength="27" class="form-control" />
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6 ui-sortable">
+                <div class="panel" style="margin-bottom: 20px !important; background-color: #fff !important;
+          border: none !important; box-shadow: 0 2px 10px rgba(0,0,0,.15) !important; border-radius: 3px !important;">
+                    <div class="panel-body">
+                        <div>
+                            <!-- <div class="card-body"> -->
+                            <div class="row">
+                                <div class="col-lg-12 col-md-12">
+                                    <div class="widget widget-stats bg-gradient-teal">
+                                        <!-- <div class="stats-icon stats-icon-lg"><i class="fa fa-globe fa-fw"></i></div> -->
+                                        <div class="stats-content">
+                                            <div class="stats-title In2_summary_title">TOTAL INCIDENTS</div>
+                                            <div class="stats-number">100</div>
+                                            <div class="stats-progress progress">
+                                                <!-- <div class="progress-bar" style="width: 70.1%;"></div> -->
+                                            </div>
+                                            <div class="stats-desc In2_summary_title">Displays open incidents</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- </div> -->
+
+                            <!-- <img src="assets/img/user/trend.png" alt="" style="height: 220px;width: 560px;"> -->
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <a href="javascript:;" id="closeAddSummaryButton" class="btn btn-default text-black" data-dismiss="modal" (click)="d('Cross click')">Cancel</a>
+        <a href="javascript:;" (click)="addSummaryToTab()" class="btn btn-md" [ngClass]="[(themeConf_.selectedColor == 'default') ? 'bg-black':'bg-'+themeConf_.selectedColor]">Add Summary
+    </a>
+    </div>
+</ng-template>
+<!-- Modal Add Summary Start-->
+
+<!-- Left Click Chart Data Popup Start-->
+<!-- <ng-template #modelDrillChartData class="modal-dialog modal-xl" let-c="close" let-d="dismiss">
+  <div class="panel">
+    <div class="panel-heading bg-{{themeConf_.selectedColor}}">
+      <div class="panel-heading-btn">
+        <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning"
+          (click)="downloadTicketDataAsCSV(reportChartDrillDataStr.data,reportChartDrillDataStr.header)">
+          <i class="fa fa-download"></i>
+        </a>
+
+        <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-danger" (click)="c('Close click')">
+          <i class="fa fa-times"></i>
+        </a>
+      </div>
+      <h4 class="panel-title">{{reportChartDrillDataStr.hTitle}} Tickets</h4>
+      <button [hidden]="true" id="PanelTestDrillData"></button>
+    </div>
+    <div id="PanelTestDrillData" class="panel-body" style="padding-top:0px;">
+      <div class="modal-body">
+        <cats-grid-smart-table [incidentList]="reportChartDrillDataStr.data"
+          [chartTitle]="reportChartDrillDataStr.hTitle"></cats-grid-smart-table>
+      </div>
+      <div class="modal-footer">
+      </div>
+      <div class="panel-loader" *ngIf="reportChartDrillDataStr.isPanelLoading">
+        <span class="spinner-small"></span>
+      </div>
+    </div>
+  </div>
+</ng-template> -->
+
+<ng-template #modelDrillChartData class="modal-dialog modal-xl" let-c="close" let-d="dismiss">
+    <!-- <ngx-loading [show]="reportChartDrillDataStr.isPanelLoading"  [config]="{backdropBorderRadius: '3px'}"  >
+    <div style="display:inline-block; background:#ff0000; width:200px; height:50px;">
+    </div>
+  </ngx-loading> -->
+    <div class="panel">
+        <div class="panel-heading bg-{{themeConf_.selectedColor}}">
+            <div class="panel-heading-btn">
+                <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-danger" (click)="c('Close click')"><i
+            class="fa fa-times"></i></a>
+            </div>
+            <h4 class="panel-title">{{reportChartDrillDataStr.hTitle}} Tickets
+                <span *ngIf="repDetail.isLoaded">{{repDetail.timeString}}</span>
+            </h4>
+            <button [hidden]="true" id="PanelTestDrillData"></button>
+        </div>
+        <div id="PanelTestDrillData" class="panel-body" style="padding-top:0px;">
+            <div class="modal-body" style="padding:0px;">
+                <cats-grid-smart-table [incidentList]="reportChartDrillDataStr.data" [chartTitle]="reportChartDrillDataStr.hTitle" [chartStartDate]="repDetail.startDate" [chartEndDate]="repDetail.endDate" [chartTimeType]="repDetail.timeType" [url]="reportChartDrillDataStr.url"></cats-grid-smart-table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+
+<!-- Left Click Chart Data Popup Exit-->
+
+<!-- start by k -->
+<!-- Left Click Chart Data Popup Start-->
+<ng-template #summaryTicketsData class="modal-dialog modal-xl" let-c="close" let-d="dismiss">
+    <div class="panel">
+        <div class="panel-heading">
+            <div class="panel-heading-btn">
+                <!-- <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-danger" (click)="printPanelChart()"><i class="fa fa-print"></i></a> -->
+                <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-danger" (click)="c('Close click')">
+                    <i class="fa fa-times"></i>
+                </a>
+            </div>
+            <h4 class="panel-title">{{summaryChartDrillDataStr?.hTitle}} Tickets</h4>
+        </div>
+        <div class="panel-body" style="padding-top:0px;">
+            <div class="modal-body">
+                <cats-smart-table [headers]="summaryChartDrillDataStr.header" [data]="summaryChartDrillDataStr.data">
+                </cats-smart-table>
+            </div>
+            <div class="modal-footer">
+                <!-- <button class="btn btn-white" (click)="c('Close click')">Close</button> -->
+            </div>
+            <div class="panel-loader" *ngIf="summaryChartDrillDataStr.isPanelLoading">
+                <span class="spinner-small"></span>
+            </div>
+        </div>
+    </div>
+</ng-template>
+<!-- <i class="fa fa-download" style="font-size:20px;color:purple" aria-hidden="true" (click)="download('1213')"></i> -->
+<!-- Left Click Chart Data Popup Exit-->

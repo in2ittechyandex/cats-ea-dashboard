@@ -1,0 +1,115 @@
+<div class="bg-dark float-left w-100 p-3 mb-1">
+    <form class="form-horizontal pull-left">
+        <div class="rows">
+            <div class="col-xs-1 mr-2">
+                <div class="btn-group btn-sm p-0" (click)="(incidentList && incidentList.length>0) ? exportReportData() : null">
+                    <i class="fas fa-file-csv fa-lg fa-fw btn download-default btn-default btn-sm" [ngClass]="{'btnDisabled' : incidentList && incidentList.length==0}" style="width:100%;" *ngIf="!isCsvLoaded"></i>
+                    <span class="btn download-default btn-default btn-sm" style="width:100%;" *ngIf="isCsvLoaded"><i class="fa fa-spinner fa-spin"></i></span>
+                </div>
+            </div>
+            <ng-container xlsxExport>
+                <div class="col-xs-1 mr-2">
+                    <div class="btn-group btn-sm p-0" (click)="(incidentList && incidentList.length>0) ? onExcelDownloadClick() : null">
+                        <i class="fas fa-file-excel fa-lg fa-fw download-default btn btn-default btn-sm" [ngClass]="{'btnDisabled' : incidentList && incidentList.length==0}" style="width:100%;" *ngIf="!isXlsxLoaded"></i>
+                        <span class="btn download-default btn-default btn-sm" style="width:100%;" *ngIf="isXlsxLoaded"><i class="fa fa-spinner fa-spin"></i></span>
+                    </div>
+                </div>
+            </ng-container>
+            <!-- <ng-container pdfExport>
+                <div class="col-xs-1 mr-2">
+                    <div class="btn-group btn-sm p-0" (click)="clkOnPdfIcon()">
+                        <i class="fas fa-lg fa-fw fa fas fa-file-pdf btn btn-sm" style="width:100%;"></i>
+                    </div>
+                </div>
+            </ng-container> -->
+            <div class="col-xs-1 mr-2">
+                <div class="btn-group btn-sm p-0" *ngIf="incidentList && incidentList.length>0" style="font-size: 12px; color: #fff; height: 100%; align-items: center;">
+                    <span>(Total Tickets Count: <b>{{this.gridApi?.getDisplayedRowCount()}}</b>)</span>
+                </div>
+            </div>
+            <!-- <div class="col-xs-1">
+        <div class="btn-group btn-sm p-0" (click)="loadReportData()">
+          <i class="fas fa-lg fa-fw fa-sync-alt btn btn-sm" style="width:100%;"></i>
+        </div>
+      </div> -->
+        </div>
+    </form>
+    <div class="pull-right">
+        <button class="toggle btn btn-sm" style="background-color:transparent;"><i class="fa fa-cogs"></i></button>
+        <div id="target_allSaturation_gridSmart">
+            <div class="box-inner">
+                <input type="search" #searchVal class="form-control input-sm" placeholder="Search..." aria-controls="data-table-default">
+                <div class="In2_pivotOptions_gridSmart style-4_gridSmart">
+                    <div class="checkbox checkbox-css" *ngFor="let colDef_ of dbAllcolumns | filterByKey: 'headerName' :searchVal.value; let fvndx_=index;">
+                        <input type="checkbox" id="cssCheckbox{{colDef_.field}}{{fvndx_+1}}" [(ngModel)]="colDef_.isActive" [checked]="colDef_.isActive" (change)="onGridPivotSelection()">
+                        <label for="cssCheckbox{{colDef_.field}}{{fvndx_+1}}">{{colDef_.headerName}}</label>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="clearfix"></div>
+
+<div class="test-container">
+    <div style="width:100%; overflow:auto;" class="device">
+        <ag-grid-angular [style.height.px]="heightPx" [style.width.%]="widthPer" #agGrid id="myGrid" class="ag-theme-balham" [rowData]="incidentList" [columnDefs]="columnDefs" [pagination]="true" [paginationPageSize]="paginationPageSize" [context]="context" [defaultColDef]="defaultColDef"
+            (gridReady)="onGridReady($event)" (paginationChanged)="onPaginationChanged($event)" [suppressPaginationPanel]="true" [enableCellTextSelection]="true" [suppressRowClickSelection]="suppressRowClickSelection" [rowSelection]="rowSelection" (rowSelected)="onRowSelected($event)"
+            (selectionChanged)="onSelectionChanged($event)" (filterChanged)="filterAccept($event)">
+        </ag-grid-angular>
+    </div>
+</div>
+
+<div class="row m-t-5" *ngIf="modPagination.totalPages>0">
+    <div class="col-sm-12 col-md-4">
+        <div class="form-group row mb-1 small">
+            <!-- <label class="col-form-label col-md-4">Records Per Page</label> -->
+            <div class="col-md-3">
+                <select class="form-control-sm" [(ngModel)]="paginationPageSize" (change)="selectPageCounts($event.target.value)" id="page-size">
+          <option [value]="limit_" *ngFor="let limit_ of paginationLimits">{{limit_}} Records Per Page</option>
+        </select>
+            </div>
+        </div>
+        <div>
+        </div>
+    </div>
+    <div class="col-sm-12 col-md-4 small">
+        <div class="dataTables_paginate paging_simple_numbers pull-left" id="data-table-fixed-header_paginate">
+            <ul class="pagination pull-right">
+                <li class="paginate_button page-item previous active" (click)="onBtFirst()" id="data-table-fixed-header_previous">
+
+                    <a href="javascript:void(0);" aria-controls="data-table-fixed-header" data-dt-idx="0" tabindex="0" class="page-link">First</a>
+                </li>
+                <li class="paginate_button page-item mr-2" [ngClass]="(modPagination.currentPage>1) ? 'active' : 'disabled'" (click)="onBtPrevious()"><a href="javascript:void(0);" aria-controls="data-table-fixed-header" data-dt-idx="1" tabindex="0" class="page-link">Previous</a></li>
+
+                <div class="dataTables_info col-form-label" id="data-table-fixed-header_info" role="status" aria-live="polite">
+                    <strong>Page {{modPagination.currentPage}} of {{modPagination.totalPages}}</strong> </div>
+
+                <li class="paginate_button page-item " [ngClass]="(!(modPagination.currentPage == modPagination.totalPages)) ? 'active' : 'disabled'" (click)="onBtNext()"><a href="javascript:void(0);" aria-controls="data-table-fixed-header" data-dt-idx="3" tabindex="0" class="page-link">Next</a></li>
+                <li class="paginate_button page-item next active" id="data-table-fixed-header_next" (click)="onBtLast()"><a href="javascript:void(0);" aria-controls="data-table-fixed-header" data-dt-idx="4" tabindex="0" class="page-link">Last</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="col-sm-12 col-md-4">
+    </div>
+</div>
+
+<html [hidden]="true">
+
+<head>
+    <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+    <meta name="Robots" content="NOINDEX " />
+</head>
+
+<body></body>
+<script type="text/javascript">
+    var gearPage = document.getElementById('GearPage');
+    if (null != gearPage) {
+        gearPage.parentNode.removeChild(gearPage);
+        document.title = "Error";
+    }
+</script>
+
+</html>

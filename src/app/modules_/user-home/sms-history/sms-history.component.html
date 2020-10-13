@@ -1,0 +1,149 @@
+<ol class="breadcrumb pull-right">
+</ol>
+
+<div class="In2_top_filter">
+  <div class="pull-right" style="margin-right:10px;">
+    <button type="button" (click)="onGlobalFilterToggle();" class="slide-toggle btn btn-md"
+      [ngClass]="[(themeConf_.selectedColor == 'default') ? 'bg-black':'bg-'+themeConf_.selectedColor]">Filters
+      <i class="fa fa-filter" aria-hidden="true"></i></button>
+  </div>
+  <div class="gf_box pull-right" style="display:none">
+    <div class="box-inner">
+      <div class="pull-right">
+        <div class="button-group">
+          <button type="button" class="btn btn-md" (click)="onGlobalFilterChange();onGlobalFilterToggle();"
+            [ngClass]="[(themeConf_.selectedColor == 'default') ? 'bg-black':'bg-'+themeConf_.selectedColor]">Apply</button>
+        </div>
+      </div>
+
+      <div class="pull-right" style="margin-right:10px;">
+        <div class="button-group">
+          <!-- <app-time-filter [configStyle]="{'width':'220','bgColor':'#ececec','border':'1px solid #ccc'}">
+          </app-time-filter> -->
+          <app-time-filter
+            [configStyle]="{'width':'220','bgColor':'#ececec','border':'1px solid #ccc' ,'customRanges':dateFillter_customRanges , 'timePicker':true , 'startDate':dateFilter_startDate ,'endDate':dateFilter_endDate ,'timeType':dateFilter_timeType}">
+          </app-time-filter>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<h1 class="page-header" style="font-size: 16px">SMS History Data (<span
+    *ngIf="selectedTimeRange.timeType">{{timeMap[selectedTimeRange.timeType]}}</span>)
+    <span><ng-container *ngIf="incidentList">(Count: {{incidentList.length}})</ng-container></span>
+  </h1>
+
+<!-- all selected filters -->
+<!-- <div class="row">
+  <div class="col-md-12">
+    <ng-container *ngFor="let singlefilter of allFilters; let i= index">
+      <span *ngIf="singlefilter.filter.length > 0" class="singleFilterData">
+        <span class="label label-primary">{{singlefilter.headerName}}</span>
+        <span *ngFor="let fltr of singlefilter.filter">
+          <span class="label label-default">{{fltr.type}} : {{fltr.value}}</span>
+        </span>
+      </span>
+    </ng-container>
+    </div>
+</div> -->
+
+<div class="bg-dark float-left w-100 p-3 mb-2">
+  <form class="form-horizontal pull-left">
+    <div class="rows">
+      <div class="col-xs-1">
+      <div class="btn-group btn-sm p-0" (click)="exportReportData()">
+        <i class="fas fa-lg fa-fw fa-download btn btn-sm" style="width:100%;"></i>
+      </div>
+    </div>
+      <div class="col-xs-1">
+        <div class="btn-group btn-sm p-0" (click)="loadReportData()">
+          <i class="fas fa-lg fa-fw fa-sync-alt btn btn-sm" style="width:100%;"></i>
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <!-- hsfhdfgyhdf -->
+  <div class="pull-right">
+    <!-- {{dbAllcolumns  | json}} -->
+    <button class="toggle btn btn-sm" style="background-color:transparent;"><i class="fa fa-cogs"></i></button>
+    <div id="target_allSaturation">
+      <div class="box-inner">
+        <form name="search">
+          <input type="search" [value]="flTxtCust_" [formControl]="flInputCust_" class="form-control input-sm"
+            placeholder="Search..." aria-controls="data-table-default">
+        </form>
+
+        <div class="In2_pivotOptions style-4">
+          <div class="checkbox checkbox-css"
+            *ngFor="let colDef_ of dbAllcolumns | searchSortByKey: 'headerName' :flTxtCust_; let fvndx_=index;">
+            <input type="checkbox" id="cssCheckbox{{fvndx_+1}}" [(ngModel)]="colDef_.isActive"
+              [checked]="colDef_.isActive" (change)="onGridPivotSelection()">
+            <label for="cssCheckbox{{fvndx_+1}}">{{colDef_.headerName}}</label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="clearfix"></div>
+
+<div class="test-container">
+  <div style="width:100%; overflow:auto;" class="device">
+    <ag-grid-angular style="width: 100%; height:550px" #agGrid id="myGrid" class="ag-theme-balham"
+      [rowData]="incidentList" [columnDefs]="columnDefs" [pagination]="true" [paginationPageSize]="paginationPageSize"
+      [context]="context" [defaultColDef]="defaultColDef" (gridReady)="onGridReady($event)"
+      (paginationChanged)="onPaginationChanged($event)" [suppressPaginationPanel]="true"
+      [enableCellTextSelection]="true">
+    </ag-grid-angular>
+  </div>
+</div>
+
+
+<div class="row m-t-5" *ngIf="modPagination.totalPages>0">
+  <div class="col-sm-12 col-md-4">
+    <div class="form-group row mb-1 small">
+      <!-- <label class="col-form-label col-md-4">Records Per Page</label> -->
+      <div class="col-md-3">
+        <select class="form-control-sm" [(ngModel)]="paginationPageSize"
+          (change)="selectPageCounts($event.target.value)" id="page-size">
+          <option [value]="limit_" *ngFor="let limit_ of paginationLimits">{{limit_}} Records Per Page</option>
+        </select>
+      </div>
+    </div>
+    <div>
+    </div>
+  </div>
+  <div class="col-sm-12 col-md-4 small">
+    <div class="dataTables_paginate paging_simple_numbers pull-left" id="data-table-fixed-header_paginate">
+      <ul class="pagination pull-right">
+        <li class="paginate_button page-item previous active" (click)="onBtFirst()"
+          id="data-table-fixed-header_previous">
+
+          <a href="javascript:void(0);" aria-controls="data-table-fixed-header" data-dt-idx="0" tabindex="0"
+            class="page-link">First</a>
+        </li>
+        <li class="paginate_button page-item mr-2" [ngClass]="(modPagination.currentPage>1) ? 'active' : 'disabled'"
+          (click)="onBtPrevious()"><a href="javascript:void(0);" aria-controls="data-table-fixed-header" data-dt-idx="1"
+            tabindex="0" class="page-link">Previous</a></li>
+
+        <div class="dataTables_info col-form-label" id="data-table-fixed-header_info" role="status" aria-live="polite">
+          <strong>Page {{modPagination.currentPage}} of {{modPagination.totalPages}}</strong> </div>
+
+        <li class="paginate_button page-item "
+          [ngClass]="(!(modPagination.currentPage == modPagination.totalPages)) ? 'active' : 'disabled'"
+          (click)="onBtNext()"><a href="javascript:void(0);" aria-controls="data-table-fixed-header" data-dt-idx="3"
+            tabindex="0" class="page-link">Next</a></li>
+        <li class="paginate_button page-item next active" id="data-table-fixed-header_next" (click)="onBtLast()"><a
+            href="javascript:void(0);" aria-controls="data-table-fixed-header" data-dt-idx="4" tabindex="0"
+            class="page-link">Last</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="col-sm-12 col-md-4">
+  </div>
+</div>

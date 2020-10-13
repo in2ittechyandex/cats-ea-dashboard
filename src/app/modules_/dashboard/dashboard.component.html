@@ -1,0 +1,37 @@
+<!-- begin #page-container -->
+<div id="page-container" class="page-container fade page-sidebar-fixed page-header-fixed show" [ngClass]="{
+  'has-scroll' : pageHasScroll,
+  'page-sidebar-minified': pageSettings.pageSidebarMinified,
+  'page-with-footer': pageSettings.pageWithFooter,
+  'page-content-full-height': pageSettings.pageContentFullHeight,
+  'page-without-sidebar': pageSettings.pageWithoutSidebar,
+  'page-with-right-sidebar': pageSettings.pageSidebarRight,
+  'page-with-two-sidebar': pageSettings.pageSidebarTwo,
+  'page-with-wide-sidebar': pageSettings.pageSidebarWide,
+  'page-right-sidebar-collapsed': pageSettings.pageSidebarRightCollapsed,
+  'page-with-light-sidebar': pageSettings.pageSidebarLight,
+  'page-with-top-menu': pageSettings.pageTopMenu,
+  'page-sidebar-toggled': pageSettings.pageMobileSidebarToggled,
+  'page-right-sidebar-toggled': pageSettings.pageMobileRightSidebarToggled,
+  'p-0': pageSettings.pageEmpty
+}">
+
+  <cats-header (toggleSidebarRightCollapsed)="onToggleSidebarRight($event)" (toggleMobileSidebar)="onToggleMobileSidebar($event)"
+    (toggleMobileRightSidebar)="onToggleMobileRightSidebar($event)" [pageSidebarTwo]="pageSettings.pageSidebarTwo"
+    *ngIf="!pageSettings.pageEmpty"></cats-header>
+  <cats-left-site-bar (toggleSidebarMinified)="onToggleSidebarMinified($event)" (hideMobileSidebar)="onHideMobileSidebar($event)"
+    *ngIf="!pageSettings.pageWithoutSidebar && !pageSettings.pageEmpty" [pageSidebarTransparent]="pageSettings.pageSidebarTransparent"
+    [pageSidebarMinified]="pageSettings.pageSidebarMinified"></cats-left-site-bar>
+
+  <!-- <cats-right-site-bar></cats-right-site-bar> -->
+
+
+  <div id="content" class="content" [ngClass]="{
+  'content-full-width': pageSettings.pageContentFullWidth,
+  'content-inverse-mode': pageSettings.pageContentInverseMode,
+  'p-0 m-0': pageSettings.pageEmpty
+}">
+    <router-outlet></router-outlet>
+  </div>
+</div>
+<!-- end #page-container -->

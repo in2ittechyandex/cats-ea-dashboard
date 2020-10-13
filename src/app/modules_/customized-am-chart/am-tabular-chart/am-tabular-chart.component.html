@@ -1,0 +1,42 @@
+<div *ngIf="(dataProvider && dataProvider.data.length>0) else blank">
+  <!-- <div class="table-responsive">
+    <div class="table table-striped"> -->
+      <ng-container *ngTemplateOutlet="chartsTableData;context:{'chartType':'tabular','chartData':dataProvider}"></ng-container>
+    <!-- </div>
+  </div> -->
+</div>
+
+
+<ng-template #chartsTableData let-chartData="chartData" let-chartType="chartType">
+  <div class="row filter_by">
+    <div class="table-responsive chart_table">
+      <table class="table table-striped mb-0" style="width:100%;">
+        <thead>
+          <tr>
+            <ng-container>
+              <th [style.width.%]="(100/(chartData.config.yAxes.length+1))">{{chartData.config.xAxesTitle | uppercase}}
+              </th>
+              <th [style.width.%]="(100/(chartData.config.yAxes.length+1))" nowrap="" *ngFor="let y of chartData.config.yAxes">{{y | uppercase}}</th>
+            </ng-container>
+          </tr>
+        </thead>
+        <tbody id="style-4" style="max-height:268px; overflow:auto;">
+          <ng-container *ngFor="let cdata_ of chartData.data;let cndx=index;">
+            <tr>
+              <ng-container>
+                <td [style.width.%]="(100/(chartData.config.yAxes.length+1))">{{cdata_[chartData.config.xAxes]}}</td>
+                <td (click)="drill($event,cdata_,y)" [style.width.%]="(100/(chartData.config.yAxes.length+1))" *ngFor="let y of chartData.config.yAxes">
+                  {{cdata_[y]?cdata_[y]:0}}</td>
+              </ng-container>
+            </tr>
+          </ng-container>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</ng-template>
+
+
+<ng-template #blank>
+  <div class="IN2container"> No Data Available</div>
+</ng-template>

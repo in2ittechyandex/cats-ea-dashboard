@@ -1,0 +1,69 @@
+.filter_by > ul{list-style-type:none; margin:0; padding:0; display:flex; flex-wrap:wrap; width:100%; justify-content: space-around;}
+.filter_by ul li{margin:10px 5px; text-align:center;}
+/* .filter_by ul.dropdown-menu{min-width:calc(100% - 20px);} */
+.filter_by ul.dropdown-menu{min-width:100%;}
+.filter_by ul.dropdown-menu.show{left:0px !important;}
+.filter_by ul.dropdown-menu li{margin:0px; text-align:left;}
+.filter_by ul.dropdown-menu>li>a{position: relative; padding-left:30px;}
+.filter_by ul.dropdown-menu>li>a input[type=checkbox]{position:absolute; margin-left:-18px; margin-top:2px;}
+.filter_by .form-group .btn{width:100%;}
+
+#tab_four .nav-items{width:25%; text-align:center; font-weight:bold;}
+#tab_four .nav>li>a{color:#000000; padding:5px;}
+
+.btn-instagram {background-color: red !important;}
+.btn-instagram {color: #fff; background-color: #3f729b; border-color:rgba(0,0,0,0.2);} 
+.btn-yahoo {color: #fff; background-color: #720e9e; border-color:rgba(0,0,0,0.2);} 
+.btn-microsoft {color: #fff; background-color:#2672ec; border-color:rgba(0,0,0,0.2);} 
+    
+#tab_w_25 .nav-item {
+    width: 25%;
+    text-align: center;
+    font-weight: bold;
+  }
+  #tab_w_25 .nav-tabs{margin-top:5px; border:1px solid #ddd !important;}
+  #tab_w_25 .nav-tabs .nav-link {padding: 6px 15px !important; color: #000000;}
+
+  #tab_w_25 .tab-content {width:100%; min-height:330px; height:auto; margin-bottom: 0px;}
+  #tab_w_25 .dropdown{width:100%;}
+  #tab_w_25 .dropdown a{width:40px;}
+
+
+  #tab_w_33 .nav-item {
+    width: 33.33%;
+    text-align: center;
+    font-weight: bold;
+  }
+  #tab_w_33 .nav-tabs{margin-top:5px; border:1px solid #ddd !important;}
+  #tab_w_33 .nav-tabs .nav-link {padding: 6px 15px !important; color: #000000;}
+
+  #tab_w_33 .tab-content {width:100%; min-height:330px; height:auto; margin-bottom: 0px;}
+  #tab_w_33 .dropdown{width:100%;}
+  #tab_w_33 .dropdown a{width:40px;}
+/* new table css ends here */ 
+
+.widget.widget-stats:hover{cursor: pointer;}
+.widget-stats .stats-number{
+  /* font-size: 15px!important; */
+  margin-bottom:0px;
+}
+
+.In2_summary_title {
+    color: #000 !important;
+    font-weight: 600;
+}
+
+.IN2container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  font-size: 20px;
+  font-weight: 600;
+  margin-top: 10px !important;
+}
+
+.amcharts-chart-div >a {
+  display: none !important;
+  background: #fff;
+}

@@ -1,0 +1,45 @@
+<!-- <cdk-virtual-scroll-viewport [itemSize]="'20'" style="height: 350px"> -->
+
+    <div class="table-responsive table-striped table-bordered">
+       
+    <table class="table ctm-table" style="overflow:scroll;">
+        <thead>
+            <tr>
+                <th [style.width.px]="width" *ngFor="let header of custFilHeaders;let hndx = index;">
+                    <ng-container *ngIf="header.isAllowSort else withOutSort">
+                    <a [ngClass]="getSortIcon(header.sortType)" (click)="sortNavigate(hndx);">{{header.title}}</a>
+                    </ng-container>
+
+                    <ng-template #withOutSort>
+                            {{header.title}}
+                    </ng-template>
+                </th>
+            </tr>
+            <tr>
+                <td [style.width.px]="width" *ngFor="let header of custFilHeaders;let hndx = index;">
+                   <ng-container *ngIf="header.isAllowFilter">
+                    <input type="text"
+                        class="form-control" [(ngModel)]="header.filterByStr" (ngModelChange)="onSearchChange(hndx);"
+                        placeholder="Search for {{header.title}}.." />
+                    </ng-container>
+                </td>
+            </tr>
+        </thead>
+        <tbody style="height:260px; overflow-x:hidden;">
+            <tr *ngFor="let dataRow of data | fieldSortBy : sortStr.ndx : sortStr.sortType : sortStr.sort : sortStr.filter : sortStr.filterByStr : sortStr.filterNdx ;let dndx = index;"
+               >
+                <td [style.width.px]="width" *ngFor="let data_ of dataRow;let drow = index;">
+                    {{data_}}
+                    <a *ngIf="(''+data_).length>35" style="color:#333333;" href="javscript:void(0);" title="{{(''+data_)}}">
+                        <i class="fa fa-info-circle"></i>
+                    </a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+   
+
+    <!-- [style.width.px]="tabLength" -->
+
+</div>
+<!-- </cdk-virtual-scroll-viewport> -->

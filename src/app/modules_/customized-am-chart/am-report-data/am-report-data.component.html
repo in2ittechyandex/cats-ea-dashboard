@@ -1,0 +1,27 @@
+<div *ngIf="(dataProvider && dataProvider.data.length>0) else blank" class="row">
+  <div class="table-responsive">
+    <div class="table table-striped">
+      <table class="table-sm mb-0" style="width:100%;">
+        <thead>
+          <tr>
+            <th [style.width.%]="i==0?'46':'18'"  *ngFor="let h of headers;let i=index;">{{h}}</th>
+          </tr>
+        </thead>
+        <tbody id="style-4" style="max-height:260px; overflow:auto;">
+          <tr *ngFor="let d_ of data;let i=index;">
+            <td>{{d_['Name']}}</td>
+            <td>{{d_['Current']}}</td>
+            <td>{{d_['Previous']}}</td>
+            <td *ngIf="(true|statisticDiff:d_['Current']:d_['Previous']); let stat"> {{stat.val}}%  <span [ngClass]="'fa fa-arrow-'+stat.statPos_" ></span></td>
+          </tr>
+        </tbody>
+
+      </table>
+    </div>
+  </div>
+</div>
+
+
+<ng-template #blank>
+    <div class="IN2container"> No Data Available</div>
+</ng-template>

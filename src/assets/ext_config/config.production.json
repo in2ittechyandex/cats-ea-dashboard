@@ -1,0 +1,7 @@
+{
+   "_WEBGATEWAY_BASIC_URL_": "http://cats.sanral.intra/API/",
+   "_AUTH_GATEWAY_URL": "http://cats.sanral.intra",
+   "_AUTH_PRODUCT_SERVICES_URL": "http://cats.sanral.intra/#/services/products",
+   "_CHATBOT_URL": "http://172.27.63.162:5501",
+   "gateWayAuthorization":true
+}

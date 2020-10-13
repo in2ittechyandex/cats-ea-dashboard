@@ -1,0 +1,46 @@
+img.liquidLogo{
+    max-height: 35px;
+    border-radius: 0;
+    width: auto;
+}
+.header .navbar-nav>li>a:hover {
+    opacity: 1;
+}
+
+.commingsoon:hover {
+    position: relative;
+}
+.commingsoon:hover:after {
+    content: url(../../../../assets/img/comingsoon.png); /* no need for qoutes */
+    display: block;
+    position: absolute;
+}
+
+.feedback_btn{
+    letter-spacing : 1px;
+    color : #ffffff;
+    font-weight : 600;
+    background : red;
+    border-radius : .25rem;
+    padding: 6px 12px !important;
+}
+
+.feedback_btn:hover{
+    letter-spacing : 1px;
+    background : #d80505;
+    padding: 6px 12px !important;
+} 
+
+.header .navbar-user span:first-child{width:30px; margin:-5px 10px -5px 0; border-radius:30px; height:30px;
+    float:left; background:#2291bf; line-height:30px; text-align:center; color:#ffffff; font-size:16px; font-weight:700;}
+    
+.custom-file-label{height:calc(2rem + 2px) !important; line-height:1.7;}
+.custom-file-label::after{height:2rem !important;}
+.custom-file-input{cursor: pointer;}
+
+/* .header .navbar-user span img{margin: 0px 10px -5px 0 !important;} */
+
+.header .navbar-nav>li>a:focus, .header .navbar-nav>li>a:hover {
+    opacity : 1 !important;
+    color : #ffffff !important;
+} 

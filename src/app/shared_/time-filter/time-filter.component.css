@@ -1,0 +1,17 @@
+main {
+    padding: 1em;
+    font-family: Arial, Helvetica, sans-serif;
+    margin-top: 50px;
+    display: block;
+    max-width: 600px;
+}
+
+
+.daterangepicker .calendar td, .daterangepicker .calendar th {
+        padding: 0 7px !important;
+        
+}
+
+.calendar-time {
+    display: none;
+}

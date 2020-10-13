@@ -1,0 +1,561 @@
+<ol class="breadcrumb pull-right">
+</ol>
+
+<div class="In2_top_filter">
+  <div class="pull-right" style="margin-right:10px;">
+    <button type="button" (click)="onGlobalFilterToggle();" class="slide-toggle btn btn-md"
+      [ngClass]="[(themeConf_.selectedColor == 'default') ? 'bg-black':'bg-'+themeConf_.selectedColor]">Filters
+      <i class="fa fa-filter" aria-hidden="true"></i></button>
+  </div>
+  <div class="gf_box pull-right" style="display:none">
+    <div class="box-inner">
+      <div class="pull-right">
+        <div class="button-group">
+          <button type="button" class="btn btn-md" (click)="onGlobalFilterChange();onGlobalFilterToggle();"
+            [ngClass]="[(themeConf_.selectedColor == 'default') ? 'bg-black':'bg-'+themeConf_.selectedColor]">Apply</button>
+        </div>
+      </div>
+
+      <!-- original customer-->
+      <!-- <div class="pull-right" style="margin-right:10px;">
+        <div class="btn-group">
+          <button type="button" class="btn btn-default" style="width:90px; color:#2e353c;">
+            Customer</button>
+          <a href="javascript:;" class="btn btn-default dropdown-toggle" (click)="showDD($event,globalFilterModal)"
+            id="{{globalFilterModal.identifier}}" style="color:#2e353c;"></a>
+          <ul class="dropdown-menu pull-right" click-outside [listening]="globalFilterModal.isListenOnBlur"
+            [Ident]="globalFilterModal.identifier" (clickOutSide)="globalFilterClickOutSide($event)">
+
+            <form name="search">
+              <div class="mx-2 mb-2">
+                <input type="search" [value]="flTxtCust_" [formControl]="flInputCust_"
+                  class="form-control form-control-sm" placeholder="Search..." aria-controls="data-table-default">
+              </div>
+            </form>
+            <div class="scroll_div" id="style-4">
+              <li class="container1">
+                <label class=""><strong>Select/ Unselect All</strong>
+                  <input type="checkbox" [(ngModel)]="globalFilterModal.masterSelectedCustomer" name="list_name"
+                    (change)="checkUncheckAll(globalFilterModal.customers,globalFilterModal.masterSelectedCustomer)" />
+                  <span class="checkmark"
+                    [ngClass]="(globalFilterModal.masterSelectedCustomer) ?'bg-'+(themeConf_.selectedColor):''"></span>
+                </label>
+              </li>
+              <li class="container1"
+                *ngFor="let fVal_ of globalFilterModal.customers | filterByKey: 'name' :flTxtCust_; let fvndx_=index;">
+                <label class="">{{fVal_.name}}
+                  <input type="checkbox" id="{{fvndx_}}" [(ngModel)]="fVal_.value" [checked]="fVal_.value"
+                    (change)="isAllSelected(globalFilterModal.customers,'masterSelectedCustomer')" />
+                  <span class="checkmark" [ngClass]="(fVal_.value) ?'bg-'+(themeConf_.selectedColor):''"></span>
+                </label>
+              </li>
+            </div>
+          </ul>
+        </div>
+      </div>
+
+      <div class="pull-right" style="margin-right:10px;">
+        <div class="btn-group">
+          <button type="button" class="btn btn-default" style="width:110px; color:#2e353c;">
+            Assignee Group</button>
+          <a href="javascript:;" class="btn btn-default dropdown-toggle"
+            (click)="showDDAssigneeGroup($event,globalFilterModal)" id="{{globalFilterModal.identifier_AssigneeGroup}}"
+            style="color:#2e353c;"></a>
+          <ul class="dropdown-menu" click-outside [listening]="globalFilterModal.isListenOnBlur_AssigneeGroup"
+            [Ident]="globalFilterModal.identifier_AssigneeGroup"
+            (clickOutSide)="globalFilterClickOutSideAssigneeGroup($event)">
+
+            <li class="container1">
+              <label class=""><strong>Select/ Unselect All</strong>
+                <input type="checkbox" [(ngModel)]="globalFilterModal.masterSelectedAsigneeGroup"
+                  [checked]="globalFilterModal.masterSelectedAsigneeGroup" name="list_name"
+                  (change)="checkUncheckAllAsigneeGroup(globalFilterModal.asd,globalFilterModal.nonAsd)" />
+                <span class="checkmark"></span>
+              </label>
+            </li>
+
+            <li class="container1">
+              <ng-container *ngIf="!globalFilterModal.isListenOnBlurASD">
+                <label class=""
+                  (click)="showDDASDTemp($event,globalFilterModal,globalFilterModal.identifier_AssigneeGroup+'inner-1-submenu','isListenOnBlurASD')"
+                  id="{{globalFilterModal.identifier_AssigneeGroup+'inner-1'}}">
+                  <strong>ASD <i class="fa fa-caret-right"></i></strong>
+                  <span class="">
+                  </span>
+                </label>
+              </ng-container>
+
+              <ng-container *ngIf="globalFilterModal.isListenOnBlurASD">
+                <label class=""
+                  (click)="hideDDASDTemp($event,globalFilterModal,globalFilterModal.identifier_AssigneeGroup+'inner-1-submenu','isListenOnBlurASD')"
+                  id="{{globalFilterModal.identifier_AssigneeGroup+'inner-1'}}">
+                  <strong>ASD <i class="fa fa-caret-down"></i></strong>
+                  <span class="">
+                  </span>
+                </label>
+              </ng-container>
+
+              <ul class="dropdown-menu asd style-4" style="max-height:200px;width:161px;overflow: auto"
+                id="{{globalFilterModal.identifier_AssigneeGroup+'inner-1-submenu'}}" click-outside
+                [listening]="globalFilterModal.isListenOnBlurASD"
+                [Ident]="(globalFilterModal.identifier_AssigneeGroup)+'inner-1'"
+                (clickOutSide)="globalFilterClickOutSideASD($event)">
+
+                <li class="container1">
+                  <label class=""><strong>Select All ASD</strong>
+                    <input type="checkbox" [(ngModel)]="globalFilterModal.masterSelectedASD"
+                      [checked]="globalFilterModal.masterSelectedASD" name="list_name"
+                      (change)="checkUncheckAll(globalFilterModal.asd,globalFilterModal.masterSelectedASD)" />
+                    <span class="checkmark"
+                      [ngClass]="(globalFilterModal.masterSelectedASD) ?'bg-'+(themeConf_.selectedColor):''"></span>
+                  </label>
+                </li>
+
+
+                <li class="container1" *ngFor="let fVal_ of globalFilterModal.asd; let fvndx_=index;">
+                  <label class="">{{fVal_.name}}
+                    <input type="checkbox" id="{{fvndx_}}"
+                      (change)="isAllSelected(globalFilterModal.asd,'masterSelectedASD')" [(ngModel)]="fVal_.value"
+                      [checked]="fVal_.value" />
+                    <span class="checkmark" [ngClass]="(fVal_.value) ?'bg-'+(themeConf_.selectedColor):''"></span>
+                  </label>
+                </li>
+              </ul>
+
+            </li>
+
+
+            <li class="container1">
+              <ng-container *ngIf="!globalFilterModal.isListenOnBlurNONASD">
+                <label class=""
+                  (click)="showDDASDTemp($event,globalFilterModal,globalFilterModal.identifier_AssigneeGroup+'inner-2-submenu','isListenOnBlurNONASD')"
+                  id="{{globalFilterModal.identifier_AssigneeGroup+'inner-2'}}"><strong>NON ASD <i
+                      class="fa fa-caret-right"></i></strong>
+                  <span class="">
+                  </span>
+                </label>
+              </ng-container>
+
+              <ng-container *ngIf="globalFilterModal.isListenOnBlurNONASD">
+                <label class=""
+                  (click)="hideDDASDTemp($event,globalFilterModal,globalFilterModal.identifier_AssigneeGroup+'inner-2-submenu','isListenOnBlurNONASD')"
+                  id="{{globalFilterModal.identifier_AssigneeGroup+'inner-2'}}">
+                  <strong>NON ASD <i class="fa fa-caret-down"></i></strong>
+                  <span class="">
+                  </span>
+                </label>
+              </ng-container>
+
+              <ul class="dropdown-menu non-asd style-4" style="max-height:200px;width:161px;overflow: auto"
+                id="{{globalFilterModal.identifier_AssigneeGroup+'inner-2-submenu'}}" click-outside
+                [listening]="globalFilterModal.isListenOnBlurNONASD"
+                [Ident]="(globalFilterModal.identifier_AssigneeGroup)+'inner-2'"
+                (clickOutSide)="globalFilterClickOutSideNONASD($event)">
+
+                <li class="container1">
+                  <label class=""><strong>Select All NON-ASD</strong>
+                    <input type="checkbox" [(ngModel)]="globalFilterModal.masterSelectedNONASD"
+                      [checked]="globalFilterModal.masterSelectedNONASD" name="list_name"
+                      (change)="checkUncheckAll(globalFilterModal.nonAsd,globalFilterModal.masterSelectedNONASD)" />
+                    <span class="checkmark"
+                      [ngClass]="(globalFilterModal.masterSelectedNONASD) ?'bg-'+(themeConf_.selectedColor):''"></span>
+                  </label>
+                </li>
+
+
+                <li class="container1" *ngFor="let fVal_ of globalFilterModal.nonAsd; let fvndx_=index;">
+                  <label class="">{{fVal_.name}}
+                    <input type="checkbox" (change)="isAllSelected(globalFilterModal.nonAsd,'masterSelectedNONASD')"
+                      id="{{fvndx_}}" [(ngModel)]="fVal_.value" [checked]="fVal_.value" />
+                    <span class="checkmark" [ngClass]="(fVal_.value) ?'bg-'+(themeConf_.selectedColor):''"></span>
+                  </label>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div> -->
+
+      <div class="pull-right" style="margin-right:10px;">
+        <div class="button-group">
+          <!-- <app-time-filter [configStyle]="{'width':'220','bgColor':'#ececec','border':'1px solid #ccc'}">
+          </app-time-filter> -->
+          <!-- <app-time-filter
+            [configStyle]="{'width':'220','bgColor':'#ececec','border':'1px solid #ccc' ,'customRanges':dateFillter_customRanges , 'timePicker':true , 'startDate':dateFilter_startDate ,'endDate':dateFilter_endDate ,'timeType':dateFilter_timeType}">
+          </app-time-filter> -->
+
+          <app-time-filter [configStyle]="{'width':'220','bgColor':'#ececec','border':'1px solid #ccc' ,'customRanges':dateFillter_customRanges ,'startDate':dateFilter_startDate ,'endDate':dateFilter_endDate ,'timeType':dateFilter_timeType ,'timePicker':true}">
+          </app-time-filter>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<h1 class="page-header" style="font-size: 16px">Incident Report Data (<span
+    *ngIf="selectedTimeRange.timeType">{{timeMap[selectedTimeRange.timeType]}}</span>)
+  
+  <span><ng-container *ngIf="incidentList">(Count: {{incidentList.length}})</ng-container></span>
+  </h1>
+
+<!-- all selected filters -->
+<div class="row">
+  <div class="col-md-12">
+    <ng-container *ngFor="let singlefilter of allFilters; let i= index">
+      <span *ngIf="singlefilter.filter.length > 0" class="singleFilterData">
+        <span class="label label-primary">{{singlefilter.headerName}}</span>
+        <span *ngFor="let fltr of singlefilter.filter">
+          <span class="label label-default">{{fltr.type}} : {{fltr.value}}</span>
+        </span>
+      </span>
+    </ng-container>
+    <!-- {{allFilters}} -->
+  </div>
+</div>
+
+<div class="bg-dark float-left w-100 p-3 mb-2">
+  <form class="form-horizontal pull-left">
+    <div class="rows">
+      <!-- <div class="col-xs-1">
+      <div class="btn-group btn-sm p-0" (click)="exportReportData()">
+        <i class="fas fa-lg fa-fw fa-download btn btn-sm" style="width:100%;"></i>
+      </div>
+    </div> -->
+      <div class="col-xs-1">
+        <div class="btn-group btn-sm p-0" (click)="loadReportData()">
+          <i class="fas fa-lg fa-fw fa-sync-alt btn btn-sm" style="width:100%;"></i>
+        </div>
+      </div>
+      <div class="col-xs-1 mx-2">
+        <div class="dropdown navbar-user" ngbDropdown>
+          <span href="javascript:;" class="btn btn-sm dropdown-toggle f-s-11" ngbDropdownToggle>Download</span>
+          <div class="dropdown-menu" ngbDropdownMenu>
+            <a href="javascript:;" class="dropdown-item"
+              (click)="open(modalDialogDownloadNow,'md'); clearModalDownloadNow()"
+              [ngClass]="[(themeConf_.selectedColor == 'default') ? '':'bg-'+themeConf_.selectedColor]">Download Now</a>
+            <a href="javascript:;" class="dropdown-item"
+              (click)="open(modalDialogscheduleDownload,'md'); clearModalscheduleDownload()"
+              [ngClass]="[(themeConf_.selectedColor == 'default') ? '':'bg-'+themeConf_.selectedColor]">Schedule Now</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- download now start here -->
+      <ng-template #modalDialogDownloadNow let-c="close" let-d="dismiss">
+        <div class="modal-header"
+          [ngClass]="[(themeConf_.selectedColor == 'default') ? 'bg-black':'bg-'+themeConf_.selectedColor]">
+          <h4 class="modal-title" style="color:#fff;">Download Reports</h4>
+          <button type="button" id="downloadPDFNowClose" class="close" (click)="d('Cross click');"
+            style="color:#fff;">×</button>
+        </div>
+        <div class="modal-body">
+          <div class="panel" style="box-shadow:0 2px 10px rgba(0,0,0,.15) !important; margin-bottom:0px;">
+            <div class="panel-body p-0">
+              <div class="table-responsive chart_table1">
+
+                <form name="downloadForm" #downloadform="ngForm" class="form-horizontal form-bordered">
+
+                  <div class="form-group row">
+                    <label class="col-md-4 col-form-label">Report Name
+                      <sup style="color:#FF0000">*</sup>
+                    </label>
+                    <div class="col-md-6">
+                      <input type="text" [(ngModel)]="reportObj.reportName" #reportName="ngModel" name="reportName"
+                        class="form-control" placeholder="Report Name" [required]="'true'" />
+                    </div>
+                  </div>
+
+                  <div class="form-group row">
+                    <label class="col-md-4 col-form-label">Format
+                      <sup style="color:#FF0000">*</sup>
+                    </label>
+                    <div class="col-md-6">
+                      <select name="format" ngModel [(ngModel)]="reportObj.format" class="form-control"
+                        #format="ngModel" [required]="'true'">
+                        <!-- <option value="">Select Format</option> -->
+                        <option value="pdf" selected>PDF</option>
+                        <option value="xlsx" selected>XLSX</option>
+                      </select>
+                    </div>
+                  </div>
+
+                </form>
+
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <!-- *ngIf="f.form.valid" -->
+        <div class="modal-footer">
+
+          <button type="submit" *ngIf="downloadform.form.valid" (click)="downloadPDFNow()" class="btn btn-md bg-black pull-right m-t-5">Download
+          </button>
+
+          <a href="javascript:;" (click)="d('Cross click');" class="btn btn-md btn-default text-black">Cancel</a>
+        </div>
+      </ng-template>
+      <!-- download now end here -->
+
+      <!-- schedule download start here -->
+      <ng-template #modalDialogscheduleDownload let-c="close" let-d="dismiss">
+        <div class="modal-header"
+          [ngClass]="[(themeConf_.selectedColor == 'default') ? 'bg-black':'bg-'+themeConf_.selectedColor]">
+          <h4 class="modal-title" style="color:#fff;">Schedule Reports</h4>
+          <button type="button" id="modalDialogscheduleDownloadClose" class="close" (click)="d('Cross click');"
+            style="color:#fff;">×</button>
+        </div>
+        <div class="modal-body">
+          <div class="panel" style="box-shadow:0 2px 10px rgba(0,0,0,.15) !important; margin-bottom:0px;">
+            <div class="panel-body p-0">
+              <div class="table-responsive chart_table1">
+
+                <form name="scheduleForm" #downloadf="ngForm" class="form-horizontal form-bordered">
+
+                  <div class="form-group row">
+                    <label class="col-md-4 col-form-label">Report Name
+                      <sup style="color:#FF0000">*</sup>
+                    </label>
+                    <div class="col-md-8">
+                      <input type="text" [(ngModel)]="scheduleObj.reportName" #reportName="ngModel" name="reportName"
+                        class="form-control" placeholder="Report Name" [required]="'true'" />
+                    </div>
+                  </div>
+
+                  <div class="form-group row">
+                    <label class="col-md-4 col-form-label">Email
+                      <sup style="color:#FF0000">*</sup>
+                    </label>
+                    <div class="col-md-8">
+                      <input type="text" [(ngModel)]="scheduleObj.email" #email="ngModel" name="email"
+                        class="form-control" placeholder="Email" [required]="'true'" />
+                    </div>
+                  </div>
+
+                  <div class="form-group row">
+                    <label class="col-md-4 col-form-label">Format
+                      <sup style="color:#FF0000">*</sup>
+                    </label>
+                    <div class="col-md-8">
+                      <select name="format" ngModel [(ngModel)]="scheduleObj.format" class="form-control"
+                        #format="ngModel" [required]="'true'">
+                        <!-- <option value="">Select Format</option> -->
+                        <option value="pdf" selected>PDF</option>
+                        <option value="xlsx" selected>XLSX</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="form-group row">
+                    <label class="col-md-4 col-form-label">Occurrence
+                      <sup style="color:#FF0000">*</sup>
+                    </label>
+                    <div class="col-md-8">
+                      <select name="duration" ngModel [(ngModel)]="scheduleObj.duration" class="form-control"
+                        #duration="ngModel" [required]="'true'">
+                        <!-- <option value="">Select Format</option> -->
+                        <option value="daily" selected>Daily</option>
+                        <option value="weekly">Weekly</option>
+                        <option value="monthly">Monthly</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="form-group row">
+                    <label class="col-md-4 col-form-label">Duration 
+                      <sup style="color:#FF0000">*</sup>
+                    </label>
+                    <div class="col-md-8">
+                      <!-- <input type="text" [(ngModel)]="scheduleObj.email" #email="ngModel" name="email"
+                        class="form-control" placeholder="Email" [required]="'true'" /> -->
+                        <input type="text" class="form-control" placeholder="Duration" [(ngModel)]="scheduleObj.selTime" #selTime="ngModel" name="selTime" disabled />
+                    </div>
+                  </div>
+
+                </form>
+
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <!-- *ngIf="f.form.valid" -->
+        <div class="modal-footer">
+
+          <button type="submit" *ngIf="downloadf.form.valid" (click)="scheduleDownloadPDF()" class="btn btn-md bg-black pull-right m-t-5">Scheduled
+          </button>
+
+          <a href="javascript:;" (click)="d('Cross click');" class="btn btn-md btn-default text-black">Cancel</a>
+        </div>
+      </ng-template>
+      <!-- schedule download end here -->
+
+      <!-- <div class="col-xs-1 mx-2">
+      <div class="dropdown navbar-user" ngbDropdown>
+        <span href="javascript:;" class="btn btn-sm dropdown-toggle f-s-11" ngbDropdownToggle>CSV</span>
+        <div class="dropdown-menu" ngbDropdownMenu>
+          <a href="javascript:;" class="dropdown-item">Download Now</a>
+          <a href="javascript:;" class="dropdown-item">Schedule Now</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-xs-1 mx-2">
+      <div class="dropdown navbar-user" ngbDropdown>
+        <span href="javascript:;" class="btn btn-sm dropdown-toggle f-s-11" ngbDropdownToggle>XLSX</span>
+        <div class="dropdown-menu" ngbDropdownMenu>
+          <a href="javascript:;" class="dropdown-item">Download Now</a>
+          <a href="javascript:;" class="dropdown-item">Schedule Now</a>
+        </div>
+      </div>
+    </div> -->
+
+      <div class="col-xs-1">
+        <div class="btn-group btn-sm p-0">
+          <!-- <a href="" class="btn btn-sm btn-primary">View Schedule Reports</a> -->
+          <a href="javascript:void(0);" (click)="open(modalDialogSchedule,'lg'); loadScheduleReport();"
+            class="text-white btn-link border-0 f-s-12 p-5"
+            [ngClass]="[(themeConf_.selectedColor == 'default') ? '':'bg-'+themeConf_.selectedColor]">View Schedule
+            Reports</a>
+        </div>
+      </div>
+
+      <ng-template #modalDialogSchedule let-c="close" let-d="dismiss">
+        <div class="modal-header"
+          [ngClass]="[(themeConf_.selectedColor == 'default') ? 'bg-black':'bg-'+themeConf_.selectedColor]">
+          <h4 class="modal-title" style="color:#fff;">Scheduled Reports</h4>
+          <button type="button" id="modalDialogScheduleDeleteClose" class="close" (click)="d('Cross click')" style="color:#fff;">×</button>
+        </div>
+        <div class="modal-body">
+          <div class="panel" style="box-shadow:0 2px 10px rgba(0,0,0,.15) !important; margin-bottom:0px;">
+            <div class="panel-body p-0">
+              <div class="table-responsive chart_table1">
+                <table class="table table-striped mb-0">
+                  <thead>
+                    <tr>
+                      <th>Schedule Name</th>
+                      <th>Email</th>
+                      <th>Format</th>
+                      <!-- <th>Schedule Time</th> -->
+                      <th>Duration</th>
+                      <th>Status</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody id="style-1" style="max-height:468px; overflow:auto;">
+                    <tr *ngFor="let schedule of scheduleReport;let i=index;">
+                      <td>{{schedule.scheduleName}}</td>
+                      <td>{{schedule.email}}</td>
+                      <td>{{schedule.format}}</td>
+                      <td>{{schedule.duration}}</td>
+                      <!-- <td>{{schedule.startDate | date:'shortTime'}}&nbsp;{{schedule.endDate | date:'shortTime'}}</td> -->
+                      <td>{{schedule.status ==  1 ? 'Active' : 'Inactive'}}</td>
+                      <td>
+                        <i class="fa fa-trash text-red" (click)="deleteScheduleReport(schedule)"></i>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <!-- *ngIf="f.form.valid" -->
+        <div class="modal-footer">
+          <!-- <a href="javascript:;" id="closeAddReportButton" class="btn btn-default text-black" data-dismiss="modal" (click)="d('Cross click');clearModalAddReports();">Cancel</a>
+        <a class="btn btn-md btn-primary" (click)="download('1213')">Download</a> -->
+          <a href="javascript:;" (click)="d('Cross click');" class="btn btn-md bg-black">Cancel</a>
+        </div>
+      </ng-template>
+
+
+
+    </div>
+  </form>
+
+<!-- hsfhdfgyhdf -->
+<div class="pull-right">
+  <!-- {{dbAllcolumns  | json}} -->
+    <button class="toggle btn btn-sm" style="background-color:transparent;"><i class="fa fa-cogs"></i></button>
+    <div id="target_allSaturation">
+      <div class="box-inner">
+          <form name="search">
+              <input type="search" [value]="flTxtCust_" [formControl]="flInputCust_" class="form-control input-sm" placeholder="Search..."
+              aria-controls="data-table-default">
+        </form>
+        
+        <div class="In2_pivotOptions style-4">
+          <div class="checkbox checkbox-css"
+            *ngFor="let colDef_ of dbAllcolumns | searchSortByKey: 'headerName' :flTxtCust_; let fvndx_=index;">
+            <input type="checkbox" id="cssCheckbox{{fvndx_+1}}" [(ngModel)]="colDef_.isActive"
+              [checked]="colDef_.isActive"  (change)="onGridPivotSelection()">
+            <label for="cssCheckbox{{fvndx_+1}}">{{colDef_.headerName}}</label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="clearfix"></div>
+
+
+
+
+<div class="test-container">
+  <div style="width:100%; overflow:auto;" class="device">
+    <ag-grid-angular style="width: 100%; height:550px" #agGrid id="myGrid" class="ag-theme-balham"
+      [rowData]="incidentList" [columnDefs]="columnDefs" [pagination]="true" [paginationPageSize]="paginationPageSize"
+      [context]="context" [defaultColDef]="defaultColDef" (gridReady)="onGridReady($event)"
+      (paginationChanged)="onPaginationChanged($event)" [suppressPaginationPanel]="true"
+      [enableCellTextSelection]="true" (filterChanged)="filterAccept($event)">
+    </ag-grid-angular>
+  </div>
+</div>
+
+
+<div class="row m-t-5" *ngIf="modPagination.totalPages>0">
+  <div class="col-sm-12 col-md-4">
+    <div class="form-group row mb-1 small">
+      <!-- <label class="col-form-label col-md-4">Records Per Page</label> -->
+      <div class="col-md-3">
+        <select class="form-control-sm" [(ngModel)]="paginationPageSize"
+          (change)="selectPageCounts($event.target.value)" id="page-size">
+          <option [value]="limit_" *ngFor="let limit_ of paginationLimits">{{limit_}} Records Per Page</option>
+        </select>
+      </div>
+    </div>
+    <div>
+    </div>
+  </div>
+  <div class="col-sm-12 col-md-4 small">
+    <div class="dataTables_paginate paging_simple_numbers pull-left" id="data-table-fixed-header_paginate">
+      <ul class="pagination pull-right">
+        <li class="paginate_button page-item previous active" (click)="onBtFirst()"
+          id="data-table-fixed-header_previous">
+
+          <a href="javascript:void(0);" aria-controls="data-table-fixed-header" data-dt-idx="0" tabindex="0"
+            class="page-link">First</a>
+        </li>
+        <li class="paginate_button page-item mr-2" [ngClass]="(modPagination.currentPage>1) ? 'active' : 'disabled'"
+          (click)="onBtPrevious()"><a href="javascript:void(0);" aria-controls="data-table-fixed-header" data-dt-idx="1"
+            tabindex="0" class="page-link">Previous</a></li>
+
+        <div class="dataTables_info col-form-label" id="data-table-fixed-header_info" role="status" aria-live="polite">
+          <strong>Page {{modPagination.currentPage}} of {{modPagination.totalPages}}</strong> </div>
+
+        <li class="paginate_button page-item "
+          [ngClass]="(!(modPagination.currentPage == modPagination.totalPages)) ? 'active' : 'disabled'"
+          (click)="onBtNext()"><a href="javascript:void(0);" aria-controls="data-table-fixed-header" data-dt-idx="3"
+            tabindex="0" class="page-link">Next</a></li>
+        <li class="paginate_button page-item next active" id="data-table-fixed-header_next" (click)="onBtLast()"><a
+            href="javascript:void(0);" aria-controls="data-table-fixed-header" data-dt-idx="4" tabindex="0"
+            class="page-link">Last</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="col-sm-12 col-md-4">
+  </div>
+</div>

@@ -1,0 +1,66 @@
+#tab_w_25 .tab-content{height:500px !important;}
+a:hover{color: #ffffff;}
+/*Calender section */
+.month {padding:8px 20px; width: 100%; background: #333333; text-align: center;}
+.month ul { margin: 0; padding: 0;}
+.month ul li { color:white; font-size:18px; text-transform:uppercase; letter-spacing:3px; list-style:none;}
+.month .prev {float:left; padding-top:0px;}
+.month .next {float:right; padding-top:0px;}
+/* .weekdays { margin:0; padding:10px 0; background-color:#ddd;} */
+.weekdays{margin:0; padding:0;}
+.weekdays li {display:inline-block; width:14.28%; padding:10px 0; color:#000000; background-color:#ddd; 
+    font-weight:700; text-align:center; text-transform:uppercase;}
+.days {padding:0; background:#fff; margin: 0;}
+.days li {list-style-type:none; display:inline-block; width:14.28%; text-align:left; padding:5px; min-height:80px; 
+    font-size:14px; color:#333; position:relative;}
+/* .days li p {margin:0; position:absolute; bottom:0; width:100%; color:#000; text-align:center; line-height:13px;
+  font-size:12px; left:0; display:flex; justify-content:center; align-items:center; padding:5px 0;}
+  .days li p i{padding-left:4px;}
+.days li p img{max-width:15px;} */
+.days li:nth-child(even){background-color: #fcfcfc;}
+.days li:nth-child(odd){background-color: #f3f3f3;}
+.days li .tickets{text-align:center; font-size:12px; font-weight:600; line-height:12px; background:#777; border-radius:5px; padding:5px 0; 
+position:absolute; min-width:30px; color:#fff; top:50%; left:50%; -webkit-transform:translate(-50%, -50%); transform:translate(-50%, -50%);}
+/* .days li .active {padding:5px 10px; background:#333333; color:white !important} */
+.all_leave ul{margin-bottom:0px !important;}
+.all_leave ul li{margin-bottom:5px !important;}
+
+/* Add media queries for smaller screens */
+@media screen and (max-width:720px) {
+  .weekdays li, .days li {width: 13.1%;}
+}
+
+@media screen and (max-width: 420px) {
+  .weekdays li, .days li {width: 12.5%;}
+  .days li .active {padding: 2px;}
+}
+
+@media screen and (max-width: 290px) {
+  .weekdays li, .days li {width: 12.2%;}
+}
+
+.tooltip1 {
+  position: relative;
+  display: inline-block;
+  width: auto;
+}
+
+.tooltip1 .tooltiptext {visibility:hidden; width:120px; background-color:#ffffff; color:#000000;
+  text-align:enter; border:2px solid #333; border-radius:4px; padding:5px 0; position:absolute;
+  z-index:1; bottom:120%; left:50%; margin-left:-60px;}
+.tooltip1 .tooltiptext p{background-color:transparent; text-align:left; text-transform:uppercase; 
+  font-weight:600; padding:4px 5px; font-size:12px; margin:0;}
+.tooltip1 .tooltiptext::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -10px;
+  border-width: 10px;
+  border-style: solid;
+  border-color: black transparent transparent transparent;
+}
+
+.tooltip1:hover .tooltiptext {
+ visibility: visible;
+}

@@ -1,0 +1,7 @@
+.theme-panel.theme-panel-lg .theme-list >li>a {
+    border-radius: 28px;
+}
+
+.theme_margin {
+    margin: 2px !important;
+}

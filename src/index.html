@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>CATS-EA</title>
+    <base href="/">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+    <meta content="" name="description" />
+    <meta content="" name="author" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link href="https://fonts.googleapis.com/css?family=Muli:400,600,700,900&display=swap" rel="stylesheet">
+    <link href="assets/bootstrap.min.css" rel="stylesheet">
+
+    <!-- <link href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" rel="stylesheet">
+  <link href="http://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet"> -->
+    <link href="assets/font-awesome/css/all.min.css" rel="stylesheet">
+    <link id="themeStyle2" href="assets/css/apple/css/ionicons.min.css" rel="stylesheet">
+
+    <!-- <link id="themeStyle" href="assets/css/apple/style.min.css" rel="stylesheet">
+  <link id="themeResponsibe" href="assets/css/apple/style-responsive.min.css" rel="stylesheet">
+  <link id="themeColor" href="assets/css/apple/theme/default.css" rel="stylesheet"> -->
+
+    <link id="themeStyle" href="assets/css/default/style.min.css" rel="stylesheet">
+    <link id="themeResponsibe" href="assets/css/default/style-responsive.min.css" rel="stylesheet">
+    <link id="themeColor" href="assets/css/default/theme/black.css" rel="stylesheet">
+
+
+    <link rel="stylesheet" href="https://www.amcharts.com/lib/3/plugins/export/export.css" type="text/css" media="all" />
+
+    <!-- <link rel="stylesheet" href="assets/scripts/amcharts3/amcharts/plugins/export/export.css" type="text/css" media="all" /> -->
+
+
+    <style>
+        .amcharts-export-menu li>ul {
+            border: 0;
+        }
+        
+        .amcharts-export-menu li li>a {
+            color: #444 !important;
+            padding: 6px 10px;
+            background: #ddd !important;
+            border-bottom: 1px solid #ffffff;
+            border-left: 1px solid #ffffff;
+            border-radius: 4px;
+        }
+        
+        .amcharts-export-menu-top-right>ul>li>ul>li:first-child>a:after {
+            display: none;
+        }
+        
+        .In2_am4 .amcharts-export-menu-top-right li:hover>ul,
+        .amcharts-export-menu-top-right li.active>ul {
+            top: 1px;
+            border: 0;
+        }
+        
+        .mat_input .mat-form-field-appearance-legacy.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
+            font-size: 0px !important;
+        }
+        
+        .mat_input .mat-form-field-infix {
+            padding: 0!important;
+            border-top: 0 !important;
+            padding-left: 10px !important;
+        }
+        
+        .mat_input .mat-form-field-appearance-legacy .mat-form-field-wrapper {
+            padding-bottom: 0;
+        }
+        
+        .mat_input .mat-form-field.mat-form-field-invalid .mat-form-field-ripple {
+            background-color: #ffffff;
+            height: 0px;
+        }
+        
+        .mat_input .mat-form-field-appearance-legacy .mat-form-field-underline,
+        .mat_input .mat-form-field-appearance-legacy .mat-form-field-ripple {
+            height: 0px!important;
+        }
+        
+        .mat_input .mat-form-field-appearance-legacy .mat-form-field-label {
+            top: 0.515em;
+            line-height: 20px;
+            color: #666!important;
+        }
+        
+        .progress {
+            font-size: 10px !important;
+        }
+    </style>
+
+</head>
+
+<body class="angular6" detect-scroll (onScroll)="handleScroll($event)">
+
+    <cats-root>
+        <!-- begin #page-loader -->
+        <div id="page-loader" class="fade show"><span class="spinner"></span></div>
+
+        <!-- end #page-loader -->
+    </cats-root>
+
+    <!-- <script src="https://www.amcharts.com/lib/4/core.js"></script>
+  <script src="assets/scripts/amcharts3/amcharts/amcharts.js"></script>
+  <script src="assets/scripts/amcharts3/amcharts/serial.js"></script>
+  <script src="assets/scripts/amcharts3/amcharts/funnel.js"></script>
+  <script src="https://www.amcharts.com/lib/3/amstock.js"></script>
+  <script src="assets/scripts/amcharts3/amcharts/pie.js"></script>
+  <script src="assets/scripts/amcharts3/amcharts/plugins/animate/animate.min.js"></script>
+  <script src="assets/scripts/amcharts3/amcharts/themes/light.js"></script>
+  <script src="assets/scripts/amcharts3/amcharts/themes/dark.js"></script>
+  <script src="assets/scripts/amcharts3/amcharts/themes/chalk.js"></script>
+  <script src="assets/scripts/amcharts3/amcharts/xy.js"></script>
+  <script src="assets/scripts/amcharts3/amcharts/gauge.js"></script>
+  <script src="assets/scripts/amcharts3/amcharts/plugins/export/export.min.js"></script> -->
+
+    <script src="https://www.amcharts.com/lib/4/core.js"></script>
+    <script src="https://www.amcharts.com/lib/3/amcharts.js"></script>
+    <script src="https://www.amcharts.com/lib/3/serial.js"></script>
+    <script src="https://www.amcharts.com/lib/3/funnel.js"></script>
+    <script src="https://www.amcharts.com/lib/3/amstock.js"></script>
+    <script src="https://www.amcharts.com/lib/3/pie.js"></script>
+    <script src="https://www.amcharts.com/lib/3/plugins/animate/animate.min.js"></script>
+    <script src="https://www.amcharts.com/lib/3/themes/light.js"></script>
+    <script src="https://www.amcharts.com/lib/3/themes/dark.js"></script>
+    <script src="https://www.amcharts.com/lib/3/themes/chalk.js"></script>
+    <script src="https://www.amcharts.com/lib/3/xy.js"></script>
+    <script src="https://www.amcharts.com/lib/3/gauge.js"></script>
+    <script src="https://www.amcharts.com/lib/3/plugins/export/export.min.js"></script>
+
+    <!-- <script src="https://www.amcharts.com/lib/3/amstock.js"></script> -->
+    <!-- <script src="https://www.amcharts.com/lib/3/plugins/export/examples/export.config.default.js"></script> -->
+
+    <!-- <script src="assets/amcharts.js"></script> -->
+    <!-- <script src="assets/pie.js"></script> -->
+    <!-- <script src="assets/serial.js"></script> -->
+    <!-- <script src="assets/light.js"></script> -->
+
+    <!-- Used For Time Filter-->
+    <script src="assets/scripts/moment.js"></script>
+
+    <!-- <script src="assets/plugins/slimscroll/jquery.slimscroll.min.js"></script> -->
+
+</body>
+
+</html>

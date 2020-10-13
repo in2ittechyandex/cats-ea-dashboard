@@ -1,0 +1,26 @@
+<div id="reportrange" class="pull-left btn " 
+    [style.border]="configStyle?configStyle.border?configStyle.border:'1px solid #fff':'1px solid #fff'"
+    [style.marginLeft.px]="configStyle?configStyle.marginLeft?this.configStyle.marginLeft:'0':'0'"
+    [style.background-color]="configStyle?configStyle.bgColor?this.configStyle.bgColor:'#fff':'#fff'" 
+    [style.width.px]="configStyle?configStyle.width ? this.configStyle.width:'300':'300'"
+    style="cursor:pointer; color:#333;" [style.padding.px]="configStyle?configStyle.padding ? this.configStyle.padding:'6':'6'" daterangepicker (selected)="selectedDate($event, mainInput)"
+    (cancelDaterangepicker)="calendarEventsHandler($event)" (applyDaterangepicker)="calendarEventsHandler($event)"
+    (hideDaterangepicker)="calendarEventsHandler($event)" (showDaterangepicker)="calendarEventsHandler($event)">
+    <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;
+    <span>{{ mainInput.start | date:'MMM dd, yyyy' }} - {{ mainInput.end| date:'MMM dd, yyyy' }}</span>
+</div>
+
+<!-- padding:6px; -->
+
+
+<!-- <div id="reportrange" class="pull-left btn " 
+    [style.border]="configStyle?configStyle.border?configStyle.border:'1px solid #fff':'1px solid #fff'"
+    [style.marginLeft.px]="configStyle?configStyle.marginLeft?this.configStyle.marginLeft:'0':'0'"
+    [style.background-color]="configStyle?configStyle.bgColor?this.configStyle.bgColor:'#fff':'#fff'" 
+    [style.width.px]="configStyle?configStyle.width ? this.configStyle.width:'300':'300'"
+    style="cursor:pointer; color:#333;" [style.padding.px]="configStyle?configStyle.padding ? this.configStyle.padding:'6':'6'" daterangepicker (selected)="selectedDate($event, mainInput)"
+    (cancelDaterangepicker)="calendarEventsHandler($event)" (applyDaterangepicker)="calendarEventsHandler($event)"
+    (hideDaterangepicker)="calendarEventsHandler($event)" (showDaterangepicker)="calendarEventsHandler($event)">
+    <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;
+    <span>{{ mainInput.start | date:'MMM dd, yyyy' }} - {{ mainInput.end| date:'MMM dd, yyyy' }}</span>
+</div> -->
