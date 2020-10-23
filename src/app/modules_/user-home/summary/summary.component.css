@@ -1,0 +1,478 @@
+.modal-lg {
+    max-width: 971px;
+    margin-left: 15%;
+    margin-top: 5%;
+}
+
+.custompanel {
+    margin-bottom: 20px !important;
+    background-color: #fff !important;
+    border: none !important;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, .15) !important;
+    border-radius: 3px !important;
+}
+
+.contextmenu {
+    position: absolute;
+}
+
+.box {
+    position: absolute;
+    border: none !important;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, .15) !important;
+    border-radius: 3px !important;
+}
+
+
+/* new table css starts here */
+
+table.table1 tr td {float: none;}
+.chart_table table tbody,
+.chart_table table thead {
+    display: block;
+}
+
+.chart_table table tbody {
+    overflow: auto;
+    height: 273px;
+    clear: both;
+}
+
+.chart_table table tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+}
+.chart_table table th{text-transform: uppercase;}
+.chart_table table th,
+.chart_table table td {
+    font-size: 11px;
+    text-align: center;
+    white-space: pre-wrap;
+    word-break: break-word;
+    padding: 8px 5px !important;
+    width: 100px !important;
+    min-width: 100px;
+}
+
+
+.panel.panel-expand .chart_table table tbody {
+    overflow: auto;
+    height: 440px;
+    clear: both;
+}
+
+.filter_by>ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    justify-content: space-around;
+}
+
+.filter_by ul li {
+    margin: 10px 5px;
+    text-align: center;
+}
+
+.filter_by ul.dropdown-menu.show {
+    left: 0px !important;
+}
+
+.filter_by ul.dropdown-menu li {
+    margin: 0px;
+    text-align: left;
+    padding: 2px;
+}
+
+.filter_by ul.dropdown-menu>li>a {
+    position: relative;
+    padding-left: 30px;
+}
+
+.filter_by ul.dropdown-menu>li>a input[type=checkbox] {
+    position: absolute;
+    margin-left: -18px;
+    margin-top: 2px;
+}
+
+.filter_by .btn-group {
+    display: block;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.filter_by .btn-group button.btn {
+    width: calc(100% - 40px);
+    background-color: #ececec;
+}
+
+.filter_by .btn-group>a {
+    width: 40px;
+    background-color: #ececec;
+}
+
+.In2_summary_title {
+    color: #000000 !important;
+    font-weight: 600;
+}
+
+.container1 {
+    display: block;
+    position: relative;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.container1 label {
+    padding-left: 30px;
+}
+
+
+/* Hide the browser's default checkbox */
+
+.container1 input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+
+/* Create a custom checkbox */
+
+.checkmark {
+    position: absolute;
+    top: 0;
+    left: 7px;
+    height: 15px;
+    width: 15px;
+    background-color: #dddddd;
+}
+
+
+/* When the checkbox is checked, add a blue background */
+
+input:checked~.checkmark {
+    background-color: #2196F3;
+}
+
+
+/* Create the checkmark/indicator (hidden when not checked) */
+
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+
+/* Show the checkmark when checked */
+
+input:checked~.checkmark:after {
+    display: block;
+}
+
+
+/* Style the checkmark/indicator */
+
+.checkmark:after {
+    left: 5px;
+    top: 2px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+
+.ddsummary_customcs {
+    top: 37px!important;
+    /* right:0% !important;*/
+    z-index: 9999 !important;
+    left: 85% !important;
+}
+
+.summarydialog {
+    border: none;
+    box-shadow: 0 5px 30px 0 rgba(0, 0, 0, .25);
+    padding: .5rem 0;
+    top: 37px !important;
+    z-index: 9999 !important;
+    left: 85% !important;
+}
+
+.btn {
+    color: #fff;
+}
+
+
+/* .top_filter .dropdown-menu{left:0px !important;}
+.top_filter .btn-primary{margin-top:3px;} */
+
+.In2_top_filter .dropdown-menu {
+    left: 0px !important;
+}
+
+.In2_top_filter .gf_box {
+    float: left;
+}
+
+.In2_top_filter .box-inner {
+    width: 600px;
+    padding: 0px;
+    margin-right: 10px;
+    float: left;
+}
+
+.amcharts-chart-div>a {
+    display: none !important;
+    background: #fff;
+}
+
+.box .modal-body a.dropdown-item {
+    padding: 5px !important;
+    white-space: pre-wrap;
+}
+
+
+/* USED FOR LIQUID DEPLOYMMENT WITHOUT HOME PAGE :Add WARNING  : Use These CSS When we are not loading user-home module */
+
+#tab_w_25 .nav-item {
+    width: 25%;
+    text-align: center;
+    font-weight: bold;
+}
+
+#tab_w_25 .nav-tabs {
+    margin-top: 5px;
+    border: 1px solid #ddd !important;
+    background: #c1ccd1 !important;
+}
+
+#tab_w_25 .nav-tabs .nav-link {
+    padding: 6px 15px !important;
+    color: #000000;
+}
+
+#tab_w_25 .tab-content {
+    width: 100%;
+    min-height: 380px;
+    height: auto;
+    margin-bottom: 0px;
+}
+
+#tab_w_25 .dropdown {
+    width: 100%;
+}
+
+#tab_w_25 .dropdown a {
+    width: 40px;
+}
+
+#tab_w_33 .nav-item {
+    width: 33.33%;
+    text-align: center;
+    font-weight: bold;
+}
+
+#tab_w_33 .nav-tabs {
+    margin-top: 5px;
+    border: 1px solid #ddd !important;
+    background: #c1ccd1 !important;
+}
+
+#tab_w_33 .nav-tabs .nav-link {
+    padding: 6px 15px !important;
+    color: #000000;
+}
+
+#tab_w_33 .tab-content {
+    width: 100%;
+    min-height: 380px;
+    height: auto;
+    margin-bottom: 0px;
+}
+
+#tab_w_33 .dropdown {
+    width: 100%;
+}
+
+#tab_w_33 .dropdown a {
+    width: 40px;
+}
+
+#tab_w_50 .nav-item {
+    width: 50%;
+    text-align: center;
+    font-weight: bold;
+}
+
+#tab_w_50 .nav-tabs {
+    margin-top: 5px;
+    border: 1px solid #ddd !important;
+    background: #c1ccd1 !important;
+}
+
+#tab_w_50 .nav-tabs .nav-link {
+    padding: 6px 15px !important;
+    color: #000000;
+}
+
+#tab_w_50 .tab-content {
+    width: 100%;
+    min-height: 380px;
+    height: auto;
+    margin-bottom: 0px;
+}
+
+#tab_w_50 .dropdown {
+    width: 100%;
+}
+
+#tab_w_50 .dropdown a {
+    width: 40px;
+}
+
+
+/* END WARNING : LIQUID*/
+
+.modal-backdrop {z-index: 1081 !important;}
+.modal {z-index: 1082 !important;}
+.modal-footer a:hover {color: #ffffff;}
+
+.modal-header .close {
+    padding: 2px 15px;
+    color: #ffffff;
+    font-weight: 700;
+    margin: -8px -15px -12px 0;
+}
+
+.In2_summary_title {
+    color: #000 !important;
+    font-weight: 600;
+}
+
+
+/* for slim scroll */
+
+#style-4::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    background-color: #ddd;
+    border-radius: 15px;
+    height: 10px;
+}
+
+#style-4::-webkit-scrollbar {
+    width: 5px;
+    background-color: F5F5F5;
+    height: 7px;
+    border-radius: 15px;
+    height: 100px;
+}
+
+#style-4::-webkit-scrollbar-thumb {
+    background-color: #666;
+    border: 2px solid #666;
+    border-radius: 15px;
+    height: 100px;
+}
+
+.style-4::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    background-color: #ddd;
+    border-radius: 15px;
+    height: 10px;
+}
+
+.style-4::-webkit-scrollbar {
+    width: 5px;
+    background-color: F5F5F5;
+    height: 7px;
+    border-radius: 15px;
+    height: 100px;
+}
+
+.style-4::-webkit-scrollbar-thumb {
+    background-color: #666;
+    border: 2px solid #666;
+    border-radius: 15px;
+    height: 100px;
+}
+
+.range_inputs .btn.btn-success {
+    background: #2291bf;
+    border-color: #2291bf;
+}
+
+.In2SubMenu {
+    display: inline-block;
+    width: 100%;
+    height: 30px;
+    /* margin-left: .255em; */
+    vertical-align: .255em;
+}
+
+.scroll_div {
+    max-height: 200px;
+    width: 270px;
+    overflow: auto
+}
+
+
+/* ::ng-deep.ag-cell[col-id="short_description"],
+::ng-deep.ag-cell[col-id="description"] {
+    justify-content: normal !important;
+    text-align: left !important;
+} */
+
+.page-header {
+    font-size: 14px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+::ng-deep.In2_am4_home .amcharts-amexport-menu-level-0.amcharts-amexport-right {
+    right: 60px;
+}
+
+ ::ng-deep.In2_am4_home .amcharts-amexport-icon {
+    padding: 0 !important;
+    height: 40px;
+    width: 40px;
+}
+
+ ::ng-deep.In2_am4_home .amcharts-amexport-item-level-1 a {
+    min-width: auto;
+    text-decoration: none;
+    color: #000000;
+}
+
+ ::ng-deep.In2_am4_home .amcharts-amexport-menu-level-0.amcharts-amexport-right {
+    right: -5px;
+    top: -10px;
+}
+
+ ::ng-deep.In2_am4_home .amcharts-amexport-icon {
+    padding: 0 !important;
+    height: 40px;
+    width: 40px;
+}
+
+ ::ng-deep.In2_am4_home .amcharts-amexport-item-level-1 {
+    min-width: 80px;
+}
+
+#id-12476 {
+    transform: translate(80.5, 15) !important;
+}
+
+.sub_title{font-size:13px; color:#000000; font-weight:bold; text-align: center; margin-bottom: 10px;}
