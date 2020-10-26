@@ -13,6 +13,7 @@ export class Report {
     public isMultiLevelChartLoaded: Boolean = false;
     public mlChartData: any;
     public drillData: any;
+    public repHeaders: any;
 
     constructor(obj: any) {
         this.reportId = obj.reportId;

@@ -359,6 +359,14 @@ export class ReportService {
         return this.http.post(url, formData).map(res => <any>res);
 
     }
+
+    public loadUserTabFilter(tabId: Number) {
+        const url = environment._WEBGATEWAY_BASIC_URL_ + 'incident/filters/get-main-filter';
+        const formData: FormData = new FormData();
+        formData.append('tabId', '' + tabId);
+        return this.http.post(url, formData).map(res => <any>res);
+    }
+    
     //start k
     public fetchCustomWidgetSummaryTabTicketData(urlMappingName, timeRange: any, globalFilters: any) {
         var url = environment._WEBGATEWAY_BASIC_URL_ + urlMappingName;

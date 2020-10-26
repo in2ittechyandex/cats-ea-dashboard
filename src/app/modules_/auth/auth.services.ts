@@ -24,5 +24,9 @@ export class AuthServices {
         return this.httpClient_.get(url).map(res => <any>res);
     }
 
+    public convertToBinary(encodedString) {
+        return atob(encodedString);
+    }
+
 
 }
