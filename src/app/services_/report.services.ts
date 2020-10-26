@@ -357,7 +357,6 @@ export class ReportService {
             formData.append('customers', customer);
         }
         return this.http.post(url, formData).map(res => <any>res);
-
     }
 
     public loadUserTabFilter(tabId: Number) {
