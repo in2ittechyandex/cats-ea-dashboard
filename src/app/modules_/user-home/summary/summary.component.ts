@@ -11,6 +11,7 @@ import * as $ from 'jquery';
 import { TimeFilterService } from 'src/app/shared_/time-filter/time-filter.service.component';
 import { PerformanceService } from 'src/app/services_/performance.services';
 import { AuthServices } from 'src/app/modules_/auth/auth.services';
+import { any } from '@amcharts/amcharts4/.internal/core/utils/Array';
 
 
 
@@ -28,6 +29,7 @@ export class SummaryComponent implements OnInit, OnDestroy, AfterViewInit {
   currentDate: any;
   loggedUserName: any;
   showMainLoader: boolean = true;
+  situation_data: any[] = [];
 
   dateFilter_timeType = 'td';
   dateFilter_startDate = moment().startOf('day');  // moment().subtract(1, 'hours');
@@ -788,6 +790,20 @@ export class SummaryComponent implements OnInit, OnDestroy, AfterViewInit {
     }, err => {
 
     });
+  }
+  situationConains(name) {
+    if (this.situation_data !== undefined) {
+      for (var i = 0; i < this.situation_data.length; i++) {
+        if (this.situation_data[i].tech === name) {
+          return true;
+        }
+      }
+    }
+  }
+  navigateToDevOps(name) {
+    if (this.situationConains(name)) {
+      this.router.navigateByUrl('dashboard/engineer-view/cloud-dev-ops');
+    }
   }
 
   /**

@@ -471,8 +471,26 @@ input:checked~.checkmark:after {
     min-width: 80px;
 }
 
-#id-12476 {
-    transform: translate(80.5, 15) !important;
-}
+#id-12476 {transform: translate(80.5, 15) !important;}
 
 .sub_title{font-size:13px; color:#000000; font-weight:bold; text-align: center; margin-bottom: 10px;}
+
+
+
+.bg-1{
+    background:#147114 !important;
+    color: #ffffff !important;
+  }
+  .bg-2{
+    background: #dac909 !important;
+    color: #ffffff !important;
+  }
+  .bg-3{
+    background:#ec972f !important;
+    color: #ffffff !important;
+  } 
+  .bg-4{
+    background:#d42f2f !important;
+    color: #ffffff !important;
+  } 
+  

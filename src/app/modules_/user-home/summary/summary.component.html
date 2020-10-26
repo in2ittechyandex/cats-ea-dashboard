@@ -40,8 +40,6 @@
                                       [ngClass]="(globalFilterModal.masterSelectedCustomer) ?'bg-'+(themeConf_.selectedColor):''"></span>
                               </label>
                               </li>
-
-
                               <li class="container1" *ngFor="let fVal_ of globalFilterModal.customers | filterByKey: 'name' :searchVal.value; let fvndx_=index; trackBy: trackByFn">
                                   <label class="">{{fVal_.name}}
                                   <input type="checkbox" id="{{fvndx_}}" [(ngModel)]="fVal_.value"
@@ -58,7 +56,6 @@
 
 
               <!--- chandan test-->
-
               <!-- <div class="pull-right" style="margin-right:10px;">
                   <div class="btn-group">
                       <button type="button" class="btn btn-default" style="width:110px;">
@@ -180,13 +177,235 @@
 
   <h1 class="page-header">Heading <span *ngIf="repDetail.isLoaded">goes here</span>
   </h1>
-  <div class="m-b-10 f-s-10" style="margin-top: -1.7em;"><b class="text-inverse">{{userTab_ ? userTab_.description :''}}
+  <div class="m-b-10 f-s-10"><b class="text-inverse">{{userTab_ ? userTab_.description :''}}
       &nbsp;</b></div>
 
 
 
 
-
+      <div class="row">
+        <div class="col-lg-6">
+            <div class="panel panel-inverse">
+                <div class="panel-heading ui-sortable-handle">
+                    <div>
+                        <h4 class="panel-title">heading goes here</h4>
+                        <h4 class="panel-title">    
+                            <!-- <a href="javascript:;">    
+                                <i class="fas fa-md fa-fw m-r-40 fa-circle led-red float-right"
+                                    style="margin-top:-20px;color:red; font-size: 12px;border-radius: 50px;width: 15px"></i>
+                            </a> -->
+                            <a href="javascript:;">    
+                                <i class="fas fa-md fa-fw m-r-10 fa-caret-down float-right" style="margin-top:-20px;"></i>
+                            </a>
+                        </h4>
+                    </div>
+                </div>
+                <div class="bootstrap-calendar">
+                    <div class="">
+                        <div class="table-responsive">
+                            <table class="table table-sm m-b-0 text-center">
+                                <thead>
+                                    <tr class="active">
+                                        <th class="bg-1">Total Events</th>
+                                        <th class="bg-1">Total Alarms</th>
+                                        <th class="bg-1">Total Incidents</th>
+                                        <th class="bg-1">Noise Reduction</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="active">
+                                        <td class="bg-1">10</td>
+                                        <td class="bg-1">20</td>
+                                        <td class="bg-1">65</td>
+                                        <td class="bg-1">87</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="table-responsive chart_table">
+                            <table  class="table table-sm m-b-0 t1">
+                                <thead>
+                                    <tr>
+                                        <th>Agent</th>
+                                        <th>Critical</th>
+                                        <th>Major</th>
+                                        <th>Minor</th>
+                                        <th>Warning</th>
+                                        <th>Error</th>
+                                        <th>Alert</th>
+                                        <th>Debug</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="style-4" style="height:160px; overflow:auto;">
+                                    <tr>
+                                        <td>test</td>
+                                        <td>29</td>
+                                        <td>25</td>
+                                        <td>20</td>
+                                        <td>115</td>
+                                        <td>90</td>
+                                        <td>76</td>
+                                        <td>84</td>
+                                    </tr>
+                                    <tr>
+                                        <td>test</td>
+                                        <td>29</td>
+                                        <td>25</td>
+                                        <td>20</td>
+                                        <td>115</td>
+                                        <td>90</td>
+                                        <td>76</td>
+                                        <td>84</td>
+                                    </tr>
+                                    <tr>
+                                        <td>test</td>
+                                        <td>29</td>
+                                        <td>25</td>
+                                        <td>20</td>
+                                        <td>115</td>
+                                        <td>90</td>
+                                        <td>76</td>
+                                        <td>84</td>
+                                    </tr>
+                                    <tr>
+                                        <td>test</td>
+                                        <td>29</td>
+                                        <td>25</td>
+                                        <td>20</td>
+                                        <td>115</td>
+                                        <td>90</td>
+                                        <td>76</td>
+                                        <td>84</td>
+                                    </tr>
+                                    <tr>
+                                        <td>test</td>
+                                        <td>29</td>
+                                        <td>25</td>
+                                        <td>20</td>
+                                        <td>115</td>
+                                        <td>90</td>
+                                        <td>76</td>
+                                        <td>84</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                         </div>
+                        </div>
+    
+                    </div>
+                </div>
+    
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="panel panel-inverse">
+                <div class="panel-heading ui-sortable-handle">
+                    <div>
+                        <h4 class="panel-title">heading goes here</h4>
+                        <h4 class="panel-title">    
+                          
+                            <!-- <a href="javascript:;" (click)="radio(item.name)">    
+                                <i class="fas fa-md fa-fw m-r-10 fa-caret-down float-right" style="margin-top:-20px;"></i>
+                            </a> -->
+                            <a>    
+                                <i class="fas fa-md fa-fw m-r-10 fa-caret-down float-right" style="margin-top:-20px;"></i>
+                            </a>
+                        </h4>
+                    </div>
+                </div>
+                <div class="bootstrap-calendar">
+                        <div class="table-responsive">
+                            <table class="table table-sm m-b-0 text-center">
+                                <thead>
+                                    <tr class="active">
+                                        <th>Total Events</th>
+                                        <th>Total Alarms</th>
+                                        <th>Total Incidents</th>
+                                        <th>Noise Reduction</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="active">
+                                        <td>10</td>
+                                        <td>20</td>
+                                        <td>65</td>
+                                        <td>87</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="table-responsive chart_table">
+                            <table  class="table table-sm m-b-0 t1">
+                                <thead>
+                                    <tr>
+                                        <th>Agent</th>
+                                        <th>Critical</th>
+                                        <th>Major</th>
+                                        <th>Minor</th>
+                                        <th>Warning</th>
+                                        <th>Error</th>
+                                        <th>Alert</th>
+                                        <th>Debug</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="style-4" style="height:160px; overflow:auto;">
+                                    <tr>
+                                        <td>test</td>
+                                        <td>29</td>
+                                        <td>25</td>
+                                        <td>20</td>
+                                        <td>115</td>
+                                        <td>90</td>
+                                        <td>76</td>
+                                        <td>84</td>
+                                    </tr>
+                                    <tr>
+                                        <td>test</td>
+                                        <td>29</td>
+                                        <td>25</td>
+                                        <td>20</td>
+                                        <td>115</td>
+                                        <td>90</td>
+                                        <td>76</td>
+                                        <td>84</td>
+                                    </tr>
+                                    <tr>
+                                        <td>test</td>
+                                        <td>29</td>
+                                        <td>25</td>
+                                        <td>20</td>
+                                        <td>115</td>
+                                        <td>90</td>
+                                        <td>76</td>
+                                        <td>84</td>
+                                    </tr>
+                                    <tr>
+                                        <td>test</td>
+                                        <td>29</td>
+                                        <td>25</td>
+                                        <td>20</td>
+                                        <td>115</td>
+                                        <td>90</td>
+                                        <td>76</td>
+                                        <td>84</td>
+                                    </tr>
+                                    <tr>
+                                        <td>test</td>
+                                        <td>29</td>
+                                        <td>25</td>
+                                        <td>20</td>
+                                        <td>115</td>
+                                        <td>90</td>
+                                        <td>76</td>
+                                        <td>84</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                         </div>
+                        </div>
+                </div>
+    
+            </div>
+        </div>
+      </div>
 
 
 
