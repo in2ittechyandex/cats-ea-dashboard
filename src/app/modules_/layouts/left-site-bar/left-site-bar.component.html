@@ -33,6 +33,12 @@
             <span>Summary</span>
           </a>
         </li>
+        <li [ngClass]="{'active':(selectedTab == '/dashboard/engineer-view')}">
+          <a [routerLink]="['/dashboard/engineer-view']" routerLinkActive="active" [routerLinkActiveOptions]="'{exact:true}'">
+            <i class="fas fa-home fa-sm"></i>
+            <span>Engineer View</span>
+          </a>
+        </li>
 
         <li  *ngFor="let tabs of tabList;let i=index;" [ngClass]="{'active':(selectedTab == '/dashboard/custom-widget/'+(tabs.id))}">
           <a (click)="navidateTo(tabs.id);">
