@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DashboardComponent } from './dashboard.component';
 import { LayoutsModule } from '../layouts/layouts.module';
+import { EngineerViewComponent } from '../engineer-view/engineer-view.component';
 // import { MapulaModule } from '../mapula/mapula.module';
 
 // import {DragDropModule} from '@angular/cdk/drag-drop';
@@ -11,10 +12,11 @@ import { LayoutsModule } from '../layouts/layouts.module';
   imports: [
     CommonModule,
     DashboardRoutingModule,
-    LayoutsModule,
+    LayoutsModule
     // MapulaModule,
     // DragDropModule
   ],
-  declarations: [DashboardComponent]
+  declarations: [DashboardComponent,
+    EngineerViewComponent]
 })
 export class DashboardModule { }

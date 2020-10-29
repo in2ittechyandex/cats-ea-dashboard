@@ -2,6 +2,7 @@ import { DashboardComponent } from './dashboard.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { EngineerViewComponent } from '../engineer-view/engineer-view.component';
 
 
 const routes: Routes = [
@@ -15,6 +16,9 @@ const routes: Routes = [
             },
             {
                 path: 'home', loadChildren: '../user-home/user-home.module#UserHomeModule',
+                data: { preload: true, delay: false }
+            },{
+                path: 'engineer-view', component: EngineerViewComponent,
                 data: { preload: true, delay: false }
             },
             { path: '**', redirectTo: 'home' }
