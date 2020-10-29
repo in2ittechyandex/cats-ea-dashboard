@@ -30,6 +30,8 @@ export class SummaryComponent implements OnInit, OnDestroy, AfterViewInit {
   loggedUserName: any;
   showMainLoader: boolean = true;
   situation_data: any[] = [];
+  technologyList: any;
+  technologyWidgetData: any;
 
   dateFilter_timeType = 'td';
   dateFilter_startDate = moment().startOf('day');  // moment().subtract(1, 'hours');
@@ -193,7 +195,7 @@ export class SummaryComponent implements OnInit, OnDestroy, AfterViewInit {
     private reportService_: ReportService,
     private sharedServices_: SharedServices,
     private timeServices_: TimeFilterService,
-    private authServices_:AuthServices
+    private authServices_: AuthServices
   ) {
     this.timeServicesSubsc$ = this.timeServices_.getTimeFilterSubscriber().subscribe(obj => {
       this.onTsModified(obj);
@@ -252,7 +254,7 @@ export class SummaryComponent implements OnInit, OnDestroy, AfterViewInit {
   onGlobalFilterChange() {
     this.showMainLoader = true;
     this.TootTipStr_.open = false;
-    setTimeout(() => {      
+    setTimeout(() => {
       this.compareUserTabGlobalFilterModification();
     }, 1000);
   };
@@ -592,8 +594,38 @@ export class SummaryComponent implements OnInit, OnDestroy, AfterViewInit {
     // this.loadGFCustomers();
     this.loadCategories();
     this.loadInitData();
-    let loggedUserData = JSON.parse(this.authServices_.convertToBinary(localStorage.getItem('loggedUser')));
-    this.loggedUserName = loggedUserData ? loggedUserData.name : '';
+
+    this.reportService_.getTechnologyList().subscribe(resp => {
+      if (resp.status) {
+        this.technologyList = resp.data;
+        this.loadTechnologyWidget();
+      }
+    });
+
+    // let loggedUserData = JSON.parse(this.authServices_.convertToBinary(localStorage.getItem('loggedUser')));
+    // this.loggedUserName = loggedUserData ? loggedUserData.name : '';
+  }
+
+  public loadTechnologyWidget() {
+    this.reportService_.getTechnologyWidgetData().subscribe(resp => {
+      if (resp.status) {
+        this.technologyWidgetData = resp.data;
+        this.technologyList.forEach((obj_, indx) => {
+          this.technologyWidgetData[indx].name = obj_.name;
+          this.technologyWidgetData[indx].id = obj_.id;
+        });
+        console.log(JSON.stringify(this.technologyWidgetData));
+      }
+    });
+  }
+
+  visibleIndex = -1;
+  public techWidgetBoxToggle(ind){
+    if (this.visibleIndex === ind) {
+      this.visibleIndex = -1;
+    } else {
+      this.visibleIndex = ind;
+    }
   }
 
   public loadInitData() {
@@ -1765,8 +1797,9 @@ export class SummaryComponent implements OnInit, OnDestroy, AfterViewInit {
     });
     return strTobeReturn;
   }
-
 }
+
+
 export interface Item {
   id: number;
   name: string;

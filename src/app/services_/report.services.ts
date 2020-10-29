@@ -85,6 +85,28 @@ export class ReportService {
         return this.userService.updateExistingTab(obj);
     }
 
+    // Start Ranjeet
+    public getTechnologyList() {
+        const url = "https://run.mocky.io/v3/e783f340-b4cf-4d4d-b344-af906eb6787c";
+        return this.http.get(url).map(res => <any>res);
+    }
+
+    public getTechnologyWidgetData() {
+        const url = "https://run.mocky.io/v3/2df0aaba-40a6-4f4a-9910-e2a392346957";
+        return this.http.get(url).map(res => <any>res);
+    }
+
+    // public technologyOverview() {
+    //     const url = "https://run.mocky.io/v3/e783f340-b4cf-4d4d-b344-af906eb6787c";
+    //     return this.http.get(url).map(res => <any>res);
+    // }
+
+    // public technologyOverview() {
+    //     const url = "https://run.mocky.io/v3/e783f340-b4cf-4d4d-b344-af906eb6787c";
+    //     return this.http.get(url).map(res => <any>res);
+    // }
+    // End Ranjeet
+
 
     public fetchCategoryReports(categoryId) {
         const url = environment._WEBGATEWAY_BASIC_URL_ + 'Reports/' + categoryId;

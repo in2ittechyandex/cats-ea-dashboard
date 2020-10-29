@@ -180,17 +180,13 @@
   <!-- <div class="m-b-10 f-s-10"><b class="text-inverse">{{userTab_ ? userTab_.description :''}}
       &nbsp;</b></div> -->
       <div class="row">
-        <div class="col-lg-6">
+        <div class="col-lg-6" *ngFor="let techWidgetData of technologyWidgetData;let techIndex = index">
             <div class="panel panel-inverse">
                 <div class="panel-heading ui-sortable-handle">
                     <div>
-                        <h4 class="panel-title">heading goes here</h4>
-                        <h4 class="panel-title">    
-                            <!-- <a href="javascript:;">    
-                                <i class="fas fa-md fa-fw m-r-40 fa-circle led-red float-right"
-                                    style="margin-top:-20px;color:red; font-size: 12px;border-radius: 50px;width: 15px"></i>
-                            </a> -->
-                            <a href="javascript:;">    
+                        <h4 class="panel-title">{{techWidgetData.name}}</h4>
+                        <h4 class="panel-title">
+                            <a href="javascript:;" (click)="techWidgetBoxToggle(techIndex)">
                                 <i class="fas fa-md fa-fw m-r-10 fa-caret-down float-right" style="margin-top:-20px;"></i>
                             </a>
                         </h4>
@@ -202,22 +198,22 @@
                             <table class="table table-sm m-b-0 text-center">
                                 <thead>
                                     <tr class="active">
-                                        <th class="bg-1">Total Events</th>
-                                        <th class="bg-1">Total Alarms</th>
-                                        <th class="bg-1">Total Incidents</th>
-                                        <th class="bg-1">Noise Reduction</th>
+                                        <th [ngClass]="'bg-'+techWidgetData.color">Total Events</th>
+                                        <th [ngClass]="'bg-'+techWidgetData.color">Total Alarms</th>
+                                        <th [ngClass]="'bg-'+techWidgetData.color">Total Incidents</th>
+                                        <th [ngClass]="'bg-'+techWidgetData.color">Noise Reduction</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr class="active">
-                                        <td class="bg-1">10</td>
-                                        <td class="bg-1">20</td>
-                                        <td class="bg-1">65</td>
-                                        <td class="bg-1">87</td>
+                                        <td [ngClass]="'bg-'+techWidgetData.color">{{techWidgetData.summary.totalEvents}}</td>
+                                        <td [ngClass]="'bg-'+techWidgetData.color">{{techWidgetData.summary.totalAlarms}}</td>
+                                        <td [ngClass]="'bg-'+techWidgetData.color">{{techWidgetData.summary.totalIncidents}}</td>
+                                        <td [ngClass]="'bg-'+techWidgetData.color">{{techWidgetData.summary.noiceReduction}}</td>
                                     </tr>
                                 </tbody>
                             </table>
-                            <div class="table-responsive chart_table">
+                            <div class="table-responsive chart_table" *ngIf="visibleIndex === techIndex">
                             <table  class="table table-sm m-b-0 t1">
                                 <thead>
                                     <tr>
@@ -232,55 +228,15 @@
                                     </tr>
                                 </thead>
                                 <tbody class="style-4" style="height:160px; overflow:auto;">
-                                    <tr>
-                                        <td>test</td>
-                                        <td>29</td>
-                                        <td>25</td>
-                                        <td>20</td>
-                                        <td>115</td>
-                                        <td>90</td>
-                                        <td>76</td>
-                                        <td>84</td>
-                                    </tr>
-                                    <tr>
-                                        <td>test</td>
-                                        <td>29</td>
-                                        <td>25</td>
-                                        <td>20</td>
-                                        <td>115</td>
-                                        <td>90</td>
-                                        <td>76</td>
-                                        <td>84</td>
-                                    </tr>
-                                    <tr>
-                                        <td>test</td>
-                                        <td>29</td>
-                                        <td>25</td>
-                                        <td>20</td>
-                                        <td>115</td>
-                                        <td>90</td>
-                                        <td>76</td>
-                                        <td>84</td>
-                                    </tr>
-                                    <tr>
-                                        <td>test</td>
-                                        <td>29</td>
-                                        <td>25</td>
-                                        <td>20</td>
-                                        <td>115</td>
-                                        <td>90</td>
-                                        <td>76</td>
-                                        <td>84</td>
-                                    </tr>
-                                    <tr>
-                                        <td>test</td>
-                                        <td>29</td>
-                                        <td>25</td>
-                                        <td>20</td>
-                                        <td>115</td>
-                                        <td>90</td>
-                                        <td>76</td>
-                                        <td>84</td>
+                                    <tr *ngFor="let techNmsData of techWidgetData.nmsData">
+                                        <td>{{techNmsData.agent}}</td>
+                                        <td>{{techNmsData.critical}}</td>
+                                        <td>{{techNmsData.major}}</td>
+                                        <td>{{techNmsData.minor}}</td>
+                                        <td>{{techNmsData.warning}}</td>
+                                        <td>{{techNmsData.error}}</td>
+                                        <td>{{techNmsData.alert}}</td>
+                                        <td>{{techNmsData.debug}}</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -292,16 +248,12 @@
     
             </div>
         </div>
-        <div class="col-lg-6">
+        <!-- <div class="col-lg-6">
             <div class="panel panel-inverse">
                 <div class="panel-heading ui-sortable-handle">
                     <div>
                         <h4 class="panel-title">heading goes here</h4>
-                        <h4 class="panel-title">    
-                          
-                            <!-- <a href="javascript:;" (click)="radio(item.name)">    
-                                <i class="fas fa-md fa-fw m-r-10 fa-caret-down float-right" style="margin-top:-20px;"></i>
-                            </a> -->
+                        <h4 class="panel-title">
                             <a>    
                                 <i class="fas fa-md fa-fw m-r-10 fa-caret-down float-right" style="margin-top:-20px;"></i>
                             </a>
@@ -400,7 +352,7 @@
                 </div>
     
             </div>
-        </div>
+        </div> -->
       </div>
 
 
