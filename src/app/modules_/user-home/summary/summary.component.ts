@@ -13,9 +13,8 @@ import { PerformanceService } from 'src/app/services_/performance.services';
 import { AuthServices } from 'src/app/modules_/auth/auth.services';
 import { any } from '@amcharts/amcharts4/.internal/core/utils/Array';
 
-
-
 declare var moment: any;
+
 @Component({
   selector: 'cats-summary',
   templateUrl: './summary.component.html',
@@ -614,7 +613,7 @@ export class SummaryComponent implements OnInit, OnDestroy, AfterViewInit {
           this.technologyWidgetData[indx].name = obj_.name;
           this.technologyWidgetData[indx].id = obj_.id;
         });
-        console.log(JSON.stringify(this.technologyWidgetData));
+        // console.log(JSON.stringify(this.technologyWidgetData));
       }
     });
   }
