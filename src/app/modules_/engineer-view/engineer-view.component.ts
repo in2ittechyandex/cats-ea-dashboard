@@ -2,6 +2,8 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { TimeFilterService } from 'src/app/shared_/time-filter/time-filter.service.component';
 
+import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
+
 declare var moment: any;
 
 @Component({
@@ -10,6 +12,7 @@ declare var moment: any;
   styleUrls: ['./engineer-view.component.css']
 })
 export class EngineerViewComponent implements OnInit, OnDestroy {
+  closeResult = '';
   dateFilter_timeType = 'td';
   dateFilter_startDate = moment().startOf('day');  // moment().subtract(1, 'hours');
   dateFilter_endDate = moment(); // moment();
@@ -68,7 +71,7 @@ export class EngineerViewComponent implements OnInit, OnDestroy {
     inprogress:[],
     resolved:[]
   }
-  constructor(private timeServices_: TimeFilterService) {
+  constructor(private timeServices_: TimeFilterService, private modalService: NgbModal) {
     this.timeServicesSubsc$ = this.timeServices_.getTimeFilterSubscriber().subscribe(obj => {
       this.onTsModified(obj);
     });
@@ -92,7 +95,43 @@ export class EngineerViewComponent implements OnInit, OnDestroy {
     console.log(this.selectedTimeRange)
   }
 
+  showDD(event, obj_) {
+    setTimeout(function () {
+      const element_: Element = (event.target as Element);
+      const elementDD: Element = element_.nextElementSibling;
+      const existingClass = elementDD.getAttribute('class');
+      const toggleClass = (existingClass.indexOf('show') > -1) ? existingClass.replace('show', '').trim() : existingClass + ' show';
+      obj_['isListenOnBlur'] = (toggleClass.indexOf('show') > -1);
+      elementDD.setAttribute('class', toggleClass);
+    }, 100);
+  }
+
+  
+  globalFilterClickOutSide(event) {
+    const identifir = event.Identifier;
+    this.globalFilterModal.isListenOnBlur = false;
+    document.getElementById(identifir).click();
+  }
+
   ngOnInit() {
+  }
+
+  open(content) {
+    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
+  }
+
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return 'by clicking on a backdrop';
+    } else {
+      return `with: ${reason}`;
+    }
   }
 
   ngOnDestroy() {

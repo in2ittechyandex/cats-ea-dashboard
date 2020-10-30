@@ -21,24 +21,26 @@
       <!-- begin #accordion -->
       <div id="accordion" class="accordion">
         <!-- begin card -->
-        <div class="card text-white width-250">
-          <div class="card-header text-black pointer-cursor text-center align-items-center font-weight-bold"
+        <div class="card text-white width-250 bg-grey-lighter">
+          <div class="card-header text-black bg-grey-lighter pointer-cursor text-center align-items-center font-weight-bold"
             data-toggle="collapse" data-target="#collapseOne">
             OPENED
           </div>
           <div id="collapseOne" class="collapse show" data-parent="#accordion" id="style-4"
-            style="max-height:470px; overflow:auto;">
-            <div class="card-body m-10 border shadow" *ngFor="let data of taskData.opened">
+            style="max-height:470px; overflow:auto; background: #f2f3f4;">
+            <div class="card-body m-10 shadow" *ngFor="let data of taskData.opened">
               <!-- <h4 class="widget-header-title p-0 mb-5"><img src="assets/img/user/user-13.jpg" alt="" class="image" style="border-radius:40px;height:40px;"/><i class="fa fa-circle text-green f-s-8 mr-2"></i></h4> -->
               <!-- <h4>Assigned to : Sudhir Shukla</h4> -->
               <span class="badge bg-danger f-s-11 p-4"><i class="fa fa-info-circle"></i> &nbsp; # {{data.id}}</span>
               <div class="f-s-12 text-dark">{{data.time}}</div>
               <div class="f-s-12 text-dark">{{data.network}}</div>
-              <div class="f-s-12 text-dark">{{data.ticket_number}}</div>
-              <div class="f-s-12 text-dark">{{data.tech}}</div>
+              <!-- <div class="f-s-12 text-dark">{{data.ticket_number}}</div>
+              <div class="f-s-12 text-dark">{{data.tech}}</div> -->
               <div style="margin-top:5px;">
-                <a class="btn btn-info btn-xs text-white f-s-11" style="border-radius: 10px;"><input
-                    class="radio radio-css" type="radio">&nbsp;Assigned</a>
+                <a (click)="open(content)" class="btn btn-info btn-xs text-white f-s-11" style="border-radius:10px;"><input
+                    class="radio radio-css" type="radio">&nbsp;Assign</a>
+                    <a class="btn btn-info btn-xs text-white f-s-11 ml-1" style="border-radius:10px;"><input
+                      class="radio radio-css" type="radio">&nbsp;Own</a>
               </div>
             </div>
           </div>
@@ -51,24 +53,24 @@
       <!-- begin #accordion -->
       <div id="accordion" class="accordion">
         <!-- begin card -->
-        <div class="card text-black width-250">
-          <div class="card-header pointer-cursor text-center align-items-center collapsed font-weight-bold"
+        <div class="card text-black width-250 bg-grey-lighter">
+          <div class="card-header pointer-cursor bg-grey-lighter text-center align-items-center collapsed font-weight-bold"
             data-toggle="collapse" data-target="#collapseTwo">
             ASSIGNED
           </div>
           <div id="collapseTwo" class="collapse show" data-parent="#accordion" id="style-5"
-            style="max-height:470px; overflow:auto;">
-            <div class="card-body m-10 border shadow" *ngFor="let data of taskData.assigned">
+            style="max-height:470px; overflow:auto; background: #f2f3f4;">
+            <div class="card-body m-10 shadow" *ngFor="let data of taskData.assigned">
               <!-- <h4 class="widget-header-title p-0 mb-5"><img src="assets/img/user/user-13.jpg" alt="" class="image" style="border-radius:40px;height:40px;"/><i class="fa fa-circle text-green f-s-8 mr-2"></i></h4> -->
               <span class="badge bg-danger f-s-11 p-4"><i class="fa fa-info-circle"></i> &nbsp; # {{data.id}}</span>
               <h6 class="mb-1 mt-2">Assigned to : {{data.username}}</h6>
               <div class="f-s-12 text-dark">{{data.time}}</div>
               <div class="f-s-12 text-dark">{{data.network}}</div>
-              <div class="f-s-12 text-dark">{{data.ticket_number}}</div>
-              <div class="f-s-12 text-dark">{{data.tech}}</div>
+              <!-- <div class="f-s-12 text-dark">{{data.ticket_number}}</div>
+              <div class="f-s-12 text-dark">{{data.tech}}</div> -->
               <div style="margin-top:5px;">
                 <a class="btn btn-info btn-xs text-white f-s-11" style="border-radius: 10px;"><input
-                    class="radio radio-css" type="radio">&nbsp;In Progress</a>
+                    class="radio radio-css" type="radio">&nbsp;Acknowledge</a>
               </div>
             </div>
 
@@ -82,21 +84,21 @@
       <!-- begin #accordion -->
       <div id="accordion" class="accordion">
         <!-- begin card -->
-        <div class="card text-white width-250">
-          <div class="card-header text-black text-center text-center collapsed font-weight-bold" data-toggle="collapse"
+        <div class="card text-white width-250 bg-grey-lighter">
+          <div class="card-header text-black bg-grey-lighter text-center text-center collapsed font-weight-bold" data-toggle="collapse"
             data-target="#collapseThree">
             IN PROGRESS
           </div>
           <div id="collapseThree" class="collapse show" data-parent="#accordion" id="style-6"
-            style="max-height:470px; overflow:auto;">
-            <div class="card-body m-10 border shadow" *ngFor="let data of taskData.inprogress">
+            style="max-height:470px; overflow:auto; background: #f2f3f4;">
+            <div class="card-body m-10 shadow" *ngFor="let data of taskData.inprogress">
               <span class="badge bg-danger f-s-11 p-4"><i class="fa fa-info-circle"></i> &nbsp; # {{data.id}}</span>
               <h6 class="mb-1 mt-2">Assigned to : {{data.username}}</h6>
               <!-- <h4 class="widget-header-title p-0 mb-5"><img src="assets/img/user/user-13.jpg" alt="" class="image" style="border-radius:40px;height:40px;"/><i class="fa fa-circle text-green f-s-8 mr-2"></i></h4> -->
               <div class="f-s-12 text-dark">{{data.time}}</div>
               <div class="f-s-12 text-dark">{{data.network}}</div>
-              <div class="f-s-12 text-dark">{{data.ticket_number}}</div>
-              <div class="f-s-12 text-dark">{{data.tech}}</div>
+              <!-- <div class="f-s-12 text-dark">{{data.ticket_number}}</div>
+              <div class="f-s-12 text-dark">{{data.tech}}</div> -->
               <div style="margin-top:5px;">
                 <a class="btn btn-info btn-xs text-white f-s-11" style="border-radius: 10px;"><input
                     class="radio radio-css" type="radio">&nbsp;Resolve</a>
@@ -113,24 +115,26 @@
       <!-- begin #accordion -->
       <div id="accordion" class="accordion">
         <!-- begin card -->
-        <div class="card text-black width-250">
-          <div class="card-header pointer-cursor text-center align-items-center collapsed font-weight-bold"
+        <div class="card text-black width-250 bg-grey-lighter">
+          <div class="card-header pointer-cursor bg-grey-lighter text-center align-items-center collapsed font-weight-bold"
             data-toggle="collapse" data-target="#collapseFour">
             RESOLVED
           </div>
           <div id="collapseFour" class="collapse show" data-parent="#accordion" id="style-7"
-            style="max-height:470px; overflow:auto;">
-            <div class="card-body m-10 border shadow" *ngFor="let data of taskData.resolved">
+            style="max-height:470px; overflow:auto; background:#f2f3f4;">
+            <div class="card-body m-10 shadow" *ngFor="let data of taskData.resolved">
               <span class="badge bg-danger f-s-11 p-4"><i class="fa fa-info-circle"></i> &nbsp; # {{data.id}}</span>
               <h6 class="mb-1 mt-2">Assigned to : {{data.resolved}}</h6>
               <!-- <h4 class="widget-header-title p-0 mb-5"><img src="assets/img/user/user-13.jpg" alt="" class="image" style="border-radius:40px;height:40px;"/><i class="fa fa-circle text-green f-s-8 mr-2"></i></h4> -->
               <div class="f-s-12 text-dark">{{data.time}}</div>
               <div class="f-s-12 text-dark">{{data.network}}</div>
-              <div class="f-s-12 text-dark">{{data.ticket_number}}</div>
-              <div class="f-s-12 text-dark">{{data.tech}}</div>
-              <!-- <div style="margin-top:10px;">
-                    <a class="btn btn-info btn-xs text-white f-s-11" style="float: right;border-radius: 10px;"><input class="radio radio-css" type="radio">&nbsp;Resolve</a>
-                  </div> -->
+              <!-- <div class="f-s-12 text-dark">{{data.ticket_number}}</div>
+              <div class="f-s-12 text-dark">{{data.tech}}</div> -->
+              <div style="margin-top:10px;">
+                    <a class="btn btn-info btn-xs text-white f-s-11" style="border-radius: 10px;">
+                      <input class="radio radio-css" type="radio">&nbsp;Close</a>
+                  </div>
+               
             </div>
           </div>
           <!-- end card -->
@@ -139,3 +143,82 @@
       <!-- end card-group -->
     </div>
   </div>
+
+
+  <ng-template #content let-modal>
+    <div class="modal-header">
+      <h5 class="modal-title" id="modal-basic-title">Assign to</h5>
+      <button type="button" style="outline:none;" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body" style="min-height:270px;">
+      <div class="btn-group">
+        <button type="button" class="btn btn-default" style="width:250px; color:#000000;">Select Asignee</button>
+        <a href="javascript:;" style="color: #000000;" class="btn btn-default dropdown-toggle" (click)="showDD($event,globalFilterModal)" id="{{globalFilterModal.identifier}}"></a>
+        <ul class="dropdown-menu pull-right" click-outside [listening]="globalFilterModal.isListenOnBlur" [Ident]="globalFilterModal.identifier" (clickOutSide)="globalFilterClickOutSide($event)">
+            <!-- <form name="search">
+                <div class="mx-2 mb-2">
+                    <input type="search" #searchVal class="form-control form-control-sm" placeholder="Search..." aria-controls="data-table-default">
+                </div>
+            </form> -->
+            <div class="scroll_div" id="style-4">
+                <li class="container1">
+                  <label class="mb-0">
+                    <div style="float:left;">
+                      <input type="checkbox"/>
+                      <img src="assets/img/user/user-13.jpg" alt="" class="image-circle"/>
+                    </div>
+                    <div class="checkmark" style="float:left;">
+                      <div><span>Work Load</span>10 hrs</div>
+                      <div><span>Situations Resolved</span>180</div>
+                        <div><span>Technology</span>Angular</div>
+                        <div><span>Average Rating</span>4.2</div>
+                    </div>
+                   
+                </label>
+                    <!-- <label class="">fVal_.name
+                    <input type="checkbox" id="{{fvndx_}}" [(ngModel)]="fVal_.value"
+                        [checked]="fVal_.value"
+                        (change)="isAllSelected(globalFilterModal.customers,'masterSelectedCustomer')" />
+                    <span class="checkmark"
+                        [ngClass]="(fVal_.value) ?'bg-'+(themeConf_.selectedColor):''"></span>
+                </label> -->
+                </li>
+                <li class="container1">
+                  <label class="mb-0">
+                    <div style="float:left;">
+                      <input type="checkbox"/>
+                      <img src="assets/img/user/user-13.jpg" alt="" class="image-circle"/>
+                    </div>
+                    <div class="checkmark" style="float:left;">
+                      <div><span>Work Load</span>10 hrs</div>
+                      <div><span>Situations Resolved</span>180</div>
+                        <div><span>Technology</span>Angular</div>
+                        <div><span>Average Rating</span>4.2</div>
+                    </div>
+                </label>
+                </li>
+            </div>
+        </ul>
+    </div>
+      <!-- <div ngbDropdown class="d-inline-block">
+        <button class="btn btn-outline-primary" id="dropdownBasic1" ngbDropdownToggle>Toggle dropdown</button>
+        <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+          <button ngbDropdownItem>Action - 1</button>
+          <button ngbDropdownItem>Another Action</button>
+          <button ngbDropdownItem>Something else is here</button>
+        </div>
+        </div> -->
+
+      
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Assign</button>
+    </div>
+    
+  
+  </ng-template>
+  
+  
+ 
