@@ -86,20 +86,29 @@ export class ReportService {
     }
 
     // Start Ranjeet
-    public getTechnologyList() {
-        const url = "https://run.mocky.io/v3/e783f340-b4cf-4d4d-b344-af906eb6787c";
-        return this.http.get(url).map(res => <any>res);
-    }
+    // public getTechnologyList() {
+    //     // const url = "https://run.mocky.io/v3/e783f340-b4cf-4d4d-b344-af906eb6787c";
+    //     const url = environment._WEBGATEWAY_BASIC_URL_ + 'menu/kpi/get_technology_list';
+    //     return this.http.post(url, '').map(res => <any>res);
+    //     // return this.http.get(url).map(res => <any>res);
+    // }
 
-    public getTechnologyWidgetData() {
-        const url = "https://run.mocky.io/v3/2df0aaba-40a6-4f4a-9910-e2a392346957";
-        return this.http.get(url).map(res => <any>res);
-    }
+    // public loadReportList() {
+    //     const url = environment._WEBGATEWAY_BASIC_URL_ + 'menu/kpi/get_home_reports';
+    //     const fData: FormData = new FormData();
+    //     fData.append('tabId', '1');
+    //     return this.http.post(url, fData).map(res => <any>res);
+    // }
+
+    // public getTechnologyWidgetData() {
+    //     const url = "https://run.mocky.io/v3/2df0aaba-40a6-4f4a-9910-e2a392346957";
+    //     return this.http.get(url).map(res => <any>res);
+    // }
     
-    public getSummaryBlocksData() {
-        const url = "https://run.mocky.io/v3/a3607622-efe8-4910-b142-a9c2325ff59f";
-        return this.http.get(url).map(res => <any>res);
-    }
+    // public getSummaryBlocksData() {
+    //     const url = "https://run.mocky.io/v3/a3607622-efe8-4910-b142-a9c2325ff59f";
+    //     return this.http.get(url).map(res => <any>res);
+    // }
 
     // public technologyOverview() {
     //     const url = "https://run.mocky.io/v3/e783f340-b4cf-4d4d-b344-af906eb6787c";
@@ -396,8 +405,8 @@ export class ReportService {
     //start k
     public fetchCustomWidgetSummaryTabTicketData(urlMappingName, timeRange: any, globalFilters: any) {
         var url = environment._WEBGATEWAY_BASIC_URL_ + urlMappingName;
-        let formData: FormData = new FormData();
-        let customer = this.findSelectedCustomers(globalFilters['customers']);
+        const formData: FormData = new FormData();
+        const customer = this.findSelectedCustomers(globalFilters['customers']);
         if (customer.trim() !== '') {
             formData.append("customers", "" + this.findSelectedCustomers(globalFilters['customers']));
         }
@@ -415,11 +424,11 @@ export class ReportService {
     }
     public getCustomWidgetSummaryReportsDrillData(urlMappingName, param, timeRange, globalFilters) {
         var url = environment._WEBGATEWAY_BASIC_URL_ + urlMappingName;
-        let formData: FormData = new FormData();
+        const formData: FormData = new FormData();
 
         if (param.length > 0) {
             param.forEach(element => {
-                let keys = Object.keys(element);
+                const keys = Object.keys(element);
                 keys.forEach(key => {
                     formData.append(key == 'key' ? 'filterValue' : key, element[key]);
                 });
@@ -429,7 +438,7 @@ export class ReportService {
         formData.append("startDate", "" + timeRange['timestamp_start']);
         formData.append("endDate", "" + timeRange['timestamp_end']);
         formData.append("timeType", "" + timeRange['timeType']);
-        let customer = this.findSelectedCustomers(globalFilters['customers']);
+        const customer = this.findSelectedCustomers(globalFilters['customers']);
         if (customer.trim() !== '') {
             formData.append("customers", "" + this.findSelectedCustomers(globalFilters['customers']));
         }
@@ -463,7 +472,7 @@ export class ReportService {
 
     public getAllIncidentTickets(globalFilters, timeRange) {
         const url = environment._WEBGATEWAY_BASIC_URL_ + 'incident/kpi/get_all_tickets_between_duration';
-        let formData: FormData = new FormData();
+        const formData: FormData = new FormData();
         formData.append("startDate", "" + timeRange['timestamp_start']);
         formData.append("endDate", "" + timeRange['timestamp_end']);
         formData.append("timeType", "" + timeRange['timeType']);
@@ -472,7 +481,7 @@ export class ReportService {
     // schedule download report
     scheduleDownloadReport(scheduleObj) {
         const url = environment._WEBGATEWAY_BASIC_URL_ + 'scheduleNow';
-        let formdData: FormData = new FormData();
+        const formdData: FormData = new FormData();
         Object.keys(scheduleObj).forEach(key => {
             formdData.append('' + key, scheduleObj[key]);
         })
@@ -481,7 +490,7 @@ export class ReportService {
     //  download now report
     downloadNowReport(downloadObj): Observable<Blob> {
         const url = environment._WEBGATEWAY_BASIC_URL_ + 'downloadNow';
-        let formdData: FormData = new FormData();
+        const formdData: FormData = new FormData();
         Object.keys(downloadObj).forEach(key => {
             formdData.append('' + key, downloadObj[key]);
         })
@@ -504,7 +513,7 @@ export class ReportService {
 
     public getSMSHistory(globalFilters, timeRange) {
         const url = environment._WEBGATEWAY_BASIC_URL_ + 'getSMSHistory';
-        let formData: FormData = new FormData();
+        const formData: FormData = new FormData();
         formData.append("startDate", "" + timeRange['timestamp_start']);
         formData.append("endDate", "" + timeRange['timestamp_end']);
         formData.append("timeType", "" + timeRange['timeType']);

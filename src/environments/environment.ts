@@ -4,8 +4,7 @@
 
 export const environment = {
   production: false,
-  _WEBGATEWAY_BASIC_URL_:  'http://cats.sanral.intra/API/', // 'http://172.27.63.59:7070/', //  'http://cats.sanral.intra/API/', //
-  // 'http://172.27.63.59:7070/', // 'http://172.20.8.120:8089/', // 'http://172.27.63.61:8089/',
+  _WEBGATEWAY_BASIC_URL_:  'http://172.27.63.182:8089/',
   _APACHEDEPLOYMENTLOCATION_URL: 'http://172.27.63.163:4200/#/',
   _NMS_URL: 'http://172.27.64.61:5050/',
   _EVENT_AGGREGATOR_LINK_URL: 'http://172.27.64.61:4200/catsea/#/dashboard/summary',

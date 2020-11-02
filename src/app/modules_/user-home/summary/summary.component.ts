@@ -12,6 +12,7 @@ import { TimeFilterService } from 'src/app/shared_/time-filter/time-filter.servi
 import { PerformanceService } from 'src/app/services_/performance.services';
 import { AuthServices } from 'src/app/modules_/auth/auth.services';
 import { any } from '@amcharts/amcharts4/.internal/core/utils/Array';
+import { SummaryService } from 'src/app/services_/summary.services';
 
 declare var moment: any;
 
@@ -22,6 +23,29 @@ declare var moment: any;
 })
 export class SummaryComponent implements OnInit, OnDestroy, AfterViewInit {
 
+  constructor(
+    private performanceService_: PerformanceService,
+    private modalService: NgbModal,
+    private route: ActivatedRoute,
+    private router: Router,
+    // private reportService_: ReportService,
+    private sharedServices_: SharedServices,
+    private timeServices_: TimeFilterService,
+    private authServices_: AuthServices,
+    private summaryService: SummaryService
+  ) {
+    this.timeServicesSubsc$ = this.timeServices_.getTimeFilterSubscriber().subscribe(obj => {
+      this.onTsModified(obj);
+    });
+
+    // this.userTabSubscr_ = this.reportService_.getUserTabsSubscriber().subscribe(tabs => {
+    //   this.usrAllTabs = tabs;
+    // });
+
+    // this.reportService_.getExistingTabs();
+  }
+
+
   flagIsReportLoading = false;
   flagIsChartTypeLoading = false;
   flagIsColumnSpanLoading = false;
@@ -31,7 +55,7 @@ export class SummaryComponent implements OnInit, OnDestroy, AfterViewInit {
   situation_data: any[] = [];
   technologyList: any;
   technologyWidgetData: any;
-  summaryBlocks:any = [];
+  summaryBlocks: any = [];
 
   dateFilter_timeType = 'td';
   dateFilter_startDate = moment().startOf('day');  // moment().subtract(1, 'hours');
@@ -108,7 +132,6 @@ export class SummaryComponent implements OnInit, OnDestroy, AfterViewInit {
     modifyCustomer: [],
 
     masterSelectedAsigneeGroup: false,
-
     asd: [],
     editAsd: [],
     modifyAsd: [],
@@ -121,6 +144,12 @@ export class SummaryComponent implements OnInit, OnDestroy, AfterViewInit {
     modifyNonASD: [],
     isListenOnBlurNONASD: false,
     masterSelectedNONASD: false,
+
+
+    masterSelectedNMS: false,
+    nms: [],
+    editNMS: [],
+    modifyNMS: [],
 
     timeType: 'cu'
   };
@@ -187,26 +216,8 @@ export class SummaryComponent implements OnInit, OnDestroy, AfterViewInit {
   };
   modalReferenceAddReport: any;
 
-  constructor(
-    private performanceService_: PerformanceService,
-    private modalService: NgbModal,
-    private route: ActivatedRoute,
-    private router: Router,
-    private reportService_: ReportService,
-    private sharedServices_: SharedServices,
-    private timeServices_: TimeFilterService,
-    private authServices_: AuthServices
-  ) {
-    this.timeServicesSubsc$ = this.timeServices_.getTimeFilterSubscriber().subscribe(obj => {
-      this.onTsModified(obj);
-    });
 
-    this.userTabSubscr_ = this.reportService_.getUserTabsSubscriber().subscribe(tabs => {
-      this.usrAllTabs = tabs;
-    });
-
-    this.reportService_.getExistingTabs();
-  }
+  visibleIndex = -1;
 
   onGlobalFilterToggle() {
     $('.gf_box').animate({
@@ -225,7 +236,11 @@ export class SummaryComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
 
-  globalFilterClickOutSide(event) {
+  /**
+   * Ramji : 03-11-2020
+   * @param event 
+   */
+  globalFilterClickOutSideNMS(event) {
     const identifir = event.Identifier;
     this.globalFilterModal.isListenOnBlur = false;
     document.getElementById(identifir).click();
@@ -257,8 +272,7 @@ export class SummaryComponent implements OnInit, OnDestroy, AfterViewInit {
     setTimeout(() => {
       this.compareUserTabGlobalFilterModification();
     }, 1000);
-  };
-
+  }
 
   updateUserTabFilters() {
     this.showMainLoader = true;
@@ -412,7 +426,13 @@ export class SummaryComponent implements OnInit, OnDestroy, AfterViewInit {
     this.globalFilterModal.timeType = info.timeType.value;
   }
 
-  showDD(event, obj_) {
+
+  /**
+   * Ramji : 03-11-2020
+   * @param event 
+   * @param obj_ 
+   */
+  showDDNMS(event, obj_) {
     setTimeout(function () {
       const element_: Element = (event.target as Element);
       const elementDD: Element = element_.nextElementSibling;
@@ -510,104 +530,46 @@ export class SummaryComponent implements OnInit, OnDestroy, AfterViewInit {
     return (diff >= 300) ? ClientY : (ClientY - (300 - diff));
   }
 
-  onRightClickDetection(event) {
-    this.TootTipStr_.top = this.calTooltipCordY(event.screenY, event.clientY);
-    this.TootTipStr_.left = this.calTooltipCordX(event.clientX);
-    this.TootTipStr_.reportId = event.reportId;
-    this.TootTipStr_.reportSequence = event.reportSequence;
-    this.TootTipStr_.open = false;
-    const report: Report = this.userTab_.reportUrl[event.reportSequence];
-    this.TootTipStr_.ddItems = report.isMultilevelDrill ? report.mlChartData.drill : report.chartData.drill;
-
-    this.TootTipStr_.clickedData = event.clickedData ? event.clickedData : [];
-    if (this.TootTipStr_.ddItems.length > 0) {
-      this.TootTipStr_.open = true;
-    }
-
-  }
-
-  onLeftClickDetection(event) {
-    const cordinates_ = {
-      left: event.clientX,
-      top: event.clientY,
-      open: true
-    };
-
-    //#region:resetdrillData
-    this.reportChartDrillDataStr.header = [];
-    this.reportChartDrillDataStr.data = [];
-    this.reportChartDrillDataStr.isPanelLoading = false;
-    //#region:resetdrillData
-
-    const report: Report = this.userTab_.reportUrl[event.reportSequence];
-
-    let dataUrl: String = '';
-    if (report.isMultilevelDrill) {
-      dataUrl = report.mlChartData.reportDataInfo ? report.mlChartData.reportDataInfo.url : '';
-      this.reportChartDrillDataStr.hTitle = report.mlChartData.name;
-    } else {
-      dataUrl = report.chartData.reportDataInfo ? report.chartData.reportDataInfo.url : '';
-      this.reportChartDrillDataStr.hTitle = report.title.toString();
-    }
-
-    this.reportChartDrillDataStr.url = '' + dataUrl; if (dataUrl && dataUrl !== '') {
-      this.open(this.modelDrillChartData, 'lg');
-      this.reportChartDrillDataStr.isPanelLoading = true;
-      const clickedData = event.clickedData ? event.clickedData : [];
-      if (!report.isMultilevelDrill) {
-        this.reportService_.getDrillData(dataUrl, clickedData, report.reportId,
-          this.selectedTimeRange, this.globalFilterModal).subscribe(res => {
-            if (res['status'] == true) {
-              this.reportChartDrillDataStr.header = []; // res.data.charts.header;
-              this.reportChartDrillDataStr.data = res.data.charts.data;
-              this.reportChartDrillDataStr.isPanelLoading = false;
-              $('#PanelTestDrillData').click();
-            } else {
-              this.reportChartDrillDataStr.isPanelLoading = false;
-              swal('', 'Connection Time Out ', 'error');
-            }
-          });
-      } else {
-        const drillDownId = report.mlChartData.drillDownId;
-        const drillFilterValue = report.mlChartData.lastDrillFilterValue;
-        this.reportService_.getDrillDataLeftClick(dataUrl, clickedData, report.reportId,
-          drillDownId, drillFilterValue, this.selectedTimeRange, this.globalFilterModal).subscribe(res => {
-            if (res.status) {
-              this.reportChartDrillDataStr.header = res.data.charts.header;
-              this.reportChartDrillDataStr.data = res.data.charts.data;
-              this.reportChartDrillDataStr.isPanelLoading = false;
-              $('#PanelTestDrillData').click();
-            } else {
-              this.reportChartDrillDataStr.isPanelLoading = false;
-            }
-          });
-      }
-
-    } else {
-    }
-
-  }
 
   ngOnInit() {
     this.getHeaders();
     this.themeConf_ = themeConf_;
-    // this.loadGFCustomers();
-    this.loadCategories();
-    this.loadInitData();
+    this.loadNMSList();
+    this.loadTechnologyList();
     this.loadSummaryBlocks();
-    this.reportService_.getTechnologyList().subscribe(resp => {
+  }
+
+
+
+  public loadNMSList() {
+    this.showMainLoader = true;
+    this.summaryService.getNMSList().subscribe(res => {
+      if (res['status'] == true) {
+        this.bindUserTabFilterData(res['data']);
+        this.showMainLoader = false;
+      }
+    }, err => {
+
+    });
+  }
+
+  public loadTechnologyList() {
+    this.showMainLoader = true;
+    this.summaryService.getTechnologyList().subscribe(resp => {
       if (resp.status) {
         this.technologyList = resp.data;
         this.loadTechnologyWidget();
       }
     });
-
-    // let loggedUserData = JSON.parse(this.authServices_.convertToBinary(localStorage.getItem('loggedUser')));
-    // this.loggedUserName = loggedUserData ? loggedUserData.name : '';
   }
 
+  public loadTechWidgetList() {
+
+  }
+
+
   public loadTechnologyWidget() {
-    this.reportService_.getTechnologyWidgetData().subscribe(resp => {
+    this.summaryService.getTechnologyWidgetData().subscribe(resp => {
       if (resp.status) {
         this.technologyWidgetData = resp.data;
         this.technologyList.forEach((obj_, indx) => {
@@ -620,15 +582,12 @@ export class SummaryComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   public loadSummaryBlocks() {
-    this.reportService_.getSummaryBlocksData().subscribe(resp => {
+    this.summaryService.getSummaryBlocksData().subscribe(resp => {
       if (resp.status) {
         this.summaryBlocks.push(resp.data);
       }
     });
   }
-
-
-  visibleIndex = -1;
   public techWidgetBoxToggle(ind) {
     if (this.visibleIndex === ind) {
       this.visibleIndex = -1;
@@ -663,10 +622,10 @@ export class SummaryComponent implements OnInit, OnDestroy, AfterViewInit {
 
   }
 
-  public getFilters(reportObj_: Report, index) {
-    this.reportService_.getReportFilter(reportObj_.reportId).subscribe(res =>
-      this.userTab_.reportUrl[index].filters = this.bindReportFilters(((res.status) ? res.data : []), this.userTab_.reportUrl[index]));
-  }
+  // public getFilters(reportObj_: Report, index) {
+  //   this.reportService_.getReportFilter(reportObj_.reportId).subscribe(res =>
+  //     this.userTab_.reportUrl[index].filters = this.bindReportFilters(((res.status) ? res.data : []), this.userTab_.reportUrl[index]));
+  // }
 
   bindReportFilters(filtersArr_: any[], report: Report) {
     report.filters = [];
@@ -749,89 +708,52 @@ export class SummaryComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
 
-  /**
-   * @param report_ report object where filters applied
-   * @param filter_ filter objects
-   * @param rndx report index
-   */
-  public submitFilter(report_: Report, filter_: Array<Filter>, rndx) {
-    const rep: Report = this.compareFilterModification(report_);
-    this.userTab_.reportUrl[rndx].isChartLoaded = false;
-    this.reportService_.updateReportFilter(report_.reportId, rep.filters).subscribe(res => {
-      if (res.status) {
-        this.userTab_.reportUrl[rndx].isChartLoaded = true;
-        // swal('', 'Filter Updated Successfully', 'success');
+  // /**
+  //  * @param report_ report object where filters applied
+  //  * @param filter_ filter objects
+  //  * @param rndx report index
+  //  */
+  // public submitFilter(report_: Report, filter_: Array<Filter>, rndx) {
+  //   const rep: Report = this.compareFilterModification(report_);
+  //   this.userTab_.reportUrl[rndx].isChartLoaded = false;
+  //   this.reportService_.updateReportFilter(report_.reportId, rep.filters).subscribe(res => {
+  //     if (res.status) {
+  //       this.userTab_.reportUrl[rndx].isChartLoaded = true;
+  //       // swal('', 'Filter Updated Successfully', 'success');
 
-        swal({
-          position: 'center',
-          type: 'success',
-          title: '',
-          titleText: 'Filter Updated Successfully',
-          showConfirmButton: false,
-          timer: 1000
-        });
+  //       swal({
+  //         position: 'center',
+  //         type: 'success',
+  //         title: '',
+  //         titleText: 'Filter Updated Successfully',
+  //         showConfirmButton: false,
+  //         timer: 1000
+  //       });
 
 
-        this.makeCallToFetchReportData(report_, rndx);
-        const elm = document.getElementById('chart-report-' + rndx);
-        elm.click();
-      } else {
-        this.userTab_.reportUrl[rndx].isChartLoaded = true;
-      }
-    }
-      , err => {
+  //       this.makeCallToFetchReportData(report_, rndx);
+  //       const elm = document.getElementById('chart-report-' + rndx);
+  //       elm.click();
+  //     } else {
+  //       this.userTab_.reportUrl[rndx].isChartLoaded = true;
+  //     }
+  //   }
+  //     , err => {
 
-      });
-  }
+  //     });
+  // }
 
   public validateRouteParam() {
-    const routeParamTabId = this.route.snapshot.params['tabId'];
-    const reg = new RegExp('^[0-9]*$');
-    if (routeParamTabId && (routeParamTabId != '' || routeParamTabId != undefined) && reg.test(routeParamTabId)) {
-      // recoveryTkn available
-      this.selectedTabId = parseInt(routeParamTabId);
-      let isTabExistTemp: Boolean = false;
-      for (let i = 0; ((i < this.usrAllTabs.length) && (!isTabExistTemp)); i++) {
-        if (this.usrAllTabs[i].id == this.selectedTabId) {
-          isTabExistTemp = true;
-          this.selectedTabName = this.usrAllTabs[i].name;
-          this.userTab_ = this.usrAllTabs[i];
-
-          this.userTab_.reportUrl = this.sharedServices_.sortTabReportsByColSpan(this.userTab_.reportUrl);
-
-        }
-      }
-      if (isTabExistTemp) {
-        // this.fetchReportsData();
-        // this.fetchReportSummaryData();
-        this.loadUserTabFilter();
-      } else {
-        // Invalid Report ID ......need to Redirect it to 404 PAGE
-        return this.router.navigate([this.urlHome]);
-      }
-    } else {
-      this.router.navigate(['/403']);
-    }
+    // this.loadUserTabFilter();
   }
 
   public fetchReportSummaryData() {
     for (let i = 0; i < this.userTab_.summarReportUrl.length; i++) {
-      this.makeCallFetchSummaryData(this.userTab_.summarReportUrl[i], i);
+      // this.makeCallFetchSummaryData(this.userTab_.summarReportUrl[i], i);
     }
   }
 
-  loadUserTabFilter() {
-    this.showMainLoader = true;
-    this.reportService_.loadUserTabFilter(this.selectedTabId).subscribe(res => {
-      if (res['status'] == true) {
-        // const userTabFilter: UserTabFilterVM = new UserTabFilterVM(res['data']);
-        this.bindUserTabFilterData(res['data']);
-        this.showMainLoader = false;
-      }
-    }, err => {
 
-    });
-  }
   situationConains(name) {
     if (this.situation_data !== undefined) {
       for (var i = 0; i < this.situation_data.length; i++) {
@@ -848,33 +770,41 @@ export class SummaryComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   /**
+   * Ramji : 03-11-2020
    *  This f/n will prepare global filter model object
    * @param obj  : filter object
    */
   bindUserTabFilterData(obj: any) {
-    if (obj['customers']) {
-      const custSort_ = this.sharedServices_.sortByKey(obj['customers'], 'name');
-      this.globalFilterModal.customers = this.deepClone(custSort_);
-      this.globalFilterModal.editCustomers = this.deepClone(custSort_);
-      this.globalFilterModal.modifyCustomer = this.deepClone(custSort_);
-    }
-    if (obj['asd']) {
-      const asdSort_ = this.sharedServices_.sortByKey(obj['asd'], 'name');
-      this.globalFilterModal.asd = this.deepClone(asdSort_);
-      this.globalFilterModal.editAsd = this.deepClone(asdSort_);
-      this.globalFilterModal.modifyAsd = this.deepClone(asdSort_);
-    }
-    if (obj['non_asd']) {
-      const asdSort_ = this.sharedServices_.sortByKey(obj['non_asd'], 'name');
-      this.globalFilterModal.nonAsd = this.deepClone(asdSort_);
-      this.globalFilterModal.editNonASD = this.deepClone(asdSort_);
-      this.globalFilterModal.modifyNonASD = this.deepClone(asdSort_);
+    // if (obj['customers']) {
+    //   const custSort_ = this.sharedServices_.sortByKey(obj['customers'], 'name');
+    //   this.globalFilterModal.customers = this.deepClone(custSort_);
+    //   this.globalFilterModal.editCustomers = this.deepClone(custSort_);
+    //   this.globalFilterModal.modifyCustomer = this.deepClone(custSort_);
+    // }
+    // if (obj['asd']) {
+    //   const asdSort_ = this.sharedServices_.sortByKey(obj['asd'], 'name');
+    //   this.globalFilterModal.asd = this.deepClone(asdSort_);
+    //   this.globalFilterModal.editAsd = this.deepClone(asdSort_);
+    //   this.globalFilterModal.modifyAsd = this.deepClone(asdSort_);
+    // }
+    // if (obj['non_asd']) {
+    //   const asdSort_ = this.sharedServices_.sortByKey(obj['non_asd'], 'name');
+    //   this.globalFilterModal.nonAsd = this.deepClone(asdSort_);
+    //   this.globalFilterModal.editNonASD = this.deepClone(asdSort_);
+    //   this.globalFilterModal.modifyNonASD = this.deepClone(asdSort_);
+    // }
+
+    if (obj['nms']) {
+      const asdSort_ = this.sharedServices_.sortByKey(obj['nms'], 'name');
+      this.globalFilterModal.nms = this.deepClone(asdSort_);
+      this.globalFilterModal.editNMS = this.deepClone(asdSort_);
+      this.globalFilterModal.modifyNMS = this.deepClone(asdSort_);
     }
     this.globalFilterModal.timeType = obj['time_type'] ? obj['time_type'] : 'cu';
 
     // TODO : make hit to fetch all reports data.
-    this.fetchReportsData();
-    this.fetchReportSummaryData();
+    // this.fetchReportsData();
+    // this.fetchReportSummaryData();
   }
 
 
@@ -891,27 +821,27 @@ export class SummaryComponent implements OnInit, OnDestroy, AfterViewInit {
     return newArray;
   }
 
-  public makeCallFetchSummaryData(obj: TabSummary, index) {
-    this.userTab_.summarReportUrl[index].isSummaryLoaded = false;
-    const urlToCall_ = this.userTab_.summarReportUrl[index].url;
-    this.reportService_.getSummaryDataByURL(urlToCall_, index,
-      this.userTab_.summarReportUrl[index].summaryReportId,
-      this.globalFilterModal).subscribe(res => {
-        if (res.status) {
-          const t_data = (typeof res.data == 'object') ? res['data']['all'] : res.data;
-          this.userTab_.summarReportUrl[index].summaryData = t_data; // res.data;
-          // this.userTab_.summarReportUrl[index].summaryData = res.data;
-          this.userTab_.summarReportUrl[index].isSummaryLoaded = true;
-          this.userTab_.summarReportUrl[index].ticketsUrl = res['ticketsUrl'] ? res['ticketsUrl'] : '';
-        }
-      }, err => {
+  // public makeCallFetchSummaryData(obj: TabSummary, index) {
+  //   this.userTab_.summarReportUrl[index].isSummaryLoaded = false;
+  //   const urlToCall_ = this.userTab_.summarReportUrl[index].url;
+  //   this.reportService_.getSummaryDataByURL(urlToCall_, index,
+  //     this.userTab_.summarReportUrl[index].summaryReportId,
+  //     this.globalFilterModal).subscribe(res => {
+  //       if (res.status) {
+  //         const t_data = (typeof res.data == 'object') ? res['data']['all'] : res.data;
+  //         this.userTab_.summarReportUrl[index].summaryData = t_data; // res.data;
+  //         // this.userTab_.summarReportUrl[index].summaryData = res.data;
+  //         this.userTab_.summarReportUrl[index].isSummaryLoaded = true;
+  //         this.userTab_.summarReportUrl[index].ticketsUrl = res['ticketsUrl'] ? res['ticketsUrl'] : '';
+  //       }
+  //     }, err => {
 
-      });
-  }
+  //     });
+  // }
 
   public fetchReportsData() {
     for (let i = 0; i < this.userTab_.reportUrl.length; i++) {
-      this.makeCallToFetchReportData(this.userTab_.reportUrl[i], i);
+      // this.makeCallToFetchReportData(this.userTab_.reportUrl[i], i);
     }
 
   }
@@ -933,28 +863,28 @@ export class SummaryComponent implements OnInit, OnDestroy, AfterViewInit {
     // return report.isMultilevelDrill ? ['back', 'print', 'expand', 'reload', 'collapse', 'remove'] : ['print', 'expand', 'reload', 'collapse', 'remove'];
   }
 
-  public makeCallToFetchReportData(obj: Report, index) {
-    this.userTab_.reportUrl[index].isChartLoaded = false;
-    const urlToCall_ = this.userTab_.reportUrl[index].url;
-    this.reportService_.getReportChartDataByURL(urlToCall_, index,
-      this.userTab_.reportUrl[index].reportId, this.selectedTimeRange,
-      this.globalFilterModal).subscribe(res => {
-        if (res.status) {
-          this.userTab_.reportUrl[index].filters = this.bindReportFilters(res.data.filters, this.userTab_.reportUrl[index]);
-          const keySort_ = res.data.charts.config['sortKey'];
-          res.data.charts.data = this.sharedServices_.chartDataSortByKey(res.data.charts.data, keySort_);
-          this.userTab_.reportUrl[index].chartData = res.data.charts;
-          this.userTab_.reportUrl[index].chartData.drill = res.data.drill;
-          this.userTab_.reportUrl[index].chartData.reportDataInfo = res.reportDataInfo;
-          this.userTab_.reportUrl[index].isMultilevelDrill = false;
-          this.userTab_.reportUrl[index].isChartLoaded = true;
-          this.userTab_.reportUrl[index].repHeaders = ',Time Range: ' + this.performanceService_.timeMap[this.selectedTimeRange.timeType] + ',Start Date: ' + moment(new Date(this.selectedTimeRange.timestamp_start)).format("DD-MM-YYYY h:mm:ss") + ',End Date: ' + moment(new Date(this.selectedTimeRange.timestamp_end)).format("DD-MM-YYYY h:mm:ss");
-          this.userTab_.reportUrl = this.sharedServices_.sortTabReportsByColSpan(this.userTab_.reportUrl);
-        }
-      }, err => {
-        // TODO : log error here or send mail
-      });
-  }
+  // public makeCallToFetchReportData(obj: Report, index) {
+  //   this.userTab_.reportUrl[index].isChartLoaded = false;
+  //   const urlToCall_ = this.userTab_.reportUrl[index].url;
+  //   this.reportService_.getReportChartDataByURL(urlToCall_, index,
+  //     this.userTab_.reportUrl[index].reportId, this.selectedTimeRange,
+  //     this.globalFilterModal).subscribe(res => {
+  //       if (res.status) {
+  //         this.userTab_.reportUrl[index].filters = this.bindReportFilters(res.data.filters, this.userTab_.reportUrl[index]);
+  //         const keySort_ = res.data.charts.config['sortKey'];
+  //         res.data.charts.data = this.sharedServices_.chartDataSortByKey(res.data.charts.data, keySort_);
+  //         this.userTab_.reportUrl[index].chartData = res.data.charts;
+  //         this.userTab_.reportUrl[index].chartData.drill = res.data.drill;
+  //         this.userTab_.reportUrl[index].chartData.reportDataInfo = res.reportDataInfo;
+  //         this.userTab_.reportUrl[index].isMultilevelDrill = false;
+  //         this.userTab_.reportUrl[index].isChartLoaded = true;
+  //         this.userTab_.reportUrl[index].repHeaders = ',Time Range: ' + this.performanceService_.timeMap[this.selectedTimeRange.timeType] + ',Start Date: ' + moment(new Date(this.selectedTimeRange.timestamp_start)).format("DD-MM-YYYY h:mm:ss") + ',End Date: ' + moment(new Date(this.selectedTimeRange.timestamp_end)).format("DD-MM-YYYY h:mm:ss");
+  //         this.userTab_.reportUrl = this.sharedServices_.sortTabReportsByColSpan(this.userTab_.reportUrl);
+  //       }
+  //     }, err => {
+  //       // TODO : log error here or send mail
+  //     });
+  // }
   open(content, size) {
     this.TootTipStr_.open = false;
     this.modalReferenceAddReport = this.modalService.open(content,
@@ -996,7 +926,7 @@ export class SummaryComponent implements OnInit, OnDestroy, AfterViewInit {
     this.modAddReports_.charts = [];
 
     if (categoryId && categoryId != '') {
-      this.loadCategoryReports(categoryId);
+      // this.loadCategoryReports(categoryId);
     }
   }
 
@@ -1005,7 +935,7 @@ export class SummaryComponent implements OnInit, OnDestroy, AfterViewInit {
     this.modAddSummary_.summaryReport = [];
 
     if (categoryId && categoryId != '') {
-      this.loadSummaryCategoryReports(categoryId);
+      // this.loadSummaryCategoryReports(categoryId);
     }
   }
 
@@ -1015,7 +945,7 @@ export class SummaryComponent implements OnInit, OnDestroy, AfterViewInit {
     this.modAddReports_.selChartType = '';
     this.modAddReports_.charts = [];
     if (reportId && reportId != '') {
-      this.loadReportCharts(reportId);
+      // this.loadReportCharts(reportId);
     }
 
   }
@@ -1024,19 +954,19 @@ export class SummaryComponent implements OnInit, OnDestroy, AfterViewInit {
 
   }
 
-  loadReportCharts(reportId) {
-    this.flagIsChartTypeLoading = true;
-    this.reportService_.fetchReportChart(reportId).subscribe(res => {
-      if (res.status) {
-        this.flagIsChartTypeLoading = false;
-        this.modAddReports_.charts = res.data.chart;
-        this.modAddReports_.colspan = this.modAddReports_.colspan_defaults;
-        // res.data.colspan.length > 0 ? res.data.colspan : this.modAddReports_.colspan_defaults;
-      }
-    }, err => {
+  // loadReportCharts(reportId) {
+  //   this.flagIsChartTypeLoading = true;
+  //   this.reportService_.fetchReportChart(reportId).subscribe(res => {
+  //     if (res.status) {
+  //       this.flagIsChartTypeLoading = false;
+  //       this.modAddReports_.charts = res.data.chart;
+  //       this.modAddReports_.colspan = this.modAddReports_.colspan_defaults;
+  //       // res.data.colspan.length > 0 ? res.data.colspan : this.modAddReports_.colspan_defaults;
+  //     }
+  //   }, err => {
 
-    });
-  }
+  //   });
+  // }
 
   validateAddReportTab() {
     if (('' + this.modAddReports_.selCategory).trim() == '') {
@@ -1063,39 +993,39 @@ export class SummaryComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
 
-  addReportToTab() {
-    if (this.validateAddReportTab()) {
-      this.modalReferenceAddReport.close();
-      const objAddReport_ = {
-        'chartId': this.modAddReports_.selChartType,
-        'masterReportId': this.modAddReports_.selReport,
-        'tabId': this.selectedTabId,
-        'reportName': this.modAddReports_.selReportName,
-        'colSpan': this.modAddReports_.selCoumnSpan
-      };
-      this.reportService_.addReportToTab(objAddReport_).subscribe(res => {
-        if (res.status) {
-          swal({
-            position: 'center',
-            type: 'success',
-            title: this.modAddReports_.selReportName,
-            titleText: 'Report Added Successfully',
-            showConfirmButton: false,
-            timer: 1000
-          });
+  // addReportToTab() {
+  //   if (this.validateAddReportTab()) {
+  //     this.modalReferenceAddReport.close();
+  //     const objAddReport_ = {
+  //       'chartId': this.modAddReports_.selChartType,
+  //       'masterReportId': this.modAddReports_.selReport,
+  //       'tabId': this.selectedTabId,
+  //       'reportName': this.modAddReports_.selReportName,
+  //       'colSpan': this.modAddReports_.selCoumnSpan
+  //     };
+  //     this.reportService_.addReportToTab(objAddReport_).subscribe(res => {
+  //       if (res.status) {
+  //         swal({
+  //           position: 'center',
+  //           type: 'success',
+  //           title: this.modAddReports_.selReportName,
+  //           titleText: 'Report Added Successfully',
+  //           showConfirmButton: false,
+  //           timer: 1000
+  //         });
 
-          const report_: Report = new Report(res.data);
-          this.userTab_.reportUrl[this.userTab_.reportUrl.length] = report_;
-          this.makeCallToFetchReportData(report_, (this.userTab_.reportUrl.length - 1));
-          this.clearModalAddReports();
-          this.reportService_.notifyTabChangesToServices(this.userTab_.id, this.userTab_.reportUrl);
-        }
+  //         const report_: Report = new Report(res.data);
+  //         this.userTab_.reportUrl[this.userTab_.reportUrl.length] = report_;
+  //         this.makeCallToFetchReportData(report_, (this.userTab_.reportUrl.length - 1));
+  //         this.clearModalAddReports();
+  //         this.reportService_.notifyTabChangesToServices(this.userTab_.id, this.userTab_.reportUrl);
+  //       }
 
-      }, err => {
+  //     }, err => {
 
-      });
-    }
-  }
+  //     });
+  //   }
+  // }
 
   validateAddSummaryTab() {
     if (('' + this.modAddSummary_.selSummaryCategory).trim() == '') {
@@ -1108,68 +1038,68 @@ export class SummaryComponent implements OnInit, OnDestroy, AfterViewInit {
     return true;
   }
 
-  addSummaryToTab() {
-    if (this.validateAddSummaryTab()) {
-      this.summaryCollapsed = false;
-      this.modalReferenceAddReport.close();
-      const objAddReport_ = {
-        'reportName': this.modAddSummary_.selSummaryName,
-        'masterSummaryReportId': this.modAddSummary_.selSummaryReport,
-        'tabId': this.selectedTabId
-      };
-      this.reportService_.addSummaryToTab(objAddReport_).subscribe(res => {
-        if (res.status) {
-          const _resData = res.data;
-          swal({
-            position: 'center',
-            type: 'success',
-            title: this.modAddSummary_.selSummaryName,
-            titleText: 'Summary Added Successfully',
-            showConfirmButton: false,
-            timer: 1000
-          });
-          const summary: TabSummary = new TabSummary(_resData);
-          this.userTab_.summarReportUrl[this.userTab_.summarReportUrl.length] = summary;
-          this.makeCallFetchSummaryData(summary, (this.userTab_.summarReportUrl.length - 1));
-        }
-      }, err => {
-      });
-      this.clearModalAddSummary();
-    }
-  }
+  // addSummaryToTab() {
+  //   if (this.validateAddSummaryTab()) {
+  //     this.summaryCollapsed = false;
+  //     this.modalReferenceAddReport.close();
+  //     const objAddReport_ = {
+  //       'reportName': this.modAddSummary_.selSummaryName,
+  //       'masterSummaryReportId': this.modAddSummary_.selSummaryReport,
+  //       'tabId': this.selectedTabId
+  //     };
+  //     this.reportService_.addSummaryToTab(objAddReport_).subscribe(res => {
+  //       if (res.status) {
+  //         const _resData = res.data;
+  //         swal({
+  //           position: 'center',
+  //           type: 'success',
+  //           title: this.modAddSummary_.selSummaryName,
+  //           titleText: 'Summary Added Successfully',
+  //           showConfirmButton: false,
+  //           timer: 1000
+  //         });
+  //         const summary: TabSummary = new TabSummary(_resData);
+  //         this.userTab_.summarReportUrl[this.userTab_.summarReportUrl.length] = summary;
+  //         this.makeCallFetchSummaryData(summary, (this.userTab_.summarReportUrl.length - 1));
+  //       }
+  //     }, err => {
+  //     });
+  //     this.clearModalAddSummary();
+  //   }
+  // }
 
-  loadCategoryReports(categoryId) {
-    this.flagIsReportLoading = true;
-    this.reportService_.fetchCategoryReports(categoryId).subscribe(res => {
-      if (res.status) {
-        this.flagIsReportLoading = false;
-        this.modAddReports_.reports = res.data;
-      }
-    }, err => {
+  // loadCategoryReports(categoryId) {
+  //   this.flagIsReportLoading = true;
+  //   this.reportService_.fetchCategoryReports(categoryId).subscribe(res => {
+  //     if (res.status) {
+  //       this.flagIsReportLoading = false;
+  //       this.modAddReports_.reports = res.data;
+  //     }
+  //   }, err => {
 
-    });
-  }
+  //   });
+  // }
 
-  loadSummaryCategoryReports(categoryId) {
-    this.reportService_.fetchSummaryCategoryReports(categoryId).subscribe(res => {
-      if (res.status) {
-        this.modAddSummary_.summaryReport = res.data;
-      }
-    }, err => {
+  // loadSummaryCategoryReports(categoryId) {
+  //   this.reportService_.fetchSummaryCategoryReports(categoryId).subscribe(res => {
+  //     if (res.status) {
+  //       this.modAddSummary_.summaryReport = res.data;
+  //     }
+  //   }, err => {
 
-    });
-  }
+  //   });
+  // }
 
-  loadCategories() {
-    this.reportService_.fetchCategories().subscribe(res => {
-      if (res.status) {
-        this.modAddReports_.categories = res.data;
-        this.modAddSummary_.summaryCategory = res.data;
-      }
-    }, err => {
+  // loadCategories() {
+  //   this.reportService_.fetchCategories().subscribe(res => {
+  //     if (res.status) {
+  //       this.modAddReports_.categories = res.data;
+  //       this.modAddSummary_.summaryCategory = res.data;
+  //     }
+  //   }, err => {
 
-    });
-  }
+  //   });
+  // }
 
 
   /**
@@ -1189,117 +1119,118 @@ export class SummaryComponent implements OnInit, OnDestroy, AfterViewInit {
   /**
      * Print Angular Document With Dynamic Content
      */
-  public printPanelChart(event) {
-    this.currentDate = moment(new Date()).format("DD-MM-YYYY h:mm:ss");
-    const reportNdx_ = event.modifiedObj.index;
-    const isMultilevelDrill = event.modifiedObj.report.isMultilevelDrill;
-    const reportTitle = event.modifiedObj.report.title;
-    const mlChartDataTitle = event.modifiedObj.report.mlChartData.name;
+  // public printPanelChart(event) {
+  //   this.currentDate = moment(new Date()).format("DD-MM-YYYY h:mm:ss");
+  //   const reportNdx_ = event.modifiedObj.index;
+  //   const isMultilevelDrill = event.modifiedObj.report.isMultilevelDrill;
+  //   const reportTitle = event.modifiedObj.report.title;
+  //   const mlChartDataTitle = event.modifiedObj.report.mlChartData.name;
 
-    let tabfullwidth = false;
-    const tabIndex = event.modifiedObj.index;
-    if ($('.printChartTab' + tabIndex).hasClass('col-md-6')) {
-      $('.printChartTab' + tabIndex).removeClass('col-md-6').addClass('col-md-12');
-      tabfullwidth = true;
-    };
-    $('.amcharts-export-menu-top-right').hide();
-    $('.chartDataTable').addClass('table-bordered');
-    $('.chartDataTable').addClass('tablePrint');
-    $('.amcharts-main-div').css("height", "auto");
-
-
-    let h = screen.height;
-    let w = screen.width;
-    const printWindow = window.open('', '', "width=" + w + ", height=" + h + ", top=0, left=0");
-    printWindow.document.write('<html><head><title>' + (isMultilevelDrill ? mlChartDataTitle : reportTitle) + '</title>');
-    printWindow.document.write(
-      '<link href="/assets/bootstrap.min.css" rel="stylesheet" />'
-    );
-    printWindow.document.write(
-      '<link href="/assets/css/default/style.min.css" rel="stylesheet" />'
-    );
-    printWindow.document.write(
-      '<link href="/assets/css/printstyle.css" rel="stylesheet" />'
-    );
-
-    // printWindow.document.write(
-    //   '<body>'
-    // );
-    printWindow.document.write(
-      '</head><body onload="window.print();window.close();" onunload="myFunction()"><table class="mainPrintTable"><thead><tr><td><div class="header-space">&nbsp;</div></td></tr></thead><tbody><tr><td><div class="printContent">'
-    );
+  //   let tabfullwidth = false;
+  //   const tabIndex = event.modifiedObj.index;
+  //   if ($('.printChartTab' + tabIndex).hasClass('col-md-6')) {
+  //     $('.printChartTab' + tabIndex).removeClass('col-md-6').addClass('col-md-12');
+  //     tabfullwidth = true;
+  //   };
+  //   $('.amcharts-export-menu-top-right').hide();
+  //   $('.chartDataTable').addClass('table-bordered');
+  //   $('.chartDataTable').addClass('tablePrint');
+  //   $('.amcharts-main-div').css("height", "auto");
 
 
-    // printWindow.document.write('<div id="contentprint">');
-    let chartDataLength, reportChartType, chart_select_id;
-    if (isMultilevelDrill) {
-      chartDataLength = event.modifiedObj.report.mlChartData.chartData.data.length;
-      reportChartType = event.modifiedObj.report.mlChartData.chartType;
-      chart_select_id = 'widgetChartMLDD-' + reportNdx_;
-    } else {
-      chartDataLength = event.modifiedObj.report.chartData.data.length;
-      reportChartType = event.modifiedObj.report.chartType;
-      chart_select_id = 'widgetChart-' + reportNdx_;
-    }
-    // const chartDataLength = isMultilevelDrill ? event.modifiedObj.report.mlChartData.chartData.data.length : event.modifiedObj.report.chartData.data.length;
-    // const reportChartType = isMultilevelDrill ? event.modifiedObj.report.mlChartData.chartType : event.modifiedObj.report.chartType;
-    // const chart_select_id = isMultilevelDrill ? 'widgetChartMLDD-' + reportNdx_ : 'widgetChart-' + reportNdx_;
-    // const chartReportName = event.modifiedObj.report.name;
-    let ls = [];
-    if (reportChartType != 'grid') {
-      ls = ['printHeader' + reportNdx_, chart_select_id, "dataprint" + reportNdx_];
-    } else {
-      ls = ['printHeader' + reportNdx_, chart_select_id];
-    }
+  //   let h = screen.height;
+  //   let w = screen.width;
+  //   const printWindow = window.open('', '', "width=" + w + ", height=" + h + ", top=0, left=0");
+  //   printWindow.document.write('<html><head><title>' + (isMultilevelDrill ? mlChartDataTitle : reportTitle) + '</title>');
+  //   printWindow.document.write(
+  //     '<link href="/assets/bootstrap.min.css" rel="stylesheet" />'
+  //   );
+  //   printWindow.document.write(
+  //     '<link href="/assets/css/default/style.min.css" rel="stylesheet" />'
+  //   );
+  //   printWindow.document.write(
+  //     '<link href="/assets/css/printstyle.css" rel="stylesheet" />'
+  //   );
+
+  //   // printWindow.document.write(
+  //   //   '<body>'
+  //   // );
+  //   printWindow.document.write(
+  //     '</head><body onload="window.print();window.close();" onunload="myFunction()"><table class="mainPrintTable"><thead><tr><td><div class="header-space">&nbsp;</div></td></tr></thead><tbody><tr><td><div class="printContent">'
+  //   );
 
 
-    this.wait(2000).then((res) => {
-      // printWindow.document.write(document.getElementById(ls[0]).innerHTML);
-      // printWindow.document.write('<div class="row">');
-      printWindow.document.write(document.getElementById(ls[0]).innerHTML);
-      if (reportChartType != 'grid') {
-        printWindow.document.write(document.getElementById(ls[1]).parentElement.innerHTML);
-      } else {
-        printWindow.document.write(document.getElementById(ls[1]).innerHTML);
-      }
+  //   // printWindow.document.write('<div id="contentprint">');
+  //   let chartDataLength, reportChartType, chart_select_id;
+  //   if (isMultilevelDrill) {
+  //     chartDataLength = event.modifiedObj.report.mlChartData.chartData.data.length;
+  //     reportChartType = event.modifiedObj.report.mlChartData.chartType;
+  //     chart_select_id = 'widgetChartMLDD-' + reportNdx_;
+  //   } else {
+  //     chartDataLength = event.modifiedObj.report.chartData.data.length;
+  //     reportChartType = event.modifiedObj.report.chartType;
+  //     chart_select_id = 'widgetChart-' + reportNdx_;
+  //   }
+  //   // const chartDataLength = isMultilevelDrill ? event.modifiedObj.report.mlChartData.chartData.data.length : event.modifiedObj.report.chartData.data.length;
+  //   // const reportChartType = isMultilevelDrill ? event.modifiedObj.report.mlChartData.chartType : event.modifiedObj.report.chartType;
+  //   // const chart_select_id = isMultilevelDrill ? 'widgetChartMLDD-' + reportNdx_ : 'widgetChart-' + reportNdx_;
+  //   // const chartReportName = event.modifiedObj.report.name;
+  //   let ls = [];
+  //   if (reportChartType != 'grid') {
+  //     ls = ['printHeader' + reportNdx_, chart_select_id, "dataprint" + reportNdx_];
+  //   } else {
+  //     ls = ['printHeader' + reportNdx_, chart_select_id];
+  //   }
 
 
-      printWindow.document.write('<br><br>');
+  //   this.wait(2000).then((res) => {
+  //     // printWindow.document.write(document.getElementById(ls[0]).innerHTML);
+  //     // printWindow.document.write('<div class="row">');
+  //     printWindow.document.write(document.getElementById(ls[0]).innerHTML);
+  //     if (reportChartType != 'grid') {
+  //       printWindow.document.write(document.getElementById(ls[1]).parentElement.innerHTML);
+  //     } else {
+  //       printWindow.document.write(document.getElementById(ls[1]).innerHTML);
+  //     }
 
 
-      if (chartDataLength > 20) {
-        printWindow.document.write('<p style="page-break-after: always;">&nbsp;</p><p style="page-break-before: always;">&nbsp;</p>');
-      }
+  //     printWindow.document.write('<br><br>');
 
-      if (reportChartType != 'grid') {
-        printWindow.document.write(document.getElementById(ls[2]).innerHTML);
-      }
 
-      printWindow.document.write(
-        '</div></td></tr></tbody><tfoot><tr><td><div class="footer-space">&nbsp;</div></td></tr></tfoot></table>'
-      );
+  //     if (chartDataLength > 20) {
+  //       printWindow.document.write('<p style="page-break-after: always;">&nbsp;</p><p style="page-break-before: always;">&nbsp;</p>');
+  //     }
 
-      printWindow.document.write(
-        '<div id="pageHeader"><img  src="assets/images/liquid.png" alt="" /></div>'
-      );
-      printWindow.document.write(
-        '<div id="pageFooter"><div class="row"><div class="col-lg-6 col-md-7">&copy;Copyrights &copy; 2019 & All Rights Reserved by Liquid Telecom </div><div class="col-lg-6 col-md-5"><span class="pull-right">Powered by CATS &trade; (In2IT Technologies PTY LTD) <img  src="assets/in2itlogo.png" alt=""/></span></div></div>'
-      );
+  //     if (reportChartType != 'grid') {
+  //       printWindow.document.write(document.getElementById(ls[2]).innerHTML);
+  //     }
 
-      printWindow.document.write('</body></html>');
-      printWindow.document.close();
-      this.print = false;
+  //     printWindow.document.write(
+  //       '</div></td></tr></tbody><tfoot><tr><td><div class="footer-space">&nbsp;</div></td></tr></tfoot></table>'
+  //     );
 
-      $('.amcharts-main-div').css("height", "100%");
-      if (tabfullwidth) {
-        $('.printChartTab' + tabIndex).removeClass('col-md-12').addClass('col-md-6');
-      };
-      $('.chartDataTable').removeClass('table-bordered');
-      $('.chartDataTable').removeClass('tablePrint');
-      $('.amcharts-export-menu-top-right').show();
+  //     printWindow.document.write(
+  //       '<div id="pageHeader"><img  src="assets/images/liquid.png" alt="" /></div>'
+  //     );
+  //     printWindow.document.write(
+  //       '<div id="pageFooter"><div class="row"><div class="col-lg-6 col-md-7">&copy;Copyrights &copy; 2019 & All Rights Reserved by Liquid Telecom </div><div class="col-lg-6 col-md-5"><span class="pull-right">Powered by CATS &trade; (In2IT Technologies PTY LTD) <img  src="assets/in2itlogo.png" alt=""/></span></div></div>'
+  //     );
 
-    });
-  }
+  //     printWindow.document.write('</body></html>');
+  //     printWindow.document.close();
+  //     this.print = false;
+
+  //     $('.amcharts-main-div').css("height", "100%");
+  //     if (tabfullwidth) {
+  //       $('.printChartTab' + tabIndex).removeClass('col-md-12').addClass('col-md-6');
+  //     };
+  //     $('.chartDataTable').removeClass('table-bordered');
+  //     $('.chartDataTable').removeClass('tablePrint');
+  //     $('.amcharts-export-menu-top-right').show();
+
+  //   });
+  // }
+
   wait(timeout) {
     return new Promise(resolve => {
       setTimeout(resolve, timeout);
@@ -1323,159 +1254,159 @@ export class SummaryComponent implements OnInit, OnDestroy, AfterViewInit {
   //   });
   // }
 
-  onTootlTipSelect(obj, reportId, reportSequence) {
-    const urlTocall = obj.url;
-    const drillDownId = obj.id;
-    const chartType = obj.chartName;
-    const mlReportName = obj.name;
-    const reportIdObj = obj.reportId;
-    this.TootTipStr_.open = !this.TootTipStr_.open;
-    this.userTab_.reportUrl[reportSequence].isChartLoaded = false;
-    this.userTab_.reportUrl[reportSequence].isMultiLevelChartLoaded = false;
-    this.userTab_.reportUrl[reportSequence].isMultilevelDrill = false;
-    this.reportService_.loadDrillDownCharts(urlTocall, drillDownId, reportIdObj,
-      this.TootTipStr_.clickedData, this.selectedTimeRange,
-      this.globalFilterModal).subscribe(res => {
-        if (res.status) {
-          const keySort_ = res.data.charts.config['sortKey'];
-          res.data.charts.data = this.sharedServices_.sortByKey(res.data.charts.data, keySort_);
-          this.userTab_.reportUrl[reportSequence].mlChartData.chartData = res.data.charts;
-          this.userTab_.reportUrl[reportSequence].mlChartData.drill = res.data.drill;
-          this.userTab_.reportUrl[reportSequence].mlChartData.chartType = chartType;
-          this.userTab_.reportUrl[reportSequence].mlChartData.name = mlReportName;
+  // onTootlTipSelect(obj, reportId, reportSequence) {
+  //   const urlTocall = obj.url;
+  //   const drillDownId = obj.id;
+  //   const chartType = obj.chartName;
+  //   const mlReportName = obj.name;
+  //   const reportIdObj = obj.reportId;
+  //   this.TootTipStr_.open = !this.TootTipStr_.open;
+  //   this.userTab_.reportUrl[reportSequence].isChartLoaded = false;
+  //   this.userTab_.reportUrl[reportSequence].isMultiLevelChartLoaded = false;
+  //   this.userTab_.reportUrl[reportSequence].isMultilevelDrill = false;
+  //   this.reportService_.loadDrillDownCharts(urlTocall, drillDownId, reportIdObj,
+  //     this.TootTipStr_.clickedData, this.selectedTimeRange,
+  //     this.globalFilterModal).subscribe(res => {
+  //       if (res.status) {
+  //         const keySort_ = res.data.charts.config['sortKey'];
+  //         res.data.charts.data = this.sharedServices_.sortByKey(res.data.charts.data, keySort_);
+  //         this.userTab_.reportUrl[reportSequence].mlChartData.chartData = res.data.charts;
+  //         this.userTab_.reportUrl[reportSequence].mlChartData.drill = res.data.drill;
+  //         this.userTab_.reportUrl[reportSequence].mlChartData.chartType = chartType;
+  //         this.userTab_.reportUrl[reportSequence].mlChartData.name = mlReportName;
 
-          if ((this.TootTipStr_.clickedData.length > 0)) {
-            this.TootTipStr_.clickedData.forEach(element => {
-              Object.keys(element).forEach(elm => {
-                this.userTab_.reportUrl[reportSequence].mlChartData.lastDrillFilterValue = element[elm];
-              });
-            });
-          }
-          this.userTab_.reportUrl[reportSequence].mlChartData.drillDownId = drillDownId;
+  //         if ((this.TootTipStr_.clickedData.length > 0)) {
+  //           this.TootTipStr_.clickedData.forEach(element => {
+  //             Object.keys(element).forEach(elm => {
+  //               this.userTab_.reportUrl[reportSequence].mlChartData.lastDrillFilterValue = element[elm];
+  //             });
+  //           });
+  //         }
+  //         this.userTab_.reportUrl[reportSequence].mlChartData.drillDownId = drillDownId;
 
-          if (res.reportDataInfo) {
-            this.userTab_.reportUrl[reportSequence].mlChartData.reportDataInfo = res.reportDataInfo;
-          }
-          this.userTab_.reportUrl[reportSequence].isMultilevelDrill = true;
-          this.userTab_.reportUrl[reportSequence].isChartLoaded = true;
-          this.userTab_.reportUrl[reportSequence].isMultiLevelChartLoaded = true;
-        }
-      }, err => {
+  //         if (res.reportDataInfo) {
+  //           this.userTab_.reportUrl[reportSequence].mlChartData.reportDataInfo = res.reportDataInfo;
+  //         }
+  //         this.userTab_.reportUrl[reportSequence].isMultilevelDrill = true;
+  //         this.userTab_.reportUrl[reportSequence].isChartLoaded = true;
+  //         this.userTab_.reportUrl[reportSequence].isMultiLevelChartLoaded = true;
+  //       }
+  //     }, err => {
 
-      });
+  //     });
 
-  }
-
-
-
-  /**
-   *
-   * @param event
-   * will get all panel events
-   */
-  getPanelEvent(event) {
-    this.TootTipStr_.open = false; // make tooltip hide on every panel event
-    if (event.eventType === 'close') {
-      this.removeReportFromTab(event.modifiedObj.report, event.modifiedObj.index);
-    } else if (event.eventType === 'reload') {
-      this.userTab_.reportUrl[event.modifiedObj.index].isMultiLevelChartLoaded = false;
-      this.userTab_.reportUrl[event.modifiedObj.index].isMultilevelDrill = false;
-      this.makeCallToFetchReportData(this.userTab_.reportUrl[event.modifiedObj.index], event.modifiedObj.index);
-    } else if (event.eventType === 'print') {
-      this.printPanelChart(event);
-      //   const reportNdx_ = event.modifiedObj.index;
-      //   const isMultilevelDrill = event.modifiedObj.isMultilevelDrill;
-      //   const chart_select_id = isMultilevelDrill ? 'widgetChartMLDD-' + reportNdx_ : 'widgetChart-' + reportNdx_;
-      //   let printContents, popupWin;
-      //   printContents = document.getElementById(chart_select_id).innerHTML;
-      //   popupWin = window.open('', '_blank', 'top=10px,left=10px,height=500px,width=500px');
-      //   popupWin.document.open();
-      //   popupWin.document.write(`
-      //    <html>
-      //      <head>
-      //        <title>Analytics</title>
-      //      </head>
-      //  <body onload="window.print();window.close()">${printContents}</body>
-      //    </html>`
-      //   );
-      //   window.setTimeout(function () {
-      //     popupWin.document.close();
-      //   });
-    } else if (event.eventType == 'back') {
-      this.onChartBackNavigate(event.modifiedObj.report, event.modifiedObj.index);
-    }
-  }
-
-  onChartBackNavigate(repObj: any, rNdx: number) {
-    this.reportService_.loadPreviousReport(this.userTab_.reportUrl[rNdx].reportId).subscribe(resPN => {
-      if (resPN.status) {
-        if (resPN.data.id == 0) {
-          this.userTab_.reportUrl[rNdx].isMultiLevelChartLoaded = false;
-          this.userTab_.reportUrl[rNdx].isMultilevelDrill = false;
-        } else {
-          const urlTocall = resPN.data.url;
-          const drillDownId = resPN.data.id;
-          const reportIdObj = resPN.data.reportId;
-          const reportSequence = rNdx;
-          const chartType = resPN.data.chartName;
-          const reportName = resPN.data.name;
-
-          this.userTab_.reportUrl[rNdx].isChartLoaded = false;
-          this.userTab_.reportUrl[rNdx].isMultiLevelChartLoaded = false;
-          this.userTab_.reportUrl[rNdx].isMultilevelDrill = false;
-
-          this.reportService_.loadDrillDownChartsBackNavigate(urlTocall, drillDownId, reportIdObj,
-            this.selectedTimeRange, this.globalFilterModal).subscribe(res => {
-              if (res.status) {
-                const keySort_ = res.data.charts.config['sortKey'];
-                res.data.charts.data = this.sortByKey(res.data.charts.data, keySort_);
-
-                /**
-               *  Ranjit made changes on 09-05-2019 start
-               *  Sort by Date
-               */
-
-                // if (JSON.stringify(Object.keys(res.data.charts.data[0])[0]) == 'date') {
-                //   res.data.charts.data.sort(function (a: any, b: any) {
-                //     const dateA: any = new Date(a.nextFilter);
-                //     const dateB: any = new Date(b.nextFilter);
-                //     return dateA - dateB;
-                //   });
-                // } else {
-                //   res.data.charts.data.sort((a: any, b: any) =>
-                //   (a.nextFilter > b.nextFilter) ? 1 : ((b.nextFilter > a.nextFilter) ? -1 : 0));
-                // }
+  // }
 
 
-                /**
-                 * Sort by Date
-                 *  Ranjit made changes on 09-05-2019 start End
-                 */
 
-                this.userTab_.reportUrl[reportSequence].mlChartData.chartData = res.data.charts;
-                this.userTab_.reportUrl[reportSequence].mlChartData.drill = res.data.drill;
-                this.userTab_.reportUrl[reportSequence].mlChartData.chartType = chartType;
-                this.userTab_.reportUrl[reportSequence].mlChartData.name = reportName;
-                this.userTab_.reportUrl[reportSequence].mlChartData.drillDownId = drillDownId;
+  // /**
+  //  *
+  //  * @param event
+  //  * will get all panel events
+  //  */
+  // getPanelEvent(event) {
+  //   this.TootTipStr_.open = false; // make tooltip hide on every panel event
+  //   if (event.eventType === 'close') {
+  //     this.removeReportFromTab(event.modifiedObj.report, event.modifiedObj.index);
+  //   } else if (event.eventType === 'reload') {
+  //     this.userTab_.reportUrl[event.modifiedObj.index].isMultiLevelChartLoaded = false;
+  //     this.userTab_.reportUrl[event.modifiedObj.index].isMultilevelDrill = false;
+  //     this.makeCallToFetchReportData(this.userTab_.reportUrl[event.modifiedObj.index], event.modifiedObj.index);
+  //   } else if (event.eventType === 'print') {
+  //     this.printPanelChart(event);
+  //     //   const reportNdx_ = event.modifiedObj.index;
+  //     //   const isMultilevelDrill = event.modifiedObj.isMultilevelDrill;
+  //     //   const chart_select_id = isMultilevelDrill ? 'widgetChartMLDD-' + reportNdx_ : 'widgetChart-' + reportNdx_;
+  //     //   let printContents, popupWin;
+  //     //   printContents = document.getElementById(chart_select_id).innerHTML;
+  //     //   popupWin = window.open('', '_blank', 'top=10px,left=10px,height=500px,width=500px');
+  //     //   popupWin.document.open();
+  //     //   popupWin.document.write(`
+  //     //    <html>
+  //     //      <head>
+  //     //        <title>Analytics</title>
+  //     //      </head>
+  //     //  <body onload="window.print();window.close()">${printContents}</body>
+  //     //    </html>`
+  //     //   );
+  //     //   window.setTimeout(function () {
+  //     //     popupWin.document.close();
+  //     //   });
+  //   } else if (event.eventType == 'back') {
+  //     this.onChartBackNavigate(event.modifiedObj.report, event.modifiedObj.index);
+  //   }
+  // }
 
-                if (res.reportDataInfo) {
-                  this.userTab_.reportUrl[reportSequence].mlChartData.reportDataInfo = res.reportDataInfo;
-                }
-                this.userTab_.reportUrl[reportSequence].isMultilevelDrill = true;
-                this.userTab_.reportUrl[reportSequence].isChartLoaded = true;
-                this.userTab_.reportUrl[reportSequence].isMultiLevelChartLoaded = true;
-              }
-            }, err => {
+  // onChartBackNavigate(repObj: any, rNdx: number) {
+  //   this.reportService_.loadPreviousReport(this.userTab_.reportUrl[rNdx].reportId).subscribe(resPN => {
+  //     if (resPN.status) {
+  //       if (resPN.data.id == 0) {
+  //         this.userTab_.reportUrl[rNdx].isMultiLevelChartLoaded = false;
+  //         this.userTab_.reportUrl[rNdx].isMultilevelDrill = false;
+  //       } else {
+  //         const urlTocall = resPN.data.url;
+  //         const drillDownId = resPN.data.id;
+  //         const reportIdObj = resPN.data.reportId;
+  //         const reportSequence = rNdx;
+  //         const chartType = resPN.data.chartName;
+  //         const reportName = resPN.data.name;
 
-            });
-        }
+  //         this.userTab_.reportUrl[rNdx].isChartLoaded = false;
+  //         this.userTab_.reportUrl[rNdx].isMultiLevelChartLoaded = false;
+  //         this.userTab_.reportUrl[rNdx].isMultilevelDrill = false;
+
+  //         this.reportService_.loadDrillDownChartsBackNavigate(urlTocall, drillDownId, reportIdObj,
+  //           this.selectedTimeRange, this.globalFilterModal).subscribe(res => {
+  //             if (res.status) {
+  //               const keySort_ = res.data.charts.config['sortKey'];
+  //               res.data.charts.data = this.sortByKey(res.data.charts.data, keySort_);
+
+  //               /**
+  //              *  Ranjit made changes on 09-05-2019 start
+  //              *  Sort by Date
+  //              */
+
+  //               // if (JSON.stringify(Object.keys(res.data.charts.data[0])[0]) == 'date') {
+  //               //   res.data.charts.data.sort(function (a: any, b: any) {
+  //               //     const dateA: any = new Date(a.nextFilter);
+  //               //     const dateB: any = new Date(b.nextFilter);
+  //               //     return dateA - dateB;
+  //               //   });
+  //               // } else {
+  //               //   res.data.charts.data.sort((a: any, b: any) =>
+  //               //   (a.nextFilter > b.nextFilter) ? 1 : ((b.nextFilter > a.nextFilter) ? -1 : 0));
+  //               // }
 
 
-      }
-    }, err => {
+  //               /**
+  //                * Sort by Date
+  //                *  Ranjit made changes on 09-05-2019 start End
+  //                */
 
-    });
-  }
+  //               this.userTab_.reportUrl[reportSequence].mlChartData.chartData = res.data.charts;
+  //               this.userTab_.reportUrl[reportSequence].mlChartData.drill = res.data.drill;
+  //               this.userTab_.reportUrl[reportSequence].mlChartData.chartType = chartType;
+  //               this.userTab_.reportUrl[reportSequence].mlChartData.name = reportName;
+  //               this.userTab_.reportUrl[reportSequence].mlChartData.drillDownId = drillDownId;
+
+  //               if (res.reportDataInfo) {
+  //                 this.userTab_.reportUrl[reportSequence].mlChartData.reportDataInfo = res.reportDataInfo;
+  //               }
+  //               this.userTab_.reportUrl[reportSequence].isMultilevelDrill = true;
+  //               this.userTab_.reportUrl[reportSequence].isChartLoaded = true;
+  //               this.userTab_.reportUrl[reportSequence].isMultiLevelChartLoaded = true;
+  //             }
+  //           }, err => {
+
+  //           });
+  //       }
+
+
+  //     }
+  //   }, err => {
+
+  //   });
+  // }
 
   public removeReportFromTab(reportObj: Report, reportIndex_: number) {
     swal({
@@ -1488,7 +1419,7 @@ export class SummaryComponent implements OnInit, OnDestroy, AfterViewInit {
       confirmButtonText: 'Yes, Delete It!'
     }).then((result) => {
       if (result.value) {
-        this.reportService_.deleteExstingReport(reportObj.reportId).subscribe(res => {
+        this.summaryService.deleteExstingReport(reportObj.reportId).subscribe(res => {
           this.userTab_.reportUrl.splice(reportIndex_, 1);
           // swal('' + reportObj.name, 'Report Removed Successfully', 'success');
 
@@ -1501,8 +1432,8 @@ export class SummaryComponent implements OnInit, OnDestroy, AfterViewInit {
             timer: 1000
           });
 
-          this.userTab_.reportUrl = this.sharedServices_.sortTabReportsByColSpan(this.userTab_.reportUrl);
-          this.reportService_.notifyTabChangesToServices(this.userTab_.id, this.userTab_.reportUrl);
+          // this.userTab_.reportUrl = this.sharedServices_.sortTabReportsByColSpan(this.userTab_.reportUrl);
+          // this.reportService_.notifyTabChangesToServices(this.userTab_.id, this.userTab_.reportUrl);
         }, err => {
           swal('', 'Oops ! Got Error While Removing Reports', 'error');
         });
@@ -1515,41 +1446,41 @@ export class SummaryComponent implements OnInit, OnDestroy, AfterViewInit {
 
   }
 
-  public removeSummaryFromtab(summaryObj: TabSummary, summaryIndex: number) {
-    swal({
-      title: 'Are you sure?',
-      text: 'You won\'t be able to revert this!',
-      type: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, Delete It!'
-    }).then((result) => {
-      if (result.value) {
-        this.reportService_.deleteExstingSummary(summaryObj.summaryReportId).subscribe(res => {
-          this.userTab_.summarReportUrl.splice(summaryIndex, 1);
-          // swal('' + summaryObj.name, 'Summary Removed Successfully', 'success');
+  // public removeSummaryFromtab(summaryObj: TabSummary, summaryIndex: number) {
+  //   swal({
+  //     title: 'Are you sure?',
+  //     text: 'You won\'t be able to revert this!',
+  //     type: 'warning',
+  //     showCancelButton: true,
+  //     confirmButtonColor: '#3085d6',
+  //     cancelButtonColor: '#d33',
+  //     confirmButtonText: 'Yes, Delete It!'
+  //   }).then((result) => {
+  //     if (result.value) {
+  //       this.reportService_.deleteExstingSummary(summaryObj.summaryReportId).subscribe(res => {
+  //         this.userTab_.summarReportUrl.splice(summaryIndex, 1);
+  //         // swal('' + summaryObj.name, 'Summary Removed Successfully', 'success');
 
-          swal({
-            position: 'center',
-            type: 'success',
-            title: '' + summaryObj.name,
-            titleText: 'Summary Removed Successfully',
-            showConfirmButton: false,
-            timer: 1000
-          });
+  //         swal({
+  //           position: 'center',
+  //           type: 'success',
+  //           title: '' + summaryObj.name,
+  //           titleText: 'Summary Removed Successfully',
+  //           showConfirmButton: false,
+  //           timer: 1000
+  //         });
 
 
-        }, err => {
-          swal('', 'Oops ! Got Error While Removing Summary', 'error');
-        });
-      }
-      if (result.dismiss) {
-        // user Refused Changes .......
-      }
-    }, err => {
-    });
-  }
+  //       }, err => {
+  //         swal('', 'Oops ! Got Error While Removing Summary', 'error');
+  //       });
+  //     }
+  //     if (result.dismiss) {
+  //       // user Refused Changes .......
+  //     }
+  //   }, err => {
+  //   });
+  // }
 
   public openAddSummaryTab(elementRef: ElementRef, size: string) {
     if (this.userTab_.summarReportUrl.length >= 4) {
@@ -1639,173 +1570,10 @@ export class SummaryComponent implements OnInit, OnDestroy, AfterViewInit {
     return idTobeApp;
   }
 
-
-  calenderChartClickNext(event) {
-    // let reportId_ = event.reportId;
-    const reportSequence_ = event.reportSequence;
-    const monthTo_ = event.month;
-    const yearTo_ = event.year;
-    const report: Report = this.userTab_.reportUrl[reportSequence_];
-    const filterValue = monthTo_ + '-' + yearTo_;
-    this.updateCalendarChart(reportSequence_, filterValue);
-
-  }
-
-
-  updateCalendarChart(index, filterValue) {
-    this.userTab_.reportUrl[index].isChartLoaded = false;
-    const urlToCall_ = this.userTab_.reportUrl[index].url;
-    this.reportService_.updateCalendarChartNavigation(urlToCall_,
-      index, this.userTab_.reportUrl[index].reportId,
-      this.selectedTimeRange, this.globalFilterModal, filterValue).subscribe(res => {
-        if (res.status) {
-          this.userTab_.reportUrl[index].filters = this.bindReportFilters(res.data.filters, this.userTab_.reportUrl[index]);
-          const keySort_ = res.data.charts.config['sortKey'];
-          res.data.charts.data = this.sortByKey(res.data.charts.data, keySort_);
-
-          /**
-           *  Ranjit made changes on 09-05-2019 start
-           *  Sort by Date
-           */
-          if (res.data.charts.data.length > 0) {
-            if (JSON.stringify(Object.keys(res.data.charts.data[0])[0]) == 'date') {
-              res.data.charts.data.sort(function (a: any, b: any) {
-                const dateA: any = new Date(a.nextFilter);
-                const dateB: any = new Date(b.nextFilter);
-                return dateA - dateB;
-              });
-            } else {
-              res.data.charts.data.sort((a: any, b: any) => (a.nextFilter > b.nextFilter) ? 1 : ((b.nextFilter > a.nextFilter) ? -1 : 0));
-            }
-          }
-
-          /**
-           * Sort by Date
-           *  Ranjit made changes on 09-05-2019 start End
-           */
-
-          this.userTab_.reportUrl[index].chartData = res.data.charts;
-          this.userTab_.reportUrl[index].chartData.drill = res.data.drill;
-          this.userTab_.reportUrl[index].chartData.reportDataInfo = res.reportDataInfo;
-          this.userTab_.reportUrl[index].isMultilevelDrill = false;
-          this.userTab_.reportUrl[index].isChartLoaded = true;
-        }
-      }, err => {
-
-      });
-  }
-
-  calenderChartClickPrev(event) {
-    // let reportId_ = event.reportId;
-    const reportSequence_ = event.reportSequence;
-    const monthTo_ = event.month;
-    const yearTo_ = event.year;
-    const filterValue = monthTo_ + '-' + yearTo_;
-    this.updateCalendarChart(reportSequence_, filterValue);
-  }
-
-  // Added on 15-Oct-2019 (summery pop-up)
-
-  getSumarytickets(summary: TabSummary, index) {
-    const ticketsUrl = summary.ticketsUrl;
-    this.summaryChartDrillDataStr.header = [];
-    this.summaryChartDrillDataStr.data = [];
-    if (ticketsUrl && ticketsUrl.trim() != '') {
-      this.summaryChartDrillDataStr['hTitle'] = summary.name;
-      this.open(this.summaryTicketsData, 'lg');
-      this.summaryChartDrillDataStr.isPanelLoading = true;
-      // if (ticketsUrl && ticketsUrl != '') {
-      //   this.reportService_.fetchSummaryTicketData(ticketsUrl, this.selectedTimeRange,
-      //     this.globalFilterModal).subscribe(res => {
-      //       if (res['status'] == true) {
-      //         this.summaryChartDrillDataStr.header = []; // res.data.charts.header;
-      //         this.summaryChartDrillDataStr.data = res.data.charts.data;
-      //         this.summaryChartDrillDataStr.isPanelLoading = false;
-      //       } else {
-      //         this.summaryChartDrillDataStr.isPanelLoading = false;
-      //         swal('', 'Connection Time Out ', 'error');
-      //       }
-      //     });
-      // }
-    }
-  }
-
   reloadSummaryWidget() {
     this.fetchReportSummaryData();
   }
 
-  downloadTicketDataAsCSV(dataRow: Array<any>, headers: Array<any>) {
-    const row = headers; // header part
-    const rows = [];
-    for (let i = 0; i <= dataRow.length - 1; i++) {
-      let arr = [];
-      let datsSet = dataRow[i];
-      for (let hdrs = 0; hdrs <= headers.length - 1; hdrs++) {
-        let dInner = '' + datsSet[hdrs];
-        let trimStr = dInner.indexOf(',') > -1 ? (dInner.replace(/,/g, '_')) : dInner;
-        // var desired = trimStr.replace(/[^\w\s]/gi, '');
-        var desired = trimStr.replace(/[!@#$%^&*,']/gi, '');
-        arr[hdrs] = (desired == '') ? ' N/A ' : desired;
-      }
-      rows.push(arr);
-    }
-
-    let csvContent = 'data:text/csv;charset=utf-8,';
-
-    let testStr = '';
-    csvContent += row + '\r\n';
-    rows.forEach(function (rowArray) {
-      testStr += ' ' + rowArray;
-      const row_ = rowArray.join(',');
-      csvContent += row_ + '\r\n';
-    });
-
-    const encodedUri = encodeURI(csvContent);
-    const link = document.createElement('a');
-    link.setAttribute('href', encodedUri);
-    link.setAttribute('download', 'Tickets.csv');
-    document.body.appendChild(link); // Required for FF
-    link.click();
-  }
-
-
-  chartDataPartValues(value, chartConfig) {
-    let graphBalloonFn = chartConfig['graphBalloonFn'] ? chartConfig['graphBalloonFn'] : '';
-    if (graphBalloonFn.trim() !== '') {
-      if (graphBalloonFn == 'convertYAxisCountToDays') {
-        return this.convertYAxisCountToDays(value);
-      }
-      return value;
-    } else {
-      return value;
-    }
-  }
-
-  convertYAxisCountToDays(value): string {
-    const units = {
-      'Y': 24 * 60 * 365,
-      'M': 24 * 60 * 30,
-      'W': 24 * 60 * 7,
-      'D': 24 * 60,
-      'H': 1 * 60,
-      'Mn': 1
-    };
-    const result = [];
-
-    // tslint:disable-next-line: forin
-    for (const name in units) {
-      const p = Math.floor(value / units[name]);
-      if (p === 1) { result.push(p + '' + name); }
-      if (p >= 2) { result.push(p + '' + name); }
-      value %= units[name];
-    }
-
-    let strTobeReturn = '';
-    result.map(elm => {
-      strTobeReturn += (strTobeReturn === '') ? elm : ',' + elm;
-    });
-    return strTobeReturn;
-  }
 }
 
 

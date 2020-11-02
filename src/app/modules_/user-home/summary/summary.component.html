@@ -23,8 +23,8 @@
               <div class="pull-right" style="margin-right:10px;">
                   <div class="btn-group">
                       <button type="button" class="btn btn-default" style="width:90px; color:#000000;">NMS</button>
-                      <a href="javascript:;" style="color: #000000;" class="btn btn-default dropdown-toggle" (click)="showDD($event,globalFilterModal)" id="{{globalFilterModal.identifier}}"></a>
-                      <ul class="dropdown-menu pull-right" click-outside [listening]="globalFilterModal.isListenOnBlur" [Ident]="globalFilterModal.identifier" (clickOutSide)="globalFilterClickOutSide($event)">
+                      <a href="javascript:;" style="color: #000000;" class="btn btn-default dropdown-toggle" (click)="showDDNMS($event,globalFilterModal)" id="{{globalFilterModal.identifier}}"></a>
+                      <ul class="dropdown-menu pull-right" click-outside [listening]="globalFilterModal.isListenOnBlur" [Ident]="globalFilterModal.identifier" (clickOutSide)="globalFilterClickOutSideNMS($event)">
                           <form name="search">
                               <div class="mx-2 mb-2">
                                   <input type="search" #searchVal class="form-control form-control-sm" placeholder="Search..." aria-controls="data-table-default">
@@ -33,18 +33,18 @@
                           <div class="scroll_div" id="style-4">
                               <li class="container1">
                                   <label class=""><strong>Select/ Unselect All</strong>
-                                  <input type="checkbox" [(ngModel)]="globalFilterModal.masterSelectedCustomer"
+                                  <input type="checkbox" [(ngModel)]="globalFilterModal.masterSelectedNMS"
                                       name="list_name"
-                                      (change)="checkUncheckAll(globalFilterModal.customers,globalFilterModal.masterSelectedCustomer)" />
+                                      (change)="checkUncheckAll(globalFilterModal.nms,globalFilterModal.masterSelectedNMS)" />
                                   <span class="checkmark"
-                                      [ngClass]="(globalFilterModal.masterSelectedCustomer) ?'bg-'+(themeConf_.selectedColor):''"></span>
+                                      [ngClass]="(globalFilterModal.masterSelectedNMS) ?'bg-'+(themeConf_.selectedColor):''"></span>
                               </label>
                               </li>
-                              <li class="container1" *ngFor="let fVal_ of globalFilterModal.customers | filterByKey: 'name' :searchVal.value; let fvndx_=index; trackBy: trackByFn">
+                              <li class="container1" *ngFor="let fVal_ of globalFilterModal.nms | filterByKey: 'name' :searchVal.value; let fvndx_=index; trackBy: trackByFn">
                                   <label class="">{{fVal_.name}}
                                   <input type="checkbox" id="{{fvndx_}}" [(ngModel)]="fVal_.value"
                                       [checked]="fVal_.value"
-                                      (change)="isAllSelected(globalFilterModal.customers,'masterSelectedCustomer')" />
+                                      (change)="isAllSelected(globalFilterModal.nms,'masterSelectedNMS')" />
                                   <span class="checkmark"
                                       [ngClass]="(fVal_.value) ?'bg-'+(themeConf_.selectedColor):''"></span>
                               </label>
@@ -175,7 +175,7 @@
   <!-- <h1 class="page-header">{{userTab_ ?userTab_.name :''}} <span *ngIf="repDetail.isLoaded">{{repDetail.timeString}}</span>
   </h1> -->
 
-  <h1 class="page-header">Heading <span *ngIf="repDetail.isLoaded">goes here</span></h1>
+  <h1 class="page-header">Summary <span *ngIf="repDetail.isLoaded"></span></h1>
 
   <div class="row" *ngFor="let block of summaryBlocks;">
         <div class="col-md-2 summaryBlock">
