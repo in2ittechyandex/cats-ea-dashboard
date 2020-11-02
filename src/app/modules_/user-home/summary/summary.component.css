@@ -545,4 +545,13 @@ input:checked~.checkmark:after {
   height: 100px;
 }
 
-  
+
+.summaryBlock>div{
+    min-width: 100px;
+    text-align: center;
+    background-color: #575d63;
+    color: #fff;
+    margin-bottom: 10px;
+    padding: 5px;
+    border-radius: 4px;
+}

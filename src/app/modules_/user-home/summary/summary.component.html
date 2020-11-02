@@ -175,8 +175,28 @@
   <!-- <h1 class="page-header">{{userTab_ ?userTab_.name :''}} <span *ngIf="repDetail.isLoaded">{{repDetail.timeString}}</span>
   </h1> -->
 
-  <h1 class="page-header">Heading <span *ngIf="repDetail.isLoaded">goes here</span>
-  </h1>
+  <h1 class="page-header">Heading <span *ngIf="repDetail.isLoaded">goes here</span></h1>
+
+  <div class="row" *ngFor="let block of summaryBlocks;">
+        <div class="col-md-2 summaryBlock">
+            <div>Total Events<br>{{block.totalEvents}}</div>
+        </div>
+        <div class="col-md-2 summaryBlock">
+            <div>Total Alarms<br>{{block.totalAlarms}}</div>
+        </div>
+        <div class="col-md-2 summaryBlock">
+            <div>Total Incidents<br>{{block.totalIncidents}}</div>
+        </div>
+        <div class="col-md-2 summaryBlock">
+            <div>Automation<br>{{block.automation}}</div>
+        </div>
+        <div class="col-md-2 summaryBlock">
+            <div>Success Automation<br>{{block.successAutomation}}</div>
+        </div>
+        <div class="col-md-2 summaryBlock">
+            <div>Noice Reduction<br>{{block.noiceReduction}}</div>
+        </div>
+  </div>
   <!-- <div class="m-b-10 f-s-10"><b class="text-inverse">{{userTab_ ? userTab_.description :''}}
       &nbsp;</b></div> -->
       <div class="row">

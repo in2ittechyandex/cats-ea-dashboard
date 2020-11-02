@@ -95,6 +95,11 @@ export class ReportService {
         const url = "https://run.mocky.io/v3/2df0aaba-40a6-4f4a-9910-e2a392346957";
         return this.http.get(url).map(res => <any>res);
     }
+    
+    public getSummaryBlocksData() {
+        const url = "https://run.mocky.io/v3/a3607622-efe8-4910-b142-a9c2325ff59f";
+        return this.http.get(url).map(res => <any>res);
+    }
 
     // public technologyOverview() {
     //     const url = "https://run.mocky.io/v3/e783f340-b4cf-4d4d-b344-af906eb6787c";

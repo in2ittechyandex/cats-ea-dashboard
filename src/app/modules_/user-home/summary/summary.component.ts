@@ -31,6 +31,7 @@ export class SummaryComponent implements OnInit, OnDestroy, AfterViewInit {
   situation_data: any[] = [];
   technologyList: any;
   technologyWidgetData: any;
+  summaryBlocks:any = [];
 
   dateFilter_timeType = 'td';
   dateFilter_startDate = moment().startOf('day');  // moment().subtract(1, 'hours');
@@ -593,7 +594,7 @@ export class SummaryComponent implements OnInit, OnDestroy, AfterViewInit {
     // this.loadGFCustomers();
     this.loadCategories();
     this.loadInitData();
-
+    this.loadSummaryBlocks();
     this.reportService_.getTechnologyList().subscribe(resp => {
       if (resp.status) {
         this.technologyList = resp.data;
@@ -618,8 +619,17 @@ export class SummaryComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
 
+  public loadSummaryBlocks() {
+    this.reportService_.getSummaryBlocksData().subscribe(resp => {
+      if (resp.status) {
+        this.summaryBlocks.push(resp.data);
+      }
+    });
+  }
+
+
   visibleIndex = -1;
-  public techWidgetBoxToggle(ind){
+  public techWidgetBoxToggle(ind) {
     if (this.visibleIndex === ind) {
       this.visibleIndex = -1;
     } else {
