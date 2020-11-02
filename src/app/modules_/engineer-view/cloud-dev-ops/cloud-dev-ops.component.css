@@ -23,12 +23,15 @@
 .image-circle{max-width:40px; border-radius:30px; margin:10px;}
 .dropdown-menu.show{padding:10px; width:100%;}
 
-.container1{    border-bottom: 1px solid #ddd; padding: 6px 0 2px 0;}
-.container1:last-child{border-bottom:0px solid #ddd; padding: 6px 0 2px 0;}
+.container1{border:1px solid #ddd; padding:6px; margin-bottom:10px; border-radius:5px; }
+.container1:last-child{border:1px solid #ddd; padding:6px;}
 
 .checkmark{float:left; width: calc(100% - 73px);}
 .checkmark div{margin-bottom:3px;}
-.checkmark div span{color:#666666; min-width:130px;float: left;}
+.checkmark div span{color:#666666; min-width:130px; float:left;}
+
+
+.box ul{margin:0; padding:0;}
 
 
 #style-4::-webkit-scrollbar-track{background-color:#2d353c; border-radius:15px; height:10px;}

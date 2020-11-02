@@ -31,7 +31,7 @@
             <div class="card-body m-10 shadow" *ngFor="let data of taskData.opened">
               <!-- <h4 class="widget-header-title p-0 mb-5"><img src="assets/img/user/user-13.jpg" alt="" class="image" style="border-radius:40px;height:40px;"/><i class="fa fa-circle text-green f-s-8 mr-2"></i></h4> -->
               <!-- <h4>Assigned to : Sudhir Shukla</h4> -->
-              <span class="badge bg-danger f-s-11 p-4" (click)="navigateToSituation(data)"><i class="fa fa-info-circle"></i> &nbsp; # {{data.id}}</span>
+              <a class="badge bg-danger f-s-11 p-4" style="cursor:pointer;" (click)="navigateToSituation(data)"><i class="fa fa-info-circle"></i> &nbsp; # {{data.id}}</a>
               <div class="f-s-12 text-dark">{{data.time}}</div>
               <div class="f-s-12 text-dark">{{data.network}}</div>
               <!-- <div class="f-s-12 text-dark">{{data.ticket_number}}</div>
@@ -153,6 +153,80 @@
       </button>
     </div>
     <div class="modal-body" style="min-height:270px;">
+<div class="row">
+  <div class="col-md-6 box">
+      <div class="scroll_div" id="style-4">
+          <div class="container1">
+            <label class="mb-0">
+              <div style="float:left;">
+                <input type="checkbox"/>
+                <img src="assets/img/user/user-13.jpg" alt="" class="image-circle"/>
+              </div>
+              <div class="checkmark" style="float:left;">
+                <div><span>Work Load</span>10 hrs</div>
+                <div><span>Situations Resolved</span>180</div>
+                  <div><span>Technology</span>IP</div>
+                  <div><span>Average Rating</span>4.2</div>
+              </div>
+          </label>
+        </div>
+          <div class="container1">
+            <label class="mb-0">
+              <div style="float:left;">
+                <input type="checkbox"/>
+                <img src="assets/img/user/user-13.jpg" alt="" class="image-circle"/>
+              </div>
+              <div class="checkmark" style="float:left;">
+                <div><span>Work Load</span>10 hrs</div>
+                <div><span>Situations Resolved</span>180</div>
+                  <div><span>Technology</span>IP</div>
+                  <div><span>Average Rating</span>4.2</div>
+              </div>
+          </label>
+        </div>
+      </div>
+  </div>
+  <div class="col-md-6">
+      <div class="scroll_div" id="style-4">
+          <div class="container1">
+            <label class="mb-0">
+              <div style="float:left;">
+                <input type="checkbox"/>
+                <img src="assets/img/user/user-13.jpg" alt="" class="image-circle"/>
+              </div>
+              <div class="checkmark" style="float:left;">
+                <div><span>Work Load</span>10 hrs</div>
+                <div><span>Situations Resolved</span>180</div>
+                  <div><span>Technology</span>IP</div>
+                  <div><span>Average Rating</span>4.2</div>
+              </div>
+          </label>
+        </div>
+          <div class="container1">
+            <label class="mb-0">
+              <div style="float:left;">
+                <input type="checkbox"/>
+                <img src="assets/img/user/user-13.jpg" alt="" class="image-circle"/>
+              </div>
+              <div class="checkmark" style="float:left;">
+                <div><span>Work Load</span>10 hrs</div>
+                <div><span>Situations Resolved</span>180</div>
+                  <div><span>Technology</span>IP</div>
+                  <div><span>Average Rating</span>4.2</div>
+              </div>
+          </label>
+        </div>
+      </div>
+  </div>
+
+</div>
+
+     
+
+     
+
+
+
       <div class="btn-group">
         <button type="button" class="btn btn-default" style="width:250px; color:#000000;">Select Asignee</button>
         <a href="javascript:;" style="color: #000000;" class="btn btn-default dropdown-toggle" (click)="showDD($event,globalFilterModal)" id="{{globalFilterModal.identifier}}"></a>
@@ -172,10 +246,9 @@
                     <div class="checkmark" style="float:left;">
                       <div><span>Work Load</span>10 hrs</div>
                       <div><span>Situations Resolved</span>180</div>
-                        <div><span>Technology</span>Angular</div>
+                        <div><span>Technology</span>IP</div>
                         <div><span>Average Rating</span>4.2</div>
                     </div>
-                   
                 </label>
                     <!-- <label class="">fVal_.name
                     <input type="checkbox" id="{{fvndx_}}" [(ngModel)]="fVal_.value"
@@ -194,7 +267,7 @@
                     <div class="checkmark" style="float:left;">
                       <div><span>Work Load</span>10 hrs</div>
                       <div><span>Situations Resolved</span>180</div>
-                        <div><span>Technology</span>Angular</div>
+                        <div><span>Technology</span>IP</div>
                         <div><span>Average Rating</span>4.2</div>
                     </div>
                 </label>

@@ -117,8 +117,10 @@ export class CloudDevOpsComponent implements OnInit {
   ngOnInit() {
   }
 
-  open(content) {
-    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+  // this.modalRef = this.modalService.open(content, {​​​​ windowClass: 'my-class' }​​​​);
+
+  open(content ) {
+    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title', windowClass: 'my-class'}).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
       this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
