@@ -17,10 +17,14 @@ const routes: Routes = [
             {
                 path: 'home', loadChildren: '../user-home/user-home.module#UserHomeModule',
                 data: { preload: true, delay: false }
-            },{
-                path: 'engineer-view', component: EngineerViewComponent,
-                data: { preload: true, delay: false }
             },
+            // {
+            //     path: 'engineer-view', component: EngineerViewComponent,
+            //     data: { preload: true, delay: false }
+            // },
+            { path: 'engineer-view',loadChildren:'../engineer-view/engineer-view.module#EngineerViewModule',
+            data: { preload: true, delay: false }
+     },
             { path: '**', redirectTo: 'home' }
         ]
     }
