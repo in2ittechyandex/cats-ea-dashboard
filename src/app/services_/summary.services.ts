@@ -38,9 +38,11 @@ export class SummaryService {
             return this.http.post(url, fData).map(res => <any>res);
         }
 
-        public getTechnologyWidgetData() {
-            const url = 'https://run.mocky.io/v3/2df0aaba-40a6-4f4a-9910-e2a392346957';
-            return this.http.get(url).map(res => <any>res);
+        public getTechnologyWidgetData(reportIndex: number, reportId, timeRange: any, globalFilters: any) {
+            const url = environment._WEBGATEWAY_BASIC_URL_ +'menu/kpi/get_technology_widget_data';
+            const fData: FormData = new FormData();
+            fData.append('reportId', reportId);
+            return this.http.post(url, fData).map(res => <any>res);
         }
 
         public getSummaryBlocksData() {

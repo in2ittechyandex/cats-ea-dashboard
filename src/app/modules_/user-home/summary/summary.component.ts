@@ -11,8 +11,8 @@ import * as $ from 'jquery';
 import { TimeFilterService } from 'src/app/shared_/time-filter/time-filter.service.component';
 import { PerformanceService } from 'src/app/services_/performance.services';
 import { AuthServices } from 'src/app/modules_/auth/auth.services';
-import { any } from '@amcharts/amcharts4/.internal/core/utils/Array';
 import { SummaryService } from 'src/app/services_/summary.services';
+import { TechReports } from 'src/app/models_/summary';
 
 declare var moment: any;
 
@@ -54,7 +54,7 @@ export class SummaryComponent implements OnInit, OnDestroy, AfterViewInit {
   showMainLoader: boolean = true;
   situation_data: any[] = [];
   technologyList: any;
-  technologyWidgetData: any;
+  technologyWidgetData: Array<TechReports> = [];
   summaryBlocks: any = [];
 
   dateFilter_timeType = 'td';
@@ -155,19 +155,11 @@ export class SummaryComponent implements OnInit, OnDestroy, AfterViewInit {
   };
 
   public modAddReports_ = {
-    'selCategory': '',
-    'selReport': '',
-    'selChartType': '',
-    'selCoumnSpan': '',
+    'selTechnology': '',
     'selReportName': '',
-    'selReportDesc': '',
-    'categories': [],
-    'reports': [],
-    'charts': [],
-    'colspan': [],
-    'colspan_defaults': [
-      { 'id': 6, 'value': 'Column Span 6' },
-      { 'id': 12, 'value': 'Column Span 12' }]
+    'selNMS': '',
+    'nms': [],
+    'tech': [],
   };
 
   themeName: 'default';
@@ -348,7 +340,7 @@ export class SummaryComponent implements OnInit, OnDestroy, AfterViewInit {
     this.globalFilterModal.modifyNonASD = this.detectChanges(this.globalFilterModal.editNonASD, this.globalFilterModal.nonAsd);
 
     this.updateUserTabFilters();
-    this.fetchReportsData();
+    // this.fetchReportsData();
     this.fetchReportSummaryData();
   }
 
@@ -364,17 +356,7 @@ export class SummaryComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
 
-  clearModalAddReports() {
-    this.modAddReports_['selCategory'] = '',
-      this.modAddReports_['selReport'] = '',
-      this.modAddReports_['selChartType'] = '',
-      this.modAddReports_['selCoumnSpan'] = '',
-      this.modAddReports_['selReportName'] = '',
-      this.modAddReports_['selReportDesc'] = '',
-      this.modAddReports_['reports'] = [],
-      this.modAddReports_['charts'] = [],
-      this.modAddReports_['charts'] = [];
-  }
+
 
   clearModalAddSummary() {
     this.modAddSummary_['selSummaryCategory'] = '';
@@ -544,13 +526,29 @@ export class SummaryComponent implements OnInit, OnDestroy, AfterViewInit {
   public loadNMSList() {
     this.showMainLoader = true;
     this.summaryService.getNMSList().subscribe(res => {
-      if (res['status'] == true) {
-        this.bindUserTabFilterData(res['data']);
-        this.showMainLoader = false;
-      }
+      const data = res.status == true ? res.data : [];
+      res.data.nms.map(elm => elm['value'] = true);
+      this.bindUserTabFilterData(data);
+      this.showMainLoader = false;
     }, err => {
 
     });
+  }
+
+  /**
+ * Ramji : 03-11-2020
+ *  This f/n will prepare global filter model object
+ * @param obj  : filter object
+ */
+  bindUserTabFilterData(obj: any) {
+    if (obj['nms']) {
+      const asdSort_ = this.sharedServices_.sortByKey(obj['nms'], 'name');
+      this.globalFilterModal.nms = this.deepClone(asdSort_);
+      this.globalFilterModal.editNMS = this.deepClone(asdSort_);
+      this.globalFilterModal.modifyNMS = this.deepClone(asdSort_);
+    }
+    this.globalFilterModal.timeType = obj['time_type'] ? obj['time_type'] : 'cu';
+    this.loadReportList();
   }
 
   public loadTechnologyList() {
@@ -558,28 +556,58 @@ export class SummaryComponent implements OnInit, OnDestroy, AfterViewInit {
     this.summaryService.getTechnologyList().subscribe(resp => {
       if (resp.status) {
         this.technologyList = resp.data;
-        this.loadTechnologyWidget();
+        // this.loadTechnologyWidget();
       }
     });
   }
 
-  public loadTechWidgetList() {
-
-  }
-
-
-  public loadTechnologyWidget() {
-    this.summaryService.getTechnologyWidgetData().subscribe(resp => {
+  public loadReportList() {
+    this.summaryService.loadReportList().subscribe(resp => {
       if (resp.status) {
-        this.technologyWidgetData = resp.data;
-        this.technologyList.forEach((obj_, indx) => {
-          this.technologyWidgetData[indx].name = obj_.name;
-          this.technologyWidgetData[indx].id = obj_.id;
+        this.technologyWidgetData = [];
+        const l_ = resp.data ? resp.data : [];
+        l_.forEach(r_ => {
+          this.technologyWidgetData.push(new TechReports(r_));
         });
-        // console.log(JSON.stringify(this.technologyWidgetData));
+        this.loadReportData();
       }
     });
   }
+
+  loadReportData() {
+    for (let i = 0; i < this.technologyWidgetData.length; i++) {
+      this.makeCallFetchTechReportData(this.technologyWidgetData[i], i);
+    }
+  }
+
+  public makeCallFetchTechReportData(obj: TechReports, index) {
+    this.technologyWidgetData[index].isReportLoaded = false;
+    // const urlToCall_ = this.userTab_.reportUrl[index].url;
+    this.summaryService.getTechnologyWidgetData(index,
+      this.technologyWidgetData[index].id, this.selectedTimeRange,
+      this.globalFilterModal).subscribe(res => {
+        if (res.status) {
+          this.technologyWidgetData[index].data = res.data;
+          this.technologyWidgetData[index].isReportLoaded = true;
+        }
+      }, err => {
+        // TODO : log error here or send mail
+      });
+  }
+
+
+  // public loadTechnologyWidget() {
+  //   this.summaryService.getTechnologyWidgetData().subscribe(resp => {
+  //     if (resp.status) {
+  //       this.technologyWidgetData = resp.data;
+  //       this.technologyList.forEach((obj_, indx) => {
+  //         this.technologyWidgetData[indx].name = obj_.name;
+  //         this.technologyWidgetData[indx].id = obj_.id;
+  //       });
+  //       // console.log(JSON.stringify(this.technologyWidgetData));
+  //     }
+  //   });
+  // }
 
   public loadSummaryBlocks() {
     this.summaryService.getSummaryBlocksData().subscribe(resp => {
@@ -594,6 +622,21 @@ export class SummaryComponent implements OnInit, OnDestroy, AfterViewInit {
     } else {
       this.visibleIndex = ind;
     }
+  }
+
+
+  onClickAddNewReportButton() {
+    this.clearModalAddReports();
+    this.modAddReports_['tech'] = this.technologyList;
+    this.modAddReports_['nms'] = this.globalFilterModal.nms.filter(elm => elm.value == true);
+  }
+
+  clearModalAddReports() {
+    this.modAddReports_['selTechnology'] = '';
+    this.modAddReports_['selReportName'] = '';
+    this.modAddReports_['selNMS'] = '';
+    this.modAddReports_['nms'] = [];
+    this.modAddReports_['tech'] = [];
   }
 
   public loadInitData() {
@@ -769,43 +812,7 @@ export class SummaryComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
-  /**
-   * Ramji : 03-11-2020
-   *  This f/n will prepare global filter model object
-   * @param obj  : filter object
-   */
-  bindUserTabFilterData(obj: any) {
-    // if (obj['customers']) {
-    //   const custSort_ = this.sharedServices_.sortByKey(obj['customers'], 'name');
-    //   this.globalFilterModal.customers = this.deepClone(custSort_);
-    //   this.globalFilterModal.editCustomers = this.deepClone(custSort_);
-    //   this.globalFilterModal.modifyCustomer = this.deepClone(custSort_);
-    // }
-    // if (obj['asd']) {
-    //   const asdSort_ = this.sharedServices_.sortByKey(obj['asd'], 'name');
-    //   this.globalFilterModal.asd = this.deepClone(asdSort_);
-    //   this.globalFilterModal.editAsd = this.deepClone(asdSort_);
-    //   this.globalFilterModal.modifyAsd = this.deepClone(asdSort_);
-    // }
-    // if (obj['non_asd']) {
-    //   const asdSort_ = this.sharedServices_.sortByKey(obj['non_asd'], 'name');
-    //   this.globalFilterModal.nonAsd = this.deepClone(asdSort_);
-    //   this.globalFilterModal.editNonASD = this.deepClone(asdSort_);
-    //   this.globalFilterModal.modifyNonASD = this.deepClone(asdSort_);
-    // }
 
-    if (obj['nms']) {
-      const asdSort_ = this.sharedServices_.sortByKey(obj['nms'], 'name');
-      this.globalFilterModal.nms = this.deepClone(asdSort_);
-      this.globalFilterModal.editNMS = this.deepClone(asdSort_);
-      this.globalFilterModal.modifyNMS = this.deepClone(asdSort_);
-    }
-    this.globalFilterModal.timeType = obj['time_type'] ? obj['time_type'] : 'cu';
-
-    // TODO : make hit to fetch all reports data.
-    // this.fetchReportsData();
-    // this.fetchReportSummaryData();
-  }
 
 
   /**
@@ -839,12 +846,18 @@ export class SummaryComponent implements OnInit, OnDestroy, AfterViewInit {
   //     });
   // }
 
-  public fetchReportsData() {
+  public fetchTechReportData() {
     for (let i = 0; i < this.userTab_.reportUrl.length; i++) {
       // this.makeCallToFetchReportData(this.userTab_.reportUrl[i], i);
     }
 
   }
+
+
+
+
+
+
 
   sortByKey(array, key) {
     return array.sort(function (a, b) {
@@ -919,16 +932,16 @@ export class SummaryComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
 
-  public onCategorySelect(categoryId) {
-    this.modAddReports_.selReport = '';
-    this.modAddReports_.selChartType = '';
-    this.modAddReports_.reports = [];
-    this.modAddReports_.charts = [];
+  // public onCategorySelect(categoryId) {
+  //   this.modAddReports_.selReport = '';
+  //   this.modAddReports_.selChartType = '';
+  //   this.modAddReports_.reports = [];
+  //   this.modAddReports_.charts = [];
 
-    if (categoryId && categoryId != '') {
-      // this.loadCategoryReports(categoryId);
-    }
-  }
+  //   if (categoryId && categoryId != '') {
+  //     // this.loadCategoryReports(categoryId);
+  //   }
+  // }
 
   public onSummaryCategorySelect(categoryId) {
     this.modAddSummary_.selSummaryReport = '';
@@ -940,17 +953,20 @@ export class SummaryComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
 
-
-  public onReportSelect(reportId) {
-    this.modAddReports_.selChartType = '';
-    this.modAddReports_.charts = [];
-    if (reportId && reportId != '') {
-      // this.loadReportCharts(reportId);
-    }
+  /**
+   * Ramji 03-11-2020
+   * @param reportId 
+   */
+  public onTechnologySelect(reportId) {
+    // this.modAddReports_.selChartType = '';
+    // this.modAddReports_.charts = [];
+    // if (reportId && reportId != '') {
+    //   // this.loadReportCharts(reportId);
+    // }
 
   }
 
-  public onChartSelect(obj) {
+  public onNMSSelect(obj) {
 
   }
 
@@ -969,19 +985,22 @@ export class SummaryComponent implements OnInit, OnDestroy, AfterViewInit {
   // }
 
   validateAddReportTab() {
-    if (('' + this.modAddReports_.selCategory).trim() == '') {
-      swal('Please Select Report Category ', '', 'warning');
-      return false;
-    } else if (('' + this.modAddReports_.selReport).trim() == '') {
-      swal('Please Select Report ', '', 'warning');
-      return false;
-    } else if (('' + this.modAddReports_.selChartType).trim() == '') {
-      swal('Please Select Chart Type ', '', 'warning');
-      return false;
-    } else if (('' + this.modAddReports_.selCoumnSpan).trim() == '') {
-      swal('Please Select Column Span ', '', 'warning');
-      return false;
-    } else if (('' + this.modAddReports_.selReportName).trim() == '') {
+    // if (('' + this.modAddReports_.selCategory).trim() == '') {
+    //   swal('Please Select Report Category ', '', 'warning');
+    //   return false;
+    // } else 
+    // if (('' + this.modAddReports_.selReport).trim() == '') {
+    //   swal('Please Select Report ', '', 'warning');
+    //   return false;
+    // } else if (('' + this.modAddReports_.selChartType).trim() == '') {
+    //   swal('Please Select Chart Type ', '', 'warning');
+    //   return false;
+    // } else if (('' + this.modAddReports_.selCoumnSpan).trim() == '') {
+    //   swal('Please Select Column Span ', '', 'warning');
+    //   return false;
+    // } else 
+
+    if (('' + this.modAddReports_.selReportName).trim() == '') {
       swal('Please Fill Report Name', '', 'warning');
       return false;
     } if (this.userTab_.reportUrl.length >= 6) {
@@ -1581,3 +1600,6 @@ export interface Item {
   id: number;
   name: string;
 }
+
+
+
