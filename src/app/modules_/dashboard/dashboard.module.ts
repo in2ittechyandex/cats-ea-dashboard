@@ -2,8 +2,7 @@ import { DashboardRoutingModule } from './dashboard.routing.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DashboardComponent } from './dashboard.component';
-import { LayoutsModule } from '../layouts/layouts.module';
-import { EngineerViewComponent } from '../engineer-view/engineer-view.component';
+import { LayoutsModule } from '../layouts/layouts.module'; 
 import { SharedModule } from 'src/app/shared_/shared.module';
 // import { MapulaModule } from '../mapula/mapula.module';
 
@@ -18,7 +17,6 @@ import { SharedModule } from 'src/app/shared_/shared.module';
     // MapulaModule,
     // DragDropModule
   ],
-  declarations: [DashboardComponent,
-    EngineerViewComponent]
+  declarations: [DashboardComponent]
 })
 export class DashboardModule { }
