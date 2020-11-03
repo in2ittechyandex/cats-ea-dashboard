@@ -306,12 +306,12 @@
                                 <div class="col-md-7">
                                     <input type="text" [(ngModel)]="modAddReports_.selReportName"
                                         #selReportName="ngModel" name="selReportName" class="form-control"
-                                        [required]="'true'" />
+                                        [required]="'true'" placeholder="Enter Report Name" />
                                 </div>
                                 <!-- <div *ngIf="!f.form.controls['selReportName'].valid && f.form.controls['selReportName'].touched">Report Name is required</div> -->
                             </div>
                             <div class="form-group row">
-                                <label class="col-md-5 col-form-label">Select Technology <sup
+                                <label class="col-md-5 col-form-label">Technology <sup
                                         style="color:#FF0000">*</sup></label>
                                 <div class="col-md-7">
                                     <select id="myDropDown" 
@@ -327,13 +327,13 @@
                                 <!-- <div *ngIf="!f.form.controls['selReport'].valid && f.form.controls['selReport'].touched">Report is required</div> -->
                             </div>
                             <div class="form-group row">
-                                <label class="col-md-5 col-form-label">Select NMS <sup
+                                <label class="col-md-5 col-form-label">NMS <sup
                                         style="color:#FF0000">*</sup></label>
                                 <div class="col-md-7">
                                     <select  [(ngModel)]="modAddReports_.selNMS"
                                         (change)="onNMSSelect($event.target.value)" class="form-control"
                                         #selNMS="ngModel" name="selNMS" [required]="'true'" multiple>
-                                            <option value="">Select NMS</option>
+                                            <!-- <option value="">Select NMS</option> -->
                                             <option *ngFor="let chart of modAddReports_.nms" value={{chart.id}}>
                                                 {{chart.name | titlecase}}</option>
                                     </select>
