@@ -1,24 +1,21 @@
 <!-- begin breadcrumb -->
 <ol class="breadcrumb pull-right">
     <li class="breadcrumb-item">
-        <button (click)="open(modalDialog,'lg'); onClickAddNewReportButton();" class="btn btn-md "
-            [ngClass]="[(themeConf_.selectedColor == 'default') ? 'bg-black':'bg-'+themeConf_.selectedColor]">Add
+        <button (click)="open(modalDialog,'lg'); onClickAddNewReportButton();" class="btn btn-md " [ngClass]="[(themeConf_.selectedColor == 'default') ? 'bg-black':'bg-'+themeConf_.selectedColor]">Add
             Reports &nbsp; <i class="fa fa-plus-circle" aria-hidden="true"></i> </button>
     </li>
 </ol>
 
 <div class="In2_top_filter">
     <div class="pull-right" style="margin-right:10px;">
-        <button type="button" (click)="onGlobalFilterToggle();" class="slide-toggle btn btn-md"
-            [ngClass]="[(themeConf_.selectedColor == 'default') ? 'bg-black':'bg-'+themeConf_.selectedColor]">Filters
+        <button type="button" (click)="onGlobalFilterToggle();" class="slide-toggle btn btn-md" [ngClass]="[(themeConf_.selectedColor == 'default') ? 'bg-black':'bg-'+themeConf_.selectedColor]">Filters
             <i class="fa fa-filter" aria-hidden="true"></i></button>
     </div>
     <div class="gf_box pull-right" style="display:none">
         <div class="box-inner">
             <div class="pull-right">
                 <div class="button-group">
-                    <button type="button" class="btn btn-md" (click)="onGlobalFilterChange();onGlobalFilterToggle();"
-                        [ngClass]="[(themeConf_.selectedColor == 'default') ? 'bg-black':'bg-'+themeConf_.selectedColor]">Apply</button>
+                    <button type="button" class="btn btn-md" (click)="onGlobalFilterChange();onGlobalFilterToggle();" [ngClass]="[(themeConf_.selectedColor == 'default') ? 'bg-black':'bg-'+themeConf_.selectedColor]">Apply</button>
                 </div>
             </div>
 
@@ -26,14 +23,11 @@
             <div class="pull-right" style="margin-right:10px;">
                 <div class="btn-group">
                     <button type="button" class="btn btn-default" style="width:90px; color:#000000;">NMS</button>
-                    <a href="javascript:;" style="color: #000000;" class="btn btn-default dropdown-toggle"
-                        (click)="showDDNMS($event,globalFilterModal)" id="{{globalFilterModal.identifier}}"></a>
-                    <ul class="dropdown-menu pull-right" click-outside [listening]="globalFilterModal.isListenOnBlur"
-                        [Ident]="globalFilterModal.identifier" (clickOutSide)="globalFilterClickOutSideNMS($event)">
+                    <a href="javascript:;" style="color: #000000;" class="btn btn-default dropdown-toggle" (click)="showDDNMS($event,globalFilterModal)" id="{{globalFilterModal.identifier}}"></a>
+                    <ul class="dropdown-menu pull-right" click-outside [listening]="globalFilterModal.isListenOnBlur" [Ident]="globalFilterModal.identifier" (clickOutSide)="globalFilterClickOutSideNMS($event)">
                         <form name="search">
                             <div class="mx-2 mb-2">
-                                <input type="search" #searchVal class="form-control form-control-sm"
-                                    placeholder="Search..." aria-controls="data-table-default">
+                                <input type="search" #searchVal class="form-control form-control-sm" placeholder="Search..." aria-controls="data-table-default">
                             </div>
                         </form>
                         <div class="scroll_div" id="style-4">
@@ -46,8 +40,7 @@
                                         [ngClass]="(globalFilterModal.masterSelectedNMS) ?'bg-'+(themeConf_.selectedColor):''"></span>
                                 </label>
                             </li>
-                            <li class="container1"
-                                *ngFor="let fVal_ of globalFilterModal.nms | filterByKey: 'name' :searchVal.value; let fvndx_=index; trackBy: trackByFn">
+                            <li class="container1" *ngFor="let fVal_ of globalFilterModal.nms | filterByKey: 'name' :searchVal.value; let fvndx_=index; trackBy: trackByFn">
                                 <label class="">{{fVal_.name}}
                                     <input type="checkbox" id="{{fvndx_}}" [(ngModel)]="fVal_.value"
                                         [checked]="fVal_.value"
@@ -170,8 +163,7 @@
               </div> -->
             <div class="pull-right" style="margin-right:10px;">
                 <div class="button-group">
-                    <app-time-filter
-                        [configStyle]="{'width':'220','bgColor':'#ececec','border':'1px solid #ccc' ,'customRanges':dateFillter_customRanges ,'startDate':dateFilter_startDate ,'endDate':dateFilter_endDate ,'timeType':dateFilter_timeType ,'timePicker':true}">
+                    <app-time-filter [configStyle]="{'width':'220','bgColor':'#ececec','border':'1px solid #ccc' ,'customRanges':dateFillter_customRanges ,'startDate':dateFilter_startDate ,'endDate':dateFilter_endDate ,'timeType':dateFilter_timeType ,'timePicker':true}">
                     </app-time-filter>
                 </div>
             </div>
@@ -239,11 +231,13 @@
                                     <td [ngClass]="'bg-'+tData_.color">{{tData_.data.summary.totalIncidents}}</td>
                                     <td [ngClass]="'bg-'+tData_.color">{{tData_.data.summary.noiceReduction}}</td>
                                 </tr>
-                                <!-- <tr class="active" *ngIf="tData_.isReportLoaded">
+                                <tr class="active" *ngIf="!tData_.isReportLoaded">
                                     <td colspan="4">
-                                        <span class="spinner-small"></span>
+                                        <div style="position: relative; height: 35px;">
+                                            <span class="spinner-small"></span>
+                                        </div>
                                     </td>
-                                </tr> -->
+                                </tr>
                             </tbody>
                         </table>
                         <div class="table-responsive chart_table" *ngIf="visibleIndex === techIndex">
@@ -287,11 +281,9 @@
 
 
 <ng-template #modalDialog let-c="close" let-d="dismiss">
-    <div class="modal-header"
-        [ngClass]="[(themeConf_.selectedColor == 'default') ? 'bg-black':'bg-'+themeConf_.selectedColor]">
+    <div class="modal-header" [ngClass]="[(themeConf_.selectedColor == 'default') ? 'bg-black':'bg-'+themeConf_.selectedColor]">
         <h4 class="modal-title" style="color:#fff;">Add Reports</h4>
-        <button type="button" class="close" (click)="d('Cross click');clearModalAddReports();"
-            style="color:#fff;">×</button>
+        <button type="button" class="close" (click)="d('Cross click');clearModalAddReports();" style="color:#fff;">×</button>
     </div>
     <div class="modal-body">
         <div class="row">
@@ -309,9 +301,7 @@
                             <div class="form-group row">
                                 <label class="col-md-5 col-form-label">Name <sup style="color:#FF0000">*</sup></label>
                                 <div class="col-md-7">
-                                    <input type="text" [(ngModel)]="modAddReports_.selReportName"
-                                        #selReportName="ngModel" name="selReportName" class="form-control"
-                                        [required]="'true'" placeholder="Enter Report Name" />
+                                    <input type="text" [(ngModel)]="modAddReports_.selReportName" #selReportName="ngModel" name="selReportName" class="form-control" [required]="'true'" placeholder="Enter Report Name" />
                                 </div>
                                 <!-- <div *ngIf="!f.form.controls['selReportName'].valid && f.form.controls['selReportName'].touched">Report Name is required</div> -->
                             </div>
@@ -319,10 +309,7 @@
                                 <label class="col-md-5 col-form-label">Technology <sup
                                         style="color:#FF0000">*</sup></label>
                                 <div class="col-md-7">
-                                    <select id="myDropDown" 
-                                        [(ngModel)]="modAddReports_.selTechnology"
-                                        (change)="onTechnologySelect($event.target.value)" class="form-control"
-                                        #selTechnology="ngModel" name="selTechnology" [required]="'true'">
+                                    <select id="myDropDown" [(ngModel)]="modAddReports_.selTechnology" (change)="onTechnologySelect($event.target.value)" class="form-control" #selTechnology="ngModel" name="selTechnology" [required]="'true'">
                                         <option value="">Select Technology</option>
                                         <option *ngFor="let tech_ of modAddReports_.tech" value={{tech_.id}}>
                                             {{tech_.name}}
@@ -335,9 +322,7 @@
                                 <label class="col-md-5 col-form-label">NMS <sup
                                         style="color:#FF0000">*</sup></label>
                                 <div class="col-md-7">
-                                    <select  [(ngModel)]="modAddReports_.selNMS"
-                                        (change)="onNMSSelect($event.target.value)" class="form-control"
-                                        #selNMS="ngModel" name="selNMS" [required]="'true'" multiple>
+                                    <select [(ngModel)]="modAddReports_.selNMS" (change)="onNMSSelect($event.target.value)" class="form-control" #selNMS="ngModel" name="selNMS" [required]="'true'" multiple>
                                             <!-- <option value="">Select NMS</option> -->
                                             <option *ngFor="let chart of modAddReports_.nms" value={{chart.id}}>
                                                 {{chart.name | titlecase}}</option>
@@ -356,8 +341,7 @@
     </div>
     <!-- *ngIf="f.form.valid" -->
     <div class="modal-footer">
-        <a href="javascript:;" id="closeAddReportButton" class="btn btn-default text-black" data-dismiss="modal"
-            (click)="d('Cross click');clearModalAddReports();">Cancel</a>
+        <a href="javascript:;" id="closeAddReportButton" class="btn btn-default text-black" data-dismiss="modal" (click)="d('Cross click');clearModalAddReports();">Cancel</a>
         <a href="javascript:;" (click)="addReportToTab()" class="btn btn-md bg-black">Add Reports</a>
     </div>
 </ng-template>
