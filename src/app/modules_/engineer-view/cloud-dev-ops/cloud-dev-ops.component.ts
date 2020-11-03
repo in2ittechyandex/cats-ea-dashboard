@@ -119,7 +119,7 @@ export class CloudDevOpsComponent implements OnInit {
     this.getAllSituation();
   }
     getAllSituation(){
-      this.clouddevopsservice.getSituations('open').subscribe((res)=>{
+      this.clouddevopsservice.getSituations('Open').subscribe((res)=>{
         if(res['status']){
           this.taskData.opened=res['data'];
         }
