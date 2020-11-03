@@ -1003,48 +1003,51 @@ export class SummaryComponent implements OnInit, OnDestroy, AfterViewInit {
     if (('' + this.modAddReports_.selReportName).trim() == '') {
       swal('Please Fill Report Name', '', 'warning');
       return false;
-    } if (this.userTab_.reportUrl.length >= 6) {
-      swal('Maximum 6 Reports Can be Added ,To Add More Add New Widget ', '', 'warning');
+    } else if (('' + this.modAddReports_.selTechnology).trim() == '') {
+      swal('Please Fill Report Technology', '', 'warning');
       return false;
-    }
-    return true;
+    } else if (('' + this.modAddReports_.selNMS).trim() == '') {
+      swal('Please Select Report NMS', '', 'warning');
+      return false;
+    } else{
+      return true;
+    }    
   }
 
 
 
-  // addReportToTab() {
-  //   if (this.validateAddReportTab()) {
-  //     this.modalReferenceAddReport.close();
-  //     const objAddReport_ = {
-  //       'chartId': this.modAddReports_.selChartType,
-  //       'masterReportId': this.modAddReports_.selReport,
-  //       'tabId': this.selectedTabId,
-  //       'reportName': this.modAddReports_.selReportName,
-  //       'colSpan': this.modAddReports_.selCoumnSpan
-  //     };
-  //     this.reportService_.addReportToTab(objAddReport_).subscribe(res => {
-  //       if (res.status) {
-  //         swal({
-  //           position: 'center',
-  //           type: 'success',
-  //           title: this.modAddReports_.selReportName,
-  //           titleText: 'Report Added Successfully',
-  //           showConfirmButton: false,
-  //           timer: 1000
-  //         });
+  addReportToTab() {
+    if (this.validateAddReportTab()) {
+      this.modalReferenceAddReport.close();
+      const objAddReport_ = {
+        'technology': this.modAddReports_.selTechnology,
+        'nmsList': this.modAddReports_.selNMS,
+        'name': this.modAddReports_.selReportName
+      };
+      this.summaryService.addNewTechnologyWidgetRequest(objAddReport_).subscribe(res => {
+        if (res.status) {
+          swal({
+            position: 'center',
+            type: 'success',
+            title: this.modAddReports_.selReportName,
+            titleText: 'Report Added Successfully',
+            showConfirmButton: false,
+            timer: 1000
+          });
 
-  //         const report_: Report = new Report(res.data);
-  //         this.userTab_.reportUrl[this.userTab_.reportUrl.length] = report_;
-  //         this.makeCallToFetchReportData(report_, (this.userTab_.reportUrl.length - 1));
-  //         this.clearModalAddReports();
-  //         this.reportService_.notifyTabChangesToServices(this.userTab_.id, this.userTab_.reportUrl);
-  //       }
+          // const report_: TechReports = new TechReports(res.data);
+          // this.technologyWidgetData.push(report_);
+          // this.makeCallFetchTechReportData(report_, (this.technologyWidgetData.length - 1));
+          this.loadReportList();
+          this.clearModalAddReports();
+          // this.reportService_.notifyTabChangesToServices(this.userTab_.id, this.userTab_.reportUrl);
+        }
 
-  //     }, err => {
+      }, err => {
 
-  //     });
-  //   }
-  // }
+      });
+    }
+  }
 
   validateAddSummaryTab() {
     if (('' + this.modAddSummary_.selSummaryCategory).trim() == '') {

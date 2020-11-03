@@ -239,6 +239,11 @@
                                     <td [ngClass]="'bg-'+tData_.color">{{tData_.data.summary.totalIncidents}}</td>
                                     <td [ngClass]="'bg-'+tData_.color">{{tData_.data.summary.noiceReduction}}</td>
                                 </tr>
+                                <!-- <tr class="active" *ngIf="tData_.isReportLoaded">
+                                    <td colspan="4">
+                                        <span class="spinner-small"></span>
+                                    </td>
+                                </tr> -->
                             </tbody>
                         </table>
                         <div class="table-responsive chart_table" *ngIf="visibleIndex === techIndex">
