@@ -1,21 +1,24 @@
 <!-- begin breadcrumb -->
 <ol class="breadcrumb pull-right">
     <li class="breadcrumb-item">
-        <button (click)="open(modalDialog,'lg'); onClickAddNewReportButton();" class="btn btn-md " [ngClass]="[(themeConf_.selectedColor == 'default') ? 'bg-black':'bg-'+themeConf_.selectedColor]">Add
+        <button (click)="open(modalDialog,'lg'); onClickAddNewReportButton();" class="btn btn-md "
+            [ngClass]="[(themeConf_.selectedColor == 'default') ? 'bg-black':'bg-'+themeConf_.selectedColor]">Add
             Reports &nbsp; <i class="fa fa-plus-circle" aria-hidden="true"></i> </button>
     </li>
 </ol>
 
 <div class="In2_top_filter">
     <div class="pull-right" style="margin-right:10px;">
-        <button type="button" (click)="onGlobalFilterToggle();" class="slide-toggle btn btn-md" [ngClass]="[(themeConf_.selectedColor == 'default') ? 'bg-black':'bg-'+themeConf_.selectedColor]">Filters
+        <button type="button" (click)="onGlobalFilterToggle();" class="slide-toggle btn btn-md"
+            [ngClass]="[(themeConf_.selectedColor == 'default') ? 'bg-black':'bg-'+themeConf_.selectedColor]">Filters
             <i class="fa fa-filter" aria-hidden="true"></i></button>
     </div>
     <div class="gf_box pull-right" style="display:none">
         <div class="box-inner">
             <div class="pull-right">
                 <div class="button-group">
-                    <button type="button" class="btn btn-md" (click)="onGlobalFilterChange();onGlobalFilterToggle();" [ngClass]="[(themeConf_.selectedColor == 'default') ? 'bg-black':'bg-'+themeConf_.selectedColor]">Apply</button>
+                    <button type="button" class="btn btn-md" (click)="onGlobalFilterChange();onGlobalFilterToggle();"
+                        [ngClass]="[(themeConf_.selectedColor == 'default') ? 'bg-black':'bg-'+themeConf_.selectedColor]">Apply</button>
                 </div>
             </div>
 
@@ -23,11 +26,14 @@
             <div class="pull-right" style="margin-right:10px;">
                 <div class="btn-group">
                     <button type="button" class="btn btn-default" style="width:90px; color:#000000;">NMS</button>
-                    <a href="javascript:;" style="color: #000000;" class="btn btn-default dropdown-toggle" (click)="showDDNMS($event,globalFilterModal)" id="{{globalFilterModal.identifier}}"></a>
-                    <ul class="dropdown-menu pull-right" click-outside [listening]="globalFilterModal.isListenOnBlur" [Ident]="globalFilterModal.identifier" (clickOutSide)="globalFilterClickOutSideNMS($event)">
+                    <a href="javascript:;" style="color: #000000;" class="btn btn-default dropdown-toggle"
+                        (click)="showDDNMS($event,globalFilterModal)" id="{{globalFilterModal.identifier}}"></a>
+                    <ul class="dropdown-menu pull-right" click-outside [listening]="globalFilterModal.isListenOnBlur"
+                        [Ident]="globalFilterModal.identifier" (clickOutSide)="globalFilterClickOutSideNMS($event)">
                         <form name="search">
                             <div class="mx-2 mb-2">
-                                <input type="search" #searchVal class="form-control form-control-sm" placeholder="Search..." aria-controls="data-table-default">
+                                <input type="search" #searchVal class="form-control form-control-sm"
+                                    placeholder="Search..." aria-controls="data-table-default">
                             </div>
                         </form>
                         <div class="scroll_div" id="style-4">
@@ -40,7 +46,8 @@
                                         [ngClass]="(globalFilterModal.masterSelectedNMS) ?'bg-'+(themeConf_.selectedColor):''"></span>
                                 </label>
                             </li>
-                            <li class="container1" *ngFor="let fVal_ of globalFilterModal.nms | filterByKey: 'name' :searchVal.value; let fvndx_=index; trackBy: trackByFn">
+                            <li class="container1"
+                                *ngFor="let fVal_ of globalFilterModal.nms | filterByKey: 'name' :searchVal.value; let fvndx_=index; trackBy: trackByFn">
                                 <label class="">{{fVal_.name}}
                                     <input type="checkbox" id="{{fvndx_}}" [(ngModel)]="fVal_.value"
                                         [checked]="fVal_.value"
@@ -54,126 +61,16 @@
                 </div>
             </div>
 
-
-            <!--- chandan test-->
-            <!-- <div class="pull-right" style="margin-right:10px;">
-                  <div class="btn-group">
-                      <button type="button" class="btn btn-default" style="width:110px;">
-                      Assignee Group</button>
-                      <a href="javascript:;" class="btn btn-default dropdown-toggle" (click)="showDDAssigneeGroup($event,globalFilterModal)" id="{{globalFilterModal.identifier_AssigneeGroup}}"></a>
-                      <ul class="dropdown-menu" click-outside [listening]="globalFilterModal.isListenOnBlur_AssigneeGroup" [Ident]="globalFilterModal.identifier_AssigneeGroup" (clickOutSide)="globalFilterClickOutSideAssigneeGroup($event)">
-
-                          <li class="container1">
-                              <label class=""><strong>Select/ Unselect All</strong>
-                              <input type="checkbox" [(ngModel)]="globalFilterModal.masterSelectedAsigneeGroup"
-                                  [checked]="globalFilterModal.masterSelectedAsigneeGroup" name="list_name"
-                                  (change)="checkUncheckAllAsigneeGroup(globalFilterModal.asd,globalFilterModal.nonAsd)" />
-                              <span class="checkmark"></span>
-                          </label>
-                          </li>
-                          <li class="container1">
-                              <ng-container *ngIf="!globalFilterModal.isListenOnBlurASD">
-                                  <label class="" (click)="showDDASDTemp($event,globalFilterModal,globalFilterModal.identifier_AssigneeGroup+'inner-1-submenu','isListenOnBlurASD')" id="{{globalFilterModal.identifier_AssigneeGroup+'inner-1'}}">
-                                  <strong>ASD <i class="fa fa-caret-right"></i></strong>
-                                  <span class="">
-                                  </span>
-                              </label>
-                              </ng-container>
-
-                              <ng-container *ngIf="globalFilterModal.isListenOnBlurASD">
-                                  <label class="" (click)="hideDDASDTemp($event,globalFilterModal,globalFilterModal.identifier_AssigneeGroup+'inner-1-submenu','isListenOnBlurASD')" id="{{globalFilterModal.identifier_AssigneeGroup+'inner-1'}}">
-                                  <strong>ASD <i class="fa fa-caret-down"></i></strong>
-                                  <span class="">
-                                  </span>
-                              </label>
-                              </ng-container>
-
-                              <ul class="dropdown-menu asd style-4" style="max-height:200px;width:161px;overflow: auto" id="{{globalFilterModal.identifier_AssigneeGroup+'inner-1-submenu'}}" click-outside [listening]="globalFilterModal.isListenOnBlurASD" [Ident]="(globalFilterModal.identifier_AssigneeGroup)+'inner-1'"
-                                  (clickOutSide)="globalFilterClickOutSideASD($event)">
-
-                                  <li class="container1">
-                                      <label class=""><strong>Select All ASD</strong>
-                                      <input type="checkbox" [(ngModel)]="globalFilterModal.masterSelectedASD"
-                                          [checked]="globalFilterModal.masterSelectedASD" name="list_name"
-                                          (change)="checkUncheckAll(globalFilterModal.asd,globalFilterModal.masterSelectedASD)" />
-                                      <span class="checkmark"
-                                          [ngClass]="(globalFilterModal.masterSelectedASD) ?'bg-'+(themeConf_.selectedColor):''"></span>
-                                  </label>
-                                  </li>
-
-
-                                  <li class="container1" *ngFor="let fVal_ of globalFilterModal.asd; let fvndx_=index;">
-                                      <label class="">{{fVal_.name}}
-                                      <input type="checkbox" id="{{fvndx_}}"
-                                          (change)="isAllSelected(globalFilterModal.asd,'masterSelectedASD')"
-                                          [(ngModel)]="fVal_.value" [checked]="fVal_.value" />
-                                      <span class="checkmark"
-                                          [ngClass]="(fVal_.value) ?'bg-'+(themeConf_.selectedColor):''"></span>
-                                  </label>
-                                  </li>
-                              </ul>
-
-                          </li>
-
-
-                          <li class="container1">
-                              <ng-container *ngIf="!globalFilterModal.isListenOnBlurNONASD">
-                                  <label class="" (click)="showDDASDTemp($event,globalFilterModal,globalFilterModal.identifier_AssigneeGroup+'inner-2-submenu','isListenOnBlurNONASD')" id="{{globalFilterModal.identifier_AssigneeGroup+'inner-2'}}"><strong>NON ASD <i
-                                          class="fa fa-caret-right"></i></strong>
-                                  <span class="">
-                                  </span>
-                              </label>
-                              </ng-container>
-
-                              <ng-container *ngIf="globalFilterModal.isListenOnBlurNONASD">
-                                  <label class="" (click)="hideDDASDTemp($event,globalFilterModal,globalFilterModal.identifier_AssigneeGroup+'inner-2-submenu','isListenOnBlurNONASD')" id="{{globalFilterModal.identifier_AssigneeGroup+'inner-2'}}">
-                                  <strong>NON ASD <i class="fa fa-caret-down"></i></strong>
-                                  <span class="">
-                                  </span>
-                              </label>
-                              </ng-container>
-
-                              <ul class="dropdown-menu non-asd style-4" style="max-height:200px;width:161px;overflow: auto" id="{{globalFilterModal.identifier_AssigneeGroup+'inner-2-submenu'}}" click-outside [listening]="globalFilterModal.isListenOnBlurNONASD" [Ident]="(globalFilterModal.identifier_AssigneeGroup)+'inner-2'"
-                                  (clickOutSide)="globalFilterClickOutSideNONASD($event)">
-
-                                  <li class="container1">
-                                      <label class=""><strong>Select All NON-ASD</strong>
-                                      <input type="checkbox" [(ngModel)]="globalFilterModal.masterSelectedNONASD"
-                                          [checked]="globalFilterModal.masterSelectedNONASD" name="list_name"
-                                          (change)="checkUncheckAll(globalFilterModal.nonAsd,globalFilterModal.masterSelectedNONASD)" />
-                                      <span class="checkmark"
-                                          [ngClass]="(globalFilterModal.masterSelectedNONASD) ?'bg-'+(themeConf_.selectedColor):''"></span>
-                                  </label>
-                                  </li>
-
-
-                                  <li class="container1" *ngFor="let fVal_ of globalFilterModal.nonAsd; let fvndx_=index;">
-                                      <label class="">{{fVal_.name}}
-                                      <input type="checkbox"
-                                          (change)="isAllSelected(globalFilterModal.nonAsd,'masterSelectedNONASD')"
-                                          id="{{fvndx_}}" [(ngModel)]="fVal_.value" [checked]="fVal_.value" />
-                                      <span class="checkmark"
-                                          [ngClass]="(fVal_.value) ?'bg-'+(themeConf_.selectedColor):''"></span>
-                                  </label>
-                                  </li>
-                              </ul>
-                          </li>
-                      </ul>
-                  </div>
-              </div> -->
             <div class="pull-right" style="margin-right:10px;">
                 <div class="button-group">
-                    <app-time-filter [configStyle]="{'width':'220','bgColor':'#ececec','border':'1px solid #ccc' ,'customRanges':dateFillter_customRanges ,'startDate':dateFilter_startDate ,'endDate':dateFilter_endDate ,'timeType':dateFilter_timeType ,'timePicker':true}">
+                    <app-time-filter
+                        [configStyle]="{'width':'220','bgColor':'#ececec','border':'1px solid #ccc' ,'customRanges':dateFillter_customRanges ,'startDate':dateFilter_startDate ,'endDate':dateFilter_endDate ,'timeType':dateFilter_timeType ,'timePicker':true}">
                     </app-time-filter>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-
-<!-- <h1 class="page-header">{{userTab_ ?userTab_.name :''}} <span *ngIf="repDetail.isLoaded">{{repDetail.timeString}}</span>
-  </h1> -->
 
 <h1 class="page-header">Summary <span *ngIf="repDetail.isLoaded"></span></h1>
 
@@ -197,8 +94,28 @@
         <div>Noice Reduction<br>{{block.noiceReduction ? block.noiceReduction +' %' : ''}}</div>
     </div>
 </div>
-<!-- <div class="m-b-10 f-s-10"><b class="text-inverse">{{userTab_ ? userTab_.description :''}}
-      &nbsp;</b></div> -->
+
+<div class="row" *ngFor="let block of summaryBlocks7Days;">
+    <div class="col-md-2 summaryBlock">
+        <div>Total Events<br>{{block.totalEvents}}</div>
+    </div>
+    <div class="col-md-2 summaryBlock">
+        <div>Total Alarms<br>{{block.totalAlarms}}</div>
+    </div>
+    <div class="col-md-2 summaryBlock">
+        <div>Total Incidents<br>{{block.totalIncidents}}</div>
+    </div>
+    <div class="col-md-2 summaryBlock">
+        <div>Automation<br>{{block.automation}}</div>
+    </div>
+    <div class="col-md-2 summaryBlock">
+        <div>Success Automation<br>{{block.successAutomation}}</div>
+    </div>
+    <div class="col-md-2 summaryBlock">
+        <div>Noice Reduction<br>{{block.noiceReduction ? block.noiceReduction +' %' : ''}}</div>
+    </div>
+</div>
+
 <div class="row">
     <div class="col-lg-6" *ngFor="let tData_ of technologyWidgetData;let techIndex = index">
         <div class="panel panel-inverse" [ngClass]="[(tData_.isReportLoaded) ? 'panel-loading': '']">
@@ -281,9 +198,11 @@
 
 
 <ng-template #modalDialog let-c="close" let-d="dismiss">
-    <div class="modal-header" [ngClass]="[(themeConf_.selectedColor == 'default') ? 'bg-black':'bg-'+themeConf_.selectedColor]">
+    <div class="modal-header"
+        [ngClass]="[(themeConf_.selectedColor == 'default') ? 'bg-black':'bg-'+themeConf_.selectedColor]">
         <h4 class="modal-title" style="color:#fff;">Add Reports</h4>
-        <button type="button" class="close" (click)="d('Cross click');clearModalAddReports();" style="color:#fff;">×</button>
+        <button type="button" class="close" (click)="d('Cross click');clearModalAddReports();"
+            style="color:#fff;">×</button>
     </div>
     <div class="modal-body">
         <div class="row">
@@ -301,7 +220,9 @@
                             <div class="form-group row">
                                 <label class="col-md-5 col-form-label">Name <sup style="color:#FF0000">*</sup></label>
                                 <div class="col-md-7">
-                                    <input type="text" [(ngModel)]="modAddReports_.selReportName" #selReportName="ngModel" name="selReportName" class="form-control" [required]="'true'" placeholder="Enter Report Name" />
+                                    <input type="text" [(ngModel)]="modAddReports_.selReportName"
+                                        #selReportName="ngModel" name="selReportName" class="form-control"
+                                        [required]="'true'" placeholder="Enter Report Name" />
                                 </div>
                                 <!-- <div *ngIf="!f.form.controls['selReportName'].valid && f.form.controls['selReportName'].touched">Report Name is required</div> -->
                             </div>
@@ -309,26 +230,27 @@
                                 <label class="col-md-5 col-form-label">Technology <sup
                                         style="color:#FF0000">*</sup></label>
                                 <div class="col-md-7">
-                                    <select id="myDropDown" [(ngModel)]="modAddReports_.selTechnology" (change)="onTechnologySelect($event.target.value)" class="form-control" #selTechnology="ngModel" name="selTechnology" [required]="'true'">
+                                    <select id="myDropDown" [(ngModel)]="modAddReports_.selTechnology"
+                                        (change)="onTechnologySelect($event.target.value)" class="form-control"
+                                        #selTechnology="ngModel" name="selTechnology" [required]="'true'">
                                         <option value="">Select Technology</option>
                                         <option *ngFor="let tech_ of modAddReports_.tech" value={{tech_.id}}>
                                             {{tech_.name}}
                                         </option>
                                     </select>
                                 </div>
-                                <!-- <div *ngIf="!f.form.controls['selReport'].valid && f.form.controls['selReport'].touched">Report is required</div> -->
                             </div>
                             <div class="form-group row">
-                                <label class="col-md-5 col-form-label">NMS <sup
-                                        style="color:#FF0000">*</sup></label>
+                                <label class="col-md-5 col-form-label">NMS <sup style="color:#FF0000">*</sup></label>
                                 <div class="col-md-7">
-                                    <select [(ngModel)]="modAddReports_.selNMS" (change)="onNMSSelect($event.target.value)" class="form-control" #selNMS="ngModel" name="selNMS" [required]="'true'" multiple>
-                                            <!-- <option value="">Select NMS</option> -->
-                                            <option *ngFor="let chart of modAddReports_.nms" value={{chart.id}}>
-                                                {{chart.name | titlecase}}</option>
+                                    <select [(ngModel)]="modAddReports_.selNMS"
+                                        (change)="onNMSSelect($event.target.value)" class="form-control"
+                                        #selNMS="ngModel" name="selNMS" [required]="'true'" multiple>
+                                        <!-- <option value="">Select NMS</option> -->
+                                        <option *ngFor="let chart of modAddReports_.nms" value={{chart.id}}>
+                                            {{chart.name | titlecase}}</option>
                                     </select>
                                 </div>
-                                <!-- <div *ngIf="!f.form.controls['selChartType'].valid && f.form.controls['selChartType'].touched">Chart Type is required</div> -->
                             </div>
 
                         </form>
@@ -339,9 +261,9 @@
 
         </div>
     </div>
-    <!-- *ngIf="f.form.valid" -->
     <div class="modal-footer">
-        <a href="javascript:;" id="closeAddReportButton" class="btn btn-default text-black" data-dismiss="modal" (click)="d('Cross click');clearModalAddReports();">Cancel</a>
+        <a href="javascript:;" id="closeAddReportButton" class="btn btn-default text-black" data-dismiss="modal"
+            (click)="d('Cross click');clearModalAddReports();">Cancel</a>
         <a href="javascript:;" (click)="addReportToTab()" class="btn btn-md bg-black">Add Reports</a>
     </div>
 </ng-template>

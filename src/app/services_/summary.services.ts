@@ -45,7 +45,7 @@ export class SummaryService {
         return this.http.post(url, fData).map(res => <any>res);
     }
 
-    public getSummaryBlocksData() {
+    public getSummaryBlocksData(type) {
         const url = 'https://run.mocky.io/v3/a3607622-efe8-4910-b142-a9c2325ff59f';
         return this.http.get(url).map(res => <any>res);
     }
