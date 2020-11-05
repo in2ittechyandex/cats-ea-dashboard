@@ -149,6 +149,39 @@
   <ng-template #content let-modal>
     <div class="modal-header">
       <h5 class="modal-title" id="modal-basic-title">Assign to</h5>
+
+      <!-- <div ngbDropdown class="d-inline-block">
+        <button class="btn btn-outline-primary" id="dropdownBasic1" ngbDropdownToggle>Filter By</button>
+        <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+          <div ngbDropdownItem>Action - 1</div>
+          <div ngbDropdownItem>Another Action</div>
+          <div ngbDropdownItem>Something else is here</div>
+        </div>
+      </div> -->
+
+      <div class="btn-group">
+        <button type="button" class="btn btn-default btn-sm" style="width:130px; color:#000000;">Filter By</button>
+        <a href="javascript:;" style="color:#000000;" class="btn btn-default btn-sm dropdown-toggle" (click)="showDD($event,globalFilterModal)" id="{{globalFilterModal.identifier}}"></a>
+        <ul class="dropdown-menu pull-right" click-outside [listening]="globalFilterModal.isListenOnBlur" [Ident]="globalFilterModal.identifier" (clickOutSide)="globalFilterClickOutSide($event)">
+            <div class="scroll_div" id="style-4">
+              <li>
+                <div class="form-check"><input type="checkbox" id="dropdownCheck" class="form-check-input">
+                  <label for="dropdownCheck" class="form-check-label"> Technology </label>
+                </div>
+              </li>
+              <li>
+                <div class="form-check"><input type="checkbox" id="dropdownCheck1" class="form-check-input">
+                  <label for="dropdownCheck1" class="form-check-label"> Team </label>
+                </div>
+              </li>
+            </div>
+        </ul>
+    </div>
+
+
+
+
+
       <button type="button" style="outline:none;" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
         <span aria-hidden="true">&times;</span>
       </button>
@@ -156,11 +189,11 @@
     <div class="modal-body" id="style-8" style="max-height:370px; overflow-y: auto;">
       <div class="scroll_div" >
 <div class="row">
-  <div class="col-md-6 box">      
-          <div class="container1">
+  <div class="col-md-4 box">      
+          <div class="container1 selected">
             <div class="row">
               <div class="col-md-3 pr-0">
-                <input type="checkbox"/>
+                <input type="checkbox" checked="checked"/>
                 <img src="assets/img/user/user-13.jpg" alt="" class="image-circle"/>
               </div>
               <div class="col-md-9">
@@ -209,7 +242,7 @@
         </div>
     </div>
   </div>
-  <div class="col-md-6">
+  <div class="col-md-4">
         <div class="container1">
           <div class="row">
             <div class="col-md-3 pr-0">
@@ -262,6 +295,60 @@
       </div>
   </div>
   </div>
+  <div class="col-md-4">
+    <div class="container1">
+      <div class="row">
+        <div class="col-md-3 pr-0">
+          <input type="checkbox"/>
+          <img src="assets/img/user/user-13.jpg" alt="" class="image-circle"/>
+        </div>
+        <div class="col-md-9">
+          <div class="checkmark">
+            <div><span>Assigned to</span><span> Vikas Kumar</span></div>
+            <div><span>Work Load</span><span>10 Tickets </span></div>
+            <div><span>Situations Resolved</span><span>180</span></div>
+            <div><span>Technology</span><span>IP</span></div>
+            <div><span>Average Rating</span><span>4.2</span></div>
+          </div>
+        </div>
+      </div>
+  </div>
+  <div class="container1">
+    <div class="row">
+      <div class="col-md-3 pr-0">
+        <input type="checkbox"/>
+        <img src="assets/img/user/user-13.jpg" alt="" class="image-circle"/>
+      </div>
+      <div class="col-md-9">
+        <div class="checkmark">
+          <div><span>Assigned to</span><span> Vikas Kumar</span></div>
+          <div><span>Work Load</span><span>10 Tickets </span></div>
+          <div><span>Situations Resolved</span><span>180</span></div>
+          <div><span>Technology</span><span>IP</span></div>
+          <div><span>Average Rating</span><span>4.2</span></div>
+        </div>
+      </div>
+    </div>
+</div>
+<div class="container1">
+  <div class="row">
+    <div class="col-md-3 pr-0">
+      <input type="checkbox"/>
+      <img src="assets/img/user/user-13.jpg" alt="" class="image-circle"/>
+    </div>
+    <div class="col-md-9">
+      <div class="checkmark">
+        <div><span>Assigned to</span><span> Vikas Kumar</span></div>
+        <div><span>Work Load</span><span>10 Tickets </span></div>
+        <div><span>Situations Resolved</span><span>180</span></div>
+        <div><span>Technology</span><span>IP</span></div>
+        <div><span>Average Rating</span><span>4.2</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
 
 </div>
 </div>
@@ -309,7 +396,7 @@
       
     </div>
     <div class="modal-footer">
-      <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Assign</button>
+      <button type="button" class="btn btn-outline-dark btn-primary" (click)="modal.close('Save click')">Assign</button>
     </div>
     
   
