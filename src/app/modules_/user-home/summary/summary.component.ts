@@ -37,7 +37,9 @@ export class SummaryComponent implements OnInit, OnDestroy, AfterViewInit {
   technologyList: any;
   technologyWidgetData: Array<TechReports> = [];
   summaryBlocks: any = [];
+  summaryBlocksHeader = '';
   summaryBlocks7Days: any = [];
+  summaryBlocks7DaysHeader = '';
 
   dateFilter_timeType = 'td';
   dateFilter_startDate = moment().startOf('day');  // moment().subtract(1, 'hours');
@@ -82,8 +84,6 @@ export class SummaryComponent implements OnInit, OnDestroy, AfterViewInit {
     identifier: 'global-customer-filter',
     filtersToggle: false,
     userTabFilters: null,
-    // editCustomers: [],
-    // modifyCustomer: [],
     masterSelectedNMS: false,
     nms: [],
     editNMS: [],
@@ -135,6 +135,25 @@ export class SummaryComponent implements OnInit, OnDestroy, AfterViewInit {
 
   updateUserTabFilters() {
     this.showMainLoader = true;
+  }
+
+  getTimeString(timeType: any) {
+    const tAlias = this.sharedServices_.timeMap[timeType];
+    const t = this.sharedServices_.getCustomRanges()[tAlias];
+    const startTime = t[0];
+    const endTime = t[1];
+    let str = tAlias + ' ' ;
+    const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const myDateStart = new Date(startTime);
+    const myDateEnd = new Date(endTime);
+    str += '(';
+    if (timeType == 'l1h') {
+      str += this.getDatePart(myDateStart)['full'] + ' - ' + this.getDatePart(myDateEnd)['full'];
+    } else {
+      str += this.getDatePart(myDateStart)['d_'] + '' + ' - ' + this.getDatePart(myDateEnd)['d_'] + '';
+    }
+    str += ')';
+    return str;
   }
 
   getDatePart(myDateStart: Date) {
@@ -319,6 +338,7 @@ export class SummaryComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   public loadSummaryBlocksToday() {
+    this.summaryBlocksHeader = this.getTimeString('td');
     this.summaryService.getSummaryBlocksData('td').subscribe(resp => {
       if (resp.status) {
         this.summaryBlocks.push(resp.data);
@@ -327,6 +347,7 @@ export class SummaryComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   public loadSummaryBlocks7Days() {
+    this.summaryBlocks7DaysHeader = this.getTimeString('7d');
     this.summaryService.getSummaryBlocksData('7d').subscribe(resp => {
       if (resp.status) {
         this.summaryBlocks7Days.push(resp.data);
@@ -342,6 +363,24 @@ export class SummaryComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
+
+  getNoiceReductionColor(persent) {
+    const tempPersent = Number.parseFloat(persent);
+    if (tempPersent >= 80.0) {
+      // green
+      return 'bg-green';
+    } else if (tempPersent >= 60.0) {
+      // yellow
+      return 'bg-yellow';
+    } else if (tempPersent >= 40.0) {
+      return 'bg-orange';
+      // orange
+    } else {
+      return 'bg-red';
+      // red
+    }
+    // return "bg-4";
+  }
 
   onClickAddNewReportButton() {
     this.clearModalAddReports();
@@ -404,7 +443,7 @@ export class SummaryComponent implements OnInit, OnDestroy, AfterViewInit {
    * @param oldArray
    */
   deepClone(oldArray: Object[]) {
-    let newArray: any = [];
+    const newArray: any = [];
     oldArray.forEach((item) => {
       newArray.push(Object.assign({}, item));
     });

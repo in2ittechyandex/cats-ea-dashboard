@@ -72,7 +72,7 @@
     </div>
 </div>
 
-<h1 class="page-header">Summary <small class="f-s-12 text-dark">Today (Nov 11, 2020 - Nov 11, 2020)</small><span *ngIf="repDetail.isLoaded"></span></h1>
+<h1 class="page-header">Summary {{summaryBlocksHeader}}<small class="f-s-12 text-dark"></small></h1>
 
 <div class="row" *ngFor="let block of summaryBlocks;">
     <div class="col-md-2 summaryBlock">
@@ -95,7 +95,8 @@
     </div>
 </div>
 
-<h1 class="page-header mb-1">Summary <small class="f-s-12 text-dark">Last 7 Days (Nov 04, 2020 - Nov 11, 2020)</small></h1>
+<h1 class="page-header mb-1">{{summaryBlocks7DaysHeader}} <small class="f-s-12 text-dark"></small></h1>
+
 <div class="row" *ngFor="let block of summaryBlocks7Days;">
     <div class="col-md-2 summaryBlock">
         <div>Total Events<br>{{block.totalEvents}}</div>

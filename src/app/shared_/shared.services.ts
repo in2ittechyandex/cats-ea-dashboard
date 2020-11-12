@@ -1,12 +1,34 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 
+declare var moment: any;
+
 @Injectable()
 export class SharedServices {
-	newSubjectPrintCsv: Subject<boolean> = new Subject<boolean>();
     constructor() {
 
     }
+    newSubjectPrintCsv: Subject<boolean> = new Subject<boolean>();
+
+    public timeMap = {
+        'now': 'Now',
+        'l1h': 'Last 1 Hour',
+        'td': 'Today',
+        'yd': 'Yesterday',
+        'i7d': 'Last 7 Days ',
+        '7d': 'Last 7 Days',
+        'icm': 'This Month ',
+        'cm': 'This Month',
+        'lm': 'Last Month',
+        'il3m': 'Last 3 Months ',
+        'l3m': 'Last 3 Months',
+        'il6m': 'Last 6 Months ',
+        'l6m': 'Last 6 Months',
+        'raw': 'Last 90 Days - Raw Data',
+        'icy': 'This Year ',
+        'cy': 'This Year',
+        'cu': 'Custom Range'
+    };
 
     public sortTabReportsByColSpan(tabReports) {
         const twelve = Object.assign([], tabReports);
@@ -135,13 +157,13 @@ export class SharedServices {
 
     /**
      * Remove escape-sequences
-     * @param value 
+     * @param value
      */
     replacer(value) {
         return value.replace(/['"]+/g, '');
     }
-	
-	
+
+
 	/**
      * This f/n will reportName alias , to generate a csv
      * @param csv : csv string
@@ -178,9 +200,49 @@ export class SharedServices {
         this.newSubjectPrintCsv.next(false);
         return '_' + rNameAlias + ((deviceIP_.trim() != '') ? '_' + deviceIP_ : deviceIP_) + '.csv';
     }
-	
+
 	deviceReport(){
         this.newSubjectPrintCsv.next(false);
     }
+
+    public getCustomRanges() {
+        const strJson = {
+          'Now': [moment().subtract(30, 'minutes'), moment()],
+          'Last 1 Hour': [moment().startOf('hour').subtract(1, 'hours'), moment().startOf('hour')],
+          'Today': [moment().startOf('day'), moment()],
+          'Yesterday': [moment().subtract(1, 'days').startOf('day'), moment().subtract(1, 'days').endOf('day')],
+          'Last 7 Days': [moment().subtract(7, 'days').startOf('day'), moment().subtract(1, 'days').endOf('day')],
+          'This Month': [moment(moment().startOf('month')).startOf('day'), moment()],
+          'Last Month': [
+            moment(moment(moment().startOf('month')).subtract(1, 'month').startOf('month')).startOf('day'),
+            moment(moment().startOf('month')).subtract(1, 'month').endOf('month')
+          ],
+          'Last 3 Months': [
+            moment(moment(moment().startOf('month')).subtract(3, 'month').startOf('month')).startOf('day'),
+            moment(moment().startOf('month')).subtract(1, 'month').endOf('month')
+          ],
+          'Last 6 Months': [
+            moment(moment(moment().startOf('month')).subtract(6, 'month').startOf('month')).startOf('day'),
+            moment(moment().startOf('month')).subtract(1, 'month').endOf('month')
+          ],
+          'Last 90 Days - Raw Data': [moment().subtract(90, 'days').startOf('day'), moment()],
+          'This Year': [
+            moment(moment().startOf('year')).startOf('day'), moment(),
+            moment()
+          ],
+          'Last 7 Days ': [moment().subtract(7, 'days').startOf('day'), moment()],
+          'This Month ': [moment(moment().startOf('month')).startOf('day'), moment()],
+          'Last 3 Months ': [moment(moment(moment().startOf('month')).subtract(3, 'month').startOf('month')).startOf('day'), moment()],
+          'Last 6 Months ': [moment(moment(moment().startOf('month')).subtract(6, 'month').startOf('month')).startOf('day'), moment()],
+          'This Year ': [moment(moment().startOf('year')).startOf('day'), moment(),moment()],
+        };
+        if (moment(strJson['This Month'][1]).isSame(moment(moment().startOf('month')).startOf('day'), 'day')) {
+          strJson['This Month'] = [moment(moment().startOf('month')).startOf('day'), moment()];
+        } else {
+          strJson['This Month'] = [moment(moment().startOf('month')).startOf('day'), moment().subtract(1, 'days').endOf('day')];
+        }
+        return strJson;
+      }
+
 
 }
