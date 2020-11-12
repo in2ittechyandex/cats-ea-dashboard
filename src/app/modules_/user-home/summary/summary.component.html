@@ -91,7 +91,7 @@
         <div>Success Automation<br>{{block.successAutomation}}</div>
     </div>
     <div class="col-md-2 summaryBlock">
-        <div>Noice Reduction<br>{{block.noiceReduction ? block.noiceReduction +' %' : ''}}</div>
+        <div [ngClass]="getNRColorSummary(block.noiceReduction)">Noice Reduction<br>{{block.noiceReduction ? block.noiceReduction +' %' : ''}}</div>
     </div>
 </div>
 
@@ -114,7 +114,7 @@
         <div>Success Automation<br>{{block.successAutomation}}</div>
     </div>
     <div class="col-md-2 summaryBlock">
-        <div>Noice Reduction<br>{{block.noiceReduction ? block.noiceReduction +' %' : ''}}</div>
+        <div [ngClass]="getNRColorSummary(block.noiceReduction)">Noice Reduction<br>{{block.noiceReduction ? block.noiceReduction +' %' : ''}}</div>
     </div>
 </div>
 
