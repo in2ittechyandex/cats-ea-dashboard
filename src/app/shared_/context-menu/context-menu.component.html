@@ -1,0 +1,7 @@
+<div class="contextmenu" [ngStyle]="{'top.px': y,'left.px': x}">
+    <ul class="list-group">
+      <li (click)="outputSelectedMenuItem(menuItem)" class="list-group-item" *ngFor="let menuItem of theMenuItems" style="cursor: pointer; padding: 5px 15px!important;">
+        <span>{{ menuItem }}</span>
+      </li>
+    </ul>
+  </div>

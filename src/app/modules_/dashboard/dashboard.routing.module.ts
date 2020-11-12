@@ -12,7 +12,7 @@ const routes: Routes = [
         children: [
             {
                 path: 'custom-widget/:tabId', loadChildren: '../widgets/custom-widget/custom-widget.module#CustomWidgetModule',
-                data: { preload: false, delay: false  }
+                data: { preload: false, delay: false }
             },
             {
                 path: 'home', loadChildren: '../user-home/user-home.module#UserHomeModule',
@@ -22,9 +22,12 @@ const routes: Routes = [
             //     path: 'engineer-view', component: EngineerViewComponent,
             //     data: { preload: true, delay: false }
             // },
-            { path: 'engineer-view',loadChildren:'../engineer-view/engineer-view.module#EngineerViewModule',
-            data: { preload: true, delay: false }
-     },
+            {
+                path: 'engineer-view', loadChildren: '../engineer-view/engineer-view.module#EngineerViewModule',
+                data: { preload: true, delay: false }
+            },
+            { path: 'events', loadChildren: '../events/events.module#EventsModule' },
+            { path: 'alarms', loadChildren: '../alarms/alarms.module#AlarmsModule' },
             { path: '**', redirectTo: 'home' }
         ]
     }

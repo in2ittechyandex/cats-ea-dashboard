@@ -1,0 +1,304 @@
+.nav-tabs {
+    background-color: #2d353c!important;
+}
+
+.rows {
+    width: 100%;
+    display: inline-flex;
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+.has-search .form-control {
+    padding-left: 2rem;
+}
+
+.has-search .form-control-feedback {
+    position: absolute;
+    z-index: 2;
+    display: block;
+    width: 2rem;
+    height: 2rem;
+    line-height: 2rem;
+    text-align: center;
+    pointer-events: none;
+    color: #aaa;
+}
+
+.form-group {
+    margin-bottom: 0rem!important;
+}
+
+
+/* .form-control-sm{height:28px;} */
+
+.table_sm td {
+    padding: .5rem;
+}
+
+.table_sm th {
+    font-weight: 600;
+    padding: .5rem;
+}
+
+
+/* CSS for mailto: */
+
+ul.tagit {
+    padding: 1px 5px;
+    overflow: auto;
+    margin-left: inherit;
+    /* usually we don't want the regular ul margins. */
+    margin-right: inherit;
+}
+
+ul.tagit li {
+    display: block;
+    float: left;
+    margin: 2px 5px 2px 0;
+}
+
+ul.tagit li.tagit-choice {
+    position: relative;
+    line-height: inherit;
+}
+
+input.tagit-hidden-field {
+    display: none;
+}
+
+ul.tagit li.tagit-choice-read-only {
+    padding: .2em .5em .2em .5em;
+}
+
+ul.tagit li.tagit-choice-editable {
+    padding: .2em 18px .2em .5em;
+}
+
+ul.tagit li.tagit-new {
+    padding: .25em 4px .25em 0;
+}
+
+ul.tagit li.tagit-choice a.tagit-label {
+    cursor: pointer;
+    text-decoration: none;
+}
+
+ul.tagit li.tagit-choice .tagit-close {
+    cursor: pointer;
+    position: absolute;
+    right: .1em;
+    top: 50%;
+    margin-top: -8px;
+    line-height: 17px;
+}
+
+
+/* used for some custom themes that don't need image icons */
+
+ul.tagit li.tagit-choice .tagit-close .text-icon {
+    display: none;
+}
+
+ul.tagit li.tagit-choice input {
+    display: block;
+    float: left;
+    margin: 2px 5px 2px 0;
+}
+
+ul.tagit input[type="text"] {
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    border: none;
+    margin: 0;
+    padding: 0;
+    width: inherit;
+    background-color: inherit;
+    outline: none;
+}
+
+
+/*21 nov 2019 arti*/
+
+.checkbox.emailcheck label:before {
+    border-radius: 4px;
+    border: 1px solid #333;
+    background-color: #aeaeaf;
+}
+
+.ml-custom {
+    margin-left: 4.5rem!important;
+}
+
+.checkbox.emailcheck label {
+    font-weight: 400;
+    padding-left: 20px;
+}
+
+.colon {
+    font-size: 2rem;
+    line-height: 1.8rem;
+    text-align: center;
+}
+
+
+/* .col-form-label{font-size:.7rem} */
+
+.deskwid88 {
+    max-width: 88%;
+    flex: 0 0 88%;
+}
+
+.deskwid12 {
+    max-width: 12%;
+    flex: 0 0 12%;
+}
+
+@media (max-width:767px) {
+    .deskwid88 {
+        width: 100%;
+        max-width: 75%;
+        flex: 0 0 75%;
+    }
+    .deskwid12 {
+        width: 100%;
+        max-width: 25%;
+        flex: 0 0 25%;
+    }
+}
+
+.tab-alignment>ngb-tabset {
+    width: 100%;
+}
+
+.tab-alignment table tr td {
+    color: #656565;
+    font-weight: 400;
+}
+
+.tab-alignment .tab-content {
+    margin-bottom: 0px !important;
+}
+
+.nav-tabs+.tab-content {
+    margin-bottom: 0px !important;
+}
+
+#target_allSaturation {
+    background: #eee;
+    width: 200px;
+    /* max-height:300px; */
+    padding: 5px;
+    display: none;
+    right: 22px;
+    position: absolute;
+    border-radius: 5px;
+    margin-top: 5px;
+    z-index: 99999;
+    /* overflow: auto;                                           */
+}
+
+.In2_pivotOptions {
+    max-height: 260px;
+    overflow: auto;
+}
+
+.style-4::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    background-color: #ddd;
+    border-radius: 15px;
+    height: 10px;
+}
+
+.style-4::-webkit-scrollbar {
+    width: 5px;
+    background-color: F5F5F5;
+    height: 7px;
+    border-radius: 15px;
+    height: 100px;
+}
+
+.style-4::-webkit-scrollbar-thumb {
+    background-color: #666;
+    border: 2px solid #666;
+    border-radius: 15px;
+    height: 100px;
+}
+
+::ng-deep .ccBcc {
+    z-index: 9;
+}
+
+::ng-deep tag {
+    background-color: #2291bf !important;
+    color: #ffffff !important;
+    height: 24px !important;
+    line-height: 24px !important;
+    font-family: inherit !important;
+    font-weight: 700 !important;
+    border-radius: 4px !important;
+    margin-top: 0 !important;
+    padding: 0 .45rem !important;
+    letter-spacing: 0 !important;
+}
+
+ ::ng-deep .ng2-tag-input__text-input {
+    height: 24px !important;
+}
+
+::ng-deep .emailID-ul .ng2-tag-input {
+    padding-right: 40px;
+}
+
+ ::ng-deep delete-icon path {
+    fill: #fff !important;
+}
+
+ ::ng-deep delete-icon svg {
+    height: 24px !important;
+}
+
+::ng-deep .inbox .email-to .control-label {
+    padding-top: 17px;
+}
+
+::ng-deep .inbox .float-right-link {
+    right: 10px;
+    /* padding-right: 10px; */
+}
+
+::ng-deep.swal2-container {
+    z-index: 99999 !important;
+}
+
+::ng-deep.nav-tabs .nav-link.disabled:hover,
+::ng-deep.nav-tabs .nav-link.disabled:focus {
+    color: #6c757d;
+}
+
+::ng-deep.daterangepicker.dropdown-menu {
+    z-index: 99999 !important;
+}
+
+::ng-deep#singleTimeFilter {
+    width: 100% !important;
+    border-radius: 2px;
+    padding: 5px 10px !important;
+}
+
+::ng-deep.daterangepicker.single.ltr .ranges {
+    position: absolute;
+    bottom: 5px;
+    right: 12px;
+}
+
+::ng-deep.daterangepicker.ltr .calendar.left {
+    margin-bottom: 38px !important;
+}
+
+
+::ng-deep.vertical-box-row > .vertical-box-cell > .vertical-box-inner-cell{position:relative !important ; }

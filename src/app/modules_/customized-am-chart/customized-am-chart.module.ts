@@ -1,3 +1,4 @@
+import { AmAreaRangeChartComponent } from './am-area-range-chart/am-area-range-chart.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AmPieChartComponent } from './am-pie-chart/am-pie-chart.component';
@@ -36,6 +37,9 @@ import { Am4ClusteredBarChartComponent } from './am4-clustered-bar-chart/am4-clu
 import { AmTabularChartComponent } from './am-tabular-chart/am-tabular-chart.component';
 import { Am4StackedXy3dchartComponent } from './am4-stacked-xy3dchart/am4-stacked-xy3dchart.component';
 import { Am4DonutChartComponent } from './am4-donut-chart/am4-donut-chart.component';
+import { Am4ColumnChartComponent } from './am4-column-chart/am4-column-chart.component';
+import { Am4MslineChartComponent } from './am4-msline-chart/am4-msline-chart.component';
+import { Am4ForceDirectedNetworkComponent } from './am4-force-directed-network/am4-force-directed-network.component';
 // import { AmMapWithCurvedLinesComponent } from './am-map-with-curved-lines/am-map-with-curved-lines.component';
 // import { AmAreaInoutChartNewComponent } from './am-area-inout-chart-new/am-area-inout-chart-new.component';
 
@@ -80,7 +84,11 @@ import { Am4DonutChartComponent } from './am4-donut-chart/am4-donut-chart.compon
     AmTabularChartComponent,
     Am4StackedXy3dchartComponent,
     // AmMapWithCurvedLinesComponent,
-    Am4DonutChartComponent
+    Am4DonutChartComponent,
+    AmAreaRangeChartComponent,
+    Am4ColumnChartComponent,
+    Am4MslineChartComponent,
+    Am4ForceDirectedNetworkComponent
   ],
   exports: [AmPieChartComponent,
     AmBarChartComponent,
@@ -115,7 +123,11 @@ import { Am4DonutChartComponent } from './am4-donut-chart/am4-donut-chart.compon
     AmTabularChartComponent,
     Am4StackedXy3dchartComponent,
     // AmMapWithCurvedLinesComponent,
-    Am4DonutChartComponent
+    Am4DonutChartComponent,
+    AmAreaRangeChartComponent,
+    Am4ColumnChartComponent,
+    Am4MslineChartComponent,
+    Am4ForceDirectedNetworkComponent
   ]
 })
 export class CustomizedAmChartModule { }

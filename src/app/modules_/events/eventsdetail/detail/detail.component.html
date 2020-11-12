@@ -1,0 +1,176 @@
+<!-- <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '3px' }"></ngx-loading> -->
+<div class="row">
+
+  <div class="col-lg-12">
+    <!-- <fusioncharts [width]="width" [height]="height" [type]="type" [dataFormat]="dataFormat" [dataSource]="dataSource">
+    </fusioncharts> -->
+    <cats-am4-msline-chart [chartUniqueId]="chartId" [heightPixel]="height" [widthPer]="width" [dataProvider]="amChartData" *ngIf="amChartData?.length>0"></cats-am4-msline-chart>
+  </div>
+</div>
+<div class="row">
+  <div class="col-lg-12">
+
+    <panel title="Host - {{this.currentHost}}">
+      <div class="" style="margin-left: 1%;">
+        <div class="row" *ngIf="allTags">
+          
+          <div class="col-sm-9">
+            <div class="row">
+                <div class="col-md-2">
+                    <div class="input-group row">
+                      <select class="form-control m-b-10" name="event_status" id="event_status" [(ngModel)]="model.date_mday" (change)="onChange();">
+                        <option value="">#Days</option>
+                        <option value="{{item}}" *ngFor="let item of allTags.date_mday">{{item}}</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-md-2">
+                    <div class="input-group row">
+                      <select class="form-control m-b-10" name="event_status" id="event_status" [(ngModel)]="model.date_wday" (change)="onChange();">
+                        <option value="">#WeekDay</option>
+                        <option value="{{item}}" *ngFor="let item of allTags.date_wday">{{item}}</option>
+          
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-md-2">
+                    <div class="input-group row">
+                      <select class="form-control m-b-10" name="event_status" id="event_status" [(ngModel)]="model.date_hour" (change)="onChange();">
+                        <option value="">#Hour</option>
+                        <option value="{{item}}" *ngFor="let item of allTags.date_hour">{{item}}</option>
+          
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-md-2">
+                    <div class="input-group row">
+                      <select class="form-control m-b-10" name="event_status" id="event_status" [(ngModel)]="model.date_year" (change)="onChange();">
+                        <option value="">#Year</option>
+                        <option value="{{item}}" *ngFor="let item of allTags.date_year">{{item}}</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-md-2">
+                    <div class="input-group row">
+                      <select class="form-control m-b-10" name="event_status" id="event_status" [(ngModel)]="model.date_month" (change)="onChange();">
+                        <option value="">#Month</option>
+                        <option value="{{item}}" *ngFor="let item of allTags.date_month">{{item}}</option>
+                      </select>
+                    </div>
+                  </div>
+            </div>
+          </div>
+          <div class="col-sm-3">
+              <div class="row">
+                  <div class="col-md-12">
+                      <div class="input-group"  >
+                          <input type="text" [formControl]="queryField" id="keyword" list="languages" class="form-control" placeholder="Search Host"
+                            >
+                          <div class="input-group-append">
+                            <button class="btn btn-primary" type="button" (click)="searchCiFilter()">
+                              <i class="fa fa-search"></i>
+                            </button>
+                          </div>
+                          <datalist id="languages" *ngIf="checkResultLength()">
+                            <option *ngFor="let result of results" value="{{result.host}}">{{result.host}}</option>
+          
+                          </datalist>
+                        </div>
+                  </div>
+              </div>
+          </div>
+        </div>
+    </div>
+      <div>
+ 
+              <div class="row">
+                <div class="col-sm-2">
+                    <div class="sidenav" *ngIf="res">
+                         <div *ngFor="let item of res.sidenav">
+                            <a style="display: -webkit-inline-box;"> 
+                              <i class="fa fa-chevron-circle-down" (click)="expandMenu($event);" id="{{item.name}}" style="font-size:12px;"></i>
+                              <button (click)="clickOnFilterMenu(item);" id="{{item.name}}"class="dropdown-btn"style="font-size: 12px;font-weight:bold;margin-top:-6px;margin-left:-10px;">{{item.name}} ({{item.count}}) 
+                                
+                                </button>
+                              </a>
+                             
+                             <div class="dropdown-container" style="display: none;" id="{{item.name}}-content">
+                               <a (click)="clickOnFilter(item,subitem);" style="font-size: 10px;" *ngFor="let subitem of item.data">{{subitem.name}} ({{subitem.count}})</a>
+                               
+                             </div>
+                         </div>
+                          
+                    </div> 
+
+                </div>
+                <div class="col-sm-10">
+                  <div class="table-responsive">
+                    <table class="table table-fixed ">
+                      <thead>
+                        <tr>
+                          <!-- <th style="width: 80px">Action</th> -->
+                          <th style="width: 10%">Time</th>
+                          <th style="width: 90%;">Event</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let data of mData; let i=index;">
+
+                          <!-- <td><button class="btn btn-primary btn-xs" style="color:#ffffff;" (click)="clickOnTable(data);">Act</button></td> -->
+                          <td style="color: blue;width: 10%;" class="leftborder-{{data.severity}}">{{data.display_time}}</td>
+                          <td style="width: 90%;">
+                            <ul>
+                              <li *ngFor="let event of data.Event" class="line">
+
+                                <span style="font-size:12px; font-weight: 600;" *ngIf="event.tag=='message'">
+                                  {{event.value}}
+                                  <br>
+
+                                </span>
+                                <span *ngIf="event.tag!='message'">
+                                  <span style="color: cadetblue">{{event.tag}}
+
+                                  </span>={{event.value}} |
+
+                                </span>
+
+
+                              </li>
+                            </ul>
+                          </td>
+
+
+                        </tr>
+
+                      </tbody>
+                    </table>
+                  </div>
+                  <ul *ngIf="pager.pages && pager.pages.length" class="pagination pagination-sm" style="float:right; margin:0px;">
+                    <li style="margin-top: 2%;">Showing page : {{pager.currentPage}}</li>
+                    <li [ngClass]="{disabled:pager.currentPage === 1}">
+                      <a (click)="setPage(1)" class="cursor">First</a>
+                    </li>
+                    <li [ngClass]="{disabled:pager.currentPage === 1}">
+                      <a (click)="setPage(pager.currentPage - 1)" class="cursor">Previous</a>
+                    </li>
+                    <!-- <li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
+                      <a (click)="setPage(page)" class="cursor">{{page}}</a>
+                    </li> -->
+                    <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+                      <a (click)="setPage(pager.currentPage + 1)" class="cursor">Next</a>
+                    </li>
+                    <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+                      <a (click)="setPage(pager.totalPages)" class="cursor">Last ( {{totalPages}} )</a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+ 
+
+      </div>
+      
+    </panel>
+  </div>
+  <!-- end col-12 -->
+</div>
+<!-- end row -->

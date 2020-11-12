@@ -28,6 +28,12 @@ import { SummaryComponent } from './summary/summary.component';
     AgGridModule.withComponents([MatCheckboxComponent]),
   ],
   providers: [NgbDropdown],
-  declarations: [UserHomeComponent, HomeSummaryComponent, IncidentReportComponent,MatCheckboxComponent, SmsHistoryComponent , SummaryComponent]
+  declarations: [
+    UserHomeComponent,
+     HomeSummaryComponent,
+      IncidentReportComponent,
+      // MatCheckboxComponent,
+       SmsHistoryComponent ,
+        SummaryComponent]
 })
 export class UserHomeModule { }

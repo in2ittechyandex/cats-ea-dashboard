@@ -1,0 +1,12 @@
+/* ag grid related */
+.test-container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  .small .form-control-sm{height:24px; padding:2px !important; font-size:11px;}
+.small .pagination li a{padding:4px 8px !important;}
+.ag-theme-balham .ag-header-cell-resize {
+  width: 5px;
+  background-color: rgb(217, 224, 231)!important;
+}

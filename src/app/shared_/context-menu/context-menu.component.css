@@ -1,0 +1,22 @@
+.contextmenu {position: fixed};
+.list-group-item {
+    padding: 5px 30px;
+}
+.list-group-item {
+    position: relative;
+    display: block;
+    padding: .75rem 1.25rem;
+    margin-bottom: -1px;
+    background-color: #eeeeee!important;
+    border: 1px solid rgba(0,0,0,.35);
+    color: #000!important;
+}
+.list-group-item:hover {
+    position: relative;
+    display: block;
+    padding: .75rem 1.25rem;
+    margin-bottom: -1px;
+    background-color: #1c8ebf!important;
+    border: 1px solid rgba(153, 103, 103, 0.35);
+    color: #ffffff!important;
+}

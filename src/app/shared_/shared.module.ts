@@ -1,5 +1,5 @@
 import { ScrollingModule } from '@angular/cdk/scrolling';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { TimeFilterService } from './time-filter/time-filter.service.component';
 import { NgModule } from '@angular/core';
@@ -18,16 +18,23 @@ import { NumberToDatePipe } from './pipes_/number-to-date.pipe';
 import { MatTableModule, MatPaginatorModule } from '@angular/material';
 import { GridSmartTableComponent } from './grid-smart-table/grid-smart-table.component';
 import { AgGridModule } from 'ag-grid-angular';
+import { AgGridTableComponent } from './ag-grid-table/ag-grid-table.component';
+import { DataRenderedComponent } from '../modules_/aggridCommon/data-renderer.component';
+import { ButtonRendererComponent } from '../modules_/aggridCommon/button-renderer.component';
+import { MatCheckboxComponent } from '../modules_/aggridCommon/mat-checkbox.component';
+import { TabFilterComponent } from './tab-filter/tab-filter.component';
+import { ContextmenuComponent } from './context-menu/contextMenu.component';
 
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
+    ReactiveFormsModule,
     Daterangepicker,
     MatTableModule,
     MatPaginatorModule,
-    AgGridModule,
+    AgGridModule.withComponents([MatCheckboxComponent, DataRenderedComponent,ButtonRendererComponent]),
     // Ng2SmartTableModule
     ScrollingModule  // vertual scrolling
   ],
@@ -45,7 +52,13 @@ import { AgGridModule } from 'ag-grid-angular';
     NoDoubleClickDirective,
     NumberToDatePipe,
     SearchSortByKeyPipe,
-    GridSmartTableComponent
+    GridSmartTableComponent,
+    AgGridTableComponent,
+    DataRenderedComponent,
+    ButtonRendererComponent,
+    TabFilterComponent,
+    ContextmenuComponent,
+    MatCheckboxComponent
   ],
   exports: [
     TimeFilterComponent,
@@ -60,7 +73,13 @@ import { AgGridModule } from 'ag-grid-angular';
     NoDoubleClickDirective,
     NumberToDatePipe,
     SearchSortByKeyPipe,
-    GridSmartTableComponent
+    GridSmartTableComponent,
+    AgGridTableComponent,
+    DataRenderedComponent,
+    ButtonRendererComponent,
+    TabFilterComponent,
+    ContextmenuComponent,
+    MatCheckboxComponent
   ],
   providers: [TimeFilterService, SharedServices
   ]

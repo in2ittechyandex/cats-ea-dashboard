@@ -30,6 +30,7 @@ import { LoggedUser } from 'src/app/models_/loggeduser';
   ]
 })
 export class LeftSiteBarComponent implements OnInit, AfterViewChecked, OnDestroy {
+  menus;
   constructor(private eRef: ElementRef,
     private modalService: NgbModal,
     private router: Router,
@@ -52,6 +53,11 @@ export class LeftSiteBarComponent implements OnInit, AfterViewChecked, OnDestroy
       this.tabList = <UserTab[]>tabs;
     });
 
+    this.menus = pageMenus.userMenu;
+    for (let m = 0; m < this.menus.length; m++) {
+      this.menus[m].hide = false;
+    }
+
   }
 
   navProfileState = 'collapse';
@@ -61,7 +67,7 @@ export class LeftSiteBarComponent implements OnInit, AfterViewChecked, OnDestroy
   @Input() pageSidebarTransparent;
   @Input() pageSidebarMinified;
 
-  menus = pageMenus;
+  // menus = pageMenus;
   pageSettings;
   themeConf_;
   mobileMode;
@@ -292,6 +298,17 @@ export class LeftSiteBarComponent implements OnInit, AfterViewChecked, OnDestroy
     this.tabList.splice(index, 1);
     const url = this.tabList.length > 0 ? ('/dashboard/custom-widget/' + (this.tabList[this.tabList.length - 1].id)) : '/dashboard/home';
     this.reportService_.fetchUsertabs();
+    return this.router.navigate([url]);
+  }
+
+
+  /**
+   *  Layout dynamic subroutes : start
+   */
+
+  public navigateToReport(title, url, tab, filter) {
+    // console.log("title"+title+"url"+url+"tab"+tab+"filter"+filter);
+    // const url = '/dashboard/custom-widget/' + createdTab.id;
     return this.router.navigate([url]);
   }
 

@@ -1,0 +1,108 @@
+<!-- <form class="form-horizontal pull-left">
+  <div class="rows">
+    <div class="col-xs-1 mr-2">
+      <div class="btn-group btn-sm p-0" (click)="clkOnDownloadIcon()">
+        <i class="fas fa-lg fa-fw fa-download btn btn-default btn-sm" style="width:100%;"></i>
+      </div>
+    </div>
+    <div class="col-xs-1">
+      <div class="btn-group btn-sm p-0" (click)="clkOnReloadIcon()">
+        <i class="fas fa-sync-alt btn btn-primary btn-xs" style="width:13%;border-radius:5px;margin-right:5px;"></i>
+        <span class="pull-right" style="color:#fff;width:100%;"> Auto Refresh in {{timer}}
+            Sec. </span>
+      </div>
+
+    </div>
+  </div>
+</form>
+<div class="pull-right">
+  <button class="toggle btn-xs btn btn-primary btn-xs" (click)="toggle()"><i class="fa fa-cogs"></i></button>
+  <div id="target_allSaturation" style="display:none;">
+    <div class="box-inner">
+      <input type="search" #searchVal class="form-control input-sm" placeholder="Search..."
+        aria-controls="data-table-default">
+      <div class="In2_pivotOptions style-4">
+        <div class="checkbox checkbox-css"
+          *ngFor="let colDef_ of dbAllcolumns | filterByKey: 'headerName' :searchVal.value; let fvndx_=index;">
+          <input type="checkbox" id="cssCheckbox{{fvndx_+1}}" [(ngModel)]="colDef_.isActive"
+            [checked]="colDef_.isActive" (change)="isAllSelected(colDef_)">
+          <label for="cssCheckbox{{fvndx_+1}}">{{colDef_.headerName}}</label>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<div class="clearfix"></div> -->
+
+<div class="d-flex justify-content-between">
+    <form class="form-horizontal pull-left">
+        <div class="rows mb-2">
+            <div class="col-xs-1 mr-2">
+                <div class="btn-group btn-sm p-0" (click)="clkOnDownloadIcon()">
+                    <i class="fas fa-file-csv fa-lg fa-fw  btn btn-default btn-sm" style="width:100%;"
+                        title="Export csv"></i>
+                    <!-- <span class="btn btn-default btn-sm" style="color: #000000; border-left-color: #f2f3f4;"><i class="fa fa-spinner fa-spin fa-1x"></i></span> -->
+                </div>
+            </div>
+            <ng-content select="[xlsxExport]"></ng-content>
+            <ng-content select="[pdfExport]"></ng-content>
+
+            
+            <div class="col-xs-1 mr-2">
+                <div class="btn-group btn-sm p-0" (click)="clkOnReloadIcon()">
+                    <i class="fas fa-lg fa-fw fa-sync-alt btn btn-default btn-sm" style="width:100%;"></i>
+                    
+                </div>
+                <!-- <span style="line-height: 30px;"> Auto Refresh in {{timer}}
+                    Sec. </span> -->
+            </div>
+            <div class="col-xs-1 mr-1">
+                <ng-content select="[deviceCount]"></ng-content>
+            </div>
+
+            <!-- <div class="col-xs-9"></div>
+    <div class="col-xs-1">
+     <span class="pull-left"> <ng-content></ng-content></span>
+    </div> -->
+        </div>
+    </form>
+    <div #refHeaderText>
+        <ng-content select="[header]"></ng-content>
+    </div>
+
+    <div class="pull-right">
+        <span class="pull-left">
+            <ng-content select="[response]"></ng-content>
+        </span>
+        <!-- <span class="pull-left">
+            <ng-content select="[deviceCount]"></ng-content>
+        </span> -->
+        <button *ngIf="showSetting" (click)="toggle()" class="btn-sm btn btn-default btn-sm"><i class="fa fa-cogs"></i></button>
+        <div id="target_allSaturation" style="display:none;">
+            <div class="box-inner">
+                <form name="search">
+                    <input type="search" [value]="flTxtCust_" [formControl]="flInputCust_" class="form-control input-sm"
+                        placeholder="Search..." aria-controls="data-table-default">
+                </form>
+                <div class="In2_pivotOptions style-4">
+                    <div class="checkbox checkbox-css"
+                        *ngFor="let colDef_ of dbAllcolumns | searchSortByKey: 'headerName' :flTxtCust_; let fvndx_=index;">
+                        <ng-container *ngIf="checkHeader(colDef_.headerName);else notrawdata">
+                          <input type="checkbox" id="cssCheckbox{{fvndx_+1}}" [(ngModel)]="colDef_.isActive"
+                          [checked]="colDef_.isActive" (change)="isAllSelected(colDef_)">
+                      <label for="cssCheckbox{{fvndx_+1}}">{{colDef_.headerName}}</label>
+                        </ng-container>
+                        <ng-template #notrawdata>
+                          <input type="checkbox" id="cssCheckbox{{fvndx_+1}}" [(ngModel)]="colDef_.isActive"
+                          [checked]="colDef_.isActive" (change)="isAllSelected(colDef_)">
+                      <label for="cssCheckbox{{fvndx_+1}}">{{colDef_.headerName}}</label>
+                        </ng-template>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="clearfix"></div>

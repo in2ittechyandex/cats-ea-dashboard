@@ -1,0 +1,5 @@
+<div *ngIf="dataProvider.length>0 else blank"  [id]="chartUniqueId"
+  [style.height.px]="heightPixel" [style.width.%]="widthPer"></div>
+<ng-template #blank>
+ <div class="IN2container"> No Data Available</div>
+</ng-template>

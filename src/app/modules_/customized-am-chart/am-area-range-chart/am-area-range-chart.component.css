@@ -1,0 +1,45 @@
+.IN2container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    font-size: 20px;
+    font-weight: 600;
+}
+
+#chartdiv {
+    width: 100%;
+    height: 180px;
+  }
+
+   
+  ::ng-deep.amcharts-amexport-menu-level-0.amcharts-amexport-right {
+    right: 60px;
+  }
+  
+  ::ng-deep.amcharts-amexport-icon {
+    padding: 0 !important;
+    height: 40px;
+    width: 40px;
+  }
+  
+  ::ng-deep.amcharts-amexport-item-level-1 a {
+    min-width:auto; text-decoration:none; color:#000000;
+  }
+  
+  ::ng-deep.amcharts-amexport-menu-level-0.amcharts-amexport-right {
+    right:5px;
+    top: -10px;
+  }
+  
+  ::ng-deep.amcharts-amexport-icon {
+    padding: 0 !important;
+    height: 40px;
+    width: 40px;
+  }
+  
+  ::ng-deep.amcharts-amexport-item-level-1 {
+    min-width: 80px;
+  }
+  
+  
