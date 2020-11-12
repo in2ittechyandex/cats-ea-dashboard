@@ -1,5 +1,4 @@
 import { SharedServices } from 'src/app/shared_/shared.services';
-// import { ReportService } from 'src/app/services_/report.services';
 import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import themeConf_ from 'src/app/config/theme-settings';
@@ -8,7 +7,6 @@ import { Subscription } from 'rxjs/Subscription';
 import swal from 'sweetalert2';
 import * as $ from 'jquery';
 import { TimeFilterService } from 'src/app/shared_/time-filter/time-filter.service.component';
-// import { PerformanceService } from 'src/app/services_/performance.services';
 import { SummaryService } from 'src/app/services_/summary.services';
 import { TechReports } from 'src/app/models_/summary';
 
@@ -22,9 +20,7 @@ declare var moment: any;
 export class SummaryComponent implements OnInit, OnDestroy, AfterViewInit {
 
   constructor(
-    // private performanceService_: PerformanceService,
     private modalService: NgbModal,
-    // private route: ActivatedRoute,
     private router: Router,
     private sharedServices_: SharedServices,
     private timeServices_: TimeFilterService,
@@ -58,7 +54,6 @@ export class SummaryComponent implements OnInit, OnDestroy, AfterViewInit {
   ];
 
   public repDetail = {
-    // repName: 'Incident Report Data',
     timeType: '',
     customer: '',
     timeString: '',
@@ -66,14 +61,6 @@ export class SummaryComponent implements OnInit, OnDestroy, AfterViewInit {
     endDate: '',
     isLoaded: false
   };
-
-  public summaryChartDrillDataStr = {
-    header: [],
-    data: [],
-    isPanelLoading: false,
-    expand: false,
-  };
-  print: boolean = false;
 
   closeResult: string;
   themeConf_;
@@ -95,8 +82,8 @@ export class SummaryComponent implements OnInit, OnDestroy, AfterViewInit {
     identifier: 'global-customer-filter',
     filtersToggle: false,
     userTabFilters: null,
-    editCustomers: [],
-    modifyCustomer: [],
+    // editCustomers: [],
+    // modifyCustomer: [],
     masterSelectedNMS: false,
     nms: [],
     editNMS: [],
@@ -113,33 +100,6 @@ export class SummaryComponent implements OnInit, OnDestroy, AfterViewInit {
   };
 
   themeName: 'default';
-  public modAddSummary_ = {
-    'selSummaryCategory': '',
-    'selSummaryReport': '',
-    'selSummaryName': '',
-    'summaryCategory': [],
-    'summaryReport': []
-  };
-
-  public _smry = {
-    isListenOnBlur: false,
-    identifier: 'summaryTabDD',
-    colorIcon: [{ 'color': 'bg-gradient-blue', 'icon': 'fa fa-dollar-sign fa-fw' },
-    { 'color': 'bg-gradient-teal', 'icon': 'fa fa-globe fa-fw' },
-    { 'color': 'bg-gradient-purple', 'icon': 'fa fa-archive fa-fw' },
-    { 'color': 'bg-gradient-black', 'icon': 'fa fa-comment-alt fa-fw' }]
-  };
-
-  public TootTipStr_ = {
-    left: 0,
-    top: 0,
-    ddItems: [],
-    reportId: 0,
-    reportSequence: 0,
-    open: false,
-    clickedData: []
-  };
-
   public urlHome = '/dashboard/home'; 
   public selectedTabId: number;
   public selectedTabName: String = '';
@@ -167,7 +127,7 @@ export class SummaryComponent implements OnInit, OnDestroy, AfterViewInit {
 
   onGlobalFilterChange() {
     this.showMainLoader = true;
-    this.TootTipStr_.open = false;
+    // this.TootTipStr_.open = false;
     setTimeout(() => {
       this.compareUserTabGlobalFilterModification();
     }, 1000);
@@ -208,19 +168,6 @@ export class SummaryComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     });
     return modifiedFilters;
-  }
-
-  clearModalAddSummary() {
-    this.modAddSummary_['selSummaryCategory'] = '';
-    this.modAddSummary_['selSummaryReport'] = '';
-    this.modAddSummary_['selSummaryName'] = '';
-  }
-
-
-
-  public getSummaryHtmlConf(index, type) {
-    index = (index > 3) ? (index % this._smry.colorIcon.length) : index;
-    return this._smry.colorIcon[index][type];
   }
 
   /**
@@ -474,7 +421,7 @@ export class SummaryComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
   open(content, size) {
-    this.TootTipStr_.open = false;
+    // this.TootTipStr_.open = false;
     this.modalReferenceAddReport = this.modalService.open(content,
       { size: size ? size : 'lg', backdrop: 'static', windowClass: 'In2_huge_popup' });
     this.modalReferenceAddReport.result.then((result) => {
@@ -564,18 +511,7 @@ export class SummaryComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
-  validateAddSummaryTab() {
-    if (('' + this.modAddSummary_.selSummaryCategory).trim() == '') {
-      swal('Please Select Summary Category ', '', 'warning');
-      return false;
-    } else if (('' + this.modAddSummary_.selSummaryReport).trim() == '') {
-      swal('Please Select Summary Report', '', 'warning');
-      return false;
-    }
-    return true;
-  }
-
-
+ 
   /**
    * This f/n will disallow right click default tooltip bar of browser.
    *
@@ -642,11 +578,6 @@ export class SummaryComponent implements OnInit, OnDestroy, AfterViewInit {
 
 }
 
-
-// export interface Item {
-//   id: number;
-//   name: string;
-// }
 
 
 
