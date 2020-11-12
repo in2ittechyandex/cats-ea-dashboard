@@ -72,7 +72,7 @@
     </div>
 </div>
 
-<h1 class="page-header">Summary {{summaryBlocksHeader}}<small class="f-s-12 text-dark"></small></h1>
+<h1 class="page-header">Summary <small class="f-s-12 text-dark">{{summaryBlocksHeader}}</small></h1>
 
 <div class="row" *ngFor="let block of summaryBlocks;">
     <div class="col-md-2 summaryBlock">
@@ -95,7 +95,7 @@
     </div>
 </div>
 
-<h1 class="page-header mb-1">{{summaryBlocks7DaysHeader}} <small class="f-s-12 text-dark"></small></h1>
+<h1 class="page-header mb-1"> Summary<small class="f-s-12 text-dark">{{summaryBlocks7DaysHeader}}</small></h1>
 
 <div class="row" *ngFor="let block of summaryBlocks7Days;">
     <div class="col-md-2 summaryBlock">
@@ -148,7 +148,7 @@
                                     <td [ngClass]="'bg-'+tData_.color">{{tData_.data.summary.totalEvents}}</td>
                                     <td [ngClass]="'bg-'+tData_.color">{{tData_.data.summary.totalAlarms}}</td>
                                     <td [ngClass]="'bg-'+tData_.color">{{tData_.data.summary.totalIncidents}}</td>
-                                    <td [ngClass]="'bg-'+tData_.color">{{tData_.data.summary.noiceReduction}}</td>
+                                    <td [ngClass]="'bg-'+tData_.color">{{tData_.data.summary.noiceReduction + '%'}}</td>
                                 </tr>
                                 <tr class="active" *ngIf="!tData_.isReportLoaded">
                                     <td colspan="4">

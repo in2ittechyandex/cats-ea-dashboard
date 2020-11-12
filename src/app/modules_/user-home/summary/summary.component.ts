@@ -330,6 +330,8 @@ export class SummaryComponent implements OnInit, OnDestroy, AfterViewInit {
       this.globalFilterModal).subscribe(res => {
         if (res.status) {
           this.technologyWidgetData[index].data = res.data;
+          this.technologyWidgetData[index].data.summary.noiceReduction = this.getRandomInt(30, 95); /** WARNING : Hard code Value */
+          this.technologyWidgetData[index].color = this.getNSColor(this.technologyWidgetData[index].data.summary.noiceReduction);
           this.technologyWidgetData[index].isReportLoaded = true;
         }
       }, err => {
@@ -614,6 +616,28 @@ export class SummaryComponent implements OnInit, OnDestroy, AfterViewInit {
   getChecked(value) {
     return value;
   }
+
+  getNSColor(persent) {
+    const tempPersent = Number.parseFloat(persent);
+    if (tempPersent >= 80.0) {
+      // green
+      return 'green';
+    } else if (tempPersent >= 60.0) {
+      // yellow
+      return 'yellow';
+    } else if (tempPersent >= 40.0) {
+      return 'orange';
+      // orange
+    } else {
+      return 'red';
+      // red
+    }
+    // return "bg-4";
+  }
+
+  getRandomInt (min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
 
 }
 

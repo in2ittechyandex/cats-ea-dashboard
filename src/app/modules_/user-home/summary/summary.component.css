@@ -555,3 +555,5 @@ input:checked~.checkmark:after {
     padding: 5px;
     border-radius: 4px;
 }
+
+.summaryBlock:last-child>div{ min-width: 100px; text-align: center; background-color: #ff0000; color: #fff; margin-bottom: 10px; padding: 5px; border-radius: 4px; }
