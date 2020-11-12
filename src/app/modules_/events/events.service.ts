@@ -92,8 +92,8 @@ export class EventsService {
    *
    */
   getInputSourceList() {
-    const URL = environment._EventURL + 'eventengine/allinputsource';
-    // const URL = 'https://run.mocky.io/v3/7484ef9d-11a3-46f4-a97e-6de27c659b73';
+    // const URL = environment._EventURL + 'eventengine/allinputsource';
+    const URL = 'https://run.mocky.io/v3/832984eb-82f4-4d35-a400-5507cbe3f481';
     return this.http.get(URL).map(res => <any>res);
   }
   /**
@@ -102,15 +102,16 @@ export class EventsService {
    *
    */
   getAllEvents(message, ci_id, filter, state, pageNumber, from, to, inputSource) {
-    const URL = environment._EventURL + 'eventengine/alleventdata?from=' + from +
-      '&to=' + to +
-      '&host=' + ci_id +
-      '&severity=' + filter +
-      '&state=' + state +
-      '&message=' + message +
-      '&page=' + pageNumber +
-      '&input_source=' + inputSource;
+    // const URL = environment._EventURL + 'eventengine/alleventdata?from=' + from +
+    //   '&to=' + to +
+    //   '&host=' + ci_id +
+    //   '&severity=' + filter +
+    //   '&state=' + state +
+    //   '&message=' + message +
+    //   '&page=' + pageNumber +
+    //   '&input_source=' + inputSource;
 
+      const URL = 'https://run.mocky.io/v3/2f5e0866-e25f-4310-9595-7e9e58d971d2';
     return this.http.get(URL).map(res => <any>res);
   }
   getAllTags(host) {

@@ -1,9 +1,9 @@
-<!-- <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '3px' }"></ngx-loading> -->
+<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '3px' }"></ngx-loading>
 
-<!-- <ng-container>
+<ng-container>
   <div class="row mb-2" style="margin-bottom:5px">
     <div class="col-lg-2 filterbar">
-      <app-time-filter></app-time-filter>
+      <app-time-filter [configStyle]="{'width':'190','bgColor':'#ececec','border':'1px solid #ccc'}"></app-time-filter>
     </div>
     <div class="col-lg-2">
       <ng-multiselect-dropdown name="user" [placeholder]="'Select Severity'" [data]="dropdownListEventStatus"
@@ -49,7 +49,7 @@
       </div>
     </div>
   </div>
-</ng-container> -->
+</ng-container>
 
 
 <panel [title]="'Events'" [buttonArr]="['collapse']" [collapse]="!chartShowing" (event)="getPanelEvent($event);">

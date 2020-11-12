@@ -7,7 +7,7 @@ import { FormsModule } from '@angular/forms';
 import { LayoutsModule } from '../layouts/layouts.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ReactiveFormsModule } from '@angular/forms';
-// import { NgxLoadingModule, ngxLoadingAnimationTypes } from 'ngx-loading';
+import { NgxLoadingModule, ngxLoadingAnimationTypes } from 'ngx-loading';
 // import { PagerService } from '../../services_/pager.service';
 // import { FusionChartsModule } from 'angular-fusioncharts';
 
@@ -21,7 +21,7 @@ import {MatNativeDateModule, MatRippleModule} from '@angular/material/core';
 //  import * as Maps from 'fusioncharts/fusioncharts.maps';
 //  import * as World from 'fusioncharts/maps/fusioncharts.world';
  import {MatDatepickerModule} from '@angular/material/datepicker';
-// import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 // import * as FusionTheme from 'fusioncharts/themes/fusioncharts.theme.fusion';
 // FusionChartsModule.fcRoot(FusionCharts, Charts,PowerCharts, FusionTheme);
 import { AgGridModule } from 'ag-grid-angular';
@@ -48,14 +48,14 @@ import { PagerService } from 'src/app/shared_/pager.service';
     NgbModule.forRoot(),
     ReactiveFormsModule,
     CustomizedAmChartModule,
-  //   NgxLoadingModule.forRoot({
-  //     animationType: ngxLoadingAnimationTypes.wanderingCubes,
-  //     backdropBackgroundColour: 'rgba(0,0,0,0.1)',
-  //     backdropBorderRadius: '4px',
-  //     primaryColour: '#ffffff',
-  //     secondaryColour: '#ffffff',
-  //     tertiaryColour: '#ffffff'
-  // }),
+    NgxLoadingModule.forRoot({
+      animationType: ngxLoadingAnimationTypes.wanderingCubes,
+      backdropBackgroundColour: 'rgba(0,0,0,0.1)',
+      backdropBorderRadius: '4px',
+      primaryColour: '#ffffff',
+      secondaryColour: '#ffffff',
+      tertiaryColour: '#ffffff'
+  }),
   MatDatepickerModule,
   // AgGridModule.withComponents([MatCheckboxComponent,DataRenderedComponent]),
   MatSelectModule,
@@ -64,7 +64,7 @@ import { PagerService } from 'src/app/shared_/pager.service';
   MatButtonModule,
     MatButtonToggleModule,
   MatInputModule,
-  // NgMultiSelectDropDownModule.forRoot(),
+  NgMultiSelectDropDownModule.forRoot(),
   // DemoMaterialModule,
   SharedModule,
       // NgxMatTimepickerModule,

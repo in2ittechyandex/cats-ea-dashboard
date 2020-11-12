@@ -1,13 +1,13 @@
-<!-- <ngx-loading [show]="loading || alarmLoading" style="width:'100%';height:'100%'" [config]="{ backdropBorderRadius: '3px' }">
-</ngx-loading> -->
+<ngx-loading [show]="loading || alarmLoading" style="width:'100%';height:'100%'" [config]="{ backdropBorderRadius: '3px' }">
+</ngx-loading>
 <div>
-  <!-- <ng-container>
+  <ng-container>
     <div class="row mb-2">
        
       <div class="col-lg-12">
         <div class="row">
             <div class="col-lg-3">
-                <app-time-filter></app-time-filter>
+                <app-time-filter [configStyle]="{'width':'190','bgColor':'#ececec','border':'1px solid #ccc'}"></app-time-filter>
               </div>
           <div class="col-lg-2">          
             <ng-multiselect-dropdown name="user" [placeholder]="'Select Severity'" [data]="dropdownListEventStatus"
@@ -48,7 +48,7 @@
 
 
     </div>
-  </ng-container> -->
+  </ng-container>
 
   <div class="row">
     <div class="col-lg-12">

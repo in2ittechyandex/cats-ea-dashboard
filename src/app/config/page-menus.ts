@@ -45,7 +45,114 @@ const pageMenusUser = [
     'url': '/dashboard/events',
     'caret': 'true',
     'count': '0',
-    'submenu': []
+    'submenu': [
+      {
+        'title': 'RF',
+        'caret': 'true',
+        'submenu': [
+          {
+            'url': 'NEC',
+            'title': 'NEC',
+            'caret': ''
+          },
+          {
+            'url': 'Huawei U2000 MW',
+            'title': 'Huawei U2000 MW',
+            'caret': ''
+          }
+        ]
+      },
+      {
+        'title': 'IP',
+        'caret': 'true',
+        'submenu': [
+          {
+            'url': 'TMA',
+            'title': 'TMA',
+            'caret': ''
+          },
+          {
+            'url': 'EMC NMS',
+            'title': 'EMC NMS',
+            'caret': ''
+          }
+        ]
+      },
+      {
+        'title': 'TX',
+        'caret': 'true',
+        'submenu': [
+          {
+            'url': 'U2000TX',
+            'title': 'U2000TX',
+            'caret': ''
+          },
+          {
+            'url': 'ADVA NMS',
+            'title': 'ADVA NMS',
+            'caret': ''
+          }
+        ]
+      },
+      {
+        'title': 'Environmental',
+        'caret': 'true',
+        'submenu': [
+          {
+            'url': 'INALA',
+            'title': 'INALA',
+            'caret': ''
+          },
+          {
+            'url': 'RFTS',
+            'title': 'RFTS',
+            'caret': ''
+          }
+        ]
+      },
+      {
+        'title': 'Voice',
+        'caret': 'true',
+        'submenu': [
+          {
+            'url': 'N2000',
+            'title': 'N2000',
+            'caret': ''
+          },
+          {
+            'url': 'U2020',
+            'title': 'U2020',
+            'caret': ''
+          },
+          {
+            'url': 'METASWITCH SBC',
+            'title': 'METASWITCH SBC',
+            'caret': ''
+          }
+        ]
+      },
+      {
+        'title': 'Wifi',
+        'caret': 'true',
+        'submenu': [
+          {
+            'url': 'RUCKUS ENT NMS',
+            'title': 'RUCKUS ENT NMS',
+            'caret': ''
+          },
+          {
+            'url': 'RUCKUS CORP NMS',
+            'title': 'RUCKUS CORP NMS',
+            'caret': ''
+          },
+          {
+            'url': 'MERAKI',
+            'title': 'MERAKI',
+            'caret': ''
+          }
+        ]
+      }
+    ]
   },
   // {
   //   'icon': 'fa fa-cog',

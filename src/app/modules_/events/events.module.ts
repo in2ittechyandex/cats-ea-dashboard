@@ -23,10 +23,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { EventsdetailComponent } from './eventsdetail/eventsdetail.component';
 import { EventRouteComponent } from './event_route.component';
-// import { NgxLoadingModule, ngxLoadingAnimationTypes } from 'ngx-loading';
+import { NgxLoadingModule, ngxLoadingAnimationTypes } from 'ngx-loading';
 import { AgGridModule } from 'ag-grid-angular';
 import { MatCheckboxComponent } from '../aggridCommon/mat-checkbox.component';
-// import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 // import { TabFilterComponent } from '../../shared_/tab-filter/tab-filter.component';
 import { SharedModule } from 'src/app/shared_/shared.module';
 // import { CustomizedAmChartModule } from 'src/app/shared_/customized-am-chart/customized-am-chart.module';
@@ -47,16 +47,16 @@ import { PagerService } from 'src/app/shared_/pager.service';
     EventsRoutingModule,
     ReactiveFormsModule,
     CustomizedAmChartModule,
-    //   NgxLoadingModule.forRoot({
-    //     animationType: ngxLoadingAnimationTypes.wanderingCubes,
-    //     backdropBackgroundColour: 'rgba(0,0,0,0.1)',
-    //     backdropBorderRadius: '4px',
-    //     primaryColour: '#ffffff',
-    //     secondaryColour: '#ffffff',
-    //     tertiaryColour: '#ffffff'
-    // }),
+      NgxLoadingModule.forRoot({
+        animationType: ngxLoadingAnimationTypes.wanderingCubes,
+        backdropBackgroundColour: 'rgba(0,0,0,0.1)',
+        backdropBorderRadius: '4px',
+        primaryColour: '#ffffff',
+        secondaryColour: '#ffffff',
+        tertiaryColour: '#ffffff'
+    }),
     // AgGridModule.withComponents([MatCheckboxComponent]),
-    // NgMultiSelectDropDownModule.forRoot(),
+    NgMultiSelectDropDownModule.forRoot(),
     SharedModule
   ],
   providers: [
