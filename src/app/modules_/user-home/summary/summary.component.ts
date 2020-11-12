@@ -366,7 +366,7 @@ export class SummaryComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
 
-  getNoiceReductionColor(persent) {
+  getNRColorSummary(persent) {
     const tempPersent = Number.parseFloat(persent);
     if (tempPersent >= 80.0) {
       // green
