@@ -1,3 +1,22 @@
+::ng-deep .multiselect-dropdown .dropdown-btn{
+  display: inline-block;
+  border: 0px solid #adadad !important;
+  width: 100%;
+  padding: 5px 12px !important;
+  margin-bottom: 0;
+  font-weight: 400;
+  line-height: 1.52857143;
+  text-align: left;
+  vertical-align: middle;
+  cursor: pointer;
+  background-image: none;
+  border-radius: 4px;
+  background-color: #ffffff;
+}
+::ng-deep .filterbar .btn{font-size: 0.9em;  padding: 4px 12px;}
+::ng-deep .dropdown-list li{padding:3px 10px !important;}
+
+
 .modal-lg {
   max-width: 100%;
   margin-left: 15%;
