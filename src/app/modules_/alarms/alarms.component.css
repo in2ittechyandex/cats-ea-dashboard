@@ -32,7 +32,7 @@
 }
 
 
-::ng-deep .filterbar .btn{padding: 5px 12px;}
+::ng-deep .filterbar .btn{padding: 5px 12px !important;}
 
 ::ng-deep .multiselect-dropdown .dropdown-btn {
   display: inline-block;
