@@ -32,12 +32,12 @@
 }
 
 
-::ng-deep .filterbar .btn{padding: 5px 12px !important;}
+::ng-deep .filterbar .btn{padding:4px 12px !important; font-weight:500; }
 
 ::ng-deep .multiselect-dropdown .dropdown-btn {
   display: inline-block;
   border: 0px solid #adadad !important;
-  background: #fff;
+  background: #fff; color:#000000 !important;
 }
 
 ::ng-deep .my-class-lg .nav-tabs .nav-link {color: #fff; font-weight:600;}
