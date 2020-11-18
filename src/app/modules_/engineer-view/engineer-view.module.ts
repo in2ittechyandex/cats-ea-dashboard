@@ -9,6 +9,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LayoutsModule } from '../layouts/layouts.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';  
 import { SharedModule } from 'src/app/shared_/shared.module';
+import { CollaborateComponent } from './collaborate/collaborate.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -19,6 +20,6 @@ import { SharedModule } from 'src/app/shared_/shared.module';
     ReactiveFormsModule,
     SharedModule
   ],
-  declarations: [EngineerViewComponent,CloudDevOpsComponent,MyAlertsComponent] 
+  declarations: [EngineerViewComponent,CloudDevOpsComponent,MyAlertsComponent,CollaborateComponent] 
 })
 export class EngineerViewModule { }

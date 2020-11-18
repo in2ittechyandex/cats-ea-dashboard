@@ -94,7 +94,14 @@
                     <span class="d-sm-none">Alarms</span>
                     <span class="d-sm-block d-none">Alarms</span>
                   </ng-template>
-                  <ng-template ngbTabContent>                     
+                  <ng-template ngbTabContent>  
+                      <div class="panel-body text-inverse collaborateReply text-center" *ngIf="alartsLoading">
+                          <i class="fa fa-spinner fa-spin fa-3x"></i>
+                        </div>
+                  <ng-container *ngIf="gridObj.timeLineAlertList?.length>0">
+                    <cats-grid-smart-table  [incidentList]="gridObj.timeLineAlertList" [dbAllcolumns]="gridObj.dbAllcolumns">
+                    </cats-grid-smart-table>    
+                  </ng-container>               
                   </ng-template>
                 </ngb-tab>
 
@@ -112,7 +119,8 @@
                     <span class="d-sm-none">Discussion Forum</span>
                     <span class="d-sm-block d-none">Discussion Forum</span>
                   </ng-template>
-                  <ng-template ngbTabContent>                    
+                  <ng-template ngbTabContent>  
+                    <cats-collaborate></cats-collaborate>                  
                   </ng-template>
                 </ngb-tab>
 

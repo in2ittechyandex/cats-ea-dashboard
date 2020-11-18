@@ -20,25 +20,37 @@ export class CloudDevOpsService {
 
 
     public getSituations(state) {
-        if (state == 'Open') {
-            const url = 'https://run.mocky.io/v3/c0a83b0a-a68d-4dbf-871c-4a4c26b2661b';
-            return this.http.get(url).map(res => <any>res);
-        } else if (state == 'assigned') {
-            const url = 'https://run.mocky.io/v3/d4540f30-8e4b-421a-b3e2-a98408ef0932';
-            return this.http.get(url).map(res => <any>res);
-        } else {
+        // if (state == 'Open') {
+        //     const url = 'https://run.mocky.io/v3/c0a83b0a-a68d-4dbf-871c-4a4c26b2661b';
+        //     return this.http.get(url).map(res => <any>res);
+        // } else if (state == 'assigned') {
+        //     const url = 'https://run.mocky.io/v3/d4540f30-8e4b-421a-b3e2-a98408ef0932';
+        //     return this.http.get(url).map(res => <any>res);
+        // } else {
             const url = environment._WEBGATEWAY_BASIC_URL_ + 'menu/kpi/get_situation';
             const formData: FormData = new FormData();
             formData.append('state', state);
             return this.http.post(url, formData).map(res => <any>res);
-        }
-
-
-
-
-
-
-
+        // }
+ }
+     public updateEpisode(episodeid,status){
+        const url = environment._WEBGATEWAY_BASIC_URL_ + 'menu/kpi/update_situation'; 
+        const formData: FormData = new FormData();
+            formData.append('episodeId', episodeid);
+            formData.append('status', status);
+            return this.http.post(url, formData).map(res => <any>res);
     }
-
+     public getAllEngineer() {
+         
+            const url = environment._WEBGATEWAY_BASIC_URL_ + 'menu/kpi/get_all_engineer'; 
+            return this.http.post(url,[]).map(res => <any>res);
+        
+    }
+    public assignEpisode(engineer,episodeid){
+        const url = environment._WEBGATEWAY_BASIC_URL_ + 'menu/kpi/assign_situation'; 
+        const formData: FormData = new FormData();
+            formData.append('episodeId', episodeid);
+            formData.append('assigned_to', engineer);
+            return this.http.post(url, formData).map(res => <any>res);
+    }
 }

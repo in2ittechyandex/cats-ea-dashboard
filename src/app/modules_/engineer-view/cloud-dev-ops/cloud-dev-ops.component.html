@@ -31,17 +31,17 @@
             <div class="card-body m-10 shadow" *ngFor="let data of taskData.opened">
               <!-- <h4 class="widget-header-title p-0 mb-5"><img src="assets/img/user/user-13.jpg" alt="" class="image" style="border-radius:40px;height:40px;"/><i class="fa fa-circle text-green f-s-8 mr-2"></i></h4> -->
               <!-- <h4>Assigned to : Sudhir Shukla</h4> -->
-              <a class="badge bg-danger f-s-11 p-4" style="cursor:pointer;" (click)="navigateToSituation(data)"><i class="fa fa-info-circle"></i> &nbsp; # {{data.id}}</a>
+              <a class="badge bg-danger f-s-11 p-4" style="cursor:pointer;" (click)="navigateToSituation(data)" [title]='data.episode'><i class="fa fa-info-circle"></i> &nbsp; # {{data.episode.length>20 ? data.episode.slice(0,20)+' ...' :data.episode }}</a>
               <div class="f-s-12 text-dark">{{data.time}}</div>
               <div class="f-s-12 text-dark">{{data.network}}</div>
-              <!-- <div class="f-s-12 text-dark">{{data.ticket_number}}</div>
-              <div class="f-s-12 text-dark">{{data.tech}}</div> -->
+              <!-- <div class="f-s-12 text-dark">{{data.ticket_number}}</div> -->
+              <div class="f-s-12 text-dark">Tech : {{data.tech}}</div>
               <div class="f-s-12 text-dark">{{data.scope}}</div>
               <div style="margin-top:5px;">
-                <a (click)="open(content)" class="btn btn-info btn-xs text-white f-s-11" style="border-radius:10px;"><input
+                <a (click)="open(content);selectEpisode(data)" class="btn btn-info btn-xs text-white f-s-11" style="border-radius:10px;"><input
                     class="radio radio-css" type="radio">&nbsp;Assign</a>
-                    <a class="btn btn-info btn-xs text-white f-s-11 ml-1" style="border-radius:10px;"><input
-                      class="radio radio-css" type="radio">&nbsp;Own</a>
+                    <a (click)="assignOwn(data.id)" class="btn btn-info btn-xs text-white f-s-11 ml-1" style="border-radius:10px;"><input
+                      class="radio radio-css" type="radio" >&nbsp;Own</a>
               </div>
             </div>
           </div>
@@ -63,13 +63,13 @@
             style="max-height:470px; overflow:auto; background: #f2f3f4;">
             <div class="card-body m-10 shadow" *ngFor="let data of taskData.assigned">
               <!-- <h4 class="widget-header-title p-0 mb-5"><img src="assets/img/user/user-13.jpg" alt="" class="image" style="border-radius:40px;height:40px;"/><i class="fa fa-circle text-green f-s-8 mr-2"></i></h4> -->
-              <span class="badge bg-danger f-s-11 p-4"><i class="fa fa-info-circle"></i> &nbsp; # {{data.id}}</span>
+              <a class="badge bg-danger f-s-11 p-4" style="cursor:pointer;" (click)="navigateToSituation(data)" [title]='data.episode'><i class="fa fa-info-circle"></i> &nbsp; # {{data.episode.length>20 ? data.episode.slice(0,20)+' ...' :data.episode }}</a>
               <h6 class="mb-1 mt-2">Assigned to : {{data.username}}</h6>
               <div class="f-s-12 text-dark">{{data.time}}</div>
               <div class="f-s-12 text-dark">{{data.network}}</div>
-              <!-- <div class="f-s-12 text-dark">{{data.ticket_number}}</div>
-              <div class="f-s-12 text-dark">{{data.tech}}</div> -->
-              <div style="margin-top:5px;">
+              <!-- <div class="f-s-12 text-dark">{{data.ticket_number}}</div> -->
+              <div class="f-s-12 text-dark">Tech : {{data.tech}}</div>
+              <div style="margin-top:5px;" (click)="updateEpisode(data.id,'Inprogress')">
                 <a class="btn btn-info btn-xs text-white f-s-11" style="border-radius: 10px;"><input
                     class="radio radio-css" type="radio">&nbsp;Acknowledge</a>
               </div>
@@ -93,14 +93,14 @@
           <div id="collapseThree" class="collapse show" data-parent="#accordion" id="style-6"
             style="max-height:470px; overflow:auto; background: #f2f3f4;">
             <div class="card-body m-10 shadow" *ngFor="let data of taskData.inprogress">
-              <span class="badge bg-danger f-s-11 p-4"><i class="fa fa-info-circle"></i> &nbsp; # {{data.id}}</span>
+                <a class="badge bg-danger f-s-11 p-4" style="cursor:pointer;" (click)="navigateToSituation(data)" [title]='data.episode'><i class="fa fa-info-circle"></i> &nbsp; # {{data.episode.length>20 ? data.episode.slice(0,20)+' ...' :data.episode }}</a>
               <h6 class="mb-1 mt-2">Assigned to : {{data.username}}</h6>
               <!-- <h4 class="widget-header-title p-0 mb-5"><img src="assets/img/user/user-13.jpg" alt="" class="image" style="border-radius:40px;height:40px;"/><i class="fa fa-circle text-green f-s-8 mr-2"></i></h4> -->
               <div class="f-s-12 text-dark">{{data.time}}</div>
               <div class="f-s-12 text-dark">{{data.network}}</div>
-              <!-- <div class="f-s-12 text-dark">{{data.ticket_number}}</div>
-              <div class="f-s-12 text-dark">{{data.tech}}</div> -->
-              <div style="margin-top:5px;">
+               <!-- <div class="f-s-12 text-dark">{{data.ticket_number}}</div> -->
+               <div class="f-s-12 text-dark">Tech : {{data.tech}}</div>
+              <div style="margin-top:5px;"  (click)="updateEpisode(data.id,'Resolved')">
                 <a class="btn btn-info btn-xs text-white f-s-11" style="border-radius: 10px;"><input
                     class="radio radio-css" type="radio">&nbsp;Resolve</a>
               </div>
@@ -124,13 +124,13 @@
           <div id="collapseFour" class="collapse show" data-parent="#accordion" id="style-7"
             style="max-height:470px; overflow:auto; background:#f2f3f4;">
             <div class="card-body m-10 shadow" *ngFor="let data of taskData.resolved">
-              <span class="badge bg-danger f-s-11 p-4"><i class="fa fa-info-circle"></i> &nbsp; # {{data.id}}</span>
+                <a class="badge bg-danger f-s-11 p-4" style="cursor:pointer;" (click)="navigateToSituation(data)" [title]='data.episode'><i class="fa fa-info-circle"></i> &nbsp; # {{data.episode.length>20 ? data.episode.slice(0,20)+' ...' :data.episode }}</a>
               <h6 class="mb-1 mt-2">Assigned to : {{data.resolved}}</h6>
               <!-- <h4 class="widget-header-title p-0 mb-5"><img src="assets/img/user/user-13.jpg" alt="" class="image" style="border-radius:40px;height:40px;"/><i class="fa fa-circle text-green f-s-8 mr-2"></i></h4> -->
               <div class="f-s-12 text-dark">{{data.time}}</div>
               <div class="f-s-12 text-dark">{{data.network}}</div>
-              <!-- <div class="f-s-12 text-dark">{{data.ticket_number}}</div>
-              <div class="f-s-12 text-dark">{{data.tech}}</div> -->
+               <!-- <div class="f-s-12 text-dark">{{data.ticket_number}}</div> -->
+               <div class="f-s-12 text-dark">Tech : {{data.tech}}</div>
               <div style="margin-top:10px;">
                     <a class="btn btn-info btn-xs text-white f-s-11" style="border-radius: 10px;">
                       <input class="radio radio-css" type="radio">&nbsp;Close</a>
@@ -189,25 +189,25 @@
     <div class="modal-body" id="style-8" style="max-height:370px; overflow-y: auto;">
       <div class="scroll_div" >
 <div class="row">
-  <div class="col-md-4 box">      
-          <div class="container1 selected">
+  <div class="col-md-4 box"  *ngFor="let engineer of allEngineer">      
+          <div class="container1">
             <div class="row">
               <div class="col-md-3 pr-0">
-                <input type="checkbox" checked="checked"/>
+                <input type="checkbox" (change)="selectEngineer(checked,engineer)"/>
                 <img src="assets/img/user/user-13.jpg" alt="" class="image-circle"/>
               </div>
               <div class="col-md-9">
                 <div class="checkmark">
-                  <div><span>Assigned to</span><span> Vikas Kumar</span></div>
-                  <div><span>Work Load</span><span>10 Tickets </span></div>
-                  <div><span>Situations Resolved</span><span>180</span></div>
-                  <div><span>Technology</span><span>IP</span></div>
-                  <div><span>Average Rating</span><span>4.2</span></div>
+                  <div><span>Assigned to</span><span> {{engineer.name}}</span></div>
+                  <div><span>Work Load</span><span>{{engineer.workload}} </span></div>
+                  <div><span>Situations Resolved</span><span>{{engineer.situation_resolved}}</span></div>
+                  <div><span>Technology</span><span>{{engineer.technology}}</span></div>
+                  <div><span>Average Rating</span><span>{{engineer.rating}}</span></div>
                 </div>
               </div>
             </div>
         </div>
-        <div class="container1">
+        <!-- <div class="container1 selected">
           <div class="row">
             <div class="col-md-3 pr-0">
               <input type="checkbox"/>
@@ -223,131 +223,10 @@
               </div>
             </div>
           </div>
-      </div>
-      <div class="container1">
-        <div class="row">
-          <div class="col-md-3 pr-0">
-            <input type="checkbox"/>
-            <img src="assets/img/user/user-13.jpg" alt="" class="image-circle"/>
-          </div>
-          <div class="col-md-9">
-            <div class="checkmark">
-              <div><span>Assigned to</span><span> Vikas Kumar</span></div>
-              <div><span>Work Load</span><span>10 Tickets </span></div>
-              <div><span>Situations Resolved</span><span>180</span></div>
-              <div><span>Technology</span><span>IP</span></div>
-              <div><span>Average Rating</span><span>4.2</span></div>
-            </div>
-          </div>
-        </div>
-    </div>
+      </div> -->
+      
   </div>
-  <div class="col-md-4">
-        <div class="container1">
-          <div class="row">
-            <div class="col-md-3 pr-0">
-              <input type="checkbox"/>
-              <img src="assets/img/user/user-13.jpg" alt="" class="image-circle"/>
-            </div>
-            <div class="col-md-9">
-              <div class="checkmark">
-                <div><span>Assigned to</span><span> Vikas Kumar</span></div>
-                <div><span>Work Load</span><span>10 Tickets </span></div>
-                <div><span>Situations Resolved</span><span>180</span></div>
-                <div><span>Technology</span><span>IP</span></div>
-                <div><span>Average Rating</span><span>4.2</span></div>
-              </div>
-            </div>
-          </div>
-      </div>
-      <div class="container1">
-        <div class="row">
-          <div class="col-md-3 pr-0">
-            <input type="checkbox"/>
-            <img src="assets/img/user/user-13.jpg" alt="" class="image-circle"/>
-          </div>
-          <div class="col-md-9">
-            <div class="checkmark">
-              <div><span>Assigned to</span><span> Vikas Kumar</span></div>
-              <div><span>Work Load</span><span>10 Tickets </span></div>
-              <div><span>Situations Resolved</span><span>180</span></div>
-              <div><span>Technology</span><span>IP</span></div>
-              <div><span>Average Rating</span><span>4.2</span></div>
-            </div>
-          </div>
-        </div>
-    </div>
-    <div class="container1">
-      <div class="row">
-        <div class="col-md-3 pr-0">
-          <input type="checkbox"/>
-          <img src="assets/img/user/user-13.jpg" alt="" class="image-circle"/>
-        </div>
-        <div class="col-md-9">
-          <div class="checkmark">
-            <div><span>Assigned to</span><span> Vikas Kumar</span></div>
-            <div><span>Work Load</span><span>10 Tickets </span></div>
-            <div><span>Situations Resolved</span><span>180</span></div>
-            <div><span>Technology</span><span>IP</span></div>
-            <div><span>Average Rating</span><span>4.2</span></div>
-          </div>
-        </div>
-      </div>
-  </div>
-  </div>
-  <div class="col-md-4">
-    <div class="container1">
-      <div class="row">
-        <div class="col-md-3 pr-0">
-          <input type="checkbox"/>
-          <img src="assets/img/user/user-13.jpg" alt="" class="image-circle"/>
-        </div>
-        <div class="col-md-9">
-          <div class="checkmark">
-            <div><span>Assigned to</span><span> Vikas Kumar</span></div>
-            <div><span>Work Load</span><span>10 Tickets </span></div>
-            <div><span>Situations Resolved</span><span>180</span></div>
-            <div><span>Technology</span><span>IP</span></div>
-            <div><span>Average Rating</span><span>4.2</span></div>
-          </div>
-        </div>
-      </div>
-  </div>
-  <div class="container1">
-    <div class="row">
-      <div class="col-md-3 pr-0">
-        <input type="checkbox"/>
-        <img src="assets/img/user/user-13.jpg" alt="" class="image-circle"/>
-      </div>
-      <div class="col-md-9">
-        <div class="checkmark">
-          <div><span>Assigned to</span><span> Vikas Kumar</span></div>
-          <div><span>Work Load</span><span>10 Tickets </span></div>
-          <div><span>Situations Resolved</span><span>180</span></div>
-          <div><span>Technology</span><span>IP</span></div>
-          <div><span>Average Rating</span><span>4.2</span></div>
-        </div>
-      </div>
-    </div>
-</div>
-<div class="container1">
-  <div class="row">
-    <div class="col-md-3 pr-0">
-      <input type="checkbox"/>
-      <img src="assets/img/user/user-13.jpg" alt="" class="image-circle"/>
-    </div>
-    <div class="col-md-9">
-      <div class="checkmark">
-        <div><span>Assigned to</span><span> Vikas Kumar</span></div>
-        <div><span>Work Load</span><span>10 Tickets </span></div>
-        <div><span>Situations Resolved</span><span>180</span></div>
-        <div><span>Technology</span><span>IP</span></div>
-        <div><span>Average Rating</span><span>4.2</span></div>
-      </div>
-    </div>
-  </div>
-</div>
-</div>
+  
 
 
 </div>
@@ -396,7 +275,7 @@
       
     </div>
     <div class="modal-footer">
-      <button type="button" class="btn btn-outline-dark btn-primary" (click)="modal.close('Save click')">Assign</button>
+      <button type="button" class="btn btn-outline-dark btn-primary" (click)="assignEpisode()">Assign</button>
     </div>
     
   

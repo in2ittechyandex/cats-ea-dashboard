@@ -1,0 +1,85 @@
+.collaborateReply{
+    clear: both;
+}
+.collaborateReply:last-child>hr{display: none;}
+.collaborateReplyInner{
+    padding: 15px 10px;
+    overflow: hidden;
+    transition: 0.3s;
+}
+.collaborateReplyInner:hover{
+    background-color: #f9f9f9;
+}
+
+.collaborateReplyL{
+    line-height: 0em;
+    height: auto;
+    margin-right: 20px;
+    display: block;
+    width: 50px;
+}
+
+.collaborateReplyR{
+    float: right;
+    width: calc(100% - 70px);
+}
+
+.thumbCount{
+    line-height: normal;
+}
+
+.replyBtn{
+    font-size: 10px;
+    padding: 2px 5px;
+    margin-right: 6px;
+}
+
+.replySpan{
+    vertical-align: middle;
+    line-height: normal;
+}
+
+.cursPointer{
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.cursPointer:hover{
+    color: #000;
+}
+
+.cursInitial{
+    color: #999;
+    cursor: initial;
+}
+
+.innerReply{
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+.innerReply:hover{cursor: pointer;}
+
+.postReply{
+    overflow: hidden;
+}
+
+.replyToHead{
+    margin-top: 15px;
+    display: inline-block;
+    margin-bottom: 0;
+    padding: 7px 8px 4px;
+    background: #888;
+    color: #fff;
+    font-size: 11px;
+    border: solid 1px #c3c3c3;
+    border-bottom: none;
+    border-top-left-radius: .25rem;
+    border-top-right-radius: .25rem;
+}
+
+.likeDislike{
+    font-size: 11px;
+    font-weight: bold;
+    margin-top: 8px;
+}
