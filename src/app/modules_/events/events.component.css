@@ -16,11 +16,10 @@
 ::ng-deep .filterbar .btn{font-size: 0.9em;  padding: 4px 12px;}
 ::ng-deep .dropdown-list li{padding:3px 10px !important;}
 
-
 .modal-lg {
-  max-width: 100%;
-  margin-left: 15%;
-  margin-top: 5%;
+max-width: 100%;
+margin-left: 15%;
+margin-top: 5%;
 }
 .custompanel {
   margin-bottom: 20px !important;
@@ -292,7 +291,7 @@ height: 28px!important;
 
 ::ng-deep#tab_w_50 .tab-content {
   width: 100%;
-  min-height: 330px;
+  /* min-height: 330px; */
   height: auto;
   margin-bottom: 0px;
 }

@@ -108,127 +108,198 @@
     <h5 class="modal-title" style="color: #ffffff;">Event View</h5>
     <button type="button" class="close" (click)="d('Cross click')">×</button>
   </div>
-  <div class="modal-body">
-
+  <div class="modal-body" id="tab_w_50">
     <div class="row">
-
       <div class="col-lg-12">
         <!-- <fusioncharts [width]="width" [height]="height" [type]="type" [dataFormat]="dataFormat"
                   [dataSource]="dataSource">
                 </fusioncharts> -->
         <cats-am4-column-chart [titleChart]="titleChart" [chartUniqueId]="chartId" [heightPixel]="height"
           [widthPer]="width" [dataProvider]="dataSource.data" *ngIf="dataSource.data?.length>0"></cats-am4-column-chart>
+          <div class="mb-4"> 
+            <img src="../../../assets/images/chart.jpg" class="img-responsive">
+          </div>
       </div>
     </div>
 
-    <form class="form-horizontal form-bordered">
-      <div class="row">
-        <div class="col-md-4">
-          <div class="form-group row">
-            <label class="col-md-2 col-form-label">Nearby</label>
-            <div class="col-md-3">
-              <div class="input-group date">
-                <input type="number" name="count" class="form-control" placeholder="5" min="1"
-                  [(ngModel)]="modelTimeRange.count">
-              </div>
-            </div>
-            <div class="col-md-4">
-              <select class="form-control" name='type' [(ngModel)]="modelTimeRange.type">
-                <option value="min">Minutes</option>
-                <option value="sec">Seconds</option>
-                <option value="hour">Hour</option>
-
-              </select>
-            </div>
-            <div class="col-md-3">
-              <div class="form-group row">
-                <button (click)="clickOnApplyTimeRange()"
-                  class="btn btn-dark bg-{{themeConf_.selectedColor}}">Apply</button>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-8">
-          <div class="row" *ngIf="allTags">
-            <div class="col-md-2">
-              <div class="input-group row" style="margin-top:15px;margin-bottom:10px;">
-                <select class="form-control m-b-10" name="event_status" id="event_status" [(ngModel)]="model.date_mday"
-                  (change)="onChange();">
-                  <option value="">#Days</option>
-                  <option value="{{item}}" *ngFor="let item of allTags.date_mday">{{item}}</option>
-                </select>
-              </div>
-            </div>
-            <div class="col-md-2">
-              <div class="input-group row" style="margin-top:15px;margin-bottom:10px;">
-                <select class="form-control m-b-10" name="event_status" id="event_status" [(ngModel)]="model.date_wday"
-                  (change)="onChange();">
-                  <option value="">#WeekDay</option>
-                  <option value="{{item}}" *ngFor="let item of allTags.date_wday">{{item}}</option>
-
-                </select>
-              </div>
-            </div>
-            <div class="col-md-2">
-              <div class="input-group row" style="margin-top:15px;margin-bottom:10px;">
-                <select class="form-control m-b-10" name="event_status" id="event_status" [(ngModel)]="model.date_hour"
-                  (change)="onChange();">
-                  <option value="">#Hour</option>
-                  <option value="{{item}}" *ngFor="let item of allTags.date_hour">{{item}}</option>
-
-                </select>
-              </div>
-            </div>
-            <div class="col-md-2">
-              <div class="input-group row" style="margin-top:15px;margin-bottom:10px;">
-                <select class="form-control m-b-10" name="event_status" id="event_status" [(ngModel)]="model.date_year"
-                  (change)="onChange();">
-                  <option value="">#Year</option>
-                  <option value="{{item}}" *ngFor="let item of allTags.date_year">{{item}}</option>
-                </select>
-              </div>
-            </div>
-            <div class="col-md-2">
-              <div class="input-group row" style="margin-top:15px;margin-bottom:10px;">
-                <select class="form-control m-b-10" name="event_status" id="event_status" [(ngModel)]="model.date_month"
-                  (change)="onChange();">
-                  <option value="">#Month</option>
-                  <option value="{{item}}" *ngFor="let item of allTags.date_month">{{item}}</option>
-                </select>
-              </div>
-            </div>
-            <div class="col-md-2">
-              <div class="input-group row" style="margin-top:12%">
-                <select class="form-control m-b-10" name="event_status" id="filterTagsearch"
-                  [(ngModel)]="filterTagsearch" (change)="onChange()">
-                  <option value="">Select Severity</option>
-                  <option value="{{status.name}}" *ngFor="let status of eventStatusList">{{status.name}}</option>
-                </select>
-
+    <form class="form-bordered">
+      <ngb-tabset>
+        <ngb-tab>
+          <ng-template ngbTabTitle>
+            <span class="d-sm-none">Event Management</span>
+            <span class="d-sm-block d-none">Event Management</span>
+          </ng-template>
+          <ng-template ngbTabContent>
+            <div class="row">
+              <div class="col-md-4">
+                <div class="row">
+                  <label class="col-md-2 col-form-label">Nearby</label>
+                  <div class="col-md-3">
+                    <div class="date">
+                      <input type="number" name="count" class="form-control" placeholder="5" min="1"
+                        [(ngModel)]="modelTimeRange.count">
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <select class="form-control" name='type' [(ngModel)]="modelTimeRange.type">
+                      <option value="min">Minutes</option>
+                      <option value="sec">Seconds</option>
+                      <option value="hour">Hour</option>      
+                    </select>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="row">
+                      <button (click)="clickOnApplyTimeRange()"
+                        class="btn btn-block btn-dark bg-{{themeConf_.selectedColor}}">Apply</button>
+                    </div>
+                  </div>
+                </div>
               </div>
 
+              <div class="col-md-3">
+                  <select class="form-control m-b-10" id="filterTagsearch" name="event_status">
+                    <option>Select Severity</option>
+                    <option value="CRITICAL" >CRITICAL</option>
+                    <option value="INDETERMINATE" >INDETERMINATE</option>
+                    <option value="MAJOR" >MAJOR</option>
+                    <option value="MINOR" >MINOR</option>
+                    <option value="WARNING" >WARNING</option>
+                  </select>      
+              </div>
+              <div class="col-md-5">
+                  <select class="form-control m-b-10" id="filterTagsearch" name="event_status">
+                    <option value="">Select Input Source</option>
+                    <option value="CRITICAL" >ADVA NMS</option>
+                    <option value="INDETERMINATE" >INALA</option>
+                    <option value="MAJOR" >ECI NMS</option>
+                    <option value="MINOR" >EMC NMS</option>
+                    <option value="WARNING" >MERAKI</option>
+                  </select>      
+              </div>
+              <!-- <div class="col-md-8">
+                <div class="row" *ngIf="allTags">
+                  <div class="col-md-2">
+                    <div class="input-group row" style="margin-top:15px;margin-bottom:10px;">
+                      <select class="form-control m-b-10" name="event_status" id="event_status" [(ngModel)]="model.date_mday"
+                        (change)="onChange();">
+                        <option value="">#Days</option>
+                        <option value="{{item}}" *ngFor="let item of allTags.date_mday">{{item}}</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-md-2">
+                    <div class="input-group row" style="margin-top:15px;margin-bottom:10px;">
+                      <select class="form-control m-b-10" name="event_status" id="event_status" [(ngModel)]="model.date_wday"
+                        (change)="onChange();">
+                        <option value="">#WeekDay</option>
+                        <option value="{{item}}" *ngFor="let item of allTags.date_wday">{{item}}</option>
+      
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-md-2">
+                    <div class="input-group row" style="margin-top:15px;margin-bottom:10px;">
+                      <select class="form-control m-b-10" name="event_status" id="event_status" [(ngModel)]="model.date_hour"
+                        (change)="onChange();">
+                        <option value="">#Hour</option>
+                        <option value="{{item}}" *ngFor="let item of allTags.date_hour">{{item}}</option>
+      
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-md-2">
+                    <div class="input-group row" style="margin-top:15px;margin-bottom:10px;">
+                      <select class="form-control m-b-10" name="event_status" id="event_status" [(ngModel)]="model.date_year"
+                        (change)="onChange();">
+                        <option value="">#Year</option>
+                        <option value="{{item}}" *ngFor="let item of allTags.date_year">{{item}}</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-md-2">
+                    <div class="input-group row" style="margin-top:15px;margin-bottom:10px;">
+                      <select class="form-control m-b-10" name="event_status" id="event_status" [(ngModel)]="model.date_month"
+                        (change)="onChange();">
+                        <option value="">#Month</option>
+                        <option value="{{item}}" *ngFor="let item of allTags.date_month">{{item}}</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-md-2">
+                    <div class="input-group row" style="margin-top:12%">
+                      <select class="form-control m-b-10" name="event_status" id="filterTagsearch"
+                        [(ngModel)]="filterTagsearch" (change)="onChange()">
+                        <option value="">Select Severity</option>
+                        <option value="{{status.name}}" *ngFor="let status of eventStatusList">{{status.name}}</option>
+                      </select>        
+                    </div>        
+                  </div>
+                </div>        
+              </div> -->
             </div>
-          </div>
+          </ng-template>
+        </ngb-tab>
 
-        </div>
-      </div>
+        <ngb-tab>
+          <ng-template ngbTabTitle>
+            <span class="d-sm-none">Service Management</span>
+            <span class="d-sm-block d-none">Service Management</span>
+          </ng-template>
+          <ng-template ngbTabContent>
+            <div class="row">
+              <div class="col-md-4">
+                <div class="row">
+                  <label class="col-md-2 col-form-label">Nearby</label>
+                  <div class="col-md-3">
+                    <div class="date">
+                      <input type="number" name="count" class="form-control" placeholder="5" min="1"
+                        [(ngModel)]="modelTimeRange.count">
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <select class="form-control" name='type' [(ngModel)]="modelTimeRange.type">
+                      <option value="min">Minutes</option>
+                      <option value="sec">Seconds</option>
+                      <option value="hour">Hour</option>      
+                    </select>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="row">
+                      <button (click)="clickOnApplyTimeRange()"
+                        class="btn btn-block btn-dark bg-{{themeConf_.selectedColor}}">Apply</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-3">
+                  <select class="form-control m-b-10" id="filterTagsearch" name="event_status">
+                    <option>Select Severity</option>
+                    <option value="CRITICAL" >CRITICAL</option>
+                    <option value="INDETERMINATE" >INDETERMINATE</option>
+                    <option value="MAJOR" >MAJOR</option>
+                    <option value="MINOR" >MINOR</option>
+                    <option value="WARNING" >WARNING</option>
+                  </select>      
+              </div>
+              <div class="col-md-5">
+                  <select class="form-control m-b-10" id="filterTagsearch" name="event_status">
+                    <option value="">Select Input Source</option>
+                    <option value="CRITICAL" >ADVA NMS</option>
+                    <option value="INDETERMINATE" >INALA</option>
+                    <option value="MAJOR" >ECI NMS</option>
+                    <option value="MINOR" >EMC NMS</option>
+                    <option value="WARNING" >MERAKI</option>
+                  </select>      
+              </div>
+            </div>
+          </ng-template>
+        </ngb-tab>
+      </ngb-tabset>     
     </form>
 
-
     <div class="row">
-      <div class="col-sm-2">
-        <!-- <ul id="nav" *ngIf="res">
-                      <li *ngFor="let item of res.sidenav">
-                        <a class="sub" tabindex="1">{{item.name}} ({{item.count}})</a>
-                        <img src="assets/images/up.gif" alt="" />
-                        <ul>
-                          <li *ngFor="let subitem of item.data">
-                            <a (click)="clickOnFilter(item,subitem);">
-                              <i class="fa fa-caret-right"></i> {{subitem.name}} ({{subitem.count}})</a>
-                          </li>
-                        </ul>
-                      </li>
-                    </ul> -->
+      <!-- <div class="col-sm-2">
         <div class="sidenav" *ngIf="res">
           <div *ngFor="let item of res.sidenav">
             <a style="display: -webkit-inline-box;">
@@ -237,57 +308,44 @@
               <button (click)="clickOnFilterMenu(item);" id="{{item.name}}" class="dropdown-btn"
                 style="font-size: 12px;font-weight:bold;margin-top:-6px;margin-left:-10px;">{{item.name}}
                 ({{item.count}})
-
               </button>
             </a>
-
             <div class="dropdown-container" style="display: none;" id="{{item.name}}-content">
               <a (click)="clickOnFilter(item,subitem);" style="font-size: 10px;"
                 *ngFor="let subitem of item.data">{{subitem.name}} ({{subitem.count}})</a>
-
             </div>
           </div>
 
         </div>
-      </div>
-      <div class="col-sm-10">
+      </div> -->
+      <div class="col-sm-12">
         <div class="table-responsive table-striped">
           <table class="table table-bordered">
             <thead>
               <tr>
-                <!-- <th style="width: 80px">Action</th> -->
                 <th style="width: 100px">Time</th>
                 <th style="width: 90%;">Event</th>
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let data of mDataPopUp; let i=index;">
-
-                <!-- <td><button class="btn btn-primary btn-xs" style="color:#ffffff;" (click)="clickOnTable(data);">Act</button></td> -->
+              <!-- <tr *ngFor="let data of mDataPopUp; let i=index;">
                 <td style="color: blue;width: 100px;" class="leftborder-{{data.severity}}">{{data.display_time}}</td>
                 <td style="width: 90%;">
                   <ul>
                     <li *ngFor="let event of data.Event" class="line">
-
                       <span style="font-size:12px; font-weight: 600;" *ngIf="event.tag=='message'">
-                        {{event.value}}
-                        <br>
-
-                      </span>
+                        {{event.value}}<br></span>
                       <span *ngIf="event.tag!='message'">
                         <span style="color: cadetblue">{{event.tag}}
-
                         </span>={{event.value}} |
-
                       </span>
-
-
                     </li>
                   </ul>
                 </td>
-
-
-              </tr>
+              </tr> -->
+              <tr><td  style="color: blue;width: 100px;" class="leftborder-ACTIVE">2020-11-18 06:59:56</td><td  style="width: 90%;"><ul ><li  class="line"><span  style="font-size:12px; font-weight: 600;" > Ethernet performance deterioration, too many damaged packets. <br ></span></li><li  class="line"><span><span  style="color: cadetblue">host_name </span>=ECONET HOUSE (U32) | </span></li><li  class="line"><span><span  style="color: cadetblue">Input Source </span>=U2000TX | </span></li><li  class="line"><span><span  style="color: cadetblue">ip_address </span>=0.0.0.0 | </span></li><li  class="line"><span><span  style="color: cadetblue">alias_name </span>= | </span></li><li  class="line"><span><span  style="color: cadetblue">state </span>=ACTIVE | </span></li><li  class="line"><span><span  style="color: cadetblue">severity </span>=MINOR | </span></li><li  class="line"><span><span  style="color: cadetblue">interface </span>=0-Master Shelf-5-V3T220-6(P2-BYO G4/0/1)-CLIENT:1 | </span></li><li  class="line"><span><span  style="color: cadetblue">alarm_name </span>=RMON_ALM_INBADOCTS_OVER | </span></li><li  class="line"><span><span  style="color: cadetblue">alarm_type </span>=Service | </span></li></ul></td></tr>
+              <tr><td  style="color: blue;width: 100px;" class="leftborder-ACTIVE">2020-11-18 06:59:56</td><td  style="width: 90%;"><ul ><li  class="line"><span  style="font-size:12px; font-weight: 600;" > Ethernet performance deterioration, too many damaged packets. <br ></span></li><li  class="line"><span><span  style="color: cadetblue">host_name </span>=ECONET HOUSE (U32) | </span></li><li  class="line"><span><span  style="color: cadetblue">Input Source </span>=U2000TX | </span></li><li  class="line"><span><span  style="color: cadetblue">ip_address </span>=0.0.0.0 | </span></li><li  class="line"><span><span  style="color: cadetblue">alias_name </span>= | </span></li><li  class="line"><span><span  style="color: cadetblue">state </span>=ACTIVE | </span></li><li  class="line"><span><span  style="color: cadetblue">severity </span>=MINOR | </span></li><li  class="line"><span><span  style="color: cadetblue">interface </span>=0-Master Shelf-5-V3T220-6(P2-BYO G4/0/1)-CLIENT:1 | </span></li><li  class="line"><span><span  style="color: cadetblue">alarm_name </span>=RMON_ALM_INBADOCTS_OVER | </span></li><li  class="line"><span><span  style="color: cadetblue">alarm_type </span>=Service | </span></li></ul></td></tr>
+              <tr><td  style="color: blue;width: 100px;" class="leftborder-ACTIVE">2020-11-18 06:59:56</td><td  style="width: 90%;"><ul ><li  class="line"><span  style="font-size:12px; font-weight: 600;" > Ethernet performance deterioration, too many damaged packets. <br ></span></li><li  class="line"><span><span  style="color: cadetblue">host_name </span>=ECONET HOUSE (U32) | </span></li><li  class="line"><span><span  style="color: cadetblue">Input Source </span>=U2000TX | </span></li><li  class="line"><span><span  style="color: cadetblue">ip_address </span>=0.0.0.0 | </span></li><li  class="line"><span><span  style="color: cadetblue">alias_name </span>= | </span></li><li  class="line"><span><span  style="color: cadetblue">state </span>=ACTIVE | </span></li><li  class="line"><span><span  style="color: cadetblue">severity </span>=MINOR | </span></li><li  class="line"><span><span  style="color: cadetblue">interface </span>=0-Master Shelf-5-V3T220-6(P2-BYO G4/0/1)-CLIENT:1 | </span></li><li  class="line"><span><span  style="color: cadetblue">alarm_name </span>=RMON_ALM_INBADOCTS_OVER | </span></li><li  class="line"><span><span  style="color: cadetblue">alarm_type </span>=Service | </span></li></ul></td></tr>
 
             </tbody>
           </table>
