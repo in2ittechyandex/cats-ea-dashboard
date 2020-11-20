@@ -72,9 +72,9 @@ export class EventsService {
      *
      */
 
-  getEventStatusList() {
-    const URL = environment._EventURL + 'ruleengine/rule/get_status';
-    return this.http.get(URL).map(res => <any>res);
+  getEventSeverityList() {
+    const URL = environment._WEBGATEWAY_BASIC_URL_ + 'menu/kpi/get_severity_list';
+    return this.http.post(URL,{}).map(res => <any>res);
   }
   /**
    *
@@ -83,8 +83,8 @@ export class EventsService {
    */
 
   getEventStatus() {
-    const URL = environment._EventURL + 'get_all_status';
-    return this.http.get(URL).map(res => <any>res);
+    const URL = environment._WEBGATEWAY_BASIC_URL_ + 'menu/kpi/get_status_list';
+    return this.http.post(URL,{}).map(res => <any>res);
   }
   /**
    *
@@ -92,27 +92,27 @@ export class EventsService {
    *
    */
   getInputSourceList() {
-    // const URL = environment._EventURL + 'eventengine/allinputsource';
-    const URL = 'https://run.mocky.io/v3/832984eb-82f4-4d35-a400-5507cbe3f481';
-    return this.http.get(URL).map(res => <any>res);
+    const URL = environment._WEBGATEWAY_BASIC_URL_ + 'menu/kpi/get_input_source_list';
+    // const URL = 'https://run.mocky.io/v3/832984eb-82f4-4d35-a400-5507cbe3f481';
+    return this.http.post(URL,{}).map(res => <any>res);
   }
   /**
    *
    * to get all events
    *
    */
-  getAllEvents(message, ci_id, filter, state, pageNumber, from, to, inputSource) {
-    // const URL = environment._EventURL + 'eventengine/alleventdata?from=' + from +
-    //   '&to=' + to +
-    //   '&host=' + ci_id +
-    //   '&severity=' + filter +
-    //   '&state=' + state +
-    //   '&message=' + message +
-    //   '&page=' + pageNumber +
-    //   '&input_source=' + inputSource;
-
-      const URL = 'https://run.mocky.io/v3/2f5e0866-e25f-4310-9595-7e9e58d971d2';
-    return this.http.get(URL).map(res => <any>res);
+  getAllEvents(message, host, severity, state, page, from, to, input_source) {
+    const URL = environment._WEBGATEWAY_BASIC_URL_ + 'menu/kpi/get_all_event'; 
+      var formData:FormData=new FormData();
+      formData.append("startDate",from);
+      formData.append("endDate",to);
+      formData.append("host",host);
+      formData.append("severity",severity);
+      formData.append("state",state);
+      formData.append("message",message);
+      formData.append("page",page);
+      formData.append("input_source",input_source);
+    return this.http.post(URL,formData).map(res => <any>res);
   }
   getAllTags(host) {
     const URL = environment._EventURL +

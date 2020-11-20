@@ -37,12 +37,19 @@ export class AlarmsService {
    *
    */
   getAllAlarms(page, inputSource, hostName: string, severity, state, from, to) {
-    // const URL = environment._AlarmURL + 'eventengine/geteventtoalert?from=' + from +
-    //   '&to=' + to + '&page=' + page + '&host=' + hostName.toLowerCase() + '&input_source='
-    //   + inputSource + '&state=' + state + '&severity=' + severity;
-
-      const URL = 'https://run.mocky.io/v3/47654547-d9a2-451b-b267-7e29d13a3ee0';
-    return this.http.get(URL).map(res => <any>res);
+    const URL = environment._WEBGATEWAY_BASIC_URL_ + 'menu/kpi/get_all_alarm';
+      var formData:FormData=new FormData();
+      formData.append("startDate",from);
+      formData.append("endDate",to);
+      formData.append("host",hostName);
+      formData.append("severity",severity);
+      formData.append("state",state); 
+      formData.append("page",page);
+      formData.append("message",'');
+      formData.append("input_source",inputSource);
+      http://172.27.63.182:8089/
+      // const URL = 'https://run.mocky.io/v3/47654547-d9a2-451b-b267-7e29d13a3ee0';
+    return this.http.post(URL,formData).map(res => <any>res);
   }
   /**
    *

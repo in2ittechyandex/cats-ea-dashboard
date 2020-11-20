@@ -780,9 +780,9 @@ export class EventsComponent implements OnInit, OnDestroy {
   }
   eventStatusList = [];
   getEventStatusList() {
-    this.eventsService.getEventStatusList().subscribe((res) => {
-      if (res.Status) {
-        this.eventStatusList = res.msg;
+    this.eventsService.getEventSeverityList().subscribe((res) => {
+      if (res.status) {
+        this.eventStatusList = res.data;
         this.dropdownListEventStatus = [];
         // this.dropdownListEventStatus.push({ item_id: "0", item_text: "All"});
 
@@ -799,8 +799,8 @@ export class EventsComponent implements OnInit, OnDestroy {
     {'id':1,'name':'ACTIVE'},{'id':2,'name':'CLEAR'}];
   getEventStatus() {
     this.eventsService.getEventStatus().subscribe((res) => {
-      if (res.Status) {
-        this.eventList = res.msg;
+      if (res.status) {
+        this.eventList = res.data;
 
         this.dropdownListStatus=[]; 
         
@@ -818,8 +818,8 @@ export class EventsComponent implements OnInit, OnDestroy {
   inputSourcecList = [];
   getInputSourceList() {
     this.eventsService.getInputSourceList().subscribe((res) => {
-      if (res.Status) {
-        this.inputSourcecList = res.msg;
+      if (res.status) {
+        this.inputSourcecList = res.data;
         this.dropdownListInputSource = [];
         // this.dropdownListInputSource.push({ item_id: "0", item_text: "All"});
         this.selectedItemsInputSource = [];
