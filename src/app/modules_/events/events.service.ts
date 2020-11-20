@@ -74,7 +74,7 @@ export class EventsService {
 
   getEventSeverityList() {
     const URL = environment._WEBGATEWAY_BASIC_URL_ + 'menu/kpi/get_severity_list';
-    return this.http.post(URL,{}).map(res => <any>res);
+    return this.http.post(URL, {}).map(res => <any>res);
   }
   /**
    *
@@ -84,7 +84,7 @@ export class EventsService {
 
   getEventStatus() {
     const URL = environment._WEBGATEWAY_BASIC_URL_ + 'menu/kpi/get_status_list';
-    return this.http.post(URL,{}).map(res => <any>res);
+    return this.http.post(URL, {}).map(res => <any>res);
   }
   /**
    *
@@ -94,7 +94,7 @@ export class EventsService {
   getInputSourceList() {
     const URL = environment._WEBGATEWAY_BASIC_URL_ + 'menu/kpi/get_input_source_list';
     // const URL = 'https://run.mocky.io/v3/832984eb-82f4-4d35-a400-5507cbe3f481';
-    return this.http.post(URL,{}).map(res => <any>res);
+    return this.http.post(URL, {}).map(res => <any>res);
   }
   /**
    *
@@ -102,17 +102,17 @@ export class EventsService {
    *
    */
   getAllEvents(message, host, severity, state, page, from, to, input_source) {
-    const URL = environment._WEBGATEWAY_BASIC_URL_ + 'menu/kpi/get_all_event'; 
-      var formData:FormData=new FormData();
-      formData.append("startDate",from);
-      formData.append("endDate",to);
-      formData.append("host",host);
-      formData.append("severity",severity);
-      formData.append("state",state);
-      formData.append("message",message);
-      formData.append("page",page);
-      formData.append("input_source",input_source);
-    return this.http.post(URL,formData).map(res => <any>res);
+    const URL = environment._WEBGATEWAY_BASIC_URL_ + 'menu/kpi/get_all_event';
+    var formData: FormData = new FormData();
+    formData.append("startDate", from);
+    formData.append("endDate", to);
+    formData.append("host", host);
+    formData.append("severity", severity);
+    formData.append("state", state);
+    formData.append("message", message);
+    formData.append("page", page);
+    formData.append("input_source", input_source);
+    return this.http.post(URL, formData).map(res => <any>res);
   }
   getAllTags(host) {
     const URL = environment._EventURL +
@@ -266,6 +266,9 @@ export class EventsService {
 
   search_host(name) {
     const URL = environment._EventURL + 'hosts/host/search_host?name=' + name;
+
+    // const URL = environment._WEBGATEWAY_BASIC_URL_ + 'menu/kpi/get_input_source_list';
+
     return this.http.get(URL).map(res => <any>res);
   }
 
@@ -320,4 +323,26 @@ export class EventsService {
     // URL="http://172.27.64.92:7000/eventengine/getrowdata?id=EVENT-20200630-101609"
     return this.http.get(URL).map(res => <any>res);
   }
+
+
+  getEventManagementData(filters_: any) {
+    const URL = environment._WEBGATEWAY_BASIC_URL_ + 'event_';
+    const formData: FormData = new FormData();
+    Object.keys(filters_).forEach(e_ => {
+      formData.append(e_, filters_[e_]);
+    });
+
+    return this.http.post(URL, formData).map(res => <any>res);
+  }
+
+  getServiceManagementData(filters_: any) {
+    const URL = environment._WEBGATEWAY_BASIC_URL_ + 'serve_';
+    const formData: FormData = new FormData();
+    Object.keys(filters_).forEach(e_ => {
+      formData.append(e_, filters_[e_]);
+    });
+
+    return this.http.post(URL, formData).map(res => <any>res);
+  }
+  
 }

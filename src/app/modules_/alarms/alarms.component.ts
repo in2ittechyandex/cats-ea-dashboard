@@ -809,11 +809,11 @@ export class AlarmsComponent implements OnInit, OnDestroy {
       inputSourceListTemp, this.hostName, severityListTemp, statusListTemp,
       this.timeServices_.getstartDateInTimestamp(),
       this.timeServices_.getendDateInTimestamp()).subscribe((res) => {
-        if (res.status) {
+        if (res.status == true) {
           const endTime: number = new Date().getTime();
           const diffTime = endTime - startTime;
           this.responseTime = this.numberToDatePipe_.transform(diffTime, 'ms');
-          this.alarmList = res.Data;
+          this.alarmList = res.data;
           this.totalPages = res.totalpage;
           this.initPage(this.currentPage);
           this.alarmLoading = false;

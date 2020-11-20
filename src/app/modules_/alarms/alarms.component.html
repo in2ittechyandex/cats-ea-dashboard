@@ -7,7 +7,7 @@
       <div class="col-lg-12">
         <div class="row">
             <div class="col-lg-3 filterbar">
-                <app-time-filter [configStyle]="{'width':'190','bgColor':'#ffffff','border':'0'}"></app-time-filter>
+                <app-time-filter [configStyle]="{'width':'250','bgColor':'#ffffff','border':'0'}"></app-time-filter>
               </div>
           <div class="col-lg-2">          
             <ng-multiselect-dropdown name="user" [placeholder]="'Select Severity'" [data]="dropdownListEventStatus"
@@ -72,7 +72,6 @@
       </panel>
     </div>
   </div>
-
 
   <cats-ag-grid-table [myGridId]="'alarmGrid'" [title]="'Alarms Data'" [ticket_no]="ticket_no"
   [owner_name]="owner_name" [rowData]="alarmList" [dbAllcolumns]="dbAllcolumns" [timeLeft]="timeLeft" [timeRange]="timeRange" [tableHeight]="tableHeight" [responseTime]="responseTime"  (eventDetect)="onEventDetect($event)"></cats-ag-grid-table>

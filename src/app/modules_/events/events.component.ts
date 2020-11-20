@@ -334,17 +334,17 @@ export class EventsComponent implements OnInit, OnDestroy {
       cellRenderer: function (params) {
         return '<span style="user-select: initial;-moz-user-select: text;-ms-user-select: text;-webkit-user-select: text;">' + params.value + '</span>'
       },
-    },{
+    }, {
       headerName: 'Location', 
       field: 'location', 
       sortable: true,
       editable: false,
       filter: true,
       resizable: true,
-      minWidth:120,
-      headerTooltip:'Location',
+      minWidth: 120,
+      headerTooltip: 'Location',
       'isActive': true,
-      cellRenderer: function (params) { return '<span style="user-select: initial;-moz-user-select: text;-ms-user-select: text;-webkit-user-select: text;">'+params.value+'</span>'
+      cellRenderer: function (params) { return '<span style="user-select: initial;-moz-user-select: text;-ms-user-select: text;-webkit-user-select: text;">' + params.value + '</span>'
       },
     },
     {
@@ -386,10 +386,10 @@ export class EventsComponent implements OnInit, OnDestroy {
       'isActive': true,
       minWidth: 150,
       cellRenderer: function (params) {
-        var str=params.value;
-    var str1=str.split('<').join(' ');
-    var str2=str1.split('>').join(' ');
-    var str3=str2.split('.').join(' ');
+        var str = params.value;
+    var str1 = str.split('<').join(' ');
+    var str2 = str1.split('>').join(' ');
+    var str3 = str2.split('.').join(' ');
         return '<span style="user-select: initial;-moz-user-select: text;-ms-user-select: text;-webkit-user-select: text;" title="' + str3 + '">' + str3 + '</span>'
       },
     }
@@ -429,7 +429,7 @@ export class EventsComponent implements OnInit, OnDestroy {
       this.queryFieldMessage = tabs.msgpattern;
       this.eventsService.eventtypeId = tabs.host;
       this.inputSource = tabs.nms;
-      if(this.inputSource!==''){
+      if (this.inputSource !== '') {
         this.setinputSource();
       }
       this.queryMessage = tabs.host;
@@ -769,11 +769,11 @@ export class EventsComponent implements OnInit, OnDestroy {
     this.loading = true;
     this.doSomethingOnNewSubsc(this.filter);
   }
-  filterStatus='';
+  filterStatus = '';
   
   filterData() {
     this.filter = this.filter;
-    this.filterStatus=this.filterStatus;
+    this.filterStatus = this.filterStatus;
     this.currentPage = 1;
     this.loading = true;
     this.doSomethingOnNewSubsc(this.filter);
@@ -796,15 +796,15 @@ export class EventsComponent implements OnInit, OnDestroy {
     });
   }
   eventList = [
-    {'id':1,'name':'ACTIVE'},{'id':2,'name':'CLEAR'}];
+    {'id': 1, 'name': 'ACTIVE'}, {'id': 2, 'name': 'CLEAR'}];
   getEventStatus() {
     this.eventsService.getEventStatus().subscribe((res) => {
       if (res.status) {
         this.eventList = res.data;
 
-        this.dropdownListStatus=[]; 
+        this.dropdownListStatus = []; 
         
-        for(var i=0;i<this.eventList.length;i++){
+        for (var i = 0; i < this.eventList.length; i++) {
           this.dropdownListStatus.push({ item_id: this.eventList[i]['id'].toString(), item_text: this.eventList[i]['name']});
         
         }
@@ -842,7 +842,7 @@ export class EventsComponent implements OnInit, OnDestroy {
     }, (err) => {
     });
   }
-  setinputSource(){
+  setinputSource() {
     console.log('Arjun Singh set input source');
 
     this.selectedItemsInputSource = [];
@@ -878,11 +878,11 @@ export class EventsComponent implements OnInit, OnDestroy {
   }
   onItemStatus(item: any) {
     
-    if(this.selectedItemsStatus.length>0){
-      this.filterStatus=item.item_text;
+    if (this.selectedItemsStatus.length > 0) {
+      this.filterStatus = item.item_text;
       this.filterData();
-    }else{
-      this.filterStatus='';
+    } else {
+      this.filterStatus = '';
       this.filterData();
     }
   }
@@ -901,8 +901,8 @@ export class EventsComponent implements OnInit, OnDestroy {
     for (var i = 0; i < this.selectedItemsEventStatus.length; i++) {
       severityListTemp.push(this.selectedItemsEventStatus[i].item_text);
     }
-    var statusListTemp=[];
-    for(var i=0;i<this.selectedItemsStatus.length;i++){
+    var statusListTemp = [];
+    for (var i = 0; i < this.selectedItemsStatus.length; i++) {
       statusListTemp.push(this.selectedItemsStatus[i].item_text);
     }
     this.allEventService = this.eventsService.getAllEvents(
@@ -914,11 +914,11 @@ export class EventsComponent implements OnInit, OnDestroy {
       this.timeServices_.getstartDateInTimestamp(),
       this.timeServices_.getendDateInTimestamp(),
       inputSourceListTemp).subscribe((res) => {
-        if (res.Status) {
+        if (res.status == true) {
           const endTime: number = new Date().getTime();
           const diffTime = endTime - startTime;
           this.responseTime = this.numberToDatePipe_.transform(diffTime, 'ms');
-          this.mData = res.Data;
+          this.mData = res.data;
           this.totalPages = res.totalpage;
           this.initPage(pageNumber);
           this.completeLoading();
@@ -1021,7 +1021,7 @@ export class EventsComponent implements OnInit, OnDestroy {
   public validateModel(keystoValidate, obj): boolean {
     let model = obj;
     var isValid: boolean = true;
-    var keys = keystoValidate;;
+    var keys = keystoValidate; ;
     for (var i = 0; i < keys.length; i++) {
       var element = keys[i];
       if (!(model[element] != undefined && ('' + model[element]).trim() != '')) {
@@ -1156,6 +1156,58 @@ export class EventsComponent implements OnInit, OnDestroy {
     this.callKpis();
     document.getElementById('modalButtonOpen').click();
   }
+
+/**
+ * Ramji code start
+ */
+public eViewModal = {
+  "rowData": [],
+  "dbAllColumns": [],
+  "filter": {
+    "count": "5",
+    "type": "hour",
+    "time": "",
+    "host": ""
+  },
+  "chartData": null
+};
+
+
+onTabChange($event: NgbTabChangeEvent) {
+    if ($event.nextId == 'event') {
+     // event
+     this.loadEventManagementData();
+    } else {
+      // service
+      this.loadServiceManagementData();
+    }
+}
+
+loadEventManagementData() {
+  // prepare filter paras
+  let filter_ = {};
+  this.eventsService.getEventManagementData(filter_).subscribe(res => {
+
+  }, err => {
+
+  });
+}
+
+loadServiceManagementData() {
+  // prepare filter paras
+  let filter_ = {};
+  this.eventsService.getServiceManagementData(filter_).subscribe(res => {
+
+  }, err => {
+
+  });
+}
+
+ /**
+  * Ramji code end
+  */
+
+
 
   clickOnApplyTimeRange() {
     this.currentPagePopUp = 1;
@@ -1623,7 +1675,7 @@ export class EventsComponent implements OnInit, OnDestroy {
 
       };
     } else {
-      hostList = this.jsonStr['znodes_list'];;
+      hostList = this.jsonStr['znodes_list']; ;
     }
     this.niaerror = false;
     this.jsonStr = null;
