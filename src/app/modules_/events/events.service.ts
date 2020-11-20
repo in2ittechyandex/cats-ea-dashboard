@@ -104,8 +104,8 @@ export class EventsService {
   getAllEvents(message, host, severity, state, page, from, to, input_source) {
     const URL = environment._WEBGATEWAY_BASIC_URL_ + 'menu/kpi/get_all_event'; 
       var formData:FormData=new FormData();
-      formData.append("startDate",from);
-      formData.append("endDate",to);
+      formData.append("startDate","1601304988000");
+      formData.append("endDate","1601477788000");
       formData.append("host",host);
       formData.append("severity",severity);
       formData.append("state",state);
@@ -128,6 +128,14 @@ export class EventsService {
 
     return this.http.get(URL).map(res => <any>res);
   }
+  get_nearby_service_request(startDate,endDate,type){
+    const URL = environment._WEBGATEWAY_BASIC_URL_ + 'menu/kpi/get_nearby_service_request'; 
+    var formData:FormData=new FormData();
+    formData.append("startDate","1601304988000");
+    formData.append("endDate","1601477788000");
+    formData.append("type",type); 
+  return this.http.post(URL,formData).map(res => <any>res);
+  } 
   getEventsByTagsFilter(host, date_hour, date_mday,
     date_month, date_wday, date_year,
     alert_type, topevent, page,

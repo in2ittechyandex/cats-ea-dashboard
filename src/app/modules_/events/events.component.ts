@@ -914,11 +914,11 @@ export class EventsComponent implements OnInit, OnDestroy {
       this.timeServices_.getstartDateInTimestamp(),
       this.timeServices_.getendDateInTimestamp(),
       inputSourceListTemp).subscribe((res) => {
-        if (res.Status) {
+        if (res.status) {
           const endTime: number = new Date().getTime();
           const diffTime = endTime - startTime;
           this.responseTime = this.numberToDatePipe_.transform(diffTime, 'ms');
-          this.mData = res.Data;
+          this.mData = res.data;
           this.totalPages = res.totalpage;
           this.initPage(pageNumber);
           this.completeLoading();
@@ -1182,7 +1182,8 @@ export class EventsComponent implements OnInit, OnDestroy {
     this.getEventDataParticularHostpopup(this.currentHost, this.model.date_hour, this.model.date_mday,
       this.model.date_month, this.model.date_wday, this.model.date_year, this.model.alert_type, this.model.topevent, this.currentPagePopUp,
       this.modelTimeRange.time, this.modelTimeRange.type, this.modelTimeRange.count, this.filterTagsearch);
-  }
+      this.get_nearby_service_request();
+    }
 
   getEventDataParticularHostpopup(host, date_hour, date_mday, date_month,
     date_wday, date_year, alert_type, topevent, pageNumber,
@@ -1206,6 +1207,11 @@ export class EventsComponent implements OnInit, OnDestroy {
       this.completeLoading();
       this.loading = false;
     });
+  }
+  get_nearby_service_request(){
+    this.eventsService.get_nearby_service_request("startDate","endDate","incident").subscribe((res)=>{
+      
+    })
   }
   onChange() {
     this.currentPagePopUp = 1;
