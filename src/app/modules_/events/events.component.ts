@@ -1234,7 +1234,8 @@ loadServiceManagementData() {
     this.getEventDataParticularHostpopup(this.currentHost, this.model.date_hour, this.model.date_mday,
       this.model.date_month, this.model.date_wday, this.model.date_year, this.model.alert_type, this.model.topevent, this.currentPagePopUp,
       this.modelTimeRange.time, this.modelTimeRange.type, this.modelTimeRange.count, this.filterTagsearch);
-  }
+      this.get_nearby_service_request();
+    }
 
   getEventDataParticularHostpopup(host, date_hour, date_mday, date_month,
     date_wday, date_year, alert_type, topevent, pageNumber,
@@ -1258,6 +1259,11 @@ loadServiceManagementData() {
       this.completeLoading();
       this.loading = false;
     });
+  }
+  get_nearby_service_request(){
+    this.eventsService.get_nearby_service_request("startDate","endDate","incident").subscribe((res)=>{
+      
+    })
   }
   onChange() {
     this.currentPagePopUp = 1;
