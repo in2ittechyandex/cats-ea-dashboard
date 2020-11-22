@@ -1,6 +1,6 @@
-<div class="bg-dark float-left w-100 p-3 mb-1">
+<div class="bg-dark float-left w-100 p-3 mb-1" *ngIf="allowPanel">
     <form class="form-horizontal pull-left">
-        <div class="rows">
+        <div class="rows" *ngIf="allowExports">
             <div class="col-xs-1 mr-2">
                 <div class="btn-group btn-sm p-0" (click)="(incidentList && incidentList.length>0) ? exportReportData() : null">
                     <i class="fas fa-file-csv fa-lg fa-fw btn download-default btn-default btn-sm" [ngClass]="{'btnDisabled' : incidentList && incidentList.length==0}" style="width:100%;" *ngIf="!isCsvLoaded"></i>
@@ -34,7 +34,7 @@
       </div> -->
         </div>
     </form>
-    <div class="pull-right">
+    <div class="pull-right" *ngIf="allowCogs">
         <button class="toggle btn btn-sm" style="background-color:transparent;"><i class="fa fa-cogs"></i></button>
         <div id="target_allSaturation_gridSmart">
             <div class="box-inner">
@@ -53,7 +53,7 @@
 
 <div class="clearfix"></div>
 
-<div class="test-container">
+<div class="">
     <div style="width:100%; overflow:auto;" class="device">
         <ag-grid-angular [style.height.px]="heightPx" [style.width.%]="widthPer" #agGrid id="myGrid" class="ag-theme-balham" [rowData]="incidentList" [columnDefs]="columnDefs" [pagination]="true" [paginationPageSize]="paginationPageSize" [context]="context" [defaultColDef]="defaultColDef"
             (gridReady)="onGridReady($event)" (paginationChanged)="onPaginationChanged($event)" [suppressPaginationPanel]="true" [enableCellTextSelection]="true" [suppressRowClickSelection]="suppressRowClickSelection" [rowSelection]="rowSelection" (rowSelected)="onRowSelected($event)"

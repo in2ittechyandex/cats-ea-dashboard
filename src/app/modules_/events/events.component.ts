@@ -35,7 +35,7 @@ declare var require: any;
 @Component({
   selector: 'cats-events',
   templateUrl: './events.component.html',
-  styleUrls: ['./events.component.css'] 
+  styleUrls: ['./events.component.css']
 })
 export class EventsComponent implements OnInit, OnDestroy {
 
@@ -52,6 +52,86 @@ export class EventsComponent implements OnInit, OnDestroy {
   count_major = '0';
   count_minor = '0';
   count_warning = '0';
+
+  public eViewModal = {
+    'rowData': [],
+    'dbAllColumns': [
+      {
+        headerName: 'Time',
+        field: 'display_time',
+        sortable: true,
+        filter: true,
+        editable: false,
+        resizable: true,
+        headerTooltip: 'Time',
+        width: 100,
+        'isActive': true,
+      },
+      {
+        headerName: 'Description',
+        field: 'message',
+        sortable: true,
+        filter: true,
+        editable: false,
+        draggable: true,
+        resizable: true,
+        flex: 1,
+        width: 200,
+        headerTooltip: 'Description',
+        'isActive': true,
+      },
+      {
+        headerName: 'Severity',
+        field: 'severity',
+        sortable: true,
+        editable: false,
+        filter: true,
+        headerTooltip: 'Severity',
+        resizable: true,
+        'isActive': false,
+        width: 100,
+      },
+      {
+        headerName: 'IP',
+        field: 'ip_address',
+        sortable: true,
+        editable: false,
+        filter: true,
+        headerTooltip: 'IP',
+        resizable: true,
+        'isActive': false,
+        width: 100,
+      },
+      {
+        headerName: 'Interface',
+        field: 'interface',
+        sortable: true,
+        editable: false,
+        filter: true,
+        headerTooltip: 'Interface',
+        resizable: true,
+        'isActive': false,
+        width: 100,
+      }
+    ],
+    'filter': {
+      'count': '5',
+      'type': 'hour',
+      'severity': '',
+      'inputSource': ''
+    },
+    'chartData': null
+  };
+
+  public sViewModal = {
+    'rowData': [],
+    'dbAllColumns': [],
+    'filter': {
+      'count': '5',
+      'type': 'hour',
+    },
+    'chartData': null
+  };
 
   data = {
     'chart': {
@@ -335,8 +415,8 @@ export class EventsComponent implements OnInit, OnDestroy {
         return '<span style="user-select: initial;-moz-user-select: text;-ms-user-select: text;-webkit-user-select: text;">' + params.value + '</span>'
       },
     }, {
-      headerName: 'Location', 
-      field: 'location', 
+      headerName: 'Location',
+      field: 'location',
       sortable: true,
       editable: false,
       filter: true,
@@ -344,7 +424,8 @@ export class EventsComponent implements OnInit, OnDestroy {
       minWidth: 120,
       headerTooltip: 'Location',
       'isActive': true,
-      cellRenderer: function (params) { return '<span style="user-select: initial;-moz-user-select: text;-ms-user-select: text;-webkit-user-select: text;">' + params.value + '</span>'
+      cellRenderer: function (params) {
+        return '<span style="user-select: initial;-moz-user-select: text;-ms-user-select: text;-webkit-user-select: text;">' + params.value + '</span>'
       },
     },
     {
@@ -387,9 +468,9 @@ export class EventsComponent implements OnInit, OnDestroy {
       minWidth: 150,
       cellRenderer: function (params) {
         var str = params.value;
-    var str1 = str.split('<').join(' ');
-    var str2 = str1.split('>').join(' ');
-    var str3 = str2.split('.').join(' ');
+        var str1 = str.split('<').join(' ');
+        var str2 = str1.split('>').join(' ');
+        var str3 = str2.split('.').join(' ');
         return '<span style="user-select: initial;-moz-user-select: text;-ms-user-select: text;-webkit-user-select: text;" title="' + str3 + '">' + str3 + '</span>'
       },
     }
@@ -407,9 +488,9 @@ export class EventsComponent implements OnInit, OnDestroy {
     private timeServices_: TimeFilterService,
     private modalService: NgbModal,
     private eventsService: EventsService,
-     private pagerService: PagerService,
-      private commonService: CommonService,
-       private numberToDatePipe_: NumberToDatePipe) {
+    private pagerService: PagerService,
+    private commonService: CommonService,
+    private numberToDatePipe_: NumberToDatePipe) {
     this.timeLeft = this.secondsToRefresh;
     this.dataSource = this.data;
     this.eventPageDataSource = this.data;
@@ -770,7 +851,7 @@ export class EventsComponent implements OnInit, OnDestroy {
     this.doSomethingOnNewSubsc(this.filter);
   }
   filterStatus = '';
-  
+
   filterData() {
     this.filter = this.filter;
     this.filterStatus = this.filterStatus;
@@ -796,17 +877,17 @@ export class EventsComponent implements OnInit, OnDestroy {
     });
   }
   eventList = [
-    {'id': 1, 'name': 'ACTIVE'}, {'id': 2, 'name': 'CLEAR'}];
+    { 'id': 1, 'name': 'ACTIVE' }, { 'id': 2, 'name': 'CLEAR' }];
   getEventStatus() {
     this.eventsService.getEventStatus().subscribe((res) => {
       if (res.status) {
         this.eventList = res.data;
 
-        this.dropdownListStatus = []; 
-        
+        this.dropdownListStatus = [];
+
         for (var i = 0; i < this.eventList.length; i++) {
-          this.dropdownListStatus.push({ item_id: this.eventList[i]['id'].toString(), item_text: this.eventList[i]['name']});
-        
+          this.dropdownListStatus.push({ item_id: this.eventList[i]['id'].toString(), item_text: this.eventList[i]['name'] });
+
         }
 
       } else {
@@ -826,8 +907,8 @@ export class EventsComponent implements OnInit, OnDestroy {
         for (var i = 0; i < this.inputSourcecList.length; i++) {
           this.dropdownListInputSource.push({ item_id: (i + 1).toString(), item_text: this.inputSourcecList[i]['name'] });
           if (this.selectedItemsInputSource.length == 0) {
-            
-    console.log('Arjun Singh get input source');
+
+            console.log('Arjun Singh get input source');
             if (this.inputSourcecList[i]['name'] === this.inputSource) {
               this.selectedItemsInputSource.push({ item_id: (i + 1).toString(), item_text: this.inputSourcecList[i]['name'] });
               this.doSomethingOnNewSubsc(this.filter);
@@ -847,7 +928,7 @@ export class EventsComponent implements OnInit, OnDestroy {
 
     this.selectedItemsInputSource = [];
     for (var i = 0; i < this.inputSourcecList.length; i++) {
-       if (this.selectedItemsInputSource.length == 0) {
+      if (this.selectedItemsInputSource.length == 0) {
         if (this.inputSourcecList[i]['name'] === this.inputSource) {
           this.selectedItemsInputSource.push({ item_id: (i + 1).toString(), item_text: this.inputSourcecList[i]['name'] });
         }
@@ -877,7 +958,7 @@ export class EventsComponent implements OnInit, OnDestroy {
     }
   }
   onItemStatus(item: any) {
-    
+
     if (this.selectedItemsStatus.length > 0) {
       this.filterStatus = item.item_text;
       this.filterData();
@@ -1021,7 +1102,7 @@ export class EventsComponent implements OnInit, OnDestroy {
   public validateModel(keystoValidate, obj): boolean {
     let model = obj;
     var isValid: boolean = true;
-    var keys = keystoValidate; ;
+    var keys = keystoValidate;;
     for (var i = 0; i < keys.length; i++) {
       var element = keys[i];
       if (!(model[element] != undefined && ('' + model[element]).trim() != '')) {
@@ -1095,7 +1176,7 @@ export class EventsComponent implements OnInit, OnDestroy {
   }
 
   /**
-* 
+*
 * @param obj  selected object {}
 * @param headerName selected header name.
 * @param objNdx  object index from array.
@@ -1151,61 +1232,87 @@ export class EventsComponent implements OnInit, OnDestroy {
     this.currentHost = hostname;
     this.res = undefined;
     this.getAllEventsChart();
-    this.currentPagePopUp = 1;
+    // this.currentPagePopUp = 1;
     this.resetAllFilterAndTags();
     this.callKpis();
     document.getElementById('modalButtonOpen').click();
   }
 
-/**
- * Ramji code start
- */
-public eViewModal = {
-  "rowData": [],
-  "dbAllColumns": [],
-  "filter": {
-    "count": "5",
-    "type": "hour",
-    "time": "",
-    "host": ""
-  },
-  "chartData": null
-};
+  /**
+   * Ramji code start
+   */
 
 
-onTabChange($event: NgbTabChangeEvent) {
+  onTabChange($event: NgbTabChangeEvent) {
+    console.log('onTabChange ..... : ' + $event.nextId);
     if ($event.nextId == 'event') {
-     // event
-     this.loadEventManagementData();
+      // event
+      this.loadEventManagementData();
     } else {
       // service
       this.loadServiceManagementData();
     }
-}
+  }
 
-loadEventManagementData() {
-  // prepare filter paras
-  let filter_ = {};
-  this.eventsService.getEventManagementData(filter_).subscribe(res => {
+  loadEventManagementData() {
+    // prepare filter paras
+    const t_ = this.calculateNearAboutTime(Date.parse(this.modelTimeRange.time),
+      this.eViewModal.filter.count, this.eViewModal.filter.type);
+    const filter_ = {
+      'startDate': t_.start,
+      'endDate': t_.end,
+      'host': this.modelTimeRange.host,
+      'severity': this.eViewModal.filter.severity,
+      'input_source': this.eViewModal.filter.inputSource
+    };
+    this.eventsService.getNearByEventManagementData(filter_).subscribe(res => {
+      if (res.status == true) {
+        this.eViewModal.rowData = res.data;
+      }
+    }, err => {
 
-  }, err => {
+    });
+  }
 
-  });
-}
+  calculateNearAboutTime(timeInMs, count, type) {
+    console.log('calculateNearAboutTime : timeInMs :' + timeInMs + ' :count: ' + count + ' :type: ' + type);
+    let ms = 0;
+    switch (type) {
+      case 'hour':
+        ms = count * 1000 * 60 * 60;
+        break;
+      case 'min':
+        ms = count * 1000 * 60;
+        break;
+      case 'sec':
+        ms = count * 1000;
+        break;
+    }
+    return { start: timeInMs - ms, end: timeInMs + ms };
+  }
 
-loadServiceManagementData() {
-  // prepare filter paras
-  let filter_ = {};
-  this.eventsService.getServiceManagementData(filter_).subscribe(res => {
+  loadServiceManagementData() {
+    // prepare filter paras
+    const t_ = this.calculateNearAboutTime(Date.parse(this.modelTimeRange.time)
+      , this.sViewModal.filter.count, this.sViewModal.filter.type);
+    const filter_ = {
+      'startDate': t_.start,
+      'endDate': t_.end,
+      'type': 'Incident',
+      'host': this.modelTimeRange.host
+    };
+    this.eventsService.getNearByServiceRequestData(filter_).subscribe(res => {
+      if(res.status == true){
+        this.sViewModal.rowData = res.data;
+      }
+    }, err => {
 
-  }, err => {
+    });
+  }
 
-  });
-}
-
- /**
-  * Ramji code end
-  */
+  /**
+   * Ramji code end
+   */
 
 
 
@@ -1229,13 +1336,14 @@ loadServiceManagementData() {
   currentHost;
   filterTagsearch = '';
   callKpis() {
-    this.getAllTags();
-    this.getSideNav();
-    this.getEventDataParticularHostpopup(this.currentHost, this.model.date_hour, this.model.date_mday,
-      this.model.date_month, this.model.date_wday, this.model.date_year, this.model.alert_type, this.model.topevent, this.currentPagePopUp,
-      this.modelTimeRange.time, this.modelTimeRange.type, this.modelTimeRange.count, this.filterTagsearch);
-      this.get_nearby_service_request();
-    }
+    // this.getAllTags();
+    // this.getSideNav();
+    // this.getEventDataParticularHostpopup(this.currentHost, this.model.date_hour, this.model.date_mday,
+    //   this.model.date_month, this.model.date_wday, this.model.date_year, this.model.alert_type, this.model.topevent, this.currentPagePopUp,
+    //   this.modelTimeRange.time, this.modelTimeRange.type, this.modelTimeRange.count, this.filterTagsearch);
+
+    this.loadEventManagementData();
+  }
 
   getEventDataParticularHostpopup(host, date_hour, date_mday, date_month,
     date_wday, date_year, alert_type, topevent, pageNumber,
@@ -1260,9 +1368,9 @@ loadServiceManagementData() {
       this.loading = false;
     });
   }
-  get_nearby_service_request(){
-    this.eventsService.get_nearby_service_request("startDate","endDate","incident").subscribe((res)=>{
-      
+  get_nearby_service_request() {
+    this.eventsService.get_nearby_service_request('startDate', 'endDate', 'incident').subscribe((res) => {
+
     })
   }
   onChange() {
@@ -1681,7 +1789,7 @@ loadServiceManagementData() {
 
       };
     } else {
-      hostList = this.jsonStr['znodes_list']; ;
+      hostList = this.jsonStr['znodes_list'];;
     }
     this.niaerror = false;
     this.jsonStr = null;

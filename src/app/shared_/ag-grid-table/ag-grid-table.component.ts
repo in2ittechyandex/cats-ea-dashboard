@@ -13,6 +13,9 @@ import { ButtonRendererComponent } from 'src/app/modules_/aggridCommon/button-re
 export class AgGridTableComponent implements OnInit, OnChanges ,OnDestroy ,AfterViewInit{
   
   @Input() myGridId="myGrid"
+  @Input() allowExports = true;
+  @Input() allowCogs = true;
+
   @Input() dbAllcolumns = [
     // {
     //   headerName: 'Action',

@@ -73,6 +73,9 @@ export class GridSmartTableComponent implements OnInit, OnChanges, AfterViewInit
   // @Input() dbAllcolumns: any[] = [];
   @Input() heightPx = 400;
   @Input() widthPer = 100;
+  @Input() allowExports = true;
+  @Input() allowCogs = true;
+  @Input() allowPanel = true;
   // ag-grid specific
   public gridApi;
   public gridParams;

@@ -3,7 +3,9 @@
 <ng-container>
   <div class="row mb-2" style="margin-bottom:5px">
     <div class="col-lg-2 filterbar">
-      <app-time-filter [configStyle]="{'width':'175','bgColor':'#ffffff','border':'0px','font-size':'11px','padding':'4px'}"></app-time-filter>
+      <app-time-filter
+        [configStyle]="{'width':'175','bgColor':'#ffffff','border':'0px','font-size':'11px','padding':'4px'}">
+      </app-time-filter>
     </div>
     <div class="col-lg-2">
       <ng-multiselect-dropdown name="user" [placeholder]="'Select Severity'" [data]="dropdownListEventStatus"
@@ -116,15 +118,15 @@
                 </fusioncharts> -->
         <cats-am4-column-chart [titleChart]="titleChart" [chartUniqueId]="chartId" [heightPixel]="height"
           [widthPer]="width" [dataProvider]="dataSource.data" *ngIf="dataSource.data?.length>0"></cats-am4-column-chart>
-          <div class="mb-4"> 
-            <img src="../../../assets/images/chart.jpg" class="img-responsive">
-          </div>
+        <div class="mb-4">
+          <img src="../../../assets/images/chart.jpg" class="img-responsive">
+        </div>
       </div>
     </div>
 
     <form class="form-bordered">
-      <ngb-tabset (tabChange)="onTabChange($event)">
-        <ngb-tab [id]="'event'"> 
+      <ngb-tabset (tabChange)="onTabChange($event)" #ngbtabs>
+        <ngb-tab [id]="'event'">
           <ng-template ngbTabTitle>
             <span class="d-sm-none">Event Management</span>
             <span class="d-sm-block d-none">Event Management</span>
@@ -144,7 +146,7 @@
                     <select class="form-control" name='type' [(ngModel)]="modelTimeRange.type">
                       <option value="min">Minutes</option>
                       <option value="sec">Seconds</option>
-                      <option value="hour">Hour</option>      
+                      <option value="hour">Hour</option>
                     </select>
                   </div>
                   <div class="col-md-3">
@@ -157,142 +159,32 @@
               </div>
 
               <div class="col-md-3">
-                  <select class="form-control m-b-10" id="filterTagsearch" name="event_status">
-                    <option>Select Severity</option>
-                    <option value="CRITICAL" >CRITICAL</option>
-                    <option value="INDETERMINATE" >INDETERMINATE</option>
-                    <option value="MAJOR" >MAJOR</option>
-                    <option value="MINOR" >MINOR</option>
-                    <option value="WARNING" >WARNING</option>
-                  </select>      
+                <select class="form-control m-b-10" id="filterTagsearch" name="event_status" [(ngModel)]="eViewModal.filter.severity">
+                  <option value="">Select Severity</option>
+                  <option value="CRITICAL">CRITICAL</option>
+                  <option value="INDETERMINATE">INDETERMINATE</option>
+                  <option value="MAJOR">MAJOR</option>
+                  <option value="MINOR">MINOR</option>
+                  <option value="WARNING">WARNING</option>
+                </select>
               </div>
               <div class="col-md-5">
-                  <select class="form-control m-b-10" id="filterTagsearch" name="event_status">
-                    <option value="">Select Input Source</option>
-                    <option value="CRITICAL" >ADVA NMS</option>
-                    <option value="INDETERMINATE" >INALA</option>
-                    <option value="MAJOR" >ECI NMS</option>
-                    <option value="MINOR" >EMC NMS</option>
-                    <option value="WARNING" >MERAKI</option>
-                  </select>      
+                <select class="form-control m-b-10" id="filterTagsearch" name="event_status" [(ngModel)]="eViewModal.filter.inputSource">
+                  <option value="">Select Input Source</option>
+                  <option value="CRITICAL">ADVA NMS</option>
+                  <option value="INDETERMINATE">INALA</option>
+                  <option value="MAJOR">ECI NMS</option>
+                  <option value="MINOR">EMC NMS</option>
+                  <option value="WARNING">MERAKI</option>
+                </select>
               </div>
-              <!-- <div class="col-md-8">
-                <div class="row" *ngIf="allTags">
-                  <div class="col-md-2">
-                    <div class="input-group row" style="margin-top:15px;margin-bottom:10px;">
-                      <select class="form-control m-b-10" name="event_status" id="event_status" [(ngModel)]="model.date_mday"
-                        (change)="onChange();">
-                        <option value="">#Days</option>
-                        <option value="{{item}}" *ngFor="let item of allTags.date_mday">{{item}}</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div class="col-md-2">
-                    <div class="input-group row" style="margin-top:15px;margin-bottom:10px;">
-                      <select class="form-control m-b-10" name="event_status" id="event_status" [(ngModel)]="model.date_wday"
-                        (change)="onChange();">
-                        <option value="">#WeekDay</option>
-                        <option value="{{item}}" *ngFor="let item of allTags.date_wday">{{item}}</option>
-      
-                      </select>
-                    </div>
-                  </div>
-                  <div class="col-md-2">
-                    <div class="input-group row" style="margin-top:15px;margin-bottom:10px;">
-                      <select class="form-control m-b-10" name="event_status" id="event_status" [(ngModel)]="model.date_hour"
-                        (change)="onChange();">
-                        <option value="">#Hour</option>
-                        <option value="{{item}}" *ngFor="let item of allTags.date_hour">{{item}}</option>
-      
-                      </select>
-                    </div>
-                  </div>
-                  <div class="col-md-2">
-                    <div class="input-group row" style="margin-top:15px;margin-bottom:10px;">
-                      <select class="form-control m-b-10" name="event_status" id="event_status" [(ngModel)]="model.date_year"
-                        (change)="onChange();">
-                        <option value="">#Year</option>
-                        <option value="{{item}}" *ngFor="let item of allTags.date_year">{{item}}</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div class="col-md-2">
-                    <div class="input-group row" style="margin-top:15px;margin-bottom:10px;">
-                      <select class="form-control m-b-10" name="event_status" id="event_status" [(ngModel)]="model.date_month"
-                        (change)="onChange();">
-                        <option value="">#Month</option>
-                        <option value="{{item}}" *ngFor="let item of allTags.date_month">{{item}}</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div class="col-md-2">
-                    <div class="input-group row" style="margin-top:12%">
-                      <select class="form-control m-b-10" name="event_status" id="filterTagsearch"
-                        [(ngModel)]="filterTagsearch" (change)="onChange()">
-                        <option value="">Select Severity</option>
-                        <option value="{{status.name}}" *ngFor="let status of eventStatusList">{{status.name}}</option>
-                      </select>        
-                    </div>        
-                  </div>
-                </div>        
-              </div> -->
             </div>
 
             <div class="row">
-              <!-- <div class="col-sm-2">
-                <div class="sidenav" *ngIf="res">
-                  <div *ngFor="let item of res.sidenav">
-                    <a style="display: -webkit-inline-box;">
-                      <i class="fa fa-chevron-circle-down" (click)="expandMenu($event);" id="{{item.name}}"
-                        style="font-size:12px;"></i>
-                      <button (click)="clickOnFilterMenu(item);" id="{{item.name}}" class="dropdown-btn"
-                        style="font-size: 12px;font-weight:bold;margin-top:-6px;margin-left:-10px;">{{item.name}}
-                        ({{item.count}})
-                      </button>
-                    </a>
-                    <div class="dropdown-container" style="display: none;" id="{{item.name}}-content">
-                      <a (click)="clickOnFilter(item,subitem);" style="font-size: 10px;"
-                        *ngFor="let subitem of item.data">{{subitem.name}} ({{subitem.count}})</a>
-                    </div>
-                  </div>
-        
-                </div>
-              </div> -->
               <div class="col-sm-12">
-
-
-                <!-- <div class="table-responsive table-striped">
-                  <table class="table table-bordered">
-                    <thead>
-                      <tr>
-                        <th style="width: 100px">Time</th>
-                        <th style="width: 90%;">Event</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr><td  style="color: blue;width: 100px;" class="leftborder-ACTIVE">2020-11-18 06:59:56</td><td  style="width: 90%;"><ul ><li  class="line"><span  style="font-size:12px; font-weight: 600;" > Ethernet performance deterioration, too many damaged packets. <br ></span></li><li  class="line"><span><span  style="color: cadetblue">host_name </span>=ECONET HOUSE (U32) | </span></li><li  class="line"><span><span  style="color: cadetblue">Input Source </span>=U2000TX | </span></li><li  class="line"><span><span  style="color: cadetblue">ip_address </span>=0.0.0.0 | </span></li><li  class="line"><span><span  style="color: cadetblue">alias_name </span>= | </span></li><li  class="line"><span><span  style="color: cadetblue">state </span>=ACTIVE | </span></li><li  class="line"><span><span  style="color: cadetblue">severity </span>=MINOR | </span></li><li  class="line"><span><span  style="color: cadetblue">interface </span>=0-Master Shelf-5-V3T220-6(P2-BYO G4/0/1)-CLIENT:1 | </span></li><li  class="line"><span><span  style="color: cadetblue">alarm_name </span>=RMON_ALM_INBADOCTS_OVER | </span></li><li  class="line"><span><span  style="color: cadetblue">alarm_type </span>=Service | </span></li></ul></td></tr>
-                      <tr><td  style="color: blue;width: 100px;" class="leftborder-ACTIVE">2020-11-18 06:59:56</td><td  style="width: 90%;"><ul ><li  class="line"><span  style="font-size:12px; font-weight: 600;" > Ethernet performance deterioration, too many damaged packets. <br ></span></li><li  class="line"><span><span  style="color: cadetblue">host_name </span>=ECONET HOUSE (U32) | </span></li><li  class="line"><span><span  style="color: cadetblue">Input Source </span>=U2000TX | </span></li><li  class="line"><span><span  style="color: cadetblue">ip_address </span>=0.0.0.0 | </span></li><li  class="line"><span><span  style="color: cadetblue">alias_name </span>= | </span></li><li  class="line"><span><span  style="color: cadetblue">state </span>=ACTIVE | </span></li><li  class="line"><span><span  style="color: cadetblue">severity </span>=MINOR | </span></li><li  class="line"><span><span  style="color: cadetblue">interface </span>=0-Master Shelf-5-V3T220-6(P2-BYO G4/0/1)-CLIENT:1 | </span></li><li  class="line"><span><span  style="color: cadetblue">alarm_name </span>=RMON_ALM_INBADOCTS_OVER | </span></li><li  class="line"><span><span  style="color: cadetblue">alarm_type </span>=Service | </span></li></ul></td></tr>
-                      <tr><td  style="color: blue;width: 100px;" class="leftborder-ACTIVE">2020-11-18 06:59:56</td><td  style="width: 90%;"><ul ><li  class="line"><span  style="font-size:12px; font-weight: 600;" > Ethernet performance deterioration, too many damaged packets. <br ></span></li><li  class="line"><span><span  style="color: cadetblue">host_name </span>=ECONET HOUSE (U32) | </span></li><li  class="line"><span><span  style="color: cadetblue">Input Source </span>=U2000TX | </span></li><li  class="line"><span><span  style="color: cadetblue">ip_address </span>=0.0.0.0 | </span></li><li  class="line"><span><span  style="color: cadetblue">alias_name </span>= | </span></li><li  class="line"><span><span  style="color: cadetblue">state </span>=ACTIVE | </span></li><li  class="line"><span><span  style="color: cadetblue">severity </span>=MINOR | </span></li><li  class="line"><span><span  style="color: cadetblue">interface </span>=0-Master Shelf-5-V3T220-6(P2-BYO G4/0/1)-CLIENT:1 | </span></li><li  class="line"><span><span  style="color: cadetblue">alarm_name </span>=RMON_ALM_INBADOCTS_OVER | </span></li><li  class="line"><span><span  style="color: cadetblue">alarm_type </span>=Service | </span></li></ul></td></tr>
-        
-                    </tbody>
-                  </table>
-                </div> -->
-                <!-- <ul *ngIf="pagerPopUp.pages && pagerPopUp.pages.length"
-                  class="pagination pagination-sm m-t-10 m-b-5 float-right" style="float:right; margin:0px;">
-                  <li style="margin-top: 2%;">Showing page : {{pagerPopUp.currentPage}}</li>
-                  <li [ngClass]="{disabled:pagerPopUp.currentPage === 1}">
-                    <a (click)="setPagePopUp(1)" class="cursor">First</a>
-                  </li>
-                  <li [ngClass]="{disabled:pagerPopUp.currentPage === 1}">
-                    <a (click)="setPagePopUp(pagerPopUp.currentPage - 1)" class="cursor">Previous</a>
-                  </li>
-                  <li [ngClass]="{disabled:pagerPopUp.currentPage === pagerPopUp.totalPages}">
-                    <a (click)="setPagePopUp(pagerPopUp.currentPage + 1)" class="cursor">Next</a>
-                  </li>
-                  <li [ngClass]="{disabled:pagerPopUp.currentPage === pagerPopUp.totalPages}">
-                    <a (click)="setPagePopUp(pagerPopUp.totalPages)" class="cursor">Last ( {{totalPagesPopUp}} )</a>
-                  </li>
-                </ul> -->
+                  <cats-grid-smart-table [chartTitle]="'Events Data'"  [incidentList]="eViewModal.rowData" 
+                   [heightPx]="'200'" [dbAllcolumns]="eViewModal.dbAllColumns" [allowCogs]="false">
+                 </cats-grid-smart-table>
               </div>
             </div>
 
@@ -319,7 +211,7 @@
                     <select class="form-control" name='type' [(ngModel)]="modelTimeRange.type">
                       <option value="min">Minutes</option>
                       <option value="sec">Seconds</option>
-                      <option value="hour">Hour</option>      
+                      <option value="hour">Hour</option>
                     </select>
                   </div>
                   <div class="col-md-3">
@@ -332,32 +224,41 @@
               </div>
 
               <div class="col-md-3">
-                  <select class="form-control m-b-10" id="filterTagsearch" name="event_status">
-                    <option>Select Severity</option>
-                    <option value="CRITICAL" >CRITICAL</option>
-                    <option value="INDETERMINATE" >INDETERMINATE</option>
-                    <option value="MAJOR" >MAJOR</option>
-                    <option value="MINOR" >MINOR</option>
-                    <option value="WARNING" >WARNING</option>
-                  </select>      
+                <select class="form-control m-b-10" id="filterTagsearch" name="event_status">
+                  <option>Select Severity</option>
+                  <option value="CRITICAL">CRITICAL</option>
+                  <option value="INDETERMINATE">INDETERMINATE</option>
+                  <option value="MAJOR">MAJOR</option>
+                  <option value="MINOR">MINOR</option>
+                  <option value="WARNING">WARNING</option>
+                </select>
               </div>
               <div class="col-md-5">
-                  <select class="form-control m-b-10" id="filterTagsearch" name="event_status">
-                    <option value="">Select Input Source</option>
-                    <option value="CRITICAL" >ADVA NMS</option>
-                    <option value="INDETERMINATE" >INALA</option>
-                    <option value="MAJOR" >ECI NMS</option>
-                    <option value="MINOR" >EMC NMS</option>
-                    <option value="WARNING" >MERAKI</option>
-                  </select>      
+                <select class="form-control m-b-10" id="filterTagsearch" name="event_status">
+                  <option value="">Select Input Source</option>
+                  <option value="CRITICAL">ADVA NMS</option>
+                  <option value="INDETERMINATE">INALA</option>
+                  <option value="MAJOR">ECI NMS</option>
+                  <option value="MINOR">EMC NMS</option>
+                  <option value="WARNING">MERAKI</option>
+                </select>
               </div>
             </div>
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <cats-grid-smart-table [chartTitle]="'Service Data'"  [incidentList]="sViewModal.rowData" 
+                     [heightPx]="'200'" [allowCogs]="false">
+                   </cats-grid-smart-table>
+                </div>
+              </div>
+
           </ng-template>
         </ngb-tab>
-      </ngb-tabset>     
+      </ngb-tabset>
     </form>
 
-    
+
   </div>
 </ng-template>
 
