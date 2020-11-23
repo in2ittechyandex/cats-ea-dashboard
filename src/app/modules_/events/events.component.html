@@ -118,26 +118,6 @@
                 </fusioncharts> -->
         <cats-am4-column-chart [titleChart]="titleChart" [chartUniqueId]="chartId" [heightPixel]="height"
           [widthPer]="width" [dataProvider]="dataSource.data" *ngIf="dataSource.data?.length>0"></cats-am4-column-chart>
-<<<<<<< HEAD
-        <!-- <div class="mb-4">
-          <img src="../../../assets/images/chart.jpg" class="img-responsive">
-        </div> -->
-      </div>
-      <div class="col-lg-4">
-          <div class="row">
-              <label class="col-md-2 col-form-label">Nearby</label>
-              
-              
-             
-            </div>
-        <div class="row">
-            <div class="col-md-3">
-                <div class="date">
-                  <input type="number" name="count" class="form-control" placeholder="5" min="1"
-                    [(ngModel)]="modelTimeRange.count">
-                </div>
-              </div>
-=======
        
           <div class="mb-2">
           <img src="../../../assets/images/chart.jpg" style="width:100%;">
@@ -165,7 +145,6 @@
               <button (click)="clickOnApplyTimeRange()"
                 class="btn btn-block btn-dark bg-{{themeConf_.selectedColor}}">Apply</button>
           </div>
->>>>>>> 316749226a3ef88177aa4036802300968f1babdf
         </div>
         <div class="row">
             <div class="col-md-4">
@@ -209,14 +188,8 @@
                   <option value="WARNING">WARNING</option>
                 </select>
               </div>
-<<<<<<< HEAD
-              <div class="col-md-5">
-                <select class="form-control m-b-10" id="filterTagsearch" name="event_status"
-                  [(ngModel)]="eViewModal.filter.inputSource">
-=======
               <div class="col-md-4">
                 <select class="form-control m-b-10" id="filterTagsearch" name="event_status" [(ngModel)]="eViewModal.filter.inputSource">
->>>>>>> 316749226a3ef88177aa4036802300968f1babdf
                   <option value="">Select Input Source</option>
                   <option value="CRITICAL">ADVA NMS</option>
                   <option value="INDETERMINATE">INALA</option>
@@ -228,18 +201,11 @@
             </div>
 
             <div class="row">
-<<<<<<< HEAD
-              <div class="col-sm-12">
-                <cats-grid-smart-table [chartTitle]="'Events Data'" [incidentList]="eViewModal.rowData"
-                  [heightPx]="'200'" [dbAllcolumns]="eViewModal.dbAllColumns" [allowCogs]="false">
-                </cats-grid-smart-table>
-=======
               <div class="col-sm-2">Left Section</div>
               <div class="col-sm-10">
                   <cats-grid-smart-table [chartTitle]="'Events Data'"  [incidentList]="eViewModal.rowData" 
                    [heightPx]="'200'" [dbAllcolumns]="eViewModal.dbAllColumns" [allowCogs]="false">
                  </cats-grid-smart-table>
->>>>>>> 316749226a3ef88177aa4036802300968f1babdf
               </div>
             </div>
           </ng-template>
@@ -300,19 +266,12 @@
             </div>
 
             <div class="row">
-<<<<<<< HEAD
-              <div class="col-sm-12">
-                <cats-grid-smart-table [chartTitle]="'Service Data'" [incidentList]="sViewModal.rowData"
-                  [heightPx]="'200'" [allowCogs]="false">
-                </cats-grid-smart-table>
-=======
               <div class="col-sm-2">Left Section</div>
                 <div class="col-sm-10">
                     <cats-grid-smart-table [chartTitle]="'Service Data'"  [incidentList]="sViewModal.rowData" 
                      [heightPx]="'200'" [allowCogs]="false">
                    </cats-grid-smart-table>
                 </div>
->>>>>>> 316749226a3ef88177aa4036802300968f1babdf
               </div>
             </div>
 
