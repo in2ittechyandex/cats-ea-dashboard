@@ -1133,20 +1133,20 @@ export class EventsComponent implements OnInit, OnDestroy {
   }
   getAllEventsChartMainPage() {
 
-    this.startLoading();
-    this.eventsService.getAllEventsChart(this.eventsService.eventtypeId, this.inputSource, this.filter).subscribe((res) => {
-      if (res.Status) {
-        this.eventPageChartData.data = res.data;
-        this.eventPageDataSource = this.eventPageChartData;
-        this.completeLoading();
+    // this.startLoading();
+    // this.eventsService.getAllEventsChart(this.eventsService.eventtypeId, this.inputSource, this.filter).subscribe((res) => {
+    //   if (res.Status) {
+    //     this.eventPageChartData.data = res.data;
+    //     this.eventPageDataSource = this.eventPageChartData;
+    //     this.completeLoading();
 
-      } else {
-        this.eventPageChartData.data = [];
-        this.eventPageDataSource = this.eventPageChartData;
-      }
-    }, (err) => {
-      this.completeLoading();
-    });
+    //   } else {
+    //     this.eventPageChartData.data = [];
+    //     this.eventPageDataSource = this.eventPageChartData;
+    //   }
+    // }, (err) => {
+    //   this.completeLoading();
+    // });
   }
   searchCiFilter() {
     this.currentPage = 1;
