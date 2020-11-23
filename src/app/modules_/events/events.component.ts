@@ -1119,7 +1119,7 @@ export class EventsComponent implements OnInit, OnDestroy {
 
     this.startLoading();
     this.eventsService.getAllEventsChart(this.modelTimeRange.host, '', '').subscribe((res) => {
-      if (res.Status) {
+      if (res.status == true) {
         this.data.data = res.data;
         this.dataSource = this.data;
         this.completeLoading();

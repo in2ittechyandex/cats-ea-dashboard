@@ -161,8 +161,11 @@ export class EventsService {
     *
     */
   getAllEventsChart(host, nms, statustype) {
-    const URL = environment._EventURL
-      + 'eventengine/events/chart?host=' + host + '&severity=' + statustype + '&input_source=' + nms;
+    // const URL = environment._EventURL
+    //   + 'eventengine/events/chart?host=' + host + '&severity=' + statustype + '&input_source=' + nms;
+    // return this.http.get(URL).map(res => <any>res);
+
+    const URL = 'https://run.mocky.io/v3/23166414-bc4b-40f1-870a-7ab6ccff8c54';
     return this.http.get(URL).map(res => <any>res);
   }
 

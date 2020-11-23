@@ -112,16 +112,51 @@
   </div>
   <div class="modal-body" id="tab_w_50">
     <div class="row">
-      <div class="col-lg-12">
+      <div class="col-lg-8">
         <!-- <fusioncharts [width]="width" [height]="height" [type]="type" [dataFormat]="dataFormat"
                   [dataSource]="dataSource">
                 </fusioncharts> -->
         <cats-am4-column-chart [titleChart]="titleChart" [chartUniqueId]="chartId" [heightPixel]="height"
           [widthPer]="width" [dataProvider]="dataSource.data" *ngIf="dataSource.data?.length>0"></cats-am4-column-chart>
-        <div class="mb-4">
+        <!-- <div class="mb-4">
           <img src="../../../assets/images/chart.jpg" class="img-responsive">
-        </div>
+        </div> -->
       </div>
+      <div class="col-lg-4">
+          <div class="row">
+              <label class="col-md-2 col-form-label">Nearby</label>
+              
+              
+             
+            </div>
+        <div class="row">
+            <div class="col-md-3">
+                <div class="date">
+                  <input type="number" name="count" class="form-control" placeholder="5" min="1"
+                    [(ngModel)]="modelTimeRange.count">
+                </div>
+              </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <select class="form-control" name='type' [(ngModel)]="modelTimeRange.type">
+                  <option value="min">Minutes</option>
+                  <option value="sec">Seconds</option>
+                  <option value="hour">Hour</option>
+                </select>
+              </div>
+          </div>
+          <div class="row">
+              <div class="col-md-3">
+                  <div class="row">
+                    <button (click)="clickOnApplyTimeRange()"
+                      class="btn btn-block btn-dark bg-{{themeConf_.selectedColor}}">Apply</button>
+                  </div>
+                </div>
+            </div>
+        
+      </div>
+
     </div>
 
     <form class="form-bordered">
@@ -159,7 +194,8 @@
               </div>
 
               <div class="col-md-3">
-                <select class="form-control m-b-10" id="filterTagsearch" name="event_status" [(ngModel)]="eViewModal.filter.severity">
+                <select class="form-control m-b-10" id="filterTagsearch" name="event_status"
+                  [(ngModel)]="eViewModal.filter.severity">
                   <option value="">Select Severity</option>
                   <option value="CRITICAL">CRITICAL</option>
                   <option value="INDETERMINATE">INDETERMINATE</option>
@@ -169,7 +205,8 @@
                 </select>
               </div>
               <div class="col-md-5">
-                <select class="form-control m-b-10" id="filterTagsearch" name="event_status" [(ngModel)]="eViewModal.filter.inputSource">
+                <select class="form-control m-b-10" id="filterTagsearch" name="event_status"
+                  [(ngModel)]="eViewModal.filter.inputSource">
                   <option value="">Select Input Source</option>
                   <option value="CRITICAL">ADVA NMS</option>
                   <option value="INDETERMINATE">INALA</option>
@@ -182,9 +219,9 @@
 
             <div class="row">
               <div class="col-sm-12">
-                  <cats-grid-smart-table [chartTitle]="'Events Data'"  [incidentList]="eViewModal.rowData" 
-                   [heightPx]="'200'" [dbAllcolumns]="eViewModal.dbAllColumns" [allowCogs]="false">
-                 </cats-grid-smart-table>
+                <cats-grid-smart-table [chartTitle]="'Events Data'" [incidentList]="eViewModal.rowData"
+                  [heightPx]="'200'" [dbAllcolumns]="eViewModal.dbAllColumns" [allowCogs]="false">
+                </cats-grid-smart-table>
               </div>
             </div>
 
@@ -246,12 +283,12 @@
             </div>
 
             <div class="row">
-                <div class="col-sm-12">
-                    <cats-grid-smart-table [chartTitle]="'Service Data'"  [incidentList]="sViewModal.rowData" 
-                     [heightPx]="'200'" [allowCogs]="false">
-                   </cats-grid-smart-table>
-                </div>
+              <div class="col-sm-12">
+                <cats-grid-smart-table [chartTitle]="'Service Data'" [incidentList]="sViewModal.rowData"
+                  [heightPx]="'200'" [allowCogs]="false">
+                </cats-grid-smart-table>
               </div>
+            </div>
 
           </ng-template>
         </ngb-tab>
