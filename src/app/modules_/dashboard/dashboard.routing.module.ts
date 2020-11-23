@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { EngineerViewComponent } from '../engineer-view/engineer-view.component';
+import { EpisodeComponent } from '../episode/episode.component';
 
 
 const routes: Routes = [
@@ -18,10 +19,10 @@ const routes: Routes = [
                 path: 'home', loadChildren: '../user-home/user-home.module#UserHomeModule',
                 data: { preload: true, delay: false }
             },
-            // {
-            //     path: 'engineer-view', component: EngineerViewComponent,
-            //     data: { preload: true, delay: false }
-            // },
+            {
+                path: 'episode', component: EpisodeComponent,
+                data: { preload: true, delay: false }
+            },
             {
                 path: 'engineer-view', loadChildren: '../engineer-view/engineer-view.module#EngineerViewModule',
                 data: { preload: true, delay: false }

@@ -154,13 +154,13 @@ const pageMenusUser = [
       }
     ]
   },
-  // {
-  //   'icon': 'fa fa-cog',
-  //   'title': 'Patterns',
-  //   'label': '',
-  //   'hide':false,
-  //   'url': '/dashboard/pattern'
-  // }
+  {
+    'icon': 'fa fa-cog',
+    'title': 'Episode Configuration',
+    'label': '',
+    'hide':false,
+    'url': '/dashboard/episode'
+  }
 ];
 const pageMenusAdmin = [
   //   {

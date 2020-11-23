@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { DashboardComponent } from './dashboard.component';
 import { LayoutsModule } from '../layouts/layouts.module'; 
 import { SharedModule } from 'src/app/shared_/shared.module';
+import { EpisodeComponent } from '../episode/episode.component';
 // import { MapulaModule } from '../mapula/mapula.module';
 
 // import {DragDropModule} from '@angular/cdk/drag-drop';
@@ -17,6 +18,6 @@ import { SharedModule } from 'src/app/shared_/shared.module';
     // MapulaModule,
     // DragDropModule
   ],
-  declarations: [DashboardComponent]
+  declarations: [DashboardComponent,EpisodeComponent]
 })
 export class DashboardModule { }
