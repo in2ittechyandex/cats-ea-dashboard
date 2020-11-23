@@ -165,8 +165,14 @@ export class EventsService {
     //   + 'eventengine/events/chart?host=' + host + '&severity=' + statustype + '&input_source=' + nms;
     // return this.http.get(URL).map(res => <any>res);
 
-    const URL = 'https://run.mocky.io/v3/23166414-bc4b-40f1-870a-7ab6ccff8c54';
-    return this.http.get(URL).map(res => <any>res);
+   const URL = environment._WEBGATEWAY_BASIC_URL_ + 'menu/kpi/get_event_trend_chart';
+   const formData: FormData = new FormData();
+   formData.append('startDate', '1605921479000');
+   formData.append('endDate', '1606094279000');
+   formData.append('hostname', host);
+    // const URL = 'https://run.mocky.io/v3/23166414-bc4b-40f1-870a-7ab6ccff8c54';
+    // return this.http.get(URL).map(res => <any>res);
+    return this.http.post(URL, formData).map(res => <any>res);
   }
 
   /**
