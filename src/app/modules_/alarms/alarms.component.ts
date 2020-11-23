@@ -630,9 +630,9 @@ export class AlarmsComponent implements OnInit, OnDestroy {
       this.hostName = result;
       this.eventsService.search_host(result).subscribe((res) => {
 
-        if (res.Status) {
-          if (res.msg.length > 0)
-            this.results = res.msg;
+        if (res.status == true) {
+          if (res.data.length > 0)
+            this.results = res.data;
         }
       }, (err) => {
       });
