@@ -112,7 +112,7 @@
   </div>
   <div class="modal-body" id="tab_w_50">
     <div class="row">
-      <div class="col-lg-8">
+      <div class="col-lg-10">
         <!-- <fusioncharts [width]="width" [height]="height" [type]="type" [dataFormat]="dataFormat"
                   [dataSource]="dataSource">
                 </fusioncharts> -->
@@ -123,25 +123,27 @@
           <img src="../../../assets/images/chart.jpg" style="width:100%;">
         </div> -->
       </div>
-      <div class="col-lg-4">
+      <div class="col-lg-2">
         <div class="row">
           <label class="col-md-5 col-form-label">Nearby</label>         
         </div>
         <div class="row">
-          <div class="col-md-3">
+          <div class="col-md-5">
             <div class="date">
               <input type="number" name="count" class="form-control" placeholder="5" min="1"
                 [(ngModel)]="modelTimeRange.count">
             </div>
           </div>
-          <div class="col-md-5">
+          <div class="col-md-7">
             <select class="form-control" name='type' [(ngModel)]="modelTimeRange.type">
               <option value="min">Minutes</option>
               <option value="sec">Seconds</option>
               <option value="hour">Hour</option>
             </select>
           </div>
-          <div class="col-md-4">
+        </div>
+        <div class="row my-2">
+          <div class="col-md-12">
               <button (click)="clickOnApplyTimeRange()"
                 class="btn btn-block btn-dark bg-{{themeConf_.selectedColor}}">Apply</button>
           </div>
