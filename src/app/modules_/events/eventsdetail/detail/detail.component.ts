@@ -216,24 +216,24 @@ export class DetailComponent implements OnInit {
     });
   }
   getSideNav(){
-      this.eventsService.getSideNav(this.currentHost,this.model.date_hour,this.model.date_mday,
-        this.model.date_month,this.model.date_wday,this.model.date_year,this.model.timeObj, this.model.type, this.model.countTime).subscribe((res) => {
-      if (res.Status) {
-       this.res = res;
+  //     this.eventsService.getSideNav(this.currentHost,this.model.date_hour,this.model.date_mday,
+  //       this.model.date_month,this.model.date_wday,this.model.date_year,this.model.timeObj, this.model.type, this.model.countTime).subscribe((res) => {
+  //     if (res.Status) {
+  //      this.res = res;
        
-      //  this.count_critical = this.mData["count_critical"];
-      //  this.count_major = this.mData["count_major"];
-      //  this.count_minor = this.mData["count_minor"];
-      //  this.count_warning = this.mData["count_warning"];
-      // this.totalPages=res.totalpage;
-      //  this.initPage(pageNumber);
-       this.completeLoading();
-       this.allEventService = null;
-     }
-   }, (err) => {
-     this.completeLoading();
-     this.allEventService = null;
-    });
+  //     //  this.count_critical = this.mData["count_critical"];
+  //     //  this.count_major = this.mData["count_major"];
+  //     //  this.count_minor = this.mData["count_minor"];
+  //     //  this.count_warning = this.mData["count_warning"];
+  //     // this.totalPages=res.totalpage;
+  //     //  this.initPage(pageNumber);
+  //      this.completeLoading();
+  //      this.allEventService = null;
+  //    }
+  //  }, (err) => {
+  //    this.completeLoading();
+  //    this.allEventService = null;
+  //   });
   }
   model={
     'host':'',

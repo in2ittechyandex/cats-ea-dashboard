@@ -1262,7 +1262,7 @@ export class EventsComponent implements OnInit, OnDestroy {
     const filter_ = {
       'startDate': t_.start,
       'endDate': t_.end,
-      'host': this.modelTimeRange.host,
+      'host': '',
       'severity': this.eViewModal.filter.severity,
       'input_source': this.eViewModal.filter.inputSource
     };
@@ -1301,7 +1301,7 @@ export class EventsComponent implements OnInit, OnDestroy {
       'startDate': t_.start,
       'endDate': t_.end,
       'type': this.sViewModal.tickettype,
-      'host': this.modelTimeRange.host
+      'host': ''
     };
     this.eventsService.getNearByServiceRequestData(filter_).subscribe(res => {
       if(res.status == true){
