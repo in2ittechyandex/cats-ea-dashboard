@@ -100,7 +100,7 @@ export class SummaryComponent implements OnInit, OnDestroy, AfterViewInit {
   };
 
   themeName: 'default';
-  public urlHome = '/dashboard/home'; 
+  public urlHome = '/dashboard/home';
   public selectedTabId: number;
   public selectedTabName: String = '';
   // public userTab_: UserTab;
@@ -153,7 +153,7 @@ export class SummaryComponent implements OnInit, OnDestroy, AfterViewInit {
       str += this.getDatePart(myDateStart)['d_'] + '' + ' - ' + this.getDatePart(myDateEnd)['d_'] + '';
     }
     str += ')';
-    return str;
+    return {str: str, startDate: Date.parse(startTime), endDate: Date.parse(endTime)};
   }
 
   getDatePart(myDateStart: Date) {
@@ -177,6 +177,7 @@ export class SummaryComponent implements OnInit, OnDestroy, AfterViewInit {
     this.globalFilterModal.modifyNMS = this.detectChanges(this.globalFilterModal.editNMS, this.globalFilterModal.nms);
     this.updateUserTabFilters();
 
+    this.loadReportData(); // fetch reports data
   }
 
   detectChanges(actualFilters: Array<any>, editFilters: Array<any>) {
@@ -340,8 +341,15 @@ export class SummaryComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   public loadSummaryBlocksToday() {
-    this.summaryBlocksHeader = this.getTimeString('td');
-    this.summaryService.getSummaryBlocksData('td').subscribe(resp => {
+    const t_ = this.getTimeString('td');
+    this.summaryBlocksHeader = t_.str;
+    const filters = {
+      startDate: t_.startDate,
+      endDate: t_.endDate,
+      timeType: 'td'
+    };
+
+    this.summaryService.getSummaryBlocksData(filters).subscribe(resp => {
       if (resp.status) {
         this.summaryBlocks.push(resp.data);
       }
@@ -349,8 +357,15 @@ export class SummaryComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   public loadSummaryBlocks7Days() {
-    this.summaryBlocks7DaysHeader = this.getTimeString('7d');
-    this.summaryService.getSummaryBlocksData('7d').subscribe(resp => {
+    const t_ = this.getTimeString('7d');
+    this.summaryBlocks7DaysHeader = t_.str;
+    const filters = {
+      startDate: t_.startDate,
+      endDate: t_.endDate,
+      timeType: '7d'
+    };
+    // this.summaryBlocks7DaysHeader = this.getTimeString('7d');
+    this.summaryService.getSummaryBlocksData(filters).subscribe(resp => {
       if (resp.status) {
         this.summaryBlocks7Days.push(resp.data);
       }
@@ -552,7 +567,7 @@ export class SummaryComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
- 
+
   /**
    * This f/n will disallow right click default tooltip bar of browser.
    *
