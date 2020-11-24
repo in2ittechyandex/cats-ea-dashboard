@@ -130,6 +130,7 @@ export class EventsComponent implements OnInit, OnDestroy {
       'count': '5',
       'type': 'hour',
     },
+    tickettype:'Incident',
     'chartData': null
   };
 
@@ -1257,6 +1258,7 @@ export class EventsComponent implements OnInit, OnDestroy {
     // prepare filter paras
     const t_ = this.calculateNearAboutTime(Date.parse(this.modelTimeRange.time),
       this.eViewModal.filter.count, this.eViewModal.filter.type);
+      this.getSideNav(t_.start,t_.end);
     const filter_ = {
       'startDate': t_.start,
       'endDate': t_.end,
@@ -1271,6 +1273,7 @@ export class EventsComponent implements OnInit, OnDestroy {
     }, err => {
 
     });
+    this.loadServiceManagementData();
   }
 
   calculateNearAboutTime(timeInMs, count, type) {
@@ -1297,7 +1300,7 @@ export class EventsComponent implements OnInit, OnDestroy {
     const filter_ = {
       'startDate': t_.start,
       'endDate': t_.end,
-      'type': 'Incident',
+      'type': this.sViewModal.tickettype,
       'host': this.modelTimeRange.host
     };
     this.eventsService.getNearByServiceRequestData(filter_).subscribe(res => {
@@ -1336,7 +1339,7 @@ export class EventsComponent implements OnInit, OnDestroy {
   filterTagsearch = '';
   callKpis() {
     // this.getAllTags();
-    // this.getSideNav();
+    
     // this.getEventDataParticularHostpopup(this.currentHost, this.model.date_hour, this.model.date_mday,
     //   this.model.date_month, this.model.date_wday, this.model.date_year, this.model.alert_type, this.model.topevent, this.currentPagePopUp,
     //   this.modelTimeRange.time, this.modelTimeRange.type, this.modelTimeRange.count, this.filterTagsearch);
@@ -1390,18 +1393,27 @@ export class EventsComponent implements OnInit, OnDestroy {
       this.allEventService = null;
     });
   }
-  getSideNav() {
-    this.eventsService.getSideNav(this.currentHost, this.model.date_hour, this.model.date_mday,
-      this.model.date_month, this.model.date_wday, this.model.date_year, this.modelTimeRange.time, this.modelTimeRange.type, this.modelTimeRange.count).subscribe((res) => {
-        if (res.Status) {
-          this.res = undefined;
-          this.res = res;
-          this.completeLoading();
-          this.allEventService = null;
+  sideNav={
+    "event":[],
+    "service":[]
+  }
+  getSideNav(startDate,endDate) {
+
+ this.eventsService.getSideNavEvent(startDate,endDate).subscribe((res) => {
+        if (res.status) {
+           this.sideNav.event=res.data;
         }
       }, (err) => {
         this.completeLoading();
-        this.allEventService = null;
+         
+      });
+      this.eventsService.getSideNavService(startDate,endDate).subscribe((res) => {
+        if (res.status) {
+          this.sideNav.service=res.data;
+        }
+      }, (err) => {
+        this.completeLoading();
+         
       });
   }
   model = {
@@ -1416,10 +1428,12 @@ export class EventsComponent implements OnInit, OnDestroy {
   }
   res;
   clickOnFilter(filter, subfilter) {
-    this.model.alert_type = subfilter.name;
-    this.model.topevent = filter.name;
-    this.currentPagePopUp = 1;
-    this.loading = true;
+    if(filter=='event'){
+      this.eViewModal.filter.inputSource=subfilter;
+    }else{
+      this.sViewModal.tickettype=subfilter;
+    }
+    
     this.callKpis();
   }
 

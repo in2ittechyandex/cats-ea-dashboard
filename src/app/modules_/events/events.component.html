@@ -201,7 +201,19 @@
             </div>
 
             <div class="row">
-              <div class="col-sm-2">Left Section</div>
+              <div class="col-sm-2">
+                <div class="sidenav" *ngIf="sideNav.event">
+                  <div *ngFor="let item of sideNav.event">
+                    <a style="display: -webkit-inline-box;">
+                      <i class="fa fa-chevron-circle-down" id="{{item.name}}"
+                        style="font-size:12px;"></i>
+                      <span  id="{{item.name}}" (click)="clickOnFilter('event',item.name)"
+                        style="font-size: 12px;font-weight:bold;margin-top:-6px;margin-left:10px;">{{item.name}}
+                        ({{item.count}})</span>
+                    </a>
+                  </div>
+                </div>
+              </div>
               <div class="col-sm-10">
                   <cats-grid-smart-table [chartTitle]="'Events Data'"  [incidentList]="eViewModal.rowData" 
                    [heightPx]="'200'" [dbAllcolumns]="eViewModal.dbAllColumns" [allowCogs]="false">
@@ -266,7 +278,19 @@
             </div>
 
             <div class="row">
-              <div class="col-sm-2">Left Section</div>
+              <div class="col-sm-2">
+                <div class="sidenav" *ngIf="sideNav.service">
+                  <div *ngFor="let item of sideNav.service">
+                    <a style="display: -webkit-inline-box;">
+                      <i class="fa fa-chevron-circle-down" id="{{item.name}}"
+                        style="font-size:12px;"></i>
+                      <span  id="{{item.name}}"  (click)="clickOnFilter('service',item.name)"
+                        style="font-size: 12px;font-weight:bold;margin-top:-6px;margin-left:10px;">{{item.name}}
+                        ({{item.count}})</span>
+                    </a>
+                  </div>
+                </div>
+              </div>
                 <div class="col-sm-10">
                     <cats-grid-smart-table [chartTitle]="'Service Data'"  [incidentList]="sViewModal.rowData" 
                      [heightPx]="'200'" [allowCogs]="false">

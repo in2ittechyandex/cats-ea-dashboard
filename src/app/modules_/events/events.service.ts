@@ -120,13 +120,19 @@ export class EventsService {
 
     return this.http.get(URL).map(res => <any>res);
   }
-  getSideNav(host, date_hour, date_mday, date_month, date_wday, date_year, timeObj, type, countTime) {
-    const URL = environment._EventURL
-      + 'eventengine/alarmtype?host=' + host + '&date_hour=' + date_hour + '&date_mday='
-      + date_mday + '&date_month=' + date_month + '&date_wday=' + date_wday + '&date_year='
-      + date_year + '&timeobj=' + timeObj + '&type=' + type + '&counttime=' + countTime;
-
-    return this.http.get(URL).map(res => <any>res);
+  getSideNavEvent(startDate,endDate) {
+    const URL = environment._WEBGATEWAY_BASIC_URL_ + 'menu/kpi/get_event_manage_count';
+      var formData: FormData = new FormData();
+      formData.append('startDate', '1601304988000');
+      formData.append('endDate', '1601477788000');
+    return this.http.post(URL, formData).map(res => <any>res);
+  }
+  getSideNavService(startDate,endDate) {
+    const URL = environment._WEBGATEWAY_BASIC_URL_ + 'menu/kpi/get_service_manage_count';
+      var formData: FormData = new FormData();
+      formData.append('startDate', '1601304988000');
+      formData.append('endDate', '1601477788000');
+    return this.http.post(URL, formData).map(res => <any>res);
   }
   get_nearby_service_request(startDate, endDate, type){
     const URL = environment._WEBGATEWAY_BASIC_URL_ + 'menu/kpi/get_nearby_service_request';

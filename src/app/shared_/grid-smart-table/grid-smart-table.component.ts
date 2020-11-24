@@ -1169,7 +1169,7 @@ export class GridSmartTableComponent implements OnInit, OnChanges, AfterViewInit
     //  }
     // You can also use categoryId.previousValue and
     // categoryId.firstChange for comparing old and new values
-    if (this.incidentList.length > 0) {
+    if (this.incidentList.length > 0 && this.gridApi) {
       this.gridApi.setRowData(this.incidentList);
     }
   }
