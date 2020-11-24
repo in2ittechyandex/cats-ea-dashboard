@@ -112,58 +112,43 @@
   </div>
   <div class="modal-body" id="tab_w_50">
     <div class="row">
-      <div class="col-lg-8">
+      <div class="col-lg-10">
         <!-- <fusioncharts [width]="width" [height]="height" [type]="type" [dataFormat]="dataFormat"
                   [dataSource]="dataSource">
                 </fusioncharts> -->
         <cats-am4-column-chart [titleChart]="titleChart" [chartUniqueId]="chartId" [heightPixel]="height"
           [widthPer]="width" [dataProvider]="dataSource.data" *ngIf="dataSource.data?.length>0"></cats-am4-column-chart>
-       
-          <!-- <div class="mb-2">
+
+        <!-- <div class="mb-2">
           <img src="../../../assets/images/chart.jpg" style="width:100%;">
         </div> -->
       </div>
-      <div class="col-lg-4">
+      <div class="col-lg-2">
         <div class="row">
-          <label class="col-md-5 col-form-label">Nearby</label>         
+          <label class="col-md-5 col-form-label">Nearby</label>
         </div>
         <div class="row">
-          <div class="col-md-3">
+          <div class="col-md-5">
             <div class="date">
               <input type="number" name="count" class="form-control" placeholder="5" min="1"
                 [(ngModel)]="modelTimeRange.count">
             </div>
           </div>
-          <div class="col-md-5">
+          <div class="col-md-7">
             <select class="form-control" name='type' [(ngModel)]="modelTimeRange.type">
               <option value="min">Minutes</option>
               <option value="sec">Seconds</option>
               <option value="hour">Hour</option>
             </select>
           </div>
-          <div class="col-md-4">
-              <button (click)="clickOnApplyTimeRange()"
-                class="btn btn-block btn-dark bg-{{themeConf_.selectedColor}}">Apply</button>
+        </div>
+        <div class="row my-2">
+          <div class="col-md-12">
+            <button (click)="clickOnApplyTimeRange()"
+              class="btn btn-block btn-dark bg-{{themeConf_.selectedColor}}">Apply</button>
           </div>
         </div>
-        <!-- <div class="row">
-            <div class="col-md-4">
-                <select class="form-control" name='type' [(ngModel)]="modelTimeRange.type">
-                  <option value="min">Minutes</option>
-                  <option value="sec">Seconds</option>
-                  <option value="hour">Hour</option>
-                </select>
-              </div>
-          </div>
-          <div class="row">
-              <div class="col-md-3">
-                  <div class="row">
-                    <button (click)="clickOnApplyTimeRange()"
-                      class="btn btn-block btn-dark bg-{{themeConf_.selectedColor}}">Apply</button>
-                  </div>
-                </div>
-            </div> -->
-        
+
       </div>
 
     </div>
@@ -205,9 +190,8 @@
                 <div class="sidenav" *ngIf="sideNav.event">
                   <div *ngFor="let item of sideNav.event">
                     <a style="display: -webkit-inline-box;">
-                      <i class="fa fa-chevron-circle-down" id="{{item.name}}"
-                        style="font-size:12px;"></i>
-                      <span  id="{{item.name}}" (click)="clickOnFilter('event',item.name)"
+                      <i class="fa fa-chevron-circle-down" id="{{item.name}}" style="font-size:12px;"></i>
+                      <span id="{{item.name}}" (click)="clickOnFilter('event',item.name)"
                         style="font-size: 12px;font-weight:bold;margin-top:-6px;margin-left:10px;">{{item.name}}
                         ({{item.count}})</span>
                     </a>
@@ -215,9 +199,9 @@
                 </div>
               </div>
               <div class="col-sm-10">
-                  <cats-grid-smart-table [chartTitle]="'Events Data'"  [incidentList]="eViewModal.rowData" 
-                   [heightPx]="'200'" [dbAllcolumns]="eViewModal.dbAllColumns" [allowCogs]="false">
-                 </cats-grid-smart-table>
+                <cats-grid-smart-table [chartTitle]="'Events Data'" [incidentList]="eViewModal.rowData"
+                  [heightPx]="'200'" [dbAllcolumns]="eViewModal.dbAllColumns" [allowCogs]="false">
+                </cats-grid-smart-table>
               </div>
             </div>
           </ng-template>
@@ -282,21 +266,20 @@
                 <div class="sidenav" *ngIf="sideNav.service">
                   <div *ngFor="let item of sideNav.service">
                     <a style="display: -webkit-inline-box;">
-                      <i class="fa fa-chevron-circle-down" id="{{item.name}}"
-                        style="font-size:12px;"></i>
-                      <span  id="{{item.name}}"  (click)="clickOnFilter('service',item.name)"
+                      <i class="fa fa-chevron-circle-down" id="{{item.name}}" style="font-size:12px;"></i>
+                      <span id="{{item.name}}" (click)="clickOnFilter('service',item.name)"
                         style="font-size: 12px;font-weight:bold;margin-top:-6px;margin-left:10px;">{{item.name}}
                         ({{item.count}})</span>
                     </a>
                   </div>
                 </div>
               </div>
-                <div class="col-sm-10">
-                    <cats-grid-smart-table [chartTitle]="'Service Data'"  [incidentList]="sViewModal.rowData" 
-                     [heightPx]="'200'" [allowCogs]="false">
-                   </cats-grid-smart-table>
-                </div>
+              <div class="col-sm-10">
+                <cats-grid-smart-table [chartTitle]="'Service Data'" [incidentList]="sViewModal.rowData"
+                  [heightPx]="'200'" [allowCogs]="false">
+                </cats-grid-smart-table>
               </div>
+            </div>
             <!-- </div> -->
 
           </ng-template>
