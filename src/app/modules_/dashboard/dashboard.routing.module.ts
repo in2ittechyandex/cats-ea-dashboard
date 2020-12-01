@@ -4,6 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { EngineerViewComponent } from '../engineer-view/engineer-view.component';
 import { EpisodeComponent } from '../episode/episode.component';
+import { CaseComponent } from '../case/case.component';
 
 
 const routes: Routes = [
@@ -21,6 +22,10 @@ const routes: Routes = [
             },
             {
                 path: 'episode', component: EpisodeComponent,
+                data: { preload: true, delay: false }
+            },
+            {
+                path: 'case', component: CaseComponent,
                 data: { preload: true, delay: false }
             },
             {

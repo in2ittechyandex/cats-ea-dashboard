@@ -160,6 +160,13 @@ const pageMenusUser = [
     'label': '',
     'hide':false,
     'url': '/dashboard/episode'
+  },
+  {
+    'icon': 'fa fa-cog',
+    'title': 'Case Configuration',
+    'label': '',
+    'hide':false,
+    'url': '/dashboard/case'
   }
 ];
 const pageMenusAdmin = [
