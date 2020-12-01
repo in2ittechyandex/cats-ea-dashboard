@@ -1,4 +1,4 @@
-<!-- <h1 class="page-header f-s-18">Episode Configuration </h1> -->
+<h1 class="page-header f-s-18">Rule Configuration </h1>
 <div class="form-group row">
   <div class="col-md-3">
     <label for="">Name</label>
@@ -7,24 +7,60 @@
     <input type="text" class="form-control" placeholder="Enter Name">
   </div>
 </div>
-<div class="form-group row">
+<div class="row form-group">
   <div class="col-md-3">
-    <label for="">Description</label>
+    <label for="">Rule</label>
   </div>
   <div class="col-md-4">
-    <textarea placeholder="Enter Description" class="form-control" rows="4"></textarea>
+    <!-- <select class="form-control m-b-10">
+      <option ng-reflect-value="">Select NMS</option>
+      <option>N2000</option>
+      <option>EMC</option>
+      <option>INALA</option>
+      <option>ADVA</option>
+      <option><a href="#">RUCKUS</a></option>
+    </select> -->
+    <!-- <ng-multiselect-dropdown name="user" [placeholder]="'Select Status'" [data]="dropdownListStatus"
+    [(ngModel)]="selectedItemsStatus" [settings]="dropdownSettingsInputSource">
+  </ng-multiselect-dropdown> -->
+  <div class="btn-group">
+    <button type="button" class="btn btn-default bg-white text-left border-0" style="width:315px; color:#000000;">Select Rule</button>
+    <a href="javascript:;" style="color:#000000;" class="btn btn-default dropdown-toggle bg-white border-0"
+        (click)="showDDNMS($event)" id=""></a>
+    <ul class="dropdown-menu pull-right">
+        <!-- <form name="search">
+            <div class="mx-2 mb-2">
+                <input type="search" #searchVal class="form-control form-control-sm"
+                    placeholder="Search..." aria-controls="data-table-default">
+            </div>
+        </form> -->
+        <div class="scroll_div" id="style-4">
+            <li class="container1">
+                <label class="">Rule 1
+                    <!-- <input type="checkbox" [(ngModel)]="globalFilterModal.masterSelectedNMS"
+                        name="list_name"
+                        (change)="checkUncheckAll(globalFilterModal.nms,globalFilterModal.masterSelectedNMS)" /> -->
+                    <!-- <span class="checkmark"></span> -->
+                </label>
+            </li>
+            <li class="container1">
+                <label>Rule 2 </label>
+            </li>
+            <li class="container1">
+              <label class=""> <a href="#">Create new link</a></label>
+          </li>
+        </div>
+    </ul>
+</div>
   </div>
 </div>
 
-
-<hr class="bg-grey">
-<h1 class="page-header f-s-18">Alarm Mapping </h1>
-<div class="row">
+<div class="row form-group">
   <div class="col-md-3">
     <label for="">NMS</label>
   </div>
   <div class="col-md-4">
-    <select class="form-control m-b-10">
+    <select class="form-control">
       <option ng-reflect-value="">Select NMS</option>
       <option>N2000</option>
       <option>EMC</option>
@@ -35,119 +71,36 @@
   </div>
 </div>
 
-
-<div class="row">
+<div class="row form-group">
   <div class="col-md-3">
-    <label for="">Alarms</label>
+    <label for="">Priority</label>
   </div>
   <div class="col-md-4">
-    <select class="form-control m-b-10">
-      <option ng-reflect-value="">Select Alarms</option>
-      <option>SNMPAgent NotResponding</option>
-      <option>NetworkConnection DownOrFlapping</option>
-      <option>SNMPAgent NotResponding</option>
+    <select class="form-control">
+      <option ng-reflect-value="">Select Priority</option>
+      <option>1</option>
+      <option>2</option>
+      <option>3</option>
+      <option>4</option>
+      <option>5</option>
     </select>
   </div>
 </div>
 
-<hr class="bg-grey">
-<h1 class="page-header f-s-18">Filter Mapping </h1>
-<div class="row">
+<!-- <div class="form-group row">
   <div class="col-md-3">
-    <select class="form-control m-b-10">
-      <option>Select Filter</option>
-      <option>Country</option>
-      <option>Host Name</option>
-      <option>Severity</option>
-      <option>State</option>
-      <option>Time Range</option>
-      <option>Address</option>
-      <option>Device Type</option>
-      <option>Province</option>
-      <option>Sub-Province</option>
-    </select>
-  </div>
-  <div class="col-md-3">
-    <select class="form-control m-b-10">
-      <option>Select Operator</option>
-      <option>Equal </option>
-      <option>Not Equal</option>
-      <option>In</option>
-      <option>Not In</option>
-      <option>Like</option>
-      <option>Not Like</option>
-      <option>Less than</option>
-      <option>Less than equal</option>
-      <option>Greater than</option>
-      <option>Greater than equal</option>
-      <option>Between</option>
-    </select>
-  </div>
-  <div class="col-md-3">
-    <select class="form-control m-b-10">
-      <option>Select Values</option>
-    </select>
-  </div>
-  <div class="col-md-3">
-    <a href="#" class="btn btn-dark mr-2">ADD</a>
-    <a href="#" class="btn btn-dark"><i class="fa fa-times"></i></a>
-  </div>
-</div>
-
-
-<hr class="bg-grey">
-<h1 class="page-header f-s-18">Notification </h1>
-<div class="row">
-  <div class="col-md-3">
-    <select class="form-control m-b-10">
-      <option>Select Types</option>
-      <option>Email</option>
-      <option>SMS</option>
-      <option>Ticket</option>
-    </select>
-  </div>
-  <div class="col-md-3">
-    <input type="text" class="form-control" placeholder="Enter Value">
-  </div>
-  <div class="col-md-3">
-    <a href="#" class="btn btn-dark mr-2">ADD</a>
-    <a href="#" class="btn btn-dark"><i class="fa fa-times"></i></a>
-  </div>
-</div>
-
-<hr class="bg-grey">
-<h1 class="page-header f-s-18">Template </h1>
-<div class="form-group row">
-  <div class="col-md-3">
-    <label for="">Subject</label>
+    <label for="">Description</label>
   </div>
   <div class="col-md-4">
-    <input type="text" class="form-control" placeholder="Enter Subject">
+    <textarea placeholder="Enter Description" class="form-control" rows="4"></textarea>
   </div>
-  <div class="col-md-3">
-    <div class="btn-group">
-      <button class="btn btn-default btn-sm active">Time</button>
-      <button class="btn btn-default btn-sm ">Host</button>
-    </div>
-  </div>
-</div>
-<div class="form-group row">
-  <div class="col-md-3">
-    <label for="">Body</label>
-  </div>
+</div> -->
 
+<div class="row text-center mt-3">
+  <div class="col-md-3">&nbsp;  </div>
   <div class="col-md-4">
-    <textarea placeholder="Write Email" class="form-control" rows="5"></textarea>
+    <a href="#" class="btn btn-primary mr-2">SUBMIT</a>
   </div>
-  <div class="col-md-3">
-    <div class="btn-group">
-      <button class="btn btn-default btn-sm">Time</button>
-      <button class="btn btn-default btn-sm active">Host</button>
-      <button class="btn btn-default btn-sm">Signature</button>
-    </div>
-  </div>
-</div>
 
-<div class="col-md-12 text-center mt-3">
-  <a href="#" class="btn btn-primary mr-2">SUBMIT</a>
+  
 </div>
