@@ -1,0 +1,106 @@
+<h1 class="page-header f-s-18">Rule Configuration </h1>
+<div class="form-group row">
+  <div class="col-md-3">
+    <label for="">Name</label>
+  </div>
+  <div class="col-md-4">
+    <input type="text" class="form-control" placeholder="Enter Name">
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-md-3">
+    <label for="">Rule</label>
+  </div>
+  <div class="col-md-4">
+    <!-- <select class="form-control m-b-10">
+      <option ng-reflect-value="">Select NMS</option>
+      <option>N2000</option>
+      <option>EMC</option>
+      <option>INALA</option>
+      <option>ADVA</option>
+      <option><a href="#">RUCKUS</a></option>
+    </select> -->
+    <!-- <ng-multiselect-dropdown name="user" [placeholder]="'Select Status'" [data]="dropdownListStatus"
+    [(ngModel)]="selectedItemsStatus" [settings]="dropdownSettingsInputSource">
+  </ng-multiselect-dropdown> -->
+  <div class="btn-group">
+    <button type="button" class="btn btn-default bg-white text-left border-0" style="width:315px; color:#000000;">Select Rule</button>
+    <a href="javascript:;" style="color:#000000;" class="btn btn-default dropdown-toggle bg-white border-0"
+        (click)="showDDNMS($event)" id=""></a>
+    <ul class="dropdown-menu pull-right">
+        <!-- <form name="search">
+            <div class="mx-2 mb-2">
+                <input type="search" #searchVal class="form-control form-control-sm"
+                    placeholder="Search..." aria-controls="data-table-default">
+            </div>
+        </form> -->
+        <div class="scroll_div" id="style-4">
+            <li class="container1">
+                <label class="">Rule 1
+                    <!-- <input type="checkbox" [(ngModel)]="globalFilterModal.masterSelectedNMS"
+                        name="list_name"
+                        (change)="checkUncheckAll(globalFilterModal.nms,globalFilterModal.masterSelectedNMS)" /> -->
+                    <!-- <span class="checkmark"></span> -->
+                </label>
+            </li>
+            <li class="container1">
+                <label>Rule 2 </label>
+            </li>
+            <li class="container1">
+              <label class=""> <a href="#">Create new link</a></label>
+          </li>
+        </div>
+    </ul>
+</div>
+  </div>
+</div>
+
+<div class="row form-group">
+  <div class="col-md-3">
+    <label for="">NMS</label>
+  </div>
+  <div class="col-md-4">
+    <select class="form-control">
+      <option ng-reflect-value="">Select NMS</option>
+      <option>N2000</option>
+      <option>EMC</option>
+      <option>INALA</option>
+      <option>ADVA</option>
+      <option>RUCKUS</option>
+    </select>
+  </div>
+</div>
+
+<div class="row form-group">
+  <div class="col-md-3">
+    <label for="">Priority</label>
+  </div>
+  <div class="col-md-4">
+    <select class="form-control">
+      <option ng-reflect-value="">Select Priority</option>
+      <option>1</option>
+      <option>2</option>
+      <option>3</option>
+      <option>4</option>
+      <option>5</option>
+    </select>
+  </div>
+</div>
+
+<!-- <div class="form-group row">
+  <div class="col-md-3">
+    <label for="">Description</label>
+  </div>
+  <div class="col-md-4">
+    <textarea placeholder="Enter Description" class="form-control" rows="4"></textarea>
+  </div>
+</div> -->
+
+<div class="row text-center mt-3">
+  <div class="col-md-3">&nbsp;  </div>
+  <div class="col-md-4">
+    <a href="#" class="btn btn-primary mr-2">SUBMIT</a>
+  </div>
+
+  
+</div>
