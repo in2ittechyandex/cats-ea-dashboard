@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { EpisodeService } from './episode.services';
+import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
+
 
 @Component({
   selector: 'cats-episode',
@@ -7,9 +9,10 @@ import { EpisodeService } from './episode.services';
   styleUrls: ['./episode.component.css']
 })
 export class EpisodeComponent implements OnInit {
-
-  constructor(private episodeService:EpisodeService) { }
+  closeResult = '';
+  constructor(private episodeService:EpisodeService, private modalService: NgbModal) { }
 alarmList;
+
 operatorList;
 filterList;
 nmsList;
@@ -22,7 +25,30 @@ episodeModel={
   "notificationMapping":[{'type':"",'value':""}],
   "subject":"",
   "body":""
+
+  
+  
 }
+open(content) {
+  this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+    this.closeResult = `Closed with: ${result}`;
+  }, (reason) => {
+    this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+  });
+
+}
+
+  
+private getDismissReason(reason: any): string {
+  if (reason === ModalDismissReasons.ESC) {
+    return 'by pressing ESC';
+  } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+    return 'by clicking on a backdrop';
+  } else {
+    return `with: ${reason}`;
+  }
+}
+
   ngOnInit() {
     this.episodeService.getAlarmList().subscribe((res)=>{
       if(res['status']){
