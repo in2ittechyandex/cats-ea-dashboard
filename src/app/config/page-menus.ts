@@ -163,7 +163,7 @@ const pageMenusUser = [
   },
   {
     'icon': 'fa fa-cog',
-    'title': 'Case Configuration',
+    'title': 'Rule Configuration',
     'label': '',
     'hide':false,
     'url': '/dashboard/case'

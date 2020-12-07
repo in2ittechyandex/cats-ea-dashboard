@@ -1,3 +1,10 @@
+
+<div class="pull-right">
+  <button class="btn text-white bg-black" (click)="open(content)">Add Configuration</button>
+</div>
+
+<h1 class="page-header f-s-18">Episode Configuration </h1>
+
 <!-- <h1 class="page-header f-s-18">Episode Configuration </h1> -->
 <div class="form-group row">
   <div class="col-md-3">
@@ -26,11 +33,7 @@
   <div class="col-md-4">
     <select class="form-control m-b-10">
       <option ng-reflect-value="">Select NMS</option>
-      <option>N2000</option>
-      <option>EMC</option>
-      <option>INALA</option>
-      <option>ADVA</option>
-      <option>RUCKUS</option>
+      <option *ngFor="let nms of nmsList" [value]='nms.name'>{{nms.name}}</option>
     </select>
   </div>
 </div>
@@ -43,61 +46,39 @@
   <div class="col-md-4">
     <select class="form-control m-b-10">
       <option ng-reflect-value="">Select Alarms</option>
-      <option>SNMPAgent NotResponding</option>
-      <option>NetworkConnection DownOrFlapping</option>
-      <option>SNMPAgent NotResponding</option>
+      <option *ngFor="let alarm of alarmList" [value]='alarm.master_alarm_guid'>{{alarm.alarm_name}}</option>
     </select>
   </div>
 </div>
 
 <hr class="bg-grey">
 <h1 class="page-header f-s-18">Filter Mapping </h1>
-<div class="row">
+<div class="row" *ngFor="let ele of episodeModel.filterMapping;let i=index;let last=last;">
   <div class="col-md-3">
     <select class="form-control m-b-10">
       <option>Select Filter</option>
-      <option>Country</option>
-      <option>Host Name</option>
-      <option>Severity</option>
-      <option>State</option>
-      <option>Time Range</option>
-      <option>Address</option>
-      <option>Device Type</option>
-      <option>Province</option>
-      <option>Sub-Province</option>
+      <option *ngFor="let filter of filterList" [value]='filter.name'>{{filter.display_name}}</option>
     </select>
   </div>
   <div class="col-md-3">
     <select class="form-control m-b-10">
       <option>Select Operator</option>
-      <option>Equal </option>
-      <option>Not Equal</option>
-      <option>In</option>
-      <option>Not In</option>
-      <option>Like</option>
-      <option>Not Like</option>
-      <option>Less than</option>
-      <option>Less than equal</option>
-      <option>Greater than</option>
-      <option>Greater than equal</option>
-      <option>Between</option>
+      <option *ngFor="let operator of operatorList" [value]='operator.name'>{{operator.display_name}}</option>
     </select>
   </div>
   <div class="col-md-3">
-    <select class="form-control m-b-10">
-      <option>Select Values</option>
-    </select>
+    <input type="text" class="form-control" placeholder="Enter Value">
   </div>
   <div class="col-md-3">
-    <a href="#" class="btn btn-dark mr-2">ADD</a>
-    <a href="#" class="btn btn-dark"><i class="fa fa-times"></i></a>
+    <a (click)="addFilter()" class="btn btn-dark mr-2" *ngIf="last">ADD</a>
+    <a (click)="removeFilter(i)" class="btn btn-dark"><i class="fa fa-times"></i></a>
   </div>
 </div>
 
 
 <hr class="bg-grey">
 <h1 class="page-header f-s-18">Notification </h1>
-<div class="row">
+<div class="row" *ngFor="let ele of episodeModel.notificationMapping;let i=index;let last=last;"> 
   <div class="col-md-3">
     <select class="form-control m-b-10">
       <option>Select Types</option>
@@ -110,8 +91,8 @@
     <input type="text" class="form-control" placeholder="Enter Value">
   </div>
   <div class="col-md-3">
-    <a href="#" class="btn btn-dark mr-2">ADD</a>
-    <a href="#" class="btn btn-dark"><i class="fa fa-times"></i></a>
+    <a  (click)="addNotification()" class="btn btn-dark mr-2" *ngIf="last">ADD</a>
+    <a (click)="removeNotification(i)" class="btn btn-dark"><i class="fa fa-times"></i></a>
   </div>
 </div>
 
@@ -126,8 +107,8 @@
   </div>
   <div class="col-md-3">
     <div class="btn-group">
-      <button class="btn btn-default btn-sm active">Time</button>
-      <button class="btn btn-default btn-sm ">Host</button>
+      <button class="btn btn-default btn-sm active" (click)="append('subject','time')">Time</button>
+      <button class="btn btn-default btn-sm"  (click)="append('subject','host')">Host</button>
     </div>
   </div>
 </div>
@@ -141,9 +122,9 @@
   </div>
   <div class="col-md-3">
     <div class="btn-group">
-      <button class="btn btn-default btn-sm">Time</button>
-      <button class="btn btn-default btn-sm active">Host</button>
-      <button class="btn btn-default btn-sm">Signature</button>
+      <button class="btn btn-default btn-sm" (click)="append('body','time')">Time</button>
+      <button class="btn btn-default btn-sm active" (click)="append('body','host')">Host</button>
+      <button class="btn btn-default btn-sm" (click)="append('body','signature')">Signature</button>
     </div>
   </div>
 </div>
