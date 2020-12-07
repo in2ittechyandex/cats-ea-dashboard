@@ -333,7 +333,7 @@ export class SummaryComponent implements OnInit, OnDestroy, AfterViewInit {
       this.globalFilterModal).subscribe(res => {
         if (res.status) {
           this.technologyWidgetData[index].data = res.data;
-          this.technologyWidgetData[index].data.summary.noiceReduction = this.getRandomInt(30, 95); /** WARNING : Hard code Value */
+          // this.technologyWidgetData[index].data.summary.noiceReduction = this.getRandomInt(30, 95); /** WARNING : Hard code Value */
           this.technologyWidgetData[index].color = this.getNSColor(this.technologyWidgetData[index].data.summary.noiceReduction);
           this.technologyWidgetData[index].isReportLoaded = true;
         }

@@ -168,22 +168,22 @@
                                         <th>Major</th>
                                         <th>Minor</th>
                                         <th>Warning</th>
-                                        <th>Error</th>
-                                        <th>Alert</th>
-                                        <th>Debug</th>
+                                        <!-- <th>Error</th> -->
+                                        <!-- <th>Alert</th> -->
+                                        <!-- <th>Debug</th> -->
                                     </tr>
                                 </thead>
                                 <tbody class="style-4" style="height:160px; overflow:auto;">
                                     <ng-container *ngIf="tData_.isReportLoaded">
                                         <tr *ngFor="let nData_ of tData_.data.nmsData">
                                             <td>{{nData_.agent}}</td>
-                                            <td>{{nData_.critical}}</td>
-                                            <td>{{nData_.major}}</td>
-                                            <td>{{nData_.minor}}</td>
+                                            <td>{{nData_.Critical}}</td>
+                                            <td>{{nData_.Major}}</td>
+                                            <td>{{nData_.Minor}}</td>
                                             <td>{{nData_.warning}}</td>
-                                            <td>{{nData_.error}}</td>
-                                            <td>{{nData_.alert}}</td>
-                                            <td>{{nData_.debug}}</td>
+                                            <!-- <td>{{nData_.error}}</td> -->
+                                            <!-- <td>{{nData_.alert}}</td> -->
+                                            <!-- <td>{{nData_.debug}}</td> -->
                                         </tr>
                                     </ng-container>
                                 </tbody>
