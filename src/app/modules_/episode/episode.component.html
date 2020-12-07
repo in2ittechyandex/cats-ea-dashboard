@@ -1,135 +1,138 @@
-
-<div class="pull-right">
-  <button class="btn text-white bg-black" >Add Configuration</button>
-  <!-- (click)="open(content)" -->
+<div *ngIf="isView">
+  <div class="pull-right">
+  <button class="btn text-white bg-black" (click)="toggleView()">Add Configuration</button>
+ </div>
 </div>
+<div *ngIf="!isView">
+  <h1 class="page-header f-s-18">Episode Configuration </h1>
 
-<h1 class="page-header f-s-18">Episode Configuration </h1>
-
-<!-- <h1 class="page-header f-s-18">Episode Configuration </h1> -->
-<div class="form-group row">
-  <div class="col-md-3">
-    <label for="">Name</label>
-  </div>
-  <div class="col-md-4">
-    <input type="text" class="form-control" placeholder="Enter Name">
-  </div>
-</div>
-<div class="form-group row">
-  <div class="col-md-3">
-    <label for="">Description</label>
-  </div>
-  <div class="col-md-4">
-    <textarea placeholder="Enter Description" class="form-control" rows="4"></textarea>
-  </div>
-</div>
-
-
-<hr class="bg-grey">
-<h1 class="page-header f-s-18">Alarm Mapping </h1>
-<div class="row">
-  <div class="col-md-3">
-    <label for="">NMS</label>
-  </div>
-  <div class="col-md-4">
-    <select class="form-control m-b-10">
-      <option ng-reflect-value="">Select NMS</option>
-      <option *ngFor="let nms of nmsList" [value]='nms.name'>{{nms.name}}</option>
-    </select>
-  </div>
-</div>
-
-
-<div class="row">
-  <div class="col-md-3">
-    <label for="">Alarms</label>
-  </div>
-  <div class="col-md-4">
-    <select class="form-control m-b-10">
-      <option ng-reflect-value="">Select Alarms</option>
-      <option *ngFor="let alarm of alarmList" [value]='alarm.master_alarm_guid'>{{alarm.alarm_name}}</option>
-    </select>
-  </div>
-</div>
-
-<hr class="bg-grey">
-<h1 class="page-header f-s-18">Filter Mapping </h1>
-<div class="row" *ngFor="let ele of episodeModel.filterMapping;let i=index;let last=last;">
-  <div class="col-md-3">
-    <select class="form-control m-b-10">
-      <option>Select Filter</option>
-      <option *ngFor="let filter of filterList" [value]='filter.name'>{{filter.display_name}}</option>
-    </select>
-  </div>
-  <div class="col-md-3">
-    <select class="form-control m-b-10">
-      <option>Select Operator</option>
-      <option *ngFor="let operator of operatorList" [value]='operator.name'>{{operator.display_name}}</option>
-    </select>
-  </div>
-  <div class="col-md-3">
-    <input type="text" class="form-control" placeholder="Enter Value">
-  </div>
-  <div class="col-md-3">
-    <a (click)="addFilter()" class="btn btn-dark mr-2" *ngIf="last">ADD</a>
-    <a (click)="removeFilter(i)" class="btn btn-dark"><i class="fa fa-times"></i></a>
-  </div>
-</div>
-
-
-<hr class="bg-grey">
-<h1 class="page-header f-s-18">Notification </h1>
-<div class="row" *ngFor="let ele of episodeModel.notificationMapping;let i=index;let last=last;"> 
-  <div class="col-md-3">
-    <select class="form-control m-b-10">
-      <option>Select Types</option>
-      <option>Email</option>
-      <option>SMS</option>
-      <option>Ticket</option>
-    </select>
-  </div>
-  <div class="col-md-3">
-    <input type="text" class="form-control" placeholder="Enter Value">
-  </div>
-  <div class="col-md-3">
-    <a  (click)="addNotification()" class="btn btn-dark mr-2" *ngIf="last">ADD</a>
-    <a (click)="removeNotification(i)" class="btn btn-dark"><i class="fa fa-times"></i></a>
-  </div>
-</div>
-
-<hr class="bg-grey">
-<h1 class="page-header f-s-18">Template </h1>
-<div class="form-group row">
-  <div class="col-md-3">
-    <label for="">Subject</label>
-  </div>
-  <div class="col-md-4">
-    <input type="text" class="form-control" placeholder="Enter Subject">
-  </div>
-  <div class="col-md-3">
-    <div class="btn-group">
-      <button class="btn btn-default btn-sm active" (click)="append('subject','time')">Time</button>
-      <button class="btn btn-default btn-sm"  (click)="append('subject','host')">Host</button>
+  <!-- <h1 class="page-header f-s-18">Episode Configuration </h1> -->
+  <div class="form-group row">
+    <div class="col-md-3">
+      <label for="">Name</label>
+    </div>
+    <div class="col-md-4">
+      <input type="text" class="form-control" [(ngModel)]="episodeModel.name" placeholder="Enter Name">
     </div>
   </div>
-</div>
-<div class="form-group row">
-  <div class="col-md-3">
-    <label for="">Body</label>
-  </div>
-
-  <div class="col-md-4">
-    <textarea placeholder="Write Email" class="form-control" rows="5"></textarea>
-  </div>
-  <div class="col-md-3">
-    <div class="btn-group">
-      <button class="btn btn-default btn-sm" (click)="append('body','time')">Time</button>
-      <button class="btn btn-default btn-sm active" (click)="append('body','host')">Host</button>
-      <button class="btn btn-default btn-sm" (click)="append('body','signature')">Signature</button>
+  <div class="form-group row">
+    <div class="col-md-3">
+      <label for="">Description</label>
+    </div>
+    <div class="col-md-4">
+      <textarea placeholder="Enter Description"  [(ngModel)]="episodeModel.description" class="form-control" rows="4"></textarea>
     </div>
   </div>
+  
+  
+  <hr class="bg-grey">
+  <h1 class="page-header f-s-18">Alarm Mapping </h1>
+  <div class="row">
+    <div class="col-md-3">
+      <label for="">NMS</label>
+    </div>
+    <div class="col-md-4">
+      <select class="form-control m-b-10" [(ngModel)]="episodeModel.selectedNms" >
+        <option value=''> Select NMS</option>
+        <option *ngFor="let nms of nmsList" [value]='nms.name'>{{nms.name}}</option>
+      </select>
+    </div>
+  </div>
+  
+  
+  <div class="row">
+    <div class="col-md-3">
+      <label for="">Alarms</label>
+    </div>
+    <div class="col-md-4">
+      <select class="form-control m-b-10" [(ngModel)]="episodeModel.selectedAlarm" >
+        <option  value=''>Select Alarms</option>
+        <option *ngFor="let alarm of alarmList" [value]='alarm.master_alarm_guid'>{{alarm.alarm_name}}</option>
+      </select>
+    </div>
+  </div>
+  
+  <hr class="bg-grey">
+  <h1 class="page-header f-s-18">Filter Mapping </h1>
+  <div class="row" *ngFor="let ele of episodeModel.filterMapping;let i=index;let last=last;">
+    <div class="col-md-3">
+      <select class="form-control m-b-10">
+        <option>Select Filter</option>
+        <option *ngFor="let filter of filterList" [value]='filter.name'>{{filter.display_name}}</option>
+      </select>
+    </div>
+    <div class="col-md-3">
+      <select class="form-control m-b-10">
+        <option>Select Operator</option>
+        <option *ngFor="let operator of operatorList" [value]='operator.name'>{{operator.display_name}}</option>
+      </select>
+    </div>
+    <div class="col-md-3">
+      <input type="text" class="form-control" placeholder="Enter Value">
+    </div>
+    <div class="col-md-3">
+      <a (click)="addFilter()" class="btn btn-dark mr-2" *ngIf="last">ADD</a>
+      <a (click)="removeFilter(i)" class="btn btn-dark"><i class="fa fa-times"></i></a>
+    </div>
+  </div>
+  
+  
+  <hr class="bg-grey">
+  <h1 class="page-header f-s-18">Notification </h1>
+  <div class="row" *ngFor="let ele of episodeModel.notificationMapping;let i=index;let last=last;"> 
+    <div class="col-md-3">
+      <select class="form-control m-b-10">
+        <option>Select Types</option>
+        <option>Email</option>
+        <option>SMS</option>
+        <option>Ticket</option>
+      </select>
+    </div>
+    <div class="col-md-3">
+      <input type="text" class="form-control" placeholder="Enter Value">
+    </div>
+    <div class="col-md-3">
+      <a  (click)="addNotification()" class="btn btn-dark mr-2" *ngIf="last">ADD</a>
+      <a (click)="removeNotification(i)" class="btn btn-dark"><i class="fa fa-times"></i></a>
+    </div>
+  </div>
+  
+  <hr class="bg-grey">
+  <h1 class="page-header f-s-18">Template </h1>
+  <div class="form-group row">
+    <div class="col-md-3">
+      <label for="">Subject</label>
+    </div>
+    <div class="col-md-4">
+      <input type="text" class="form-control" [(ngModel)]="episodeModel.subject"  placeholder="Enter Subject">
+    </div>
+    <div class="col-md-3">
+      <div class="btn-group">
+        <button class="btn btn-default btn-sm active" (click)="append('subject','time')">Time</button>
+        <button class="btn btn-default btn-sm"  (click)="append('subject','host')">Host</button>
+      </div>
+    </div>
+  </div>
+  <div class="form-group row">
+    <div class="col-md-3">
+      <label for="">Body</label>
+    </div>
+  
+    <div class="col-md-4">
+      <textarea placeholder="Write Email" [(ngModel)]="episodeModel.body" class="form-control" rows="5"></textarea>
+    </div>
+    <div class="col-md-3">
+      <div class="btn-group">
+        <button class="btn btn-default btn-sm" (click)="append('body','time')">Time</button>
+        <button class="btn btn-default btn-sm active" (click)="append('body','host')">Host</button>
+        <button class="btn btn-default btn-sm" (click)="append('body','signature')">Signature</button>
+      </div>
+    </div>
+  </div>
+  
+  <div class="col-md-12 text-center mt-3">
+    <a class="btn btn-primary mr-2" (click)="toggleView()">SUBMIT</a>
+  </div>
 </div>
 
-<div class="col-md-12 text-center mt-3">
-  <a href="#" class="btn btn-primary mr-2">SUBMIT</a>
-</div>
+

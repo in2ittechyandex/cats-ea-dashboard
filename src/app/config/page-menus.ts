@@ -167,6 +167,13 @@ const pageMenusUser = [
     'label': '',
     'hide':false,
     'url': '/dashboard/case'
+  },
+  {
+    'icon': 'fa fa-cog',
+    'title': 'Syslog',
+    'label': '',
+    'hide':false,
+    'url': '/dashboard/syslog'
   }
 ];
 const pageMenusAdmin = [

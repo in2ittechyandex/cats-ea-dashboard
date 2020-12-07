@@ -15,7 +15,7 @@ export class AgGridTableComponent implements OnInit, OnChanges ,OnDestroy ,After
   @Input() myGridId="myGrid"
   @Input() allowExports = true;
   @Input() allowCogs = true;
-
+  @Input() showCreateEpisode:boolean=false;
   @Input() dbAllcolumns = [
     // {
     //   headerName: 'Action',
@@ -309,6 +309,7 @@ export class AgGridTableComponent implements OnInit, OnChanges ,OnDestroy ,After
   @Input() customPagination:boolean =false;
 @Input() timeRange="";
 @Input() showSetting:boolean=true;
+@Output() createEpisodeEventEmit=new EventEmitter()
   allFilters: { headerName: any; fieldName: any; filter: any[]; }[];
 
   ngOnChanges(changes: SimpleChanges) {
@@ -716,5 +717,11 @@ export class AgGridTableComponent implements OnInit, OnChanges ,OnDestroy ,After
 
 
     this.eventDetect.emit({ 'type': type, 'data': data, 'event_': event });
+  }
+  alarmSelected(data){
+    this.eventDetect.emit({ 'type': 'alarm-selected', 'data': data, 'event_': '' });
+  }
+  createEpisodeEvent(){
+    this.createEpisodeEventEmit.emit();
   }
 }

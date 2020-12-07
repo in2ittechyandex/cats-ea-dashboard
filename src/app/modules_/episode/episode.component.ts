@@ -12,43 +12,25 @@ export class EpisodeComponent implements OnInit {
   closeResult = '';
   constructor(private episodeService:EpisodeService, private modalService: NgbModal) { }
 alarmList;
-
+isView:boolean=true;
 operatorList;
 filterList;
 nmsList;
 episodeModel={
   "name":"",
   "description":"",
-  "selectedNams":"",
+  "selectedNms":"",
   "selectedAlarm":"",
   "filterMapping":[{'filter':"",'operator':"",'value':""}],
   "notificationMapping":[{'type':"",'value':""}],
   "subject":"",
   "body":""
-
-  
-  
 }
-open(content) {
-  this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
-    this.closeResult = `Closed with: ${result}`;
-  }, (reason) => {
-    this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-  });
-
+ 
+toggleView(){
+  this.isView=!this.isView;
 }
-
   
-private getDismissReason(reason: any): string {
-  if (reason === ModalDismissReasons.ESC) {
-    return 'by pressing ESC';
-  } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-    return 'by clicking on a backdrop';
-  } else {
-    return `with: ${reason}`;
-  }
-}
-
   ngOnInit() {
     this.episodeService.getAlarmList().subscribe((res)=>{
       if(res['status']){

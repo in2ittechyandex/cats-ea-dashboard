@@ -39,8 +39,8 @@
     <form class="form-horizontal pull-left">
         <div class="rows mb-2">
           
-          <div class="col-xs-1 mr-2">
-            <div class="btn-group btn-sm p-0">
+          <div class="col-xs-1 mr-2" *ngIf="showCreateEpisode">
+            <div class="btn-group btn-sm p-0" (click)="createEpisode()">
                 <i class="fas fa-plus fa-lg fa-fw  btn btn-default btn-sm" style="width:100%;"
                     title="Create Episode"></i>
                 <!-- <span class="btn btn-default btn-sm" style="color: #000000; border-left-color: #f2f3f4;"><i class="fa fa-spinner fa-spin fa-1x"></i></span> -->

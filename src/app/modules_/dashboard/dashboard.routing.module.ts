@@ -31,6 +31,9 @@ const routes: Routes = [
             {
                 path: 'engineer-view', loadChildren: '../engineer-view/engineer-view.module#EngineerViewModule',
                 data: { preload: true, delay: false }
+            },{
+                path: 'syslog', loadChildren: '../syslog/syslog.module#SyslogModule',
+                data: { preload: true, delay: false }
             },
             { path: 'events', loadChildren: '../events/events.module#EventsModule'  , data: { preload: true, delay: false } },
             { path: 'alarms', loadChildren: '../alarms/alarms.module#AlarmsModule' , data: { preload: true, delay: false } },

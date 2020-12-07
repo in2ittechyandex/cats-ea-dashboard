@@ -4,7 +4,7 @@
   <div class="col-lg-12">
      
           <ng-container>
-              <cats-tab-filter [dbAllcolumns]="dbAllcolumns" (reloadClick)="onReloadClick($event)" [timer]="timeLeft"
+              <cats-tab-filter (createEpisodeEvent)="createEpisodeEvent()" [showCreateEpisode]="showCreateEpisode" [dbAllcolumns]="dbAllcolumns" (reloadClick)="onReloadClick($event)" [timer]="timeLeft"
                 (downloadClick)="exportReportData($event)" (headerModify)="onHeaderModify($event)"  [showSetting]="showSetting">
                 <ng-container xlsxExport>
                     <div class="col-xs-1 mr-2">
