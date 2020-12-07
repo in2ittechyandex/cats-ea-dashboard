@@ -57,12 +57,16 @@ export class SummaryService {
         return this.http.get(url).map(res => <any>res);
     }
 
-    public getSummaryBlocksData(filters_: any) {
+    public getSummaryBlocksData(filters_: any , globalFilters: any) {
         const URL = environment._WEBGATEWAY_BASIC_URL_ + 'menu/kpi/getSummary';
         const formData: FormData = new FormData();
         Object.keys(filters_).forEach(e_ => {
         formData.append(e_, filters_[e_]);
         });
+        const nmsLs = this.findSelectedNMS(globalFilters['nms']);
+        if (nmsLs.trim() !== '') {
+            formData.append('nmsList', nmsLs);
+        }
         // const url = 'https://run.mocky.io/v3/a3607622-efe8-4910-b142-a9c2325ff59f';
         return this.http.post(URL, formData).map(res => <any>res);
     }

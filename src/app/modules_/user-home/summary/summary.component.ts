@@ -142,7 +142,7 @@ export class SummaryComponent implements OnInit, OnDestroy, AfterViewInit {
     const t = this.sharedServices_.getCustomRanges()[tAlias];
     const startTime = t[0];
     const endTime = t[1];
-    let str = tAlias + ' ' ;
+    let str = tAlias + ' ';
     const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     const myDateStart = new Date(startTime);
     const myDateEnd = new Date(endTime);
@@ -153,7 +153,7 @@ export class SummaryComponent implements OnInit, OnDestroy, AfterViewInit {
       str += this.getDatePart(myDateStart)['d_'] + '' + ' - ' + this.getDatePart(myDateEnd)['d_'] + '';
     }
     str += ')';
-    return {str: str, startDate: Date.parse(startTime), endDate: Date.parse(endTime)};
+    return { str: str, startDate: Date.parse(startTime), endDate: Date.parse(endTime) };
   }
 
   getDatePart(myDateStart: Date) {
@@ -178,6 +178,8 @@ export class SummaryComponent implements OnInit, OnDestroy, AfterViewInit {
     this.updateUserTabFilters();
 
     this.loadReportData(); // fetch reports data
+    this.loadSummaryBlocksToday(); // fetch summary today
+    this.loadSummaryBlocks7Days();  // fetch summary l7d
   }
 
   detectChanges(actualFilters: Array<any>, editFilters: Array<any>) {
@@ -261,8 +263,6 @@ export class SummaryComponent implements OnInit, OnDestroy, AfterViewInit {
     this.themeConf_ = themeConf_;
     this.loadNMSList();
     this.loadTechnologyList();
-    this.loadSummaryBlocksToday();
-    this.loadSummaryBlocks7Days();
   }
 
 
@@ -293,6 +293,8 @@ export class SummaryComponent implements OnInit, OnDestroy, AfterViewInit {
     }
     this.globalFilterModal.timeType = obj['time_type'] ? obj['time_type'] : 'cu';
     this.loadReportList();
+    this.loadSummaryBlocksToday();
+    this.loadSummaryBlocks7Days();
   }
 
   public loadTechnologyList() {
@@ -349,7 +351,8 @@ export class SummaryComponent implements OnInit, OnDestroy, AfterViewInit {
       timeType: 'td'
     };
 
-    this.summaryService.getSummaryBlocksData(filters).subscribe(resp => {
+    this.summaryBlocks = [];
+    this.summaryService.getSummaryBlocksData(filters, this.globalFilterModal).subscribe(resp => {
       if (resp.status) {
         this.summaryBlocks.push(resp.data);
       }
@@ -364,8 +367,9 @@ export class SummaryComponent implements OnInit, OnDestroy, AfterViewInit {
       endDate: t_.endDate,
       timeType: '7d'
     };
+    this.summaryBlocks7Days = [];
     // this.summaryBlocks7DaysHeader = this.getTimeString('7d');
-    this.summaryService.getSummaryBlocksData(filters).subscribe(resp => {
+    this.summaryService.getSummaryBlocksData(filters, this.globalFilterModal).subscribe(resp => {
       if (resp.status) {
         this.summaryBlocks7Days.push(resp.data);
       }
@@ -650,9 +654,9 @@ export class SummaryComponent implements OnInit, OnDestroy, AfterViewInit {
     // return "bg-4";
   }
 
-  getRandomInt (min, max) {
+  getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
-}
+  }
 
 }
 
