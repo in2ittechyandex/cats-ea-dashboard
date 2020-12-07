@@ -8,7 +8,8 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "static-serve": "cd dist && cd cats-ea-dashboard && live-server --port=4200 --host=0.0.0.0 --entry-file=/index.html"
+    "static-serve": "cd dist && cd cats-ea-dashboard && live-server --port=4200 --host=0.0.0.0 --entry-file=/index.html",
+    "tomcat-build":"ng build --prod --base-href=/ea/"
   },
   "private": true,
   "dependencies": {

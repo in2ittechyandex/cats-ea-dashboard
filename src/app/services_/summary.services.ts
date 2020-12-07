@@ -44,7 +44,7 @@ export class SummaryService {
         fData.append('reportId', reportId);
         const nmsLs = this.findSelectedNMS(globalFilters['nms']);
         if (nmsLs.trim() !== '') {
-            fData.append('nms', nmsLs);
+            fData.append('nmsList', nmsLs);
         }
         fData.append('startDate', '' + timeRange['timestamp_start']);
         fData.append('endDate', '' + timeRange['timestamp_end']);
