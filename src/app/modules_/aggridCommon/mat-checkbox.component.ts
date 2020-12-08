@@ -4,8 +4,8 @@ import { ICellRendererAngularComp } from 'ag-grid-angular';
 @Component({
     selector: "checkbox-cell",
     template: `
-    <i class="fa fa-cog fa-2x text-grey-lighter" aria-hidden="true"  (click)="alarmSelected()" *ngIf="!isSelected"></i>
-    <i class="fa fa-cog fa-2x text-blue-lighter" aria-hidden="true"  (click)="alarmSelected()" *ngIf="isSelected"></i>
+    <i class="fa fa-cog fa-2x text-grey f-s-15 check_icon" aria-hidden="true"  (click)="alarmSelected()" *ngIf="!isSelected"></i>
+    <i class="fa fa-cog fa-2x text-blue-lighter f-s-15 check_icon" aria-hidden="true"  (click)="alarmSelected()" *ngIf="isSelected"></i>
     <i class="ion ion-md-alert fa-2x fa-fw text-red-lighter"></i>
        `,
     styles: []
