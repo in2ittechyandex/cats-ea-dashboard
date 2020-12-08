@@ -503,7 +503,22 @@ export class AlarmsComponent implements OnInit, OnDestroy {
     }
   }
   createEpisode(){
-    swal("Episode created successfully");
+    swal({
+      title: "Create Episode",
+      text: "Enter episode name:",
+      input: 'text',
+      showCancelButton: true        
+  }).then((result) => {
+    if (result.value === "") {
+      swal("You need to write something!");
+      return false
+    }
+      if (result.value) {
+        swal("Episode created successfully");
+      }
+
+  });
+    
     // this.selectedAlarmList=[];
     // if(this.selectedAlarmList.length==0){
     //   this.showCreateEpisode=false;

@@ -20,8 +20,9 @@ export class MatCheckboxComponent implements ICellRendererAngularComp , OnDestro
 
     }
     alarmSelected(){
-        this.isSelected=!this.isSelected;
         this.params.context.componentParent.alarmSelected(this.params.node.data);
+        
+        this.isSelected=!this.isSelected;
     }
     public invokeParentMethod() {
         this.params.context.componentParent.methodFromParent();

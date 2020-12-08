@@ -1,7 +1,26 @@
 <div *ngIf="isView">
-  <div class="pull-right">
-  <button class="btn text-white bg-black" (click)="toggleView()">Add Configuration</button>
+  <div class="row">
+    <div class="col-sm-6">
+      <div class="pull-right m-b-2">
+      <span>Episode Configuration</span>
+    </div>
+    </div>
+    <div class="col-sm-6">
+      <div class="pull-right m-b-2">
+      <button class="btn text-white bg-black" (click)="toggleView()">Add Configuration</button>
+    </div>
+    </div>
+ 
  </div>
+ <div class="row">
+   <div class="col-sm-12">
+    <cats-ag-grid-table [myGridId]="'episodeGrid'" [title]="'Episode'" [rowData]="episodeList"
+    [dbAllcolumns]="columnDefs" [tableHeight]="tableHeight" [responseTime]="responseTime"
+    (eventDetect)="onEventDetect($event)">
+  </cats-ag-grid-table>
+   </div>
+
+  </div>
 </div>
 <div *ngIf="!isView">
   <h1 class="page-header f-s-18">Episode Configuration </h1>
