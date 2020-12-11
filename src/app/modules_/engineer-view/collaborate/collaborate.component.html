@@ -1,101 +1,104 @@
 <hr class="m-b-5" style="margin-top: 0rem;">
- 
+
 <div class="row">
-  <div class="col-md-12">
-    <ng-container>
-      <textarea class="form-control m-b-5" rows="1" placeholder="Type Comments..." rows="4" style="min-height: 60px;"
-        #commentTextBox></textarea>
-      <!-- <span class="text-danger" *ngIf="collabValidation1">This field is required.</span>
+    <div class="col-md-12">
+        <ng-container>
+            <textarea class="form-control m-b-5" rows="1" placeholder="Type Comments..." rows="4" style="min-height: 60px;" #commentTextBox></textarea>
+            <!-- <span class="text-danger" *ngIf="collabValidation1">This field is required.</span>
       <span class="text-danger" *ngIf="commentValidation1">Please enter atleast 2 words.</span>
       <span class="text-success" *ngIf="collabSuccessMsg1">Solution added successfully.</span> -->
-      <button type="button" class="btn btn-primary pull-right m-b-0" (click)="doComment(commentTextBox.value,commentTextBox)">Submit
+            <button type="button" class="btn btn-primary pull-right m-b-0" (click)="doComment(commentTextBox.value,commentTextBox)">Submit
         <!-- <i class="fa fa-paper-plane" aria-hidden="true"></i><i
           class="fa fa-spinner fa-spin fa-fw"></i> -->
         </button>
-    </ng-container>
+        </ng-container>
 
-    <div class="panel-body text-inverse collaborateReply text-center" *ngIf="commentsLoading">
-        <i class="fa fa-spinner fa-spin fa-3x"></i>
-      </div>
-      <div class="panel-body text-inverse collaborateReply" *ngIf="commentsLoadingError">
-        <div class="alert alert-danger">
-          <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>&nbsp;&nbsp; There is some technical error, please
-          try after sometime.
+        <div class="panel-body text-inverse collaborateReply text-center" *ngIf="commentsLoading">
+            <i class="fa fa-spinner fa-spin fa-3x"></i>
         </div>
-      </div>
-
-    
-
-    <div class="panel-body text-inverse collaborateReply">
-      <div class="collaborateReplyInner" *ngFor="let comment of allComments; let i = index;">
-        <div class="fa-stack fa-4x pull-left text-inverse collaborateReplyL">
-          <img src="assets/img/user/user-13.jpg" alt="" class="img-circle" height="50" style="border-radius: 40px;">
+        <div class="panel-body text-inverse collaborateReply" *ngIf="commentsLoadingError">
+            <div class="alert alert-danger">
+                <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>&nbsp;&nbsp; There is some technical error, please try after sometime.
+            </div>
         </div>
-        <div class="collaborateReplyR">
-          <h6 style="margin-top: 0;" #userName>{{comment.username}}</h6>
 
-          <ng-container *ngIf="collabReplyEdit && (i==showTemplate)">
-            <textarea class="form-control m-b-5" rows="1" placeholder="Type Comments..." rows="4"
-              style="min-height: 60px;" #editReplyBox
-              [ngModel]="collabReplyEdit"></textarea>
-            <span class="text-danger" *ngIf="collabValidation2">This field is required.</span>
-            <span class="text-danger" *ngIf="commentValidation2">Please enter atleast 2
+
+
+        <div class="panel-body text-inverse collaborateReply">
+            <div class="collaborateReplyInner" *ngFor="let comment of allComments; let i = index;">
+                <div class="fa-stack fa-4x pull-left text-inverse collaborateReplyL">
+                    <img src="assets/img/user/user-13.jpg" alt="" class="img-circle" height="50" style="border-radius: 40px;">
+                </div>
+                <div class="collaborateReplyR">
+                    <h6 style="margin-top: 0;" #userName>{{comment.username}}</h6>
+
+                    <ng-container *ngIf="collabReplyEdit && (i==showTemplate)">
+                        <textarea class="form-control m-b-5" rows="1" placeholder="Type Comments..." rows="4" style="min-height: 60px;" #editReplyBox [ngModel]="collabReplyEdit"></textarea>
+                        <span class="text-danger" *ngIf="collabValidation2">This field is required.</span>
+                        <span class="text-danger" *ngIf="commentValidation2">Please enter atleast 2
               words.</span>
-            <span class="text-success" *ngIf="collabSuccessMsg2">collabSuccessMsg2</span>
-            <button type="button" class="btn btn-primary pull-right m-b-20 m-l-5" (click)="collabEditCancel()">Cancel <i
+                        <span class="text-success" *ngIf="collabSuccessMsg2">collabSuccessMsg2</span>
+                        <button type="button" class="btn btn-primary pull-right m-b-20 m-l-5" (click)="collabEditCancel()">Cancel <i
                 class="fa fa-close" aria-hidden="true"></i></button>
-            <button type="button" class="btn btn-primary pull-right m-b-20"  (click)="editComment(editReplyBox.value,editReplyBox,comment.commentId)"
-             >Submit <i
+                        <button type="button" class="btn btn-primary pull-right m-b-20" (click)="editComment(editReplyBox.value,editReplyBox,comment.commentId)">Submit <i
                 class="fa fa-paper-plane" aria-hidden="true" *ngIf="!collabLoading2"></i><i
                 class="fa fa-spinner fa-spin fa-fw" *ngIf="collabLoading2"></i></button>
-          </ng-container>
+                    </ng-container>
 
-          <div *ngIf="!collabReplyEdit || (i!=showTemplate)">
-            <p style="font-size: 10px;margin-top: -0.8em;">
-              {{comment.time}}</p>
-            <p style="font-size: 13px;margin-top: -0.8em;" #collabReplyComment>{{comment.comment}}
-            </p>
-            <button type="button" class="btn btn-primary replyBtn" (click)="collabOnReply(userName.innerHTML, comment.commentId, i)"
-               [disabled]="username || showTemplate"><i
+                    <div *ngIf="!collabReplyEdit || (i!=showTemplate)">
+                        <p style="font-size: 10px;margin-top: -0.8em;">
+                            {{comment.time}}</p>
+                        <p style="font-size: 13px;margin-top: -0.8em;" #collabReplyComment>{{comment.comment}}
+                        </p>
+                        <button type="button" class="btn btn-primary replyBtn" (click)="collabOnReply(userName.innerHTML, comment.commentId, i)" [disabled]="username || showTemplate"><i
                 class="fa fa-reply" aria-hidden="true"></i>
               Reply</button>
-            <button type="button" [disabled]="username || showTemplate" (click)="collabOnEdit(collabReplyComment.innerHTML, i)"
-              class="btn btn-primary replyBtn" ><i
+                        <button type="button" [disabled]="username || showTemplate" (click)="collabOnEdit(collabReplyComment.innerHTML, i)" class="btn btn-primary replyBtn"><i
                 class="fa fa-edit" aria-hidden="true"></i> Edit</button>
-            <button type="button" [disabled]="username || showTemplate"
-              class="btn btn-primary replyBtn" ><i class="fa fa-trash"
+                        <button type="button" [disabled]="username || showTemplate" class="btn btn-primary replyBtn"><i class="fa fa-trash"
                 aria-hidden="true"></i>
               Delete</button>
-            <span class="replySpan">
-              <span class="thumbCount">{{comment.likecount}} </span><i class="fas fa-thumbs-up m-l-5"
-              (click)="commentAction(comment.commentId,'like')"
-               ></i>
-              &nbsp;
-              <span class="thumbCount">{{comment.dislikecount}} </span>
-              <i class="fas fa-thumbs-down m-l-5"
-              (click)="commentAction(comment.commentId,'dislike')"></i>
-              &nbsp;
-              <i class="far fa-check-circle" ></i>
-              &nbsp;&nbsp;&nbsp;
-              <!-- <span class="likeDislike"
+                        <span class="replySpan">
+              <span class="thumbCount">{{comment.likecount}} </span><i class="fas fa-thumbs-up m-l-5" (click)="commentAction(comment.commentId,'like')"></i> &nbsp;
+                        <span class="thumbCount">{{comment.dislikecount}} </span>
+                        <i class="fas fa-thumbs-down m-l-5" (click)="commentAction(comment.commentId,'dislike')"></i> &nbsp;
+                        <i class="far fa-check-circle"></i> &nbsp;&nbsp;&nbsp;
+                        <!-- <i class="fas fa-video" (click)="open(content,'lg')"></i> -->
+                        
+                        <!-- <span class="likeDislike"
                >likeDislikeComment</span>
               <span><i
                   class="fa fa-spinner fa-spin fa-fw"></i></span> -->
-            </span>
+                        </span>
 
-            <div class="innerReply"
-             >View replies
-            </div>
+                        <div class="innerReply">View replies
+                        </div>
 
-            <div class="innerReply"
-             >Hide reply
-            </div>
+                        <div class="innerReply">Hide reply
+                        </div>
 
 
 
+                        <ng-template #content let-modal>
+                            <div class="modal-header">
+                                <h4 class="modal-title" id="modal-basic-title">Video Call</h4>
+                                <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div style="text-align:center">
+                                    <div id="meet"></div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary" (click)="modal.close('Close')">Close</button>
+                            </div>
+                        </ng-template>
 
-<!-- Start Inner Reply -->
-<!-- <div [ngbCollapse]="!collabHideShowCheck || (i!=collabHideShowReply)"
+
+                        <!-- Start Inner Reply -->
+                        <!-- <div [ngbCollapse]="!collabHideShowCheck || (i!=collabHideShowReply)"
 style="margin-top: 15px; border: solid 1px #f1f3f5;">
 <div class="card">
   <div class="card-body">
@@ -117,40 +120,37 @@ style="margin-top: 15px; border: solid 1px #f1f3f5;">
   </div>
 </div>
 </div> -->
-<!-- End Inner Reply -->
+                        <!-- End Inner Reply -->
 
 
-<div class="postReply" *ngIf="username && (i==showTemplate)" #replyTarget>
-<h6 class="replyToHead">Reply to {{username}}</h6>
-<textarea class="form-control m-b-5" rows="1" placeholder="Type Comments..." rows="4"
-  style="min-height: 60px;border-top-left-radius: 0;" #replyTextBox
-  ></textarea>
+                        <div class="postReply" *ngIf="username && (i==showTemplate)" #replyTarget>
+                            <h6 class="replyToHead">Reply to {{username}}</h6>
+                            <textarea class="form-control m-b-5" rows="1" placeholder="Type Comments..." rows="4" style="min-height: 60px;border-top-left-radius: 0;" #replyTextBox></textarea>
 
-<!-- <span class="text-danger" *ngIf="collabValidation3">This field is required.</span>
+                            <!-- <span class="text-danger" *ngIf="collabValidation3">This field is required.</span>
 <span class="text-danger" *ngIf="commentValidation3">Please enter atleast 2
   words.</span>
 <span class="text-success" *ngIf="collabSuccessMsg3">{{collabSuccessMsg3}}</span> -->
 
-<button type="button" class="btn btn-primary pull-right m-l-5" (click)="collabReplyCancel()">Cancel <i
+                            <button type="button" class="btn btn-primary pull-right m-l-5" (click)="collabReplyCancel()">Cancel <i
     class="fa fa-close" aria-hidden="true"></i></button>
-<button type="button" class="btn btn-primary pull-right"
-  (click)="commentReply(replyTextBox.value, replyTextBox, clickedID)">Submit
+                            <button type="button" class="btn btn-primary pull-right" (click)="commentReply(replyTextBox.value, replyTextBox, clickedID)">Submit
    <!-- <i
     class="fa fa-paper-plane" aria-hidden="true"></i><i
     class="fa fa-spinner fa-spin fa-fw"></i> -->
   </button>
-</div>
+                        </div>
 
 
-            
 
-          </div>
+
+                    </div>
+                </div>
+            </div>
+
+
+            <hr class="m-t-5 m-b-5">
         </div>
-      </div>
 
-      
-      <hr class="m-t-5 m-b-5">
     </div>
-
-  </div>
 </div>
