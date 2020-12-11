@@ -13,6 +13,7 @@ import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
 import { MatCheckboxComponent } from '../aggridCommon/mat-checkbox.component';
 import { NumberToDatePipe } from 'src/app/shared_/pipes_/number-to-date.pipe';
+import { TimeFilterService } from 'src/app/shared_/time-filter/time-filter.service.component';
 @Component({
   selector: 'cats-syslog',
   templateUrl: './syslog.component.html',
@@ -45,7 +46,8 @@ export class SyslogComponent implements OnInit {
   secondsToRefresh: number = 60;
   timeLeft: number = 60; 
   responseTime=0;
-  constructor(private eventService:EventsService, private slimLoadingBarService: SlimLoadingBarService, private modalService: NgbModal,
+  public timeServicesSubsc$: Subscription;
+  constructor(private timeService:TimeFilterService, private eventService:EventsService, private slimLoadingBarService: SlimLoadingBarService, private modalService: NgbModal,
     private eventsService: SyslogService,private numberToDatePipe_: NumberToDatePipe) {
     this.pageSettings = pageSettings;  
     this.queryFieldCi = new FormControl();
@@ -55,7 +57,7 @@ export class SyslogComponent implements OnInit {
       
       { 
         headerName: 'Time',
-        field: 'display_time', 
+        field: 'time', 
         sortable: true, 
         filter: true, 
         editable: false,
@@ -64,7 +66,7 @@ export class SyslogComponent implements OnInit {
       },
       { 
         headerName: 'Description', 
-        field: 'message', 
+        field: 'description', 
         sortable: true, 
         filter: true, 
         editable: false,
@@ -82,8 +84,8 @@ export class SyslogComponent implements OnInit {
         'isActive':true
       },
       {
-        headerName: 'Type', 
-        field: 'type', 
+        headerName: 'state', 
+        field: 'state', 
         sortable: true,
         editable: false,
         filter: true,
@@ -111,6 +113,15 @@ export class SyslogComponent implements OnInit {
     
     this.tableHeight=(window.innerHeight-this.topmargin).toString();
     this.startSchedular();
+    this.timeServicesSubsc$ = this.timeService.getTimeFilterSubscriber().subscribe(obj => {
+      
+      this.onChangeTimeServices(obj);
+    });
+  }
+  onChangeTimeServices(arg0: any): any {
+    console.log(arg0);
+    this.loading = true;
+    this.callKpis();
   }
   topmargin=180;
   @HostListener("window:resize")
@@ -121,16 +132,11 @@ export class SyslogComponent implements OnInit {
  
   resetAllFilterAndTags() {
     this.model.host = "";
-    this.model.date_hour = "";
-    this.model.date_mday = "";
-    this.model.date_month = "";
-    this.model.date_wday = "";
-    this.model.date_year = "";
-    this.model.alert_type = "";
-    this.model.topevent = "";
-    this.model.timeObj = "";
-    this.model.type = "";
-    this.model.countTime = ""; 
+    this.model.severity = "";
+    this.model.startDate = "";
+    this.model.state = "";
+    this.model.description = "";
+    this.model.endDate = ""; 
   }
   themeConf_;
   summaryCollapsed: boolean = true;
@@ -176,6 +182,7 @@ public stopSchedular() {
     
     this.getAllTags(); 
     this.getEventStatusList();
+    this.getEventSeverityList();
     this.initSearch();
 
 
@@ -183,19 +190,31 @@ public stopSchedular() {
   callKpis() {
 
     this.getAllTags(); 
-    this.getEvents(this.model.host, this.model.date_hour, this.model.date_mday,
-      this.model.date_month, this.model.date_wday, this.model.date_year,
-      this.model.alert_type, this.model.message, this.model.dataCount,
-      this.model.timeObj, this.model.type, this.model.countTime);
+    this.getEvents(this.model.host, this.model.severity,this.model.state,this.model.description, this.timeService.getstartDateInTimestamp(),
+    this.timeService.getendDateInTimestamp(),);
 
   }
   eventStatusList = [];
   filter = "";
   getEventStatusList() {
     // this.loading=true;
-    this.eventsService.getEventStatusList().subscribe((res) => {
-      if (res.Status) {
-        this.eventStatusList = res.msg;
+    this.eventsService.getEventStatus().subscribe((res) => {
+      if (res.status) {
+        this.eventStatusList = res.data;
+      } else {
+        alert(res.msg);
+      }
+      // this.loading=false;
+    }, (err) => {
+      // this.loading=false;
+    });
+  }
+  eventSeverityList = []; 
+  getEventSeverityList() {
+    // this.loading=true;
+    this.eventsService.getEventSeverityList().subscribe((res) => {
+      if (res.status) {
+        this.eventSeverityList = res.data;
       } else {
         alert(res.msg);
       }
@@ -232,9 +251,9 @@ public stopSchedular() {
     this.model.host=result;
     this.eventsService.search_host(result).subscribe((res) => {
 
-      if (res.Status) {
-        if (res.msg.length > 0)
-          this.results = res.msg;
+      if (res.status) {
+        if (res.data.length > 0)
+          this.results = res.data;
       }
     }, (err) => {
       this.completeLoading();
@@ -271,22 +290,14 @@ public stopSchedular() {
   } 
   model = {
     "host": "",
-    "date_hour": "",
-    "date_mday": "",
-    "date_month": "",
-    "date_wday": "",
-    "date_year": "",
-    "alert_type": "",
-    "topevent": "",
-    "timeObj": "",
-    "type": "",
-    "countTime": "",
-    "dataCount": 10000,
-    "message": ""
+    "severity": "",
+    "state": "",
+    "description": "",
+    "startDate": "",
+    "endDate": ""
   }
   res;//''={"Status":true,"totalpage":1,"sidenav":[{"name":"Event Type","data":[{"name":"type1","count":123},{"name":"type2","count":123}]},{"name":"NMS","data":[{"name":"nms1","count":123},{"name":"nms2","count":123}]},{"name":"Service Now","data":[{"name":"serviceno1","count":123},{"name":"servicenow","count":123}]},{"name":"Syslog","data":[]}],"Data":[{"time":"2019-03-09T11:54:54.033Z","display_time":"09-03-2019 11:54:54","code":613,"Event":[{"tag":"message","value":"PING CRITICAL - Packet loss = 60%, RTA = 207.77 ms"},{"tag":"host_name","value":"BBSR_VPN_172.16.1.11"},{"tag":"severity","value":"CRITICAL"},{"tag":"type","value":"SERVICE ALERT"},{"tag":"user","value":"admin"},{"tag":"Input Source","value":"NAGIOS"}]},{"time":"2019-03-09T11:54:54.033Z","display_time":"09-03-2019 11:54:54","code":614,"Event":[{"tag":"message","value":"PING CRITICAL - Packet loss = 60%, RTA = 207.77 ms"},{"tag":"host_name","value":"BBSR_VPN_172.16.1.11"},{"tag":"severity","value":"CRITICAL"},{"tag":"type","value":"SERVICE NOTIFICATION"},{"tag":"user","value":"admin"},{"tag":"Input Source","value":"NAGIOS"}]},{"time":"2019-03-09T11:54:54.033Z","display_time":"09-03-2019 11:54:54","code":615,"Event":[{"tag":"message","value":"PING CRITICAL - Packet loss = 60%, RTA = 207.77 ms"},{"tag":"host_name","value":"BBSR_VPN_172.16.1.11"},{"tag":"severity","value":"CRITICAL"},{"tag":"type","value":"SERVICE NOTIFICATION"},{"tag":"user","value":"admin"},{"tag":"Input Source","value":"NAGIOS"}]}]};
-  getEvents(host, date_hour, date_mday, date_month, date_wday, date_year, alert_type, message, datacount,
-    timeObj, type, countTime) {
+  getEvents(host,severity,state,description,startDate,endDate) {
     if (this.allEventService) {
       this.allEventService.unsubscribe();
     }
@@ -294,25 +305,13 @@ public stopSchedular() {
     this.startLoading();
     const startTime: number = new Date().getTime();
     this.allEventService = this.eventsService.getEventsByTagsFilter(
-      host,
-       date_hour,
-        date_mday, 
-        date_month, 
-        date_wday, 
-        date_year, 
-        alert_type,
-         message,
-          datacount,
-      timeObj, 
-      type, 
-      countTime,
-       "").subscribe((res) => {
-        if (res.Status) {
+      host,severity,state,description,startDate,endDate).subscribe((res) => {
+        if (res.status) {
           this.timeLeft=60;
           const endTime: number = new Date().getTime();
       const diffTime = endTime - startTime;
       this.responseTime = this.numberToDatePipe_.transform(diffTime, 'ms');
-          this.mData = res.Data;  
+          this.mData = res.data;  
           this.checkNewRecord(this.mData);
           this.previousData=this.mData;
           this.completeLoading();
@@ -327,7 +326,48 @@ public stopSchedular() {
         this.allEventService = null;
       });
     console.log("get data");
+    this.timeRange = this.getHeaders(this.timeService.getstartDateInTimestamp(), this.timeService.getendDateInTimestamp())
+  }
+  timeRange = '';
+  getHeaders(startDate, endDate) {
+    const startTime = startDate;
+    const endTime = endDate;
+    let str = '';
+    const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const myDateStart = new Date(startTime);
+    const myDateEnd = new Date(endTime);
+    str += '(';
+    // if (this.performanceService_.timeRange.timeType == 'l1h') {
+    str += this.getDatePart(myDateStart)['full'] + ' - ' + this.getDatePart(myDateEnd)['full'];
+    // } else {
+    //   str += this.getDatePart(myDateStart)['d_'] + '' + ' - ' + this.getDatePart(myDateEnd)['d_'] + '';
+    // }
 
+    str += ')'
+    // var timestring=new Date().toTimeString();
+    // var timeArray=timestring.split(' ');
+    // var newstr="";
+    // for(var i=1;i<timeArray.length;i++){
+    // newstr+=timeArray[i]+' ';
+    // }
+    // str=str+' ( '+newstr+' )';
+    return str;
+    // WAN Device Performance (Last 7 Days) - <from> to <to>
+  }
+
+  getDatePart(myDateStart: Date) {
+    const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const datePart_ = monthNames[myDateStart.getMonth()] + ' '
+      + (myDateStart.getDate() < 10 ? '0' : '') + myDateStart.getDate() + ', ' + myDateStart.getFullYear();
+    const timePart = (myDateStart.getHours() < 10 ? '0' : '') + myDateStart.getHours()
+      + ':' + (myDateStart.getMinutes() < 10 ? '0' : '') + myDateStart.getMinutes() + ':'
+      + (myDateStart.getSeconds() < 10 ? '0' : '') + myDateStart.getSeconds();
+
+    return {
+      d_: datePart_,
+      t_: timePart,
+      full: datePart_ + ' ' + timePart
+    };
   }
   previousData=[];
   newTimeStamp=[];
@@ -366,7 +406,7 @@ for(var i=0;i<data.length;i++){
   }
 
   filterData() {
-    this.model.alert_type = this.filter;
+    // this.model.alert_type = this.filter;
     this.callKpis();
   }
   searchCiFilterMessage() {
