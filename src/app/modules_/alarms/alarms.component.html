@@ -73,7 +73,7 @@
     </div>
   </div>
 
-  <cats-ag-grid-table [myGridId]="'alarmGrid'" [title]="'Alarms Data'" [ticket_no]="ticket_no"
+  <cats-ag-grid-table (createEpisodeEventEmit)="createEpisode()" [showCreateEpisode]="showCreateEpisode" [myGridId]="'alarmGrid'" [title]="'Alarms Data'" [ticket_no]="ticket_no"
   [owner_name]="owner_name" [rowData]="alarmList" [dbAllcolumns]="dbAllcolumns" [timeLeft]="timeLeft" [timeRange]="timeRange" [tableHeight]="tableHeight" [responseTime]="responseTime"  (eventDetect)="onEventDetect($event)"></cats-ag-grid-table>
 
 </div>

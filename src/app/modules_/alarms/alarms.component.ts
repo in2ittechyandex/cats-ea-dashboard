@@ -27,6 +27,7 @@ import { NumberToDatePipe } from 'src/app/shared_/pipes_/number-to-date.pipe';
 import { TimeFilterService } from 'src/app/shared_/time-filter/time-filter.service.component';
 import { PagerService } from 'src/app/shared_/pager.service';
 import { CommonService } from 'src/app/common.service';
+import swal from 'sweetalert2';
 // import { TimeFilterService} from 'src/time-filter/time-filter.service.component';
 declare var require: any;
 // require('highcharts/highcharts-more')(Highcharts);
@@ -417,6 +418,7 @@ export class AlarmsComponent implements OnInit, OnDestroy {
   timeLeft: number = 60;
   showMinimise: boolean = false;
   responseTime = 0;
+  showCreateEpisode:boolean=false;
   constructor(
     // private nodeDataService:NodedataService,
     private commonService: CommonService,
@@ -460,6 +462,7 @@ export class AlarmsComponent implements OnInit, OnDestroy {
 
   }
   isFirstTime: boolean = true;
+  selectedAlarmList=[];
   onEventDetect(event) {
     const type = event['type'];
     const data = event['data'];
@@ -469,6 +472,59 @@ export class AlarmsComponent implements OnInit, OnDestroy {
     } else {
       this.handleMenuSelection(type, data);
     }
+    if(type=="alarm-selected"){
+      this.addOrDeleteAlarm(data);
+      // console.log("Selected alarm "+JSON.stringify(this.selectedAlarmList));
+    }
+     
+  }
+  addOrDeleteAlarm(data){
+    let isExist:boolean=false;
+    let selectedindex=0;
+    for(var i=0;i<this.selectedAlarmList.length;i++) {
+      
+      if(this.selectedAlarmList[i]['alarm_id']==data['alarm_id']){
+        
+        isExist=true;
+        selectedindex=i;
+      }
+    }
+    if(isExist){
+      this.selectedAlarmList.splice(selectedindex,1);
+      console.log("alarmId deleted "+data['alarm_id']);
+    }else{
+      this.selectedAlarmList.push(data);
+      console.log("alarmId Added "+data['alarm_id']);
+    }
+    if(this.selectedAlarmList.length==0){
+      this.showCreateEpisode=false;
+    }else{
+      this.showCreateEpisode=true;
+    }
+  }
+  createEpisode(){
+    swal({
+      title: "Create Episode",
+      text: "Enter episode name:",
+      input: 'text',
+      showCancelButton: true        
+  }).then((result) => {
+    if (result.value === "") {
+      swal("You need to write something!");
+      return false
+    }
+      if (result.value) {
+        swal("Episode created successfully");
+      }
+
+  });
+    
+    // this.selectedAlarmList=[];
+    // if(this.selectedAlarmList.length==0){
+    //   this.showCreateEpisode=false;
+    // }else{
+    //   this.showCreateEpisode=true;
+    // }
   }
   handleMenuSelection(menuselection: string, selectedRowObject) {
     console.log('ticket menu selection');

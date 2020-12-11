@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { EpisodeService } from './episode.services';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 
@@ -10,45 +10,108 @@ import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 })
 export class EpisodeComponent implements OnInit {
   closeResult = '';
-  constructor(private episodeService:EpisodeService, private modalService: NgbModal) { }
+  public columnDefs;
+  constructor(private episodeService:EpisodeService, private modalService: NgbModal) { 
+    this.columnDefs = [
+      
+      { 
+        headerName: 'Time',
+        field: 'created_time', 
+        sortable: true, 
+        filter: true, 
+        editable: false,
+        resizable: true,
+        'isActive':true
+      },
+      {
+        headerName: 'Name', 
+        field: 'name', 
+        sortable: true,
+        editable: false,
+        filter: true,
+        resizable: true,
+        'isActive':true
+      },
+      { 
+        headerName: 'Description', 
+        field: 'description', 
+        sortable: true, 
+        filter: true, 
+        editable: false,
+        draggable:true,
+        resizable: true,
+        'isActive':true
+      },
+      
+      {
+        headerName: 'Status', 
+        field: 'status', 
+        sortable: true,
+        editable: false,
+        filter: true,
+        resizable: true,
+        'isActive':true
+      }
+    ];
+    
+    this.tableHeight=(window.innerHeight-this.topmargin).toString(); 
+  }
+  topmargin=180;
+  @HostListener("window:resize")
+  onResize() {
+      this.tableHeight=(window.innerHeight-this.topmargin).toString();
+   
+  }
+  episodeList=[];
+  tableHeight='475';//588
+  secondsToRefresh: number = 60;
+  timeLeft: number = 60; 
+  responseTime=0;
 alarmList;
-
+isView:boolean=true;
 operatorList;
 filterList;
 nmsList;
 episodeModel={
   "name":"",
   "description":"",
-  "selectedNams":"",
+  "selectedNms":"",
   "selectedAlarm":"",
   "filterMapping":[{'filter':"",'operator':"",'value':""}],
   "notificationMapping":[{'type':"",'value':""}],
   "subject":"",
   "body":""
-
-  
-  
 }
-open(content) {
-  this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
-    this.closeResult = `Closed with: ${result}`;
-  }, (reason) => {
-    this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+ 
+toggleView(){
+  this.isView=!this.isView;
+}
+onEventDetect(event){
+  const type=event['type'];
+  const data=event['data'];
+  const event_=event['event']
+  if(type=='reload'){
+    this.callKpis();  
+  } 
+}
+callKpis() {
+
+  this.getAllEpisode();  
+
+}
+getAllEpisode() { 
+  this.episodeList=[];
+   this.episodeService.getAllEpisode().subscribe((res) => {
+    if (res.status) {
+      
+    this.episodeList=res['data'];
+    }
+    
+  }, (err) => {
+     
+     
   });
-
-}
-
-  
-private getDismissReason(reason: any): string {
-  if (reason === ModalDismissReasons.ESC) {
-    return 'by pressing ESC';
-  } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-    return 'by clicking on a backdrop';
-  } else {
-    return `with: ${reason}`;
-  }
-}
-
+} 
   ngOnInit() {
     this.episodeService.getAlarmList().subscribe((res)=>{
       if(res['status']){
@@ -70,6 +133,7 @@ private getDismissReason(reason: any): string {
         this.nmsList=res['data'];
       }
     });
+    this.callKpis();
   }
 
   addFilter(){

@@ -4,17 +4,25 @@ import { ICellRendererAngularComp } from 'ag-grid-angular';
 @Component({
     selector: "checkbox-cell",
     template: `
-    <i class="ion ion-md-alert fa-2x fa-fw pull-left m-r-10 text-red-lighter"></i>
+    <i class="fa fa-cog fa-2x text-grey f-s-15 check_icon" aria-hidden="true"  (click)="alarmSelected()" *ngIf="!isSelected"></i>
+    <i class="fa fa-cog fa-2x text-blue-lighter f-s-15 check_icon" aria-hidden="true"  (click)="alarmSelected()" *ngIf="isSelected"></i>
+    <i class="ion ion-md-alert fa-2x fa-fw text-red-lighter"></i>
        `,
     styles: []
 })
 export class MatCheckboxComponent implements ICellRendererAngularComp , OnDestroy {
     private params: any;
     severity = "MAJOR";
+    isSelected:boolean=false;
     agInit(params: any): void {
         this.params = params;
         this.severity = this.params.value;
 
+    }
+    alarmSelected(){
+        this.params.context.componentParent.alarmSelected(this.params.node.data);
+        
+        this.isSelected=!this.isSelected;
     }
     public invokeParentMethod() {
         this.params.context.componentParent.methodFromParent();

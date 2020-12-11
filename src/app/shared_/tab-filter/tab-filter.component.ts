@@ -24,6 +24,7 @@ export class TabFilterComponent implements OnInit {
   // @Input() dbAllcolumns;
   @Input() timer;
   @Input() showSetting:boolean=true;
+  @Input() showCreateEpisode:boolean=false;
   // @Output() reloadClick = new EventEmitter();
   // @Output() downloadClick = new EventEmitter();
   // @Output() headerModify = new EventEmitter();
@@ -137,10 +138,13 @@ export class TabFilterComponent implements OnInit {
   public flTxtCust_: string;
  
   @Input() reportId: string = '';
-
+@Output() createEpisodeEvent=new EventEmitter();
   constructor(private modalService: NgbModal, private formBuilder: FormBuilder, router: Router) {
     let routerurl = router.url;
     // this.reportId = routerurl.substring(routerurl.lastIndexOf('/') + 1);
+  }
+  createEpisode(){
+    this.createEpisodeEvent.emit();
   }
 checkHeader(headerName){
 if(headerName==='Raw Event'){

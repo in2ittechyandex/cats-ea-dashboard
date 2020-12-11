@@ -42,5 +42,9 @@ export class EpisodeService {
     return this.http.post(URL, {}).map(res => <any>res);
   }
          
-
+  getAllEpisode(){
+    const URL = environment._WEBGATEWAY_BASIC_URL_ + 'menu/kpi/get_master_episode_list';
+    // const URL = 'https://run.mocky.io/v3/832984eb-82f4-4d35-a400-5507cbe3f481';
+    return this.http.post(URL, {}).map(res => <any>res);
+  }
 }
