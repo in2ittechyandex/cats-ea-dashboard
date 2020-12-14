@@ -174,6 +174,13 @@ const pageMenusUser = [
     'label': '',
     'hide':false,
     'url': '/dashboard/syslog'
+  },
+  {
+    'icon': 'fa fa-cog',
+    'title': 'Tacacs',
+    'label': '',
+    'hide':false,
+    'url': '/dashboard/tacacs'
   }
 ];
 const pageMenusAdmin = [
