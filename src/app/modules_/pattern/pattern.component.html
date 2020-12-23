@@ -1,0 +1,157 @@
+
+
+<div class="container">
+    <ngx-loading [show]="loading" style="width:'100%';height:'100%'" [config]="{ backdropBorderRadius: '3px' }">
+      </ngx-loading>
+  <h1 class="page-header summary-heading mb-1">Pattern out of : {{totalEventCount}}</h1>
+  <div class="row mb-3">
+    <div class="col-md-8" style="padding-right:0px;">
+      <div class="list-group cursor-pointer" style="height: 543px; overflow-y: auto;">
+        <a class="list-group-item list-group-item-action" *ngFor="let pattern of patternlist;let i=index;"
+          [ngClass]="{'active':patternclickarray[i] === true}" (click)="clickedOnMsg(i,pattern.tag)">
+          <span class="marginleft">{{pattern.value}}% </span>{{pattern.tag}}
+          <a (click)="openFullScreen(modalDialog,pattern.tag)">
+            <i class="fa fa-info-circle pull-right" style="margin-right:20px;"></i></a>
+          <span [ngClass]="{'active-arrow':patternclickarray[i] === true}"></span>
+        </a>
+
+      </div>
+    </div>
+    <div class="col-md-4" style="padding-left:0px;">
+      <div class="divst">
+        <h6 class="text-center cursor-pointer" style="color:#888888;">ESTIMATED EVENTS</h6>
+        <h1 class="textsty">{{msgCount}}</h1>
+        <h5 class="font-weight-bold pl-3">Top 5 Contributing Hosts</h5>
+        <!-- <p class="text-center cursor-pointer"
+   style="letter-spacing: 0px;color:blue"><a (click)="viewEvent()">{{ciMsg}} Events</a></p> -->
+        <div class="list-group">
+          <a (click)="clickOnHost(ci.tag)" class="list-group-item list-group-item-action cursor-pointer"
+            style="font-size:12px; font-weight: bold;color: black; background: #00000000;border-color: #00000000;"
+            *ngFor="let ci of cilist">{{ci.tag}} ({{ci.value}})</a>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- #modal-dialog -->
+<ng-template #modalDialog let-c="close" let-d="dismiss">
+  <div class="modal-header" style="background: #242a30; padding:9px 15px;">
+    <h5 class="modal-title" style="color:#ffffff;">Message Trend</h5>
+    <button type="button" class="close" style="padding:5px 10px; color:#ffffff;" (click)="d('Cross click')" data-dismiss="modal" aria-hidden="true">×</button>
+  </div>
+  <div class="modal-body">
+      <ngx-loading [show]="loaderProbability" style="width:'100%';height:'100%'" [config]="{ backdropBorderRadius: '3px' }">
+        </ngx-loading>
+    <div class="row">
+      <div class="col-lg-12">
+        <!-- <fusioncharts [width]="width" [height]="height" [type]="type" [dataFormat]="dataFormat" [dataSource]="dataSource">
+            </fusioncharts> -->
+        <cats-am4-column-chart  [titleChart]="titleChart" [chartUniqueId]="chartId" [heightPixel]="height" [widthPer]="width"
+          [dataProvider]="dataSource.data" *ngIf="dataSource.data?.length>0"></cats-am4-column-chart>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <h5>Stats</h5>
+        <div class="table-responsive">
+          <!-- begin widget-table -->
+          <table class="table widget-table widget-table-rounded" data-id="widget">
+            <tbody>
+              <tr>
+                <td width="30%">Last 3 Months </td>
+                <td>
+                  <div class="progress progress-sm rounded-corner m-b-5 cursor-pointer"
+                    (click)="getChartProbability(90)">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated bg-orange f-s-10 f-w-600"
+                      [style.width]="probability.last90days+'%'">{{probability.last90days}}%</div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td width="30%">Last 1 Months </td>
+                <td>
+                  <div class="progress progress-sm rounded-corner m-b-5 cursor-pointer"
+                    (click)="getChartProbability(30)">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated bg-orange f-s-10 f-w-600"
+                      [style.width]="probability.last30days+'%'">{{probability.last30days}}%</div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td width="30%">Last 15 Days </td>
+                <td>
+                  <div class="progress progress-sm rounded-corner m-b-5 cursor-pointer"
+                    (click)="getChartProbability(15)">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated bg-success f-s-10 f-w-600"
+                      [style.width]="probability.last15days+'%'">{{probability.last15days}}%</div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td width="30%">Last 7 Days </td>
+                <td>
+                  <div class="progress progress-sm rounded-corner m-b-5 cursor-pointer"
+                    (click)="getChartProbability(7)">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated bg-indigo f-s-10 f-w-600"
+                      [style.width]="probability.last7days+'%'">{{probability.last7days}}%</div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <!-- end widget-table -->
+        </div>
+      </div>
+      <div class="col-md-6">
+        <h5>Probability</h5>
+        <div class="table-responsive">
+          <!-- begin widget-table -->
+          <table class="table widget-table widget-table-rounded" data-id="widget">
+            <tbody>
+              <tr>
+                <td width="30%">Next 3 Months </td>
+                <td>
+                  <div class="progress progress-sm rounded-corner m-b-5">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated bg-orange f-s-10 f-w-600"
+                      [style.width]="probability.next90days+'%'">{{probability.next90days}}%</div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td width="30%">Next 1 Months </td>
+                <td>
+                  <div class="progress progress-sm rounded-corner m-b-5">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated bg-orange f-s-10 f-w-600"
+                      [style.width]="probability.next30days+'%'">{{probability.next30days}}%</div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td width="30%">Next 15 Days </td>
+                <td>
+                  <div class="progress progress-sm rounded-corner m-b-5">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated bg-success f-s-10 f-w-600"
+                      [style.width]="probability.next15days+'%'">{{probability.next15days}}%</div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td width="30%"> Next 7 Days </td>
+                <td>
+                  <div class="progress progress-sm rounded-corner m-b-5">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated bg-indigo f-s-10 f-w-600"
+                      [style.width]="probability.next7day+'%'">{{probability.next7day}}%</div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <!-- end widget-table -->
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>

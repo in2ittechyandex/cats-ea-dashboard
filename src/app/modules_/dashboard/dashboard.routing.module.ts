@@ -37,6 +37,9 @@ const routes: Routes = [
             },{
                 path: 'tacacs', loadChildren: '../tacacs/tacacs.module#TacacsModule',
                 data: { preload: true, delay: false }
+            },{
+                path: 'pattern', loadChildren: '../pattern/pattern.module#PatternModule',
+                data: { preload: true, delay: false }
             },
             { path: 'events', loadChildren: '../events/events.module#EventsModule'  , data: { preload: true, delay: false } },
             { path: 'alarms', loadChildren: '../alarms/alarms.module#AlarmsModule' , data: { preload: true, delay: false } },

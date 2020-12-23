@@ -181,6 +181,13 @@ const pageMenusUser = [
     'label': '',
     'hide':false,
     'url': '/dashboard/tacacs'
+  },
+  {
+    'icon': 'fa fa-cog',
+    'title': 'Pattern',
+    'label': '',
+    'hide':false,
+    'url': '/dashboard/pattern'
   }
 ];
 const pageMenusAdmin = [

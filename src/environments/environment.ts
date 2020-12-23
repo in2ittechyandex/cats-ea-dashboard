@@ -5,7 +5,7 @@
 export const environment = {
   production: false,
   _WEBGATEWAY_BASIC_URL_:  'http://172.27.63.182:8089/',
-  _AlarmURL : 'http://172.27.64.92:9000/',
+  _AlarmURL : 'http://172.27.64.91:7000/',
   _EventURL : 'http://172.27.64.92:9000/',
   _APACHEDEPLOYMENTLOCATION_URL: 'http://172.27.63.163:4200/#/',
   _NMS_URL: 'http://172.27.64.61:5050/',
