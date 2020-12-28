@@ -656,8 +656,8 @@ export class AgGridTableComponent implements OnInit, OnChanges ,OnDestroy ,After
   onRightClick(event, params) {
     this.disableContextMenu();
     this.selectedRowObject = params;
-    console.log("this.selectedRowObject.input_source  " + this.selectedRowObject.input_source)
-    if (this.selectedRowObject.input_source == "INALA" || this.selectedRowObject.input_source == "RFTS") {
+    console.log("this.selectedRowObject.input_source  " + this.selectedRowObject.Input_Source)
+    if (this.selectedRowObject.Input_Source == "INALA" || this.selectedRowObject.Input_Source == "RFTS") {
       this.rightClickTopMargin = 180;
     } else {
       this.rightClickTopMargin = 130;

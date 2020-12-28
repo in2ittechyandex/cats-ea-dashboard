@@ -1,0 +1,325 @@
+<h4 mat-dialog-title class="modal-title">Incident Description <button type="button" class="close" style="float: right;"
+    mat-dialog-close>×</button></h4>
+<mat-dialog-content>
+  <div style="width:100%; height:15px; border-bottom: 1px solid black; text-align: center">
+    <span style="font-size:18px; background-color:#ffffff; padding:0 10px;">
+      {{(data['input_source']==='EMC NMS'?'Remedy':'Service Now')}}
+    </span>
+  </div>
+  <div style="margin-top: 3%;" *ngIf="noRecordFound">
+  <!--   <div class="row mb-2" *ngFor="let h of actionformdataServiceNowKeys;let i=index;">
+      <div class="col-sm-4" *ngIf="h!='Sys Id'">
+        <label for="exampleInputEmail1">{{h}}</label>
+      </div>
+      <div class="col-sm-8" *ngIf="h!='Sys Id'">
+        <input type="text" class="form-control" placeholder="" [(ngModel)]="actionformdataServiceNow[h]" name="{{h}}"
+          id="firstname">
+      </div>
+    </div>
+    <div class="row">
+      <div class="form-group col-sm-12">
+        <button (click)="showIncident();" type="button" class="btn btn-dark float-right">
+          <i class="fa fa-plus-circle" aria-hidden="true"></i> &nbsp; View Incident
+        </button>
+      </div>
+    </div>
+  </div> -->
+  
+  <div class="row" *ngIf="incidentDataReceived">
+    <div class="col-sm-3" *ngFor="let h of incidentDetailsKey;let i=index;">
+      <div class="form-group" *ngIf="h!='Sys Id'">
+        <ng-container *ngIf="h!='Incident Description'">
+            <label for="exampleInputEmail1">{{h}}</label>
+            <input type="text" readonly data-toggle="tooltip" data-placement="top" title="{{incidentDetails[h]}}"
+              class="form-control" placeholder="" [(ngModel)]="incidentDetails[h]" name="{{h}}" id="firstname">
+        </ng-container>
+        <ng-container *ngIf="h=='Incident Description'">
+            <label for="exampleInputEmail1">{{h}}</label>
+            <textarea readonly data-toggle="tooltip" data-placement="top" title="{{incidentDetails[h]}}"
+            class="form-control" placeholder="" [(ngModel)]="incidentDetails[h]" name="{{h}}" id="firstname"></textarea>
+            
+            <!-- <input type="textarea" readonly data-toggle="tooltip" data-placement="top" title="{{incidentDetails[h]}}"
+              class="form-control" placeholder="" [(ngModel)]="incidentDetails[h]" name="{{h}}" id="firstname"> -->
+        </ng-container>
+        <!-- <label for="exampleInputEmail1">{{h}}</label>
+        <input type="text" readonly data-toggle="tooltip" data-placement="top" title="{{incidentDetails[h]}}"
+          class="form-control" placeholder="" [(ngModel)]="incidentDetails[h]" name="{{h}}" id="firstname"> -->
+      </div>
+    </div>
+  </div>
+  <form>
+    <hr>
+    <div id="tab_w_50">
+      <ngb-tabset (tabChange)="setSelectedTabWorklog($event)">
+        <ngb-tab id="worklog">
+          <ng-template ngbTabTitle>
+            <span class="d-sm-none">Worklog</span>
+            <span class="d-sm-block d-none">Worklog</span>
+          </ng-template>
+          <ng-template ngbTabContent>
+            <div class="form-group row">
+              <div class="col-md-12">
+                <div class="form-group ">
+                  <label class="col-form-label">Enter Worklog</label>
+                  <textarea style="height:80px;" class="form-control" placeholder="Enter Worklog"
+                    name="incident_reson" [(ngModel)]="incidentData.reason_resolve" id="incident_reson"></textarea>
+                </div>
+
+              </div>
+              <div class="col-md-12">
+                <button type="submit" (click)="addworklog()" class="btn btn-sm btn-dark btn-sm float-right">Submit
+                  Worklog</button>
+              </div>
+            </div>
+
+            <div class="table-responsive">
+              <table class="table table-valign-middle force-overflow">
+                <thead>
+                  <tr *ngIf="data['input_source']==='EMC NMS';else notemc">
+                   
+                    <th style="width:200px;"> Date </th>
+                    <th style="width:200px;"> User </th>
+                    <th style="width:60%;"> Description </th>
+
+                  </tr>
+                  <ng-template #notemc>
+                    <tr>
+                      <th style="width:200px;"> Start Time</th>
+                      <th style="width:200px;"> End Time</th>
+                      <th style="width:200px;"> Technician</th>
+                      <th style="width:60%;"> Description</th>
+  
+                    </tr>
+                  </ng-template>
+                  
+                </thead>
+                <tbody>
+                  <ng-container *ngIf="data['input_source']==='EMC NMS';else notemcdata">
+                      <tr *ngFor="let data of workLogData; let i=index;" style="color: black;">
+                         
+                          <td style="width:200px;">{{data.date}}</td>
+                          <td style="width:200px;">{{data.user}}</td>
+                          <td style="width:60%;">
+                          <ng-container *ngFor="let str of breakLongText(data.message)">
+                            {{str}}<br>
+                          </ng-container>
+                        </td>
+                        </tr>
+                  </ng-container>
+                  <ng-template #notemcdata>
+                      <tr *ngFor="let data of workLogData; let i=index;" style="color: black;">
+                          <td style="width:200px;">{{data.starttime}}</td>
+                          <td style="width:200px;">{{data.endtime}}</td>
+                          <td style="width:200px;">{{data.technician}}</td>
+                          <td style="width:60%;">
+                            <ng-container *ngFor="let str of breakLongText(data.description)">
+                              {{str}}<br>
+                            </ng-container>
+                          </td>
+      
+                          
+                        </tr>
+                  </ng-template>
+                  
+
+                </tbody>
+              </table>
+            </div>
+          </ng-template>
+        </ngb-tab>
+
+        <ngb-tab id="editworklog">
+          <ng-template ngbTabTitle>
+            <span class="d-sm-none">Edit Ticket</span>
+            <span class="d-sm-block d-none">Edit Ticket</span>
+          </ng-template>
+          <ng-template ngbTabContent>
+            <div class="form-group row">
+
+              <div class="col-md-4">
+                <div class="form-group ">
+                  <label class="col-form-label">Incident Status</label>
+                  <select class="form-control" name="incidentStatusType" id="incidentStatusType"
+                    [(ngModel)]="incidentStatus.selected" (change)="incidentStatusChange()">
+                    <option value="" selected="">Select Incident Status</option>
+                    <option *ngFor="let r_ of incidentStatus.data;let i=index;" value="{{r_.id}}">{{r_.name}}
+                    </option>
+                  </select>
+                </div>
+
+              </div>
+              <div class="col-md-4">
+                <div class="form-group" *ngIf="showCloserNotes">
+                  <label class="col-form-label">Resolution Category</label>
+                  <select class="form-control" name="resolutionCode" id="resolutionCode"
+                    [(ngModel)]="resolutionCode.selected" (change)="incidentStatusChange()">
+                    <option value="" selected="">Select Resolution Category</option>
+                    <option *ngFor="let r_ of resolutionCode.data;let i=index;" value="{{r_.close_code}}">
+                      {{r_.close_code}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group" *ngIf="showCloserNotes">
+                  <label class="col-form-label">Comment</label>
+                  <textarea style="margin-bottom:25px; height:100px;" class="form-control"
+                    placeholder="Enter Reason" name="incident_reson" [(ngModel)]="incidentData.reason_resolve"
+                    id="incident_reson"></textarea>
+                </div>
+
+              </div>
+              <div class="col-md-6 offset-md-3 text-center">
+                <button type="submit" [disabled]="checkDisable()" (click)="resolution()"
+                  class="btn btn-sm btn-dark btn-sm">Update</button>
+
+              </div>
+            </div>
+
+          </ng-template>
+        </ngb-tab>
+      </ngb-tabset>
+    </div>
+  </form>
+</div>
+  <div style="margin-top: 3%;" class="row" *ngIf="!noRecordFound">
+    <div class="col-sm-8" style="float:right;" *ngIf="!loading">
+      No incident created for this alarm
+    </div>
+  </div>
+</mat-dialog-content>
+<!-- <mat-dialog-actions align="end"> 
+    <button mat-button [mat-dialog-close]="true" cdkFocusInitial>Close</button>
+  </mat-dialog-actions>  -->
+
+<button id="modalViewIncidentId1" (click)="openFullScreen(modalViewIncidentDialog1)" [hidden]="true" data-toggle="modal"
+  data-target="#modalTrendDialog">
+  Open Modal
+</button>
+<ng-template #modalViewIncidentDialog1 let-c="close" let-d="dismiss">
+  <div>
+    <div class="modal-header" style="background: #242a30; padding:9px 15px;">
+      <h5 class="modal-title" style="color:#fff;">View Incident</h5>
+      <button type="button" style="color:#fff; padding:5px 10px;" class="close" (click)="d('Cross click')">×</button>
+    </div>
+
+    <div class="modal-body" style="background-color: #ffffff;">
+
+      <div class="row" *ngIf="incidentDataReceived">
+        <div class="col-sm-2" *ngFor="let h of incidentDetailsKey;let i=index;">
+          <div class="form-group" *ngIf="h!='Sys Id'">
+            <label for="exampleInputEmail1">{{h}}</label>
+            <input type="text" readonly data-toggle="tooltip" data-placement="top" title="{{incidentDetails[h]}}"
+              class="form-control" placeholder="" [(ngModel)]="incidentDetails[h]" name="{{h}}" id="firstname">
+          </div>
+        </div>
+      </div>
+      <form>
+        <hr>
+        <div id="tab_w_50">
+          <ngb-tabset (tabChange)="setSelectedTabWorklog($event)">
+            <ngb-tab id="worklog">
+              <ng-template ngbTabTitle>
+                <span class="d-sm-none">Worklog</span>
+                <span class="d-sm-block d-none">Worklog</span>
+              </ng-template>
+              <ng-template ngbTabContent>
+                <div class="form-group row">
+                  <div class="col-md-12">
+                    <div class="form-group ">
+                      <label class="col-form-label">Enter Worklog</label>
+                      <textarea style="height:80px;" class="form-control" placeholder="Enter Worklog"
+                        name="incident_reson" [(ngModel)]="incidentData.reason_resolve" id="incident_reson"></textarea>
+                    </div>
+
+                  </div>
+                  <div class="col-md-12">
+                    <button type="submit" (click)="addworklog()" class="btn btn-sm btn-dark btn-sm float-right">Submit
+                      Worklog</button>
+                  </div>
+                </div>
+
+                <div class="table-responsive">
+                  <table class="table table-valign-middle force-overflow">
+                    <thead>
+                      <tr>
+                        <th style="width:200px;"> Start Time</th>
+                        <th style="width:200px;"> End Time</th>
+                        <th style="width:200px;"> Technician </th>
+                        <th style="width:60%;"> Description </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let data of workLogData; let i=index;" style="color: black;">
+                        <td style="width:200px;">{{data.starttime}}</td>
+                        <td style="width:200px;">{{data.endtime}}</td>
+                        <td style="width:200px;">{{data.technician}}</td>
+                        <td style="width:60%;">
+                          <ng-container *ngFor="let str of breakLongText(data.description)">
+                            {{str}}<br>
+                          </ng-container>
+                        </td>
+                      </tr>
+
+                    </tbody>
+                  </table>
+                </div>
+              </ng-template>
+            </ngb-tab>
+
+            <ngb-tab id="editworklog">
+              <ng-template ngbTabTitle>
+                <span class="d-sm-none">Edit Ticket</span>
+                <span class="d-sm-block d-none">Edit Ticket</span>
+              </ng-template>
+              <ng-template ngbTabContent>
+                <div class="form-group row">
+
+                  <div class="col-md-4">
+                    <div class="form-group ">
+                      <label class="col-form-label">Incident Status</label>
+                      <select class="form-control" name="incidentStatusType" id="incidentStatusType"
+                        [(ngModel)]="incidentStatus.selected" (change)="incidentStatusChange()">
+                        <option value="" selected="">Select Incident Status</option>
+                        <option *ngFor="let r_ of incidentStatus.data;let i=index;" value="{{r_.id}}">{{r_.name}}
+                        </option>
+                      </select>
+                    </div>
+
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group" *ngIf="showCloserNotes">
+                      <label class="col-form-label">Resolution Category</label>
+                      <select class="form-control" name="resolutionCode" id="resolutionCode"
+                        [(ngModel)]="resolutionCode.selected" (change)="incidentStatusChange()">
+                        <option value="" selected="">Select Resolution Category</option>
+                        <option *ngFor="let r_ of resolutionCode.data;let i=index;" value="{{r_.close_code}}">
+                          {{r_.close_code}}</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group" *ngIf="showCloserNotes">
+                      <label class="col-form-label">Comment</label>
+                      <textarea style="margin-bottom:25px; height:100px;" class="form-control"
+                        placeholder="Enter Reason" name="incident_reson" [(ngModel)]="incidentData.reason_resolve"
+                        id="incident_reson"></textarea>
+                    </div>
+
+                  </div>
+                  <div class="col-md-6 offset-md-3 text-center">
+                    <button type="submit" [disabled]="checkDisable()" (click)="resolution()"
+                      class="btn btn-sm btn-dark btn-sm">Update</button>
+
+                  </div>
+                </div>
+
+              </ng-template>
+            </ngb-tab>
+          </ngb-tabset>
+        </div>
+      </form>
+
+
+    </div>
+  </div>
+</ng-template>

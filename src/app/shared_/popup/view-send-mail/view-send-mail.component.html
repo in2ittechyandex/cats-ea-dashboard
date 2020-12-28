@@ -1,0 +1,400 @@
+<h4 mat-dialog-title class="modal-title">Send Mail<button type="button" class="close" style="float: right;" mat-dialog-close>×</button></h4>
+<mat-dialog-content>
+  <div *ngIf="noRecordFound" id="tab_w_33">
+      <ngx-loading [show]="loading" style="width:'100%';height:'100%'" [config]="{ backdropBorderRadius: '3px' }">
+        </ngx-loading>
+    <ngb-tabset>
+
+        <ngb-tab>
+          <ng-template ngbTabTitle>
+            <span class="d-sm-none">Alarm Fault Notification</span>
+            <span class="d-sm-block d-none">Alarm Fault Notification</span>
+          </ng-template>
+          <ng-template ngbTabContent>
+              <form class="form form-horizontal form-bordered scroll" role="form" autocomplete="off">
+                  <div class="form-group row">
+                    <label class="col-lg-3 col-form-label form-control-label">Site name</label>
+                    <div class="col-lg-9">
+                      <input readonly class="form-control form-control-sm" type="text" name="SiteName" [(ngModel)]="notificationAlarmData['Site Name']" readonly>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-lg-3 col-form-label form-control-label">Date and time triggered</label>
+                    <div class="col-lg-9">
+                      <input readonly class="form-control form-control-sm" type="text" name="date_and_time_triggered" [(ngModel)]="notificationAlarmData['Date and Time Triggered']">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-lg-3 col-form-label form-control-label">Alarm Triggered</label>
+                    <div class="col-lg-9">
+                      <!-- <input readonly  class="form-control form-control-sm" type="text" name="alarm_triggered" [(ngModel)]="notificationAlarmData['Alarms Triggered']"> -->
+                       <ul style="list-style-type:none;">
+                         <li *ngFor="let str of getTokenizeArray(notificationAlarmData['Alarms Triggered'])">{{str}}</li>
+                       </ul>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-lg-3 col-form-label form-control-label">Alarm Status</label>
+                    <div class="col-lg-9">
+                      <input readonly class="form-control form-control-sm" type="text" name="alarm_status" [(ngModel)]="notificationAlarmData['Alarm Status']">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-lg-3 col-form-label form-control-label">Escalated to (FST/Vendor)</label>
+                    <div class="col-lg-9">
+                      <input class="form-control form-control-sm" type="url" name="EscalatedToFSTVendor" [(ngModel)]="notificationAlarmData['Escalated To (FST/Vendor)']">
+                    </div>
+                  </div>
+                 
+                  <div class="form-group row">
+                    <label class="col-lg-3 col-form-label form-control-label">Method of Notification</label>
+                    <div class="col-lg-9">
+                      <input readonly class="form-control form-control-sm" type="text" name="method_of_notification" [(ngModel)]="notificationAlarmData['Method of Notification']">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-lg-3 col-form-label form-control-label">NOC Ref. Number </label>
+                    <div class="col-lg-9">
+                      <input class="form-control form-control-sm" type="text" value="" name="NocRefNumber" [(ngModel)]="notificationAlarmData['Noc Ref Number']">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-lg-3 col-form-label form-control-label">Incident Number</label>
+                    <div class="col-lg-9">
+                      <input readonly class="form-control form-control-sm" type="text" name="incident_number" [(ngModel)]="notificationAlarmData['Incident Number']">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-lg-3 col-form-label form-control-label">Case Opened By</label>
+                    <div class="col-lg-9">
+                      <input readonly class="form-control form-control-sm" type="text" name="case_opened_by" [(ngModel)]="notificationAlarmData['Case Opened By']">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-lg-3 col-form-label form-control-label">Device IP</label>
+                    <div class="col-lg-9">
+                      <input class="form-control form-control-sm" type="text" name="NMS_IP" [(ngModel)]="notificationAlarmData['NMS IP']">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-lg-3 col-form-label form-control-label">Stack Code</label>
+                    <div class="col-lg-9">
+                      <input class="form-control form-control-sm" type="text" name="StackCode" [(ngModel)]="notificationAlarmData['StackCode']">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-lg-3 col-form-label form-control-label">Initial Fault Analysis</label>
+                    <div class="col-lg-9">
+                      <input class="form-control form-control-sm" type="text" name="initial_fault_analysis" [(ngModel)]="notificationAlarmData['Initial Fault Analysis']">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-lg-3 col-form-label form-control-label">Comments *</label>
+                    <div class="col-lg-9">
+                      <textarea rows="2" class="form-control form-control-sm" name="comments" [(ngModel)]="notificationAlarmData['Comments']"></textarea>
+                    </div>
+                  </div>
+            
+                  <hr>
+                  <label>Enter email address seperated by comma (do not put spaces)</label>
+                  <div class="form-group row">
+                    <label class="col-lg-3 col-form-label form-control-label">Email Order List</label>
+                    <div class="col-lg-9">
+                      <input class="form-control form-control-sm" type="email" name="email_order_list" [(ngModel)]="notificationAlarmData.email_order_list">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-lg-3 col-form-label form-control-label">Sender</label>
+                    <div class="col-lg-9">
+                        <input class="form-control form-control-sm" type="text" name="sender" [(ngModel)]="notificationAlarmData.Sender">
+                      </div>
+                  </div>
+                  <div class="form-group row">
+                      <div class="col-lg-12">
+                         
+                        <button (click)="sendMail()" [disabled]="checkDisableSendMail()" class="btn btn-primary">Send Notification</button>
+                      </div>
+                    </div>
+                </form>
+            
+          </ng-template>
+        </ngb-tab>
+
+        <ngb-tab>
+          <ng-template ngbTabTitle>
+            <span class="d-sm-none">Alarm Fault Update</span>
+            <span class="d-sm-block d-none">Alarm Fault Update</span>
+          </ng-template>
+          <ng-template ngbTabContent>
+              <form class="form form-horizontal form-bordered scroll" role="form" autocomplete="off">
+                  <div class="form-group row">
+                    <label class="col-lg-3 col-form-label form-control-label">Site name</label>
+                    <div class="col-lg-9">
+                      <input readonly class="form-control form-control-sm" type="text" name="SiteName" [(ngModel)]="updateAlarmData['Site Name']">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-lg-3 col-form-label form-control-label">Date and time triggered</label>
+                    <div class="col-lg-9">
+                      <input readonly class="form-control form-control-sm" type="text" name="DateandTimeTriggered" [(ngModel)]="updateAlarmData['Date and Time Triggered']">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                      <label class="col-lg-3 col-form-label form-control-label">Date and time of Update</label>
+                      <div class="col-lg-9">
+                        <input readonly class="form-control form-control-sm" type="text" name="DateandTimeofUpdate" [(ngModel)]="updateAlarmData['Date and Time of Update']">
+                      </div>
+                    </div>
+                  <div class="form-group row">
+                    <label class="col-lg-3 col-form-label form-control-label">Alarm Triggered</label>
+                    <div class="col-lg-9">
+                      <!-- <input readonly class="form-control form-control-sm" type="text" name="AlarmsTriggered" [(ngModel)]="updateAlarmData['Alarms Triggered']"> -->
+                      <ul style="list-style-type:none;" class="mb-0">
+                        <li *ngFor="let str of getTokenizeArray(updateAlarmData['Alarms Triggered'])">{{str}}</li>
+                      </ul>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-lg-3 col-form-label form-control-label">Alarm Status</label>
+                    <div class="col-lg-9">
+                      <input readonly class="form-control form-control-sm" type="text" name="AlarmStatus" [(ngModel)]="updateAlarmData['Alarm Status']">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-lg-3 col-form-label form-control-label">UNoc Case Number</label>
+                    <div class="col-lg-9">
+                      <input readonly class="form-control form-control-sm" type="url" name="UNocCase_Number" [(ngModel)]="updateAlarmData['UNoc Case Number']">
+                    </div>
+                  </div>
+                  
+                  <div class="form-group row">
+                    <label class="col-lg-3 col-form-label form-control-label">Case Updated By</label>
+                    <div class="col-lg-9">
+                      <input readonly class="form-control form-control-sm" type="text" name="CaseUpdatedBy" [(ngModel)]="updateAlarmData['Case Updated By']">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-lg-3 col-form-label form-control-label">Current Battery Voltage</label>
+                    <div class="col-lg-9">
+                      <input class="form-control form-control-sm" type="text" name="CurrentBatteryVoltage" [(ngModel)]="updateAlarmData['Current Battery Voltage']">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                      <label class="col-lg-3 col-form-label form-control-label">Current Site Temperature</label>
+                      <div class="col-lg-9">
+                        <input class="form-control form-control-sm" type="text" name="CurrentSiteTemperature" [(ngModel)]="updateAlarmData['Current Site Temperature']">
+                      </div>
+                    </div>
+                  <div class="form-group row">
+                    <label class="col-lg-3 col-form-label form-control-label">DG Deployed</label>
+                    <div class="col-lg-9">
+                       
+                      <select class="form-control" name="resolutionCode" id="resolutionCode"
+                      [(ngModel)]="updateAlarmData['DG deployed']" (change)="onDgDeployed()">
+                      <!-- <option value="" selected="">Select Status</option> -->
+                      <option value="YES">YES</option>
+                      <option value="NO">NO</option>
+                    </select>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-lg-3 col-form-label form-control-label">Deployment Date/Time</label>
+                    <div class="col-lg-9">
+                      <div class="row"  *ngIf="updateAlarmData['DG deployed']=='YES'">
+                        <div class="col-sm-6">
+                          {{updateAlarmData['Deployment Date/Time']}}
+                        </div>
+                        <div class="col-sm-6">
+                          <!-- <common-app-time-filter
+                          class="date_time"
+                          (onDateSelect)="onStartDateChange($event)"
+                          [configStyle]="{
+                            singleDatePicker: true
+                          }"
+                         >
+                        </common-app-time-filter> -->
+                        </div>
+                      </div>
+                     
+                    </div>
+                  </div>
+                  
+                  <div class="form-group row">
+                    <label class="col-lg-3 col-form-label form-control-label">Comments *</label>
+                    <div class="col-lg-9">
+                      <textarea rows="2" class="form-control form-control-sm" name="Commentsupdate" [(ngModel)]="updateAlarmData['Comments']"></textarea>
+                    </div>
+                  </div>
+            
+                  <hr>
+                  <label>Enter email address seperated by comma (do not put spaces)</label>
+                  <div class="form-group row">
+                    <label class="col-lg-3 col-form-label form-control-label">Email Order List</label>
+                    <div class="col-lg-9">
+                      <input class="form-control form-control-sm" type="email"
+                      name="email_order_listupdate" [(ngModel)]="updateAlarmData['email_order_list']">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-lg-3 col-form-label form-control-label">Sender</label>
+                    <div class="col-lg-9">
+                        <input class="form-control form-control-sm" type="email"
+                        name="Senderupdate" [(ngModel)]="updateAlarmData['Sender']">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                      <div class="col-lg-12">
+                         <input type="button" [disabled]="checkDisableUpdateMail()" (click)="updateNotification()" class="btn btn-primary" value="Update Notification">
+                      </div>
+                    </div>
+                </form>
+          </ng-template>
+        </ngb-tab>
+
+        <ngb-tab [disabled]="enableResolutionTab">
+            <ng-template ngbTabTitle>
+              <span class="d-sm-none">Alarm Fault Resolution</span>
+              <span class="d-sm-block d-none">Alarm Fault Resolution</span>
+            </ng-template>
+            <ng-template ngbTabContent>
+                <form class="form form-horizontal form-bordered scroll" role="form" autocomplete="off">
+                    <div class="form-group row">
+                      <label class="col-lg-3 col-form-label form-control-label">Site name</label>
+                      <div class="col-lg-9">
+                        <input class="form-control form-control-sm" type="text" name="SiteName" [(ngModel)]="resolutionAlarmData['Site Name']">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-lg-3 col-form-label form-control-label">Date and time triggered</label>
+                      <div class="col-lg-9">
+                        <input class="form-control form-control-sm" type="text" name="Date_and_Time_Triggered" [(ngModel)]="resolutionAlarmData['Date and Time Triggered']">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-lg-3 col-form-label form-control-label">Date and time Cleared</label>
+                        <div class="col-lg-9">
+                          <input class="form-control form-control-sm" type="text" name="Date_and_Time-Cleared" [(ngModel)]="resolutionAlarmData['Date and Time Cleared']">
+                        </div>
+                      </div>
+                    
+                    <div class="form-group row">
+                      <label class="col-lg-3 col-form-label form-control-label">Alarm Status</label>
+                      <div class="col-lg-9">
+                        <input class="form-control form-control-sm" type="text" name="AlarmStatus" [(ngModel)]="resolutionAlarmData['Alarm Status']">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-lg-3 col-form-label form-control-label">Period</label>
+                        <div class="col-lg-9">
+                          <input class="form-control form-control-sm" type="text" name="Period" [(ngModel)]="resolutionAlarmData['Period']">
+                        </div>
+                      </div>
+                    <div class="form-group row">
+                      <label class="col-lg-3 col-form-label form-control-label">UNoc Case Number</label>
+                      <div class="col-lg-9">
+                        <input class="form-control form-control-sm" type="url" name="UNocCaseNumber" [(ngModel)]="resolutionAlarmData['UNoc Case Number']">
+                      </div>
+                    </div>
+                    
+                    <div class="form-group row">
+                      <label class="col-lg-3 col-form-label form-control-label">Case Closed By</label>
+                      <div class="col-lg-9">
+                        <input class="form-control form-control-sm" type="text" name="CaseClosedBy" [(ngModel)]="resolutionAlarmData['Case Closed By']">
+                      </div>
+                    </div>
+                    
+                    <div class="form-group row">
+                      <label class="col-lg-3 col-form-label form-control-label">DG Deployed Date/Time</label>
+                      <div class="col-lg-9">
+                        <input class="form-control form-control-sm" type="text" name="DGDeployedDateTime" [(ngModel)]="resolutionAlarmData['DG Deployed Date/Time']">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-lg-3 col-form-label form-control-label">DG recovered Date/Time</label>
+                      <div class="col-lg-9">
+                        <!-- <input class="form-control form-control-sm" type="text" name="DGrecoveredDateTime" [(ngModel)]="resolutionAlarmData['DG recovered Date/Time']"> -->
+                        <div class="row" *ngIf='resolutionAlarmData["DG Deployed Date/Time"]!=""'>
+                          <div class="col-sm-6">
+                            {{resolutionAlarmData['DG recovered Date/Time']}}
+                          </div>
+                          <div class="col-sm-6">
+                            <!-- <app-time-filter
+                            class="date_time"
+                            (onDateSelect)="onStartDateChangeResolution($event)"
+                            [configStyle]="{
+                              singleDatePicker: true
+                            }"
+                           >
+                          </app-time-filter> -->
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-lg-3 col-form-label form-control-label">DG fuel supplied</label>
+                        <div class="col-lg-9">
+                          <input class="form-control form-control-sm" type="text" name="DGfuelsupplied" [(ngModel)]="resolutionAlarmData['DG fuel supplied']">
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                          <label class="col-lg-3 col-form-label form-control-label">DG Deployed Duration</label>
+                          <div class="col-lg-9">
+                            <input class="form-control form-control-sm" type="text" name="DGDeployedduration" [(ngModel)]="resolutionAlarmData['DG Deployed duration']">
+                          </div>
+                        </div>
+                    <div class="form-group row">
+                      <label class="col-lg-3 col-form-label form-control-label">Comments *</label>
+                      <div class="col-lg-9">
+                        <textarea rows="3" class="form-control form-control-sm" name="CommentsReso" [(ngModel)]="resolutionAlarmData['Comments']"></textarea>
+                      </div>
+                    </div>
+              
+                    <hr>
+                    <label>Enter email address seperated by comma (do not put spaces)</label>
+                    <div class="form-group row">
+                      <label class="col-lg-3 col-form-label form-control-label">Email Order List</label>
+                      <div class="col-lg-9">
+                        <input class="form-control form-control-sm" type="email"
+                        name="email_order_list_reso" [(ngModel)]="resolutionAlarmData['email_order_list']">
+                      </div>
+                    </div>
+                    <div class="form-group row"> 
+                      <label class="col-lg-3 col-form-label form-control-label">Resolution Category</label>
+                      <div class="col-lg-9">
+                        <select class="form-control" name="resolutionCode" id="resolutionCode"
+                        [(ngModel)]="resolutionCode.selected">
+                        <option value="" selected="">Select Resolution Category</option>
+                        <option *ngFor="let r_ of resolutionCode.data;let i=index;" value="{{r_.close_code}}">{{r_.close_code}}</option>
+                      </select>
+                      </div>
+                    </div>
+                   
+                 
+                    <div class="form-group row">
+                      <label class="col-lg-3 col-form-label form-control-label">Sender</label>
+                      <div class="col-lg-9">
+                        <input class="form-control form-control-sm" type="email"
+                        name="Senderreso" [(ngModel)]="resolutionAlarmData['Sender']">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-lg-12">
+                           
+                          <button type="button" [disabled]="checkForResolution()&&checkDisableResolveMail()" (click)="resolutionMail()" class="btn btn-primary" value="">Resolve Notification</button>
+                        </div>
+                      </div>
+                  </form>
+            </ng-template>
+          </ngb-tab>
+
+      </ngb-tabset>
+    </div>
+      <div style="margin-top: 3%;"  class="row" *ngIf="!noRecordFound">
+          <div class="col-sm-8" style="float:right;" *ngIf="!loading">
+            No incident created for this alarm
+          </div>
+        </div> 
+ </mat-dialog-content>      
+
+
+ 

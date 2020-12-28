@@ -1,0 +1,10 @@
+
+
+
+::ng-deep.mat-dialog-container{padding:0px !important;}
+::ng-deep.mat-dialog-content{margin:0px !important;}
+::ng-deep.mat-dialog-title {margin:0 0 15px; display:block; font-size:15px; font-weight:600 !important;
+font-family:'Muli', sans-serif !important; background:#242a30; color:#fff; padding:4px 10px;}
+::ng-deep button.close {color: #fff; opacity:1; margin-top:8px;}
+::ng-deep button.close:hover {color: #fff; opacity:1;}
+.close:not(:disabled):not(.disabled):focus, .close:not(:disabled):not(.disabled):hover{color: #fff; opacity:1;}

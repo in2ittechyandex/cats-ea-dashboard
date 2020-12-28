@@ -1,0 +1,63 @@
+ <div  [class.isPrinting]="printService.isPrinting">
+    <h5 mat-dialog-title>Alarm Description -{{title}}
+        <button type="button" class="close" style="float:right;" mat-dialog-close>×</button></h5>
+     <!-- <mat-dialog-content>    
+          <form class="form" role="form" autocomplete="off">  
+          <div class="form-group row mb-2" *ngFor="let h of actionformdataEventsKeys;let i=index;">
+            <label class="col-lg-3 col-form-label form-control-label">{{h}}</label>
+            <div class="col-lg-9">
+              <input readonly  class="form-control form-control-sm" type="text" 
+              title="{{actionformdataEvents[h]}}" [(ngModel)]="actionformdataEvents[h]" name="{{h}}" id="firstname">
+            </div>
+          </div>
+           </form>  
+      </mat-dialog-content>    -->
+      
+      
+      <mat-dialog-content>
+      <div class="modal-body p-0" id="tab_w_50" style="background-color: #ffffff;">
+        <ngb-tabset>
+          <ngb-tab>
+            <ng-template ngbTabTitle>
+              <span class="d-sm-none">Alarm Details</span>
+              <span class="d-sm-block d-none">Alarm Details</span>
+            </ng-template>
+             <!-- style="height:330px; overflow:auto;" -->
+            <ng-template ngbTabContent>
+              <div class="style-4">
+                <table class="table table-bordered mb-0 table-sm">
+                  <tr *ngFor="let key of actionformdataEventsKeys">
+                  <td width="20%" class="text-capitalize"><strong>{{key}} </strong></td>
+                  <td width="80%">{{this.actionformdataEvents?this.actionformdataEvents[key]:""}}</td>
+                </tr>
+                </table>
+                </div>
+              </ng-template>
+          </ngb-tab>
+    
+          <ngb-tab>
+            <ng-template ngbTabTitle>
+              <span class="d-sm-none">Child Events</span>
+              <span class="d-sm-block d-none">Child Events</span>
+            </ng-template>
+            <ng-template ngbTabContent>
+              <cats-ag-grid-table
+         [title]="title"
+         [myGridId]="'alarmEventChild'"
+         [rowData]="alarmChildEvent"
+          [dbAllcolumns]="dbAllcolumns" 
+            [tableHeight]="tableHeight"
+            [timeRange]="timeRange"
+            
+            [responseTime]="responseTime" 
+            [showSetting]="showSetting"
+            (eventDetect)="onEventDetect($event)"></cats-ag-grid-table>
+            </ng-template> 
+          </ngb-tab>
+        </ngb-tabset>
+    
+    </div>
+    
+    </mat-dialog-content>  
+ </div>
+ 

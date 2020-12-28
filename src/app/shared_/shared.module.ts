@@ -24,8 +24,21 @@ import { ButtonRendererComponent } from '../modules_/aggridCommon/button-rendere
 import { MatCheckboxComponent } from '../modules_/aggridCommon/mat-checkbox.component';
 import { TabFilterComponent } from './tab-filter/tab-filter.component';
 import { ContextmenuComponent } from './context-menu/contextMenu.component';
+import { PopupService } from './popup/popup.service';
+import { ViewIncidentComponent } from './popup/view-incident/view-incident.component';
+import { ViewSiaComponent } from './popup/view-sia/view-sia.component';
+import { ViewSendMailComponent } from './popup/view-send-mail/view-send-mail.component';
+import { ViewSendSmsComponent } from './popup/view-send-sms/view-send-sms.component';
+import { D3Service } from "../modules_/d3/d3.service";
+import { GraphComponent } from "../modules_/visuals/graph/graph.component";
+import { SHARED_VISUALS } from "../modules_/visuals/shared";
+import { D3_DIRECTIVES } from "../modules_/d3";
+import { ViewAlarmComponent } from './popup/view-alarm/view-alarm.component';
+import { ViewNiaComponent } from './popup/view-nia/view-nia.component';
+import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
+import { DemoMaterialModule } from './material-module';
 
-
+import { NgxLoadingModule, ngxLoadingAnimationTypes } from "ngx-loading";
 @NgModule({
   imports: [
     CommonModule,
@@ -35,7 +48,17 @@ import { ContextmenuComponent } from './context-menu/contextMenu.component';
     MatTableModule,
     MatPaginatorModule,
     AgGridModule.withComponents([MatCheckboxComponent, DataRenderedComponent,ButtonRendererComponent]),
-    // Ng2SmartTableModule
+    // Ng2SmartTableModule,
+    NgbModule.forRoot(),
+    DemoMaterialModule,
+    NgxLoadingModule.forRoot({
+      animationType: ngxLoadingAnimationTypes.threeBounce,
+      backdropBackgroundColour: 'rgba(0,0,0,0.1)',
+      backdropBorderRadius: '4px',
+      primaryColour: '#ffffff',
+      secondaryColour: '#ffffff',
+      tertiaryColour: '#ffffff'
+    }),
     ScrollingModule  // vertual scrolling
   ],
   declarations: [
@@ -58,8 +81,22 @@ import { ContextmenuComponent } from './context-menu/contextMenu.component';
     ButtonRendererComponent,
     TabFilterComponent,
     ContextmenuComponent,
-    MatCheckboxComponent
+    MatCheckboxComponent,
+    ViewAlarmComponent,
+    ViewIncidentComponent,
+    ViewNiaComponent,
+    ViewSiaComponent,
+    ViewSendMailComponent,
+    ViewSendSmsComponent, 
+    GraphComponent,
+    SHARED_VISUALS,D3_DIRECTIVES,
   ],
+  entryComponents: [ViewAlarmComponent,
+    ViewIncidentComponent,
+    ViewNiaComponent,
+    ViewSiaComponent,
+    ViewSendMailComponent,
+    ViewSendSmsComponent],
   exports: [
     TimeFilterComponent,
     ClickOutSideDirectives,
@@ -79,9 +116,12 @@ import { ContextmenuComponent } from './context-menu/contextMenu.component';
     ButtonRendererComponent,
     TabFilterComponent,
     ContextmenuComponent,
-    MatCheckboxComponent
+    MatCheckboxComponent,
+    GraphComponent,
+    SHARED_VISUALS,NumberToDatePipe,
+    D3_DIRECTIVES,
   ],
-  providers: [TimeFilterService, SharedServices
+  providers: [TimeFilterService, SharedServices,PopupService,D3Service
   ]
 })
 export class SharedModule { }

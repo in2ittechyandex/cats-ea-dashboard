@@ -1,0 +1,197 @@
+<h4 mat-dialog-title class="modal-title">NIA Report<button type="button" class="close" style="float: right;" mat-dialog-close>×</button></h4>
+<mat-dialog-content>
+    <ngx-loading [show]="loading" style="width:'100%';height:'100%'" [config]="{ backdropBorderRadius: '3px' }">
+      </ngx-loading>
+        <div class="row">
+                <div class="col-sm-6">
+                  <div class="form-check">
+                    <label class="form-check-label">
+                      <input type="radio" class="form-check-input" checked=true (click)="callLevel1();" name="optradio">First
+                      Neighbour
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <label class="form-check-label">
+                      <input type="radio" class="form-check-input" (click)="callLevel2();" name="optradio">Second Neighbour
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-12">
+                  <div style=" max-height:350px;" *ngIf="jsonStr">
+                    <graph [nodes]="nodes" [links]="links"></graph>
+                  </div>
+                  <div style=" max-height:350px;" *ngIf="niaerror">
+                    {{niaErrorResponse}}
+                  </div>
+                </div>
+                <!-- <div class="col-sm-6">
+                  <div style="height:500px;overflow:auto">
+                    <div class="list-group cursor-pointer">
+                      <a class="list-group-item list-group-item-action" *ngFor="let key of nodeData.key;">
+                        <div class="row">
+                          <div class="col-sm-2">
+                            {{key}}
+                          </div>
+                          <div class="col-sm-10">
+                            {{nodeData.data[key]}}
+                          </div>
+                        </div>
+                      </a>
+                    </div>
+                    <div>
+                      <div class="list-group cursor-pointer" *ngFor="let data of linkData;let i=index">
+                        <a class="list-group-item list-group-item-action">
+                          <div class="row">
+                            <div class="col-sm-3">
+                              Circuit Name
+                            </div>
+                            <div class="col-sm-9">
+                              {{data['circuit name']}}
+                            </div>
+                          </div>
+                        </a>
+                        <a class="list-group-item list-group-item-action">
+                          <div class="row">
+                            <div class="col-sm-3">
+                              Source
+                            </div>
+                            <div class="col-sm-9">
+                              {{data['source']}}
+                            </div>
+                          </div>
+                        </a>
+                        <a class="list-group-item list-group-item-action">
+                          <div class="row">
+                            <div class="col-sm-3">
+                              Source Port
+                            </div>
+                            <div class="col-sm-9">
+                              {{data['source port']}}
+                            </div>
+                          </div>
+                        </a>
+                        <a class="list-group-item list-group-item-action">
+                          <div class="row">
+                            <div class="col-sm-3">
+                              Target
+                            </div>
+                            <div class="col-sm-9">
+                              {{data['target']}}
+                            </div>
+                          </div>
+                        </a>
+                        <a class="list-group-item list-group-item-action">
+                          <div class="row">
+                            <div class="col-sm-3">
+                              Target Port
+                            </div>
+                            <div class="col-sm-9">
+                              {{data['target port']}}
+                            </div>
+                          </div>
+                        </a>
+                        <hr>
+                      </div>
+                    </div>
+                  </div>
+                </div> -->
+              </div>
+ </mat-dialog-content>    
+
+
+ 
+<button id="modalViewNiaDetailBtn" (click)="openFullScreen(modalViewNiaDetail)" [hidden]="true" data-toggle="modal"
+data-target="#modalTrendDialog">
+Open Modal
+</button>
+<ng-template #modalViewNiaDetail let-c="close" let-d="dismiss">
+<div>
+  <div class="modal-header" style="background: #242a30; padding:9px 15px;">
+    <h5 class="modal-title" style="color:#fff;">Nia Details</h5>
+    <button type="button" style="color:#fff; padding:5px 10px;" class="close" (click)="d('Cross click')">×</button>
+  </div>
+
+  <div class="modal-body" style="background-color: #ffffff;">
+    <div class="row">
+      
+      <div class="col-sm-12">
+        <div style="max-height:400px;overflow-x:hidden;overflow-y:auto">
+          <div class="">
+            <a class="" *ngFor="let key of nodeData.key;">
+              <div class="row">
+                <div class="col-sm-2">
+                  {{key}}
+                </div>
+                <div class="col-sm-10">
+                  {{nodeData.data[key]}}
+                </div>
+              </div>
+            </a>
+          </div>
+          <div>
+            <div class="" *ngFor="let data of linkData;let i=index">
+              <a class="">
+                <div class="row">
+                  <div class="col-sm-3">
+                    Circuit Name
+                  </div>
+                  <div class="col-sm-9">
+                    {{data['circuit name']}}
+                  </div>
+                </div>
+              </a>
+              <a class="">
+                <div class="row">
+                  <div class="col-sm-3">
+                    Source
+                  </div>
+                  <div class="col-sm-9">
+                    {{data['source']}}
+                  </div>
+                </div>
+              </a>
+              <a class="">
+                <div class="row">
+                  <div class="col-sm-3">
+                    Source Port
+                  </div>
+                  <div class="col-sm-9">
+                    {{data['source port']}}
+                  </div>
+                </div>
+              </a>
+              <a class="">
+                <div class="row">
+                  <div class="col-sm-3">
+                    Target
+                  </div>
+                  <div class="col-sm-9">
+                    {{data['target']}}
+                  </div>
+                </div>
+              </a>
+              <a class="">
+                <div class="row">
+                  <div class="col-sm-3">
+                    Target Port
+                  </div>
+                  <div class="col-sm-9">
+                    {{data['target port']}}
+                  </div>
+                </div>
+              </a>
+              <hr>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div> 
+      
+
+  </div>
+</div>
+</ng-template> 
+
+ 

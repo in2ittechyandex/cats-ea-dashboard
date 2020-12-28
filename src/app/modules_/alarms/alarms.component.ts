@@ -28,6 +28,7 @@ import { TimeFilterService } from 'src/app/shared_/time-filter/time-filter.servi
 import { PagerService } from 'src/app/shared_/pager.service';
 import { CommonService } from 'src/app/common.service';
 import swal from 'sweetalert2';
+import { PopupService } from 'src/app/shared_/popup/popup.service';
 // import { TimeFilterService} from 'src/time-filter/time-filter.service.component';
 declare var require: any;
 // require('highcharts/highcharts-more')(Highcharts);
@@ -427,7 +428,7 @@ export class AlarmsComponent implements OnInit, OnDestroy {
     private modalService: NgbModal,
     private pagerService: PagerService,
     // private datePipe: DatePipe,
-    // public popupService:PopupService,
+    public popupService:PopupService,
     private numberToDatePipe_: NumberToDatePipe,
     private timeServices_: TimeFilterService
   ) {
@@ -464,6 +465,7 @@ export class AlarmsComponent implements OnInit, OnDestroy {
   isFirstTime: boolean = true;
   selectedAlarmList=[];
   onEventDetect(event) {
+    
     const type = event['type'];
     const data = event['data'];
     const event_ = event['event']
@@ -528,61 +530,61 @@ export class AlarmsComponent implements OnInit, OnDestroy {
   }
   handleMenuSelection(menuselection: string, selectedRowObject) {
     console.log('ticket menu selection');
-    // if (menuselection === 'View Alarm') {
-    //   this.loading = true;
-    //   this.popupService.open(selectedRowObject, menuselection).then(() => {
-    //     this.loading = false;
-    //   });
+    if (menuselection === 'View Alarm') {
+      this.loading = true;
+      this.popupService.open(selectedRowObject, menuselection).then(() => {
+        this.loading = false;
+      });
 
-    // } else if (menuselection === 'View Incident') {
-    //   this.loading = true;
-    //   this.popupService.open(selectedRowObject, menuselection).then(() => {
-    //     this.loading = false;
-    //   });
+    } else if (menuselection === 'View Incident') {
+      this.loading = true;
+      this.popupService.open(selectedRowObject, menuselection).then(() => {
+        this.loading = false;
+      });
 
-    // } else if (menuselection === 'Assign To Me') {
-    //   if (selectedRowObject['ticket_no'] == '') {
-    //     this.assignAlarm(selectedRowObject);
-    //   } else {
-    //     alert('Ticket Already assigned');
-    //   }
-    // } else if (menuselection === 'Go to SIA') {
-    //   this.loading = true;
-    //   this.popupService.open(selectedRowObject, menuselection).then(() => {
-    //     this.loading = false;
-    //   });
+    } else if (menuselection === 'Assign To Me') {
+      if (selectedRowObject['ticket_no'] == '') {
+        this.assignAlarm(selectedRowObject);
+      } else {
+        alert('Ticket Already assigned');
+      }
+    } else if (menuselection === 'Go to SIA') {
+      this.loading = true;
+      this.popupService.open(selectedRowObject, menuselection).then(() => {
+        this.loading = false;
+      });
 
-    // } else if (menuselection === 'Go to NIA') {
-    //   this.loading = true;
-    //   this.popupService.open(selectedRowObject, menuselection).then(() => {
-    //     this.loading = false;
-    //   });
+    } else if (menuselection === 'Go to NIA') {
+      this.loading = true;
+      this.popupService.open(selectedRowObject, menuselection).then(() => {
+        this.loading = false;
+      });
 
-    // } else if (menuselection === 'Send SMS') {
-    //   if (selectedRowObject['ticket_no'] != '') {
-    //     this.loading = true;
-    //     this.popupService.open(selectedRowObject, menuselection).then(() => {
-    //       this.loading = false;
-    //     });
+    } else if (menuselection === 'Send SMS') {
+      if (selectedRowObject['ticket_no'] != '') {
+        this.loading = true;
+        this.popupService.open(selectedRowObject, menuselection).then(() => {
+          this.loading = false;
+        });
 
-    //   } else {
-    //     alert('Create a Ticket First');
-    //   }
+      } else {
+        alert('Create a Ticket First');
+      }
 
-    // } else if (menuselection === 'Send Mail') {
-    //   if (selectedRowObject['ticket_no'] != '') {
-    //     this.loading = true;
-    //     this.popupService.open(selectedRowObject, menuselection).then(() => {
-    //       this.loading = false;
-    //     });
-    //     this.popupService.onRefresh.subscribe((res) => {
-    //       this.alarmLoading = true;
-    //       this.getAlarms();
-    //     })
-    //   } else {
-    //     alert('Create a Ticket First');
-    //   }
-    // }
+    } else if (menuselection === 'Send Mail') {
+      if (selectedRowObject['ticket_no'] != '') {
+        this.loading = true;
+        this.popupService.open(selectedRowObject, menuselection).then(() => {
+          this.loading = false;
+        });
+        this.popupService.onRefresh.subscribe((res) => {
+          this.alarmLoading = true;
+          this.getAlarms();
+        })
+      } else {
+        alert('Create a Ticket First');
+      }
+    }
   }
 
   getTokenizeArray(str: string) {
