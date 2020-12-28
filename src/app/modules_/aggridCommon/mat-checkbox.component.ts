@@ -4,9 +4,9 @@ import { ICellRendererAngularComp } from 'ag-grid-angular';
 @Component({
     selector: "checkbox-cell",
     template: `
-    <i class="fa fa-cog fa-2x text-grey f-s-15 check_icon" aria-hidden="true"  (click)="alarmSelected()" *ngIf="!isSelected"></i>
-    <i class="fa fa-cog fa-2x text-blue-lighter f-s-15 check_icon" aria-hidden="true"  (click)="alarmSelected()" *ngIf="isSelected"></i>
-    <a  (click)="invokeParentMethod();" (contextmenu)="onRightClick($event)" [style.background-color]="colorSelected" style="color:#ffffff;padding:2px 7px; border-radius:5px;cursor: pointer; " >Act</a>
+    <i class="fa fa-cog fa-2x text-grey f-s-15 check_icon" aria-hidden="true" (click)="alarmSelected()" *ngIf="!isSelected" style="top:1px; left:-3px;"></i>
+    <i class="fa fa-cog fa-2x text-blue-lighter f-s-15 check_icon" aria-hidden="true" (click)="alarmSelected()" *ngIf="isSelected" style="top:1px; left:-3px;"></i>
+    <a (click)="invokeParentMethod();" (contextmenu)="onRightClick($event)" [style.background-color]="colorSelected" style="color:#ffffff;padding:2px 7px; border-radius:5px;cursor:pointer;" >Act</a>
    `,
     styles: []
 })

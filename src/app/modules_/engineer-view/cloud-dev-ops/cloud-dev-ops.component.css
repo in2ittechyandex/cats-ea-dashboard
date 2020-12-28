@@ -39,6 +39,8 @@
 
 ::ng-deep .my-class .modal-dialog { max-width:80%; width:80%; margin-top:4%;}
 
+::ng-deep .radio.radio-css{top:2px;}
+
 
 #style-4::-webkit-scrollbar-track{background-color:#2d353c; border-radius:15px; height:10px;}
 #style-4::-webkit-scrollbar{width:5px; background-color:F5F5F5; height:7px; border-radius:15px; height:200px;}
