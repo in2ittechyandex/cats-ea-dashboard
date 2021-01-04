@@ -134,7 +134,7 @@ resolutionCode={
 }
 getIncidentStatus(){
   this.alarmService.getIncidentStatus().subscribe((res) => {
-    if (res.Status) {
+    if (res.status) {
        this.incidentStatus.data=res['data'];
     } 
   }, (err) => {  
@@ -142,7 +142,7 @@ getIncidentStatus(){
 }
 getResolutionCode(){
   this.alarmService.getResolutionCode().subscribe((res) => {
-    if (res.Status) {
+    if (res.status) {
        this.resolutionCode.data=res['data'];
     } 
   }, (err) => {  

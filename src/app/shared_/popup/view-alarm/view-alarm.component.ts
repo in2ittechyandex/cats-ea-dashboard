@@ -138,7 +138,7 @@ export class ViewAlarmComponent implements OnInit {
         resizable: true,
         minWidth:120,
         headerTooltip:'Location',
-        'isActive': true,
+        'isActive': false,
         cellRenderer: function (params) { return '<span style="user-select: initial;-moz-user-select: text;-ms-user-select: text;-webkit-user-select: text;">'+params.value+'</span>'
         },
       },
@@ -226,8 +226,8 @@ export class ViewAlarmComponent implements OnInit {
           const endTime: number = new Date().getTime();
           const diffTime = endTime - startTime;
           this.responseTime = this.numberToDatePipe_.transform(diffTime, 'ms');
-          this.alarmChildEvent=res.Data;
-         this.title=this.title+" - "+this.data['host_name']+" - "+this.data['message'];
+          this.alarmChildEvent=res.data;
+         this.title=this.title+" - "+this.data['host_name'];
     }else{
    alert(res['data']);
     } 
@@ -294,7 +294,7 @@ getActionFormData(id,type) {
   this.actionformdataEvents = []; 
   this.actionformdataEventsKeys = [];  
   this.alarmService.getActionFormData(id,type).subscribe((res) => {
-    if (res['Status']) { 
+    if (res['status']) { 
       if(type=='alarm'){
        
           this.actionformdataEvents = res.data.event;

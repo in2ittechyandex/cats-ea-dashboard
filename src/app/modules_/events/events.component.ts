@@ -66,6 +66,19 @@ export class EventsComponent implements OnInit, OnDestroy {
         headerTooltip: 'Time',
         width: 100,
         'isActive': true,
+      },{
+        headerName: 'Host Name',
+        field: 'host_name',
+        sortable: true,
+        editable: false,
+        filter: true,
+        headerTooltip: 'Host Name',
+        resizable: true,
+        'isActive': true,
+        minWidth: 100,
+        cellRenderer: function (params) {
+          return '<span style="user-select: initial;-moz-user-select: text;-ms-user-select: text;-webkit-user-select: text;">' + params.value + '</span>'
+        },
       },
       {
         headerName: 'Description',
@@ -75,8 +88,7 @@ export class EventsComponent implements OnInit, OnDestroy {
         editable: false,
         draggable: true,
         resizable: true,
-        flex: 1,
-        width: 200,
+        flex: 1, 
         headerTooltip: 'Description',
         'isActive': true,
       },
@@ -88,8 +100,22 @@ export class EventsComponent implements OnInit, OnDestroy {
         filter: true,
         headerTooltip: 'Severity',
         resizable: true,
-        'isActive': false,
+        'isActive': true,
         width: 100,
+      },
+      {
+        headerName: 'State',
+        field: 'state',
+        sortable: true,
+        editable: false,
+        filter: true,
+        headerTooltip: 'State',
+        resizable: true,
+        'isActive': true,
+        minWidth: 100,
+        cellRenderer: function (params) {
+          return '<span style="user-select: initial;-moz-user-select: text;-ms-user-select: text;-webkit-user-select: text;">' + params.value + '</span>'
+        },
       },
       {
         headerName: 'IP',
@@ -99,19 +125,25 @@ export class EventsComponent implements OnInit, OnDestroy {
         filter: true,
         headerTooltip: 'IP',
         resizable: true,
-        'isActive': false,
-        width: 100,
+        'isActive': true,
+        minWidth: 100,
+        cellRenderer: function (params) {
+          return '<span style="user-select: initial;-moz-user-select: text;-ms-user-select: text;-webkit-user-select: text;">' + params.value + '</span>'
+        },
       },
       {
-        headerName: 'Interface',
-        field: 'interface',
+        headerName: 'Input Source',
+        field: 'Input Source',
         sortable: true,
         editable: false,
         filter: true,
-        headerTooltip: 'Interface',
+        headerTooltip: 'Input Source',
         resizable: true,
-        'isActive': false,
-        width: 100,
+        'isActive': true,
+        minWidth: 100,
+        cellRenderer: function (params) {
+          return '<span style="user-select: initial;-moz-user-select: text;-ms-user-select: text;-webkit-user-select: text;">' + params.value + '</span>'
+        },
       }
     ],
     'filter': {

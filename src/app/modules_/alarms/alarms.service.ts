@@ -76,7 +76,7 @@ export class AlarmsService {
    *
    */
   getalarmtotal_pop(id) {
-    const URL = environment._AlarmURL + 'menu/kpi/get_alarm_child';
+    const URL = environment._WEBGATEWAY_BASIC_URL_ + 'menu/kpi/get_alarm_child';
     var formData=new FormData();
     formData.append("alarm_id",id);
     return this.http.post(URL,formData).map(res => <any>res);
@@ -98,12 +98,12 @@ export class AlarmsService {
      *
      */
   getIncidentStatus() {
-    const URL = environment._AlarmURL + 'actionengine/get_status';
-    return this.http.get(URL).map(res => <any>res);
+    const URL = environment._WEBGATEWAY_BASIC_URL_ + 'menu/kpi/get_incident_status';
+    return this.http.post(URL,{}).map(res => <any>res);
   }
   getResolutionCode() {
-    const URL = environment._AlarmURL + 'actionengine/resolution_code';
-    return this.http.get(URL).map(res => <any>res);
+    const URL = environment._WEBGATEWAY_BASIC_URL_ + 'menu/kpi/get_resolution_code';
+    return this.http.post(URL,{}).map(res => <any>res);
   }
   getEmailLlist() {
     const URL = environment._AlarmURL + 'get_mail';

@@ -208,7 +208,7 @@ export class AlarmsComponent implements OnInit, OnDestroy {
       resizable: true,
       minWidth: 120,
       headerTooltip: 'Owner Name',
-      'isActive': true,
+      'isActive': false,
       cellRenderer: function (params) {
         return '<span style="user-select: initial;-moz-user-select: text;-ms-user-select: text;-webkit-user-select: text;">' + params.value + '</span>'
       },
