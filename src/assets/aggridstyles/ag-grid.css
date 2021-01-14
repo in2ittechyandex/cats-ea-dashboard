@@ -368,7 +368,7 @@ ag-grid, ag-grid-angular, ag-grid-ng2, ag-grid-polymer, ag-grid-aurelia {
     align-items: center;
     text-overflow: ellipsis;
     align-self: stretch;
-    text-align: center;
+    text-align: left;
 }
 
 .ag-header-cell-label .ag-header-cell-text {

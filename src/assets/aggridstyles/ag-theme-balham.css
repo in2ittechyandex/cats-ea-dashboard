@@ -630,8 +630,8 @@
     align-items: center;} */
 
 
-    .device .ag-theme-balham .ag-cell{line-height:13px !important;display:flex; justify-content: center;
-      align-items: center;text-align: center;}
+.device .ag-theme-balham .ag-cell{line-height:13px !important;display:flex; justify-content:flex-start;
+      align-items:center; text-align: center;}
 
     /** Ramji made changes 28-11-2019 for column text-align: center **/
   .memo .ag-theme-balham .ag-cell{display:flex; justify-content:center; align-items: center; outline:none; text-align: center;}
