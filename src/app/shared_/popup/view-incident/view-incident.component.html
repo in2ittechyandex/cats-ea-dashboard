@@ -250,9 +250,9 @@
                     </thead>
                     <tbody>
                       <tr *ngFor="let data of workLogData; let i=index;" style="color: black;">
-                        <td style="width:200px;">{{data.starttime}}</td>
-                        <td style="width:200px;">{{data.endtime}}</td>
-                        <td style="width:200px;">{{data.technician}}</td>
+                        <td style="width:200px;">{{data.start_date}}</td>
+                        <td style="width:200px;">{{data.end_date}}</td>
+                        <td style="width:200px;">{{data.agent_id_friendlyname}}</td>
                         <td style="width:60%;">
                           <ng-container *ngFor="let str of breakLongText(data.description)">
                             {{str}}<br>

@@ -257,8 +257,15 @@ export class EventsService {
   }
 
   getIncident(typeid, workorderid) {
-    const URL = environment._EventURL + 'actionengine/getincidentinfo?ticket_no=' + workorderid + '&type_id=' + typeid;
-    return this.http.get(URL).map(res => <any>res);
+    const URL = environment._WEBGATEWAY_BASIC_URL_ + 'menu/kpi/get_incident_info';
+    const formData: FormData = new FormData();
+   formData.append('ticket_no', workorderid);
+   formData.append('type_id', typeid); 
+    // const URL = 'https://run.mocky.io/v3/23166414-bc4b-40f1-870a-7ab6ccff8c54';
+    // return this.http.get(URL).map(res => <any>res);
+    return this.http.post(URL, formData).map(res => <any>res);
+  
+    // return this.http.get(URL).map(res => <any>res);
   }
   getallworklog(typeid, workorderid) {
     const URL = environment._EventURL + 'actionengine/allworklog?sys_id=' + workorderid + '&type_id=' + typeid;
@@ -271,9 +278,14 @@ export class EventsService {
    * @param incidentId
    */
   getallworklogByIncidentId(typeId, incidentId) {
-    const URL = environment._EventURL + 'actionengine/allworklog?incident_id=' + incidentId + '&type_id=' + typeId;
+    const URL = environment._WEBGATEWAY_BASIC_URL_ + 'menu/kpi/all_work_log';
     // const URL = environment._EventURL + "actionengine/allworklog?incident_id=" + incidentId+"&type_id="+typeId;
-    return this.http.get(URL).map(res => <any>res);
+    const formData: FormData = new FormData();
+    formData.append('ticket_no', incidentId);
+    formData.append('type_id', typeId); 
+     // const URL = 'https://run.mocky.io/v3/23166414-bc4b-40f1-870a-7ab6ccff8c54';
+     // return this.http.get(URL).map(res => <any>res);
+     return this.http.post(URL, formData).map(res => <any>res);
   }
 
   resolution(formdata: FormData) {
@@ -283,8 +295,8 @@ export class EventsService {
 
   addworklog(formData: FormData) {
     //  const URL =environment._EventURL + "actionengine/worklogincident";
-    const URL = environment._EventURL + 'actionengine/worklogincident';
-    return this.http.put(URL, formData).map(res => <any>res);
+    const URL = environment._WEBGATEWAY_BASIC_URL_ + 'menu/kpi/add_work_log_incident';
+    return this.http.post(URL, formData).map(res => <any>res);
   }
 
   search_host(name) {

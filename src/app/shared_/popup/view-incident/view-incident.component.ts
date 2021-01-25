@@ -37,7 +37,9 @@ export class ViewIncidentComponent implements OnInit {
    this.dialogRef.updatePosition({right: `40px`});
     this.incidentData.reason_resolve='';  
     this.showCloserNotes=false;
-    this.getActionFormData(this.data['alarm_id'],'incident');
+    // this.getActionFormData(this.data['alarm_id'],'incident');
+    this.data['ticket_no']="i-149071";
+    this.showIncident(this.data['ticket_no']); 
     this.getIncidentStatus();
     this.getResolutionCode()
   }
@@ -66,7 +68,7 @@ getActionFormData(id,type) {
         }
         this.actionformdataMailKeys = Object.keys(this.actionformdataMail);
         this.typeIdList = res.data.type_code; 
-        this.showIncident(); 
+        // this.showIncident(); 
       }     
           
     }else{
@@ -77,10 +79,10 @@ getActionFormData(id,type) {
     this.dialogOpened();
   });
 } 
-showIncident() {
+showIncident(ticketId) {
   this.incidentData.reason_resolve='';  
   // document.getElementById("modalViewIncidentId1").click();
-  this.getIncident(this.typeIdList['servicenow_data'], this.actionformdataServiceNow['Ticket Number']);
+  this.getIncident(this.typeIdList['servicenow_data'], ticketId);
 }
 setSelectedTabWorklog(event){
   this.incidentData.reason_resolve='';  
@@ -111,17 +113,21 @@ incidentDetailsKey=[];
 incidentDataReceived:boolean=false;
 
 public getIncident(typeid, workorderid) {
-  this.eventsService.getIncident(typeid, workorderid).subscribe((res) => {
-    if (res.Status) {
+  var ticketIds=workorderid.split('-');
+
+  this.eventsService.getIncident('', ticketIds[1]).subscribe((res) => {
+    if (res.status) {
       console.log("incident info received");
       this.incidentDetails=res.data;
       this.incidentDetailsKey=Object.keys(this.incidentDetails);
       this.incidentDataReceived=true;
-      this.getallworklog(this.typeIdList['servicenow_data'], this.actionformdataServiceNow['Sys Id']);
-      
+      // this.getallworklog(this.typeIdList['servicenow_data'], this.actionformdataServiceNow['Sys Id']);
+      this.getallworklog('', ticketIds[1]);
     }
+    this.dialogOpened();
   }, (err) => {
     // this.completeLoading();
+    this.dialogOpened();
   });
 }
 incidentStatus={
@@ -153,11 +159,11 @@ workLogData = [];
       // this.loading=true;
       this.workLogData = [];
  
-      if(this.data['input_source']==='EMC NMS'){
+      // if(this.data['input_source']==='EMC NMS'){
         let incNumber = this.incidentDetails["Incident Number"]; // ramji old value :this.incidentDetails["Ticket Number"] 
-        let typeId = 'CATS' // typeid; //  ramji : passing static value 
-        this.eventsService.getallworklogByIncidentId(typeId,incNumber).subscribe((res) => {
-          if (res.Status) {
+        // let typeId = 'CATS' // typeid; //  ramji : passing static value 
+        this.eventsService.getallworklogByIncidentId(typeid,workorderid).subscribe((res) => {
+          if (res.status) {
             
             this.workLogData = [];
             this.workLogData = res.data;
@@ -167,36 +173,37 @@ workLogData = [];
           // this.loading=false;
           // this.completeLoading();
         });
-      }else{
-        this.eventsService.getallworklog(typeid, workorderid).subscribe((res) => {
-          if (res.Status) {
+      // }else{
+      //   this.eventsService.getallworklog(typeid, workorderid).subscribe((res) => {
+      //     if (res.Status) {
             
-            this.workLogData = [];
-            this.workLogData = res.data;
-          }
-          // this.loading=false;
-        }, (err) => {
-          // this.loading=false;
-          // this.completeLoading();
-        });
-      }
+      //       this.workLogData = [];
+      //       this.workLogData = res.data;
+      //     }
+      //     // this.loading=false;
+      //   }, (err) => {
+      //     // this.loading=false;
+      //     // this.completeLoading();
+      //   });
+      // }
       
     }
 
     public addworklog() {
 
-      if(this.data['input_source']==='EMC NMS'){
-         
+      // if(this.data['input_source']==='EMC NMS'){
+        var ticketIds=this.data['ticket_no'].split('-');
             let formData: FormData = new FormData(); 
             // formData.append("incident_id", this.incidentDetails["Ticket Number"]);
 
-            let loggedUser = JSON.parse(localStorage.getItem('loggedUser'));
-            formData.append("logged_user", loggedUser['userName']);
-            formData.append("incident_id", this.incidentDetails["Incident Number"]); // Ramji old value : "Ticket Number"
-            formData.append("message", this.incidentData.reason_resolve); // Ramji  old value :"description"
+            // let loggedUser = JSON.parse(localStorage.getItem('loggedUser'));
+            // formData.append("logged_user", loggedUser['userName']);
+            formData.append("type_id", "vikas");
+            formData.append("ticket_id", ticketIds[1]); // Ramji old value : "Ticket Number"
+            formData.append("description", this.incidentData.reason_resolve); // Ramji  old value :"description"
             this.eventsService.addworklog(formData).subscribe((res) => {
-              if (res.Status) {
-                this.getallworklog(this.typeIdList['servicenow_data'], this.actionformdataServiceNow['Sys Id']);
+              if (res.status) {
+                this.getallworklog(this.typeIdList['servicenow_data'], ticketIds[1]);
       
                 this.incidentData.reason_resolve = '';
                 alert("worklog added successfully");
@@ -210,25 +217,25 @@ workLogData = [];
       
           
       
-    }else{
-      let formData: FormData = new FormData();
-      formData.append("sys_id", this.actionformdataServiceNow['Sys Id']);
-      formData.append("type_id", this.typeIdList['servicenow_data']);
-      formData.append("description", this.incidentData.reason_resolve);
-      this.eventsService.addworklog(formData).subscribe((res) => {
-        if (res.Status) {
-          this.getallworklog(this.typeIdList['servicenow_data'], this.actionformdataServiceNow['Sys Id']);
+    // }else{
+    //   let formData: FormData = new FormData();
+    //   formData.append("sys_id", this.actionformdataServiceNow['Sys Id']);
+    //   formData.append("type_id", this.typeIdList['servicenow_data']);
+    //   formData.append("description", this.incidentData.reason_resolve);
+    //   this.eventsService.addworklog(formData).subscribe((res) => {
+    //     if (res.Status) {
+    //       this.getallworklog(this.typeIdList['servicenow_data'], this.actionformdataServiceNow['Sys Id']);
 
-          this.incidentData.reason_resolve = '';
-          alert("worklog added successfully");
-        } else {
-          alert(res.msg);
-        }
-        // this.loading=false;
-      }, (err) => {
-        // this.loading=false;
-      });
-      }
+    //       this.incidentData.reason_resolve = '';
+    //       alert("worklog added successfully");
+    //     } else {
+    //       alert(res.msg);
+    //     }
+    //     // this.loading=false;
+    //   }, (err) => {
+    //     // this.loading=false;
+    //   });
+    //   }
 
   }
   checkDisable(){
