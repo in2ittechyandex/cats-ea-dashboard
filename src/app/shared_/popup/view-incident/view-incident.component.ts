@@ -166,7 +166,7 @@ workLogData = [];
           if (res.status) {
             
             this.workLogData = [];
-            this.workLogData = res.data;
+            // this.workLogData = res.data;
           }
           // this.loading=false;
         }, (err) => {
