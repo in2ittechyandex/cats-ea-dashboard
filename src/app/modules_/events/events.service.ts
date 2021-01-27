@@ -277,6 +277,16 @@ export class EventsService {
    * @param typeId
    * @param incidentId
    */
+  getallworkOrderByIncidentId(typeId, incidentId) {
+    const URL = environment._WEBGATEWAY_BASIC_URL_ + 'menu/kpi/all_work_order';
+    // const URL = environment._EventURL + "actionengine/allworklog?incident_id=" + incidentId+"&type_id="+typeId;
+    const formData: FormData = new FormData();
+    formData.append('ticket_no', incidentId);
+    formData.append('type_id', typeId); 
+     // const URL = 'https://run.mocky.io/v3/23166414-bc4b-40f1-870a-7ab6ccff8c54';
+     // return this.http.get(URL).map(res => <any>res);
+     return this.http.post(URL, formData).map(res => <any>res);
+  }
   getallworklogByIncidentId(typeId, incidentId) {
     const URL = environment._WEBGATEWAY_BASIC_URL_ + 'menu/kpi/all_work_log';
     // const URL = environment._EventURL + "actionengine/allworklog?incident_id=" + incidentId+"&type_id="+typeId;
@@ -287,15 +297,24 @@ export class EventsService {
      // return this.http.get(URL).map(res => <any>res);
      return this.http.post(URL, formData).map(res => <any>res);
   }
-
   resolution(formdata: FormData) {
-    const URL = environment._EventURL + 'actionengine/addresolution';
+    const URL = environment._WEBGATEWAY_BASIC_URL_ + 'menu/kpi/add_resolution';
     return this.http.post(URL, formdata).map(res => <any>res);
   }
 
-  addworklog(formData: FormData) {
+  addWorkOrder(formData: FormData) {
     //  const URL =environment._EventURL + "actionengine/worklogincident";
     const URL = environment._WEBGATEWAY_BASIC_URL_ + 'menu/kpi/add_work_log_incident';
+    return this.http.post(URL, formData).map(res => <any>res);
+  }
+  addPubliclog(formData: FormData) {
+    //  const URL =environment._EventURL + "actionengine/worklogincident";
+    const URL = environment._WEBGATEWAY_BASIC_URL_ + 'menu/kpi/add_public_log';
+    return this.http.post(URL, formData).map(res => <any>res);
+  }
+  addPrivatelog(formData: FormData) {
+    //  const URL =environment._EventURL + "actionengine/worklogincident";
+    const URL = environment._WEBGATEWAY_BASIC_URL_ + 'menu/kpi/add_private_log';
     return this.http.post(URL, formData).map(res => <any>res);
   }
 

@@ -1730,25 +1730,25 @@ export class EventsComponent implements OnInit, OnDestroy {
     return '#FF0000';
   }
   public addworklog() {
-    let formData: FormData = new FormData();
-    {
-      let formData: FormData = new FormData();
-      formData.append('workorderId', this.actionformdataManageEngine['Ticket No']);
-      formData.append('type_id', this.typeIdList['manageengine_data']);
-      formData.append('description', this.incidentData.reason_resolve);
-      this.eventsService.addworklog(formData).subscribe((res) => {
-        if (res.Status) {
-          this.getallworklog(this.typeIdList['manageengine_data'], this.actionformdataManageEngine['Ticket No']);
+    // let formData: FormData = new FormData();
+    // {
+    //   let formData: FormData = new FormData();
+    //   formData.append('workorderId', this.actionformdataManageEngine['Ticket No']);
+    //   formData.append('type_id', this.typeIdList['manageengine_data']);
+    //   formData.append('description', this.incidentData.reason_resolve);
+    //   this.eventsService.addworklog(formData).subscribe((res) => {
+    //     if (res.Status) {
+    //       this.getallworklog(this.typeIdList['manageengine_data'], this.actionformdataManageEngine['Ticket No']);
 
-          this.incidentData.reason_resolve = '';
-          alert('worklog added successfully');
-        } else {
-          alert(res.msg);
-        }
-      }, (err) => {
-      });
+    //       this.incidentData.reason_resolve = '';
+    //       alert('worklog added successfully');
+    //     } else {
+    //       alert(res.msg);
+    //     }
+    //   }, (err) => {
+    //   });
 
-    }
+    // }
   }
 
   public resolution() {

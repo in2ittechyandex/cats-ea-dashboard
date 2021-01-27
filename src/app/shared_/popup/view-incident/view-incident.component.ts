@@ -124,6 +124,7 @@ public getIncident(typeid, workorderid) {
       this.incidentDataReceived=true;
       // this.getallworklog(this.typeIdList['servicenow_data'], this.actionformdataServiceNow['Sys Id']);
       this.getallworklog('', ticketIds[1]);
+      this.getallworkOrder('', ticketIds[1]);
     }
     this.dialogOpened();
   }, (err) => {
@@ -156,17 +157,25 @@ getResolutionCode(){
   });
 }
 workLogData = [];
-    public getallworklog(typeid, workorderid) {
+    public getallworklog(typeid, ticketId) {
       // this.loading=true;
       this.workLogData = [];
  
-      // if(this.data['input_source']==='EMC NMS'){
+      // if(this.data['input_source']==='EMC'){
         let incNumber = this.incidentDetails["Incident Number"]; // ramji old value :this.incidentDetails["Ticket Number"] 
         // let typeId = 'CATS' // typeid; //  ramji : passing static value 
-        this.eventsService.getallworklogByIncidentId(typeid,workorderid).subscribe((res) => {
+        this.eventsService.getallworklogByIncidentId(typeid,ticketId).subscribe((res) => {
           if (res.status) {
             
             this.workLogData = [];
+            var privateLog=res.data.private_log.entries;
+            var publicLog=res.data.public_log.entries;
+            privateLog.forEach(element => {
+              this.workLogData.push(element);
+            });
+            publicLog.forEach(element => {
+              this.workLogData.push(element);
+            });
             // this.workLogData = res.data;
           }
           // this.loading=false;
@@ -189,10 +198,43 @@ workLogData = [];
       // }
       
     }
+    workOredrData = [];
+    public getallworkOrder(typeid, ticketId) {
+      // this.loading=true;
+      this.workOredrData = [];
+ 
+      // if(this.data['input_source']==='EMC'){
+        let incNumber = this.incidentDetails["Incident Number"]; // ramji old value :this.incidentDetails["Ticket Number"] 
+        // let typeId = 'CATS' // typeid; //  ramji : passing static value 
+        this.eventsService.getallworkOrderByIncidentId(typeid,ticketId).subscribe((res) => {
+          if (res.status) {
+            
+            this.workOredrData = [];
+            this.workOredrData = res.data;
+          }
+          // this.loading=false;
+        }, (err) => {
+          // this.loading=false;
+          // this.completeLoading();
+        });
+      // }else{
+      //   this.eventsService.getallworklog(typeid, workorderid).subscribe((res) => {
+      //     if (res.Status) {
+            
+      //       this.workLogData = [];
+      //       this.workLogData = res.data;
+      //     }
+      //     // this.loading=false;
+      //   }, (err) => {
+      //     // this.loading=false;
+      //     // this.completeLoading();
+      //   });
+      // }
+      
+    }
+    public addPublicworklog() {
 
-    public addworklog() {
-
-      // if(this.data['input_source']==='EMC NMS'){
+      // if(this.data['input_source']==='EMC'){
         var ticketIds=this.data['ticket_no'].split('-');
             let formData: FormData = new FormData(); 
             // formData.append("incident_id", this.incidentDetails["Ticket Number"]);
@@ -201,8 +243,8 @@ workLogData = [];
             // formData.append("logged_user", loggedUser['userName']);
             formData.append("type_id", "vikas");
             formData.append("ticket_id", ticketIds[1]); // Ramji old value : "Ticket Number"
-            formData.append("description", this.incidentData.reason_resolve); // Ramji  old value :"description"
-            this.eventsService.addworklog(formData).subscribe((res) => {
+            formData.append("comment", this.incidentData.reason_resolve); // Ramji  old value :"description"
+            this.eventsService.addPubliclog(formData).subscribe((res) => {
               if (res.status) {
                 this.getallworklog(this.typeIdList['servicenow_data'], ticketIds[1]);
       
@@ -239,6 +281,105 @@ workLogData = [];
     //   }
 
   }
+  public addPrivateworklog() {
+
+    // if(this.data['input_source']==='EMC'){
+      var ticketIds=this.data['ticket_no'].split('-');
+          let formData: FormData = new FormData(); 
+          // formData.append("incident_id", this.incidentDetails["Ticket Number"]);
+
+          // let loggedUser = JSON.parse(localStorage.getItem('loggedUser'));
+          // formData.append("logged_user", loggedUser['userName']);
+          formData.append("type_id", "vikas");
+          formData.append("ticket_id", ticketIds[1]); // Ramji old value : "Ticket Number"
+          formData.append("comment", this.incidentData.reason_resolve); // Ramji  old value :"description"
+          this.eventsService.addPrivatelog(formData).subscribe((res) => {
+            if (res.status) {
+              this.getallworklog(this.typeIdList['servicenow_data'], ticketIds[1]);
+    
+              this.incidentData.reason_resolve = '';
+              alert("worklog added successfully");
+            } else {
+              alert(res.msg);
+            }
+            // this.loading=false;
+          }, (err) => {
+            // this.loading=false;
+          });
+    
+        
+    
+  // }else{
+  //   let formData: FormData = new FormData();
+  //   formData.append("sys_id", this.actionformdataServiceNow['Sys Id']);
+  //   formData.append("type_id", this.typeIdList['servicenow_data']);
+  //   formData.append("description", this.incidentData.reason_resolve);
+  //   this.eventsService.addworklog(formData).subscribe((res) => {
+  //     if (res.Status) {
+  //       this.getallworklog(this.typeIdList['servicenow_data'], this.actionformdataServiceNow['Sys Id']);
+
+  //       this.incidentData.reason_resolve = '';
+  //       alert("worklog added successfully");
+  //     } else {
+  //       alert(res.msg);
+  //     }
+  //     // this.loading=false;
+  //   }, (err) => {
+  //     // this.loading=false;
+  //   });
+  //   }
+
+}
+
+public addWorkOrder() {
+
+  // if(this.data['input_source']==='EMC'){
+    var ticketIds=this.data['ticket_no'].split('-');
+        let formData: FormData = new FormData(); 
+        // formData.append("incident_id", this.incidentDetails["Ticket Number"]);
+
+        // let loggedUser = JSON.parse(localStorage.getItem('loggedUser'));
+        // formData.append("logged_user", loggedUser['userName']);
+        formData.append("type_id", "vikas");
+        formData.append("ticket_id", ticketIds[1]); // Ramji old value : "Ticket Number"
+        formData.append("description", this.incidentData.reason_resolve); // Ramji  old value :"description"
+        this.eventsService.addWorkOrder(formData).subscribe((res) => {
+          if (res.status) {
+            this.getallworklog(this.typeIdList['servicenow_data'], ticketIds[1]);
+  
+            this.incidentData.reason_resolve = '';
+            alert("worklog added successfully");
+          } else {
+            alert(res.msg);
+          }
+          // this.loading=false;
+        }, (err) => {
+          // this.loading=false;
+        });
+  
+      
+  
+// }else{
+//   let formData: FormData = new FormData();
+//   formData.append("sys_id", this.actionformdataServiceNow['Sys Id']);
+//   formData.append("type_id", this.typeIdList['servicenow_data']);
+//   formData.append("description", this.incidentData.reason_resolve);
+//   this.eventsService.addworklog(formData).subscribe((res) => {
+//     if (res.Status) {
+//       this.getallworklog(this.typeIdList['servicenow_data'], this.actionformdataServiceNow['Sys Id']);
+
+//       this.incidentData.reason_resolve = '';
+//       alert("worklog added successfully");
+//     } else {
+//       alert(res.msg);
+//     }
+//     // this.loading=false;
+//   }, (err) => {
+//     // this.loading=false;
+//   });
+//   }
+
+}
   checkDisable(){
     if(this.incidentStatus.selected!=''){
     const result = this.incidentStatus.data.find( ({ id }) => id === this.incidentStatus.selected );
@@ -260,9 +401,10 @@ workLogData = [];
       // this.loading=true;
       let formData: FormData = new FormData();
       {
+        var ticketIds=this.data['ticket_no'].split('-');
         let formData: FormData = new FormData();
-        formData.append("sys_id", this.actionformdataServiceNow['Sys Id']);
-        formData.append("type_id", this.typeIdList['servicenow_data']);
+        formData.append("ticket_id", ticketIds[1]);
+        formData.append("type_id", '');
         const result = this.incidentStatus.data.find( ({ id }) => id === this.incidentStatus.selected );
         
        if(result['close note enable']){

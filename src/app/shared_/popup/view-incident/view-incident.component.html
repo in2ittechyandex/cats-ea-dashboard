@@ -11,7 +11,7 @@
         <ng-template ngbTabContent>
           <div style="width:100%; height:15px; border-bottom: 1px solid black; text-align: center">
             <span style="font-size:18px; background-color:#ffffff; padding:0 10px;">
-              {{(data['input_source']==='EMC NMS'?'Remedy':'Service Now')}}
+              {{(data['input_source']==='EMC'?'Remedy':'Service Now')}}
             </span>
           </div>
           <div style="margin-top: 3%;" *ngIf="noRecordFound">
@@ -58,7 +58,7 @@
                   <div class="table-responsive">
                     <table class="table table-valign-middle force-overflow">
                       <thead>
-                        <tr *ngIf="data['input_source']==='EMC NMS';else notemc">                         
+                        <tr *ngIf="data['input_source']==='EMC';else notemc">                         
                           <th style="width:200px;"> Date </th>
                           <th style="width:200px;"> User </th>
                           <th style="width:60%;"> Description </th>      
@@ -73,11 +73,11 @@
                         </ng-template>                        
                       </thead>
                       <tbody>
-                        <ng-container *ngIf="data['input_source']==='EMC NMS';else notemcdata">
+                        <ng-container *ngIf="data['input_source']==='EMC';else notemcdata">
                             <tr *ngFor="let data of workLogData; let i=index;" style="color: black;">
                                
                                 <td style="width:200px;">{{data.date}}</td>
-                                <td style="width:200px;">{{data.user}}</td>
+                                <td style="width:200px;">{{data.user_login}}</td>
                                 <td style="width:60%;">
                                 <ng-container *ngFor="let str of breakLongText(data.message)">
                                   {{str}}<br>
@@ -87,11 +87,11 @@
                         </ng-container>
                         <ng-template #notemcdata>
                             <tr *ngFor="let data of workLogData; let i=index;" style="color: black;">
-                                <td style="width:200px;">{{data.starttime}}</td>
-                                <td style="width:200px;">{{data.endtime}}</td>
-                                <td style="width:200px;">{{data.technician}}</td>
+                                <td style="width:200px;">{{data.date}}</td>
+                                <td style="width:200px;">{{data.date}}</td>
+                                <td style="width:200px;">{{data.user_login}}</td>
                                 <td style="width:60%;">
-                                  <ng-container *ngFor="let str of breakLongText(data.description)">
+                                  <ng-container *ngFor="let str of breakLongText(data.message)">
                                     {{str}}<br>
                                   </ng-container>
                                 </td>          
@@ -117,7 +117,7 @@
     
                   </div>
                   <div class="col-md-12">
-                    <button type="submit" (click)="addworklog()" class="btn btn-sm btn-dark btn-sm float-right">Submit
+                    <button type="submit" (click)="addPublicworklog()" class="btn btn-sm btn-dark btn-sm float-right">Submit
                       Worklog</button>
                   </div>
                 </div>
@@ -125,7 +125,7 @@
               </ng-template>
             </ngb-tab>
             <ngb-tab>
-              <ng-template ngbTabTitle><b>Private Worklog</b> </ng-template>
+              <ng-template ngbTabTitle>Private Worklog</ng-template>
               <ng-template ngbTabContent>
                 <form>
                 <div class="form-group row">
@@ -138,7 +138,7 @@
     
                   </div>
                   <div class="col-md-12">
-                    <button type="submit" (click)="addworklog()" class="btn btn-sm btn-dark btn-sm float-right">Submit
+                    <button type="submit" (click)="addPrivateworklog()" class="btn btn-sm btn-dark btn-sm float-right">Submit
                       Worklog</button>
                   </div>
                 </div>
@@ -152,7 +152,51 @@
       
       <ngb-tab title="Work Order">
         <ng-template ngbTabContent>
-          <p>Work Order.</p>
+          <form>
+            <div class="form-group row">
+              <div class="col-md-12">
+                <div class="form-group ">
+                  <label class="col-form-label">Enter Work Order</label>
+                  <textarea style="height:80px;" class="form-control" placeholder="Enter Work Order"
+                    name="incident_reson" [(ngModel)]="incidentData.reason_resolve" id="incident_reson"></textarea>
+                </div>
+
+              </div>
+              <div class="col-md-12">
+                <button type="submit" (click)="addWorkOrder()" class="btn btn-sm btn-dark btn-sm float-right">Submit
+                  Worklog</button>
+              </div>
+            </div>
+          </form>
+          <hr>
+          <div class="table-responsive">
+            <table class="table table-valign-middle force-overflow">
+              <thead>
+                 
+                  <tr>
+                    <th style="width:20%;"> Start Time</th>
+                    <th style="width:20%;"> End Time</th>
+                    <th style="width:20%;"> Technician</th>
+                    <th style="width:40%;"> Description</th>        
+                  </tr>                        
+              </thead>
+              <tbody>
+                 
+                    <tr *ngFor="let data of workOredrData; let i=index;" style="color: black;">
+                        <td style="width:20%;">{{data.start_date}}</td>
+                        <td style="width:20%;">{{data.end_date}}</td>
+                        <td style="width:20%;">{{data.agent_id_friendlyname}}</td>
+                        <td style="width:40%;">
+                          <ng-container *ngFor="let str of breakLongText(data.description)">
+                            {{str}}<br>
+                          </ng-container>
+                        </td>          
+                        
+                      </tr>                 
+              </tbody>
+            </table>
+          </div>
+       
         </ng-template>
       </ngb-tab>
       <ngb-tab title="Automation">
