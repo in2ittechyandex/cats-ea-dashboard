@@ -33,9 +33,16 @@ font-family:'Muli', sans-serif !important; background:#242a30; color:#fff; paddi
 ::ng-deep #tab_w_33 .dropdown {width: 100%;}
 ::ng-deep#tab_w_33 .dropdown a {width: 40px;}
 
-::ng-deep#tab_w_20 .nav-item {width:20%; text-align: center; font-weight:600; font-size:13px;}
+::ng-deep#tab_w_20 .nav-item {width:20%; text-align: center; font-weight:600; font-size:13px; float: left;}
 ::ng-deep #tab_w_20 .nav-tabs {border:1px solid #ddd !important; background:#c1ccd1 !important;}
 ::ng-deep #tab_w_20 .nav-tabs .nav-link {padding: 6px 15px !important; color: #000000;}
 ::ng-deep#tab_w_20 .tab-content {width: 100%; min-height: 330px; height: auto; margin-bottom: 0px;}
 ::ng-deep #tab_w_20 .dropdown {width: 100%;}
 ::ng-deep#tab_w_20 .dropdown a {width: 40px;}
+
+
+::ng-deep .flex-column{float: left; min-width:150px; min-height:200px;}
+::ng-deep .flex-column .nav-item{width:100% !important;}
+::ng-deep .flex-column .tab-content>.tab-pane{float:left;}
+
+.table-responsive{width: auto !important;}

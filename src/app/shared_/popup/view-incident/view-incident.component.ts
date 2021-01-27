@@ -14,6 +14,7 @@ export interface DialogData {
   styleUrls: ['./view-incident.component.css']
 })
 export class ViewIncidentComponent implements OnInit {
+  currentOrientation = 'vertical';
   onDialogOpened=new EventEmitter(); 
     actionformdataManageEngine = [];
     actionformdataServiceNow = [];

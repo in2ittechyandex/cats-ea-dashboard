@@ -52,7 +52,58 @@
         <ng-template ngbTabTitle>WorkLog </ng-template>
         <ng-template ngbTabContent>
           <!-- <div id="tab_w_33"> -->
-          <ngb-tabset [destroyOnHide]="false">
+          <ngb-tabset [destroyOnHide]="false" [orientation]="currentOrientation">
+            <ngb-tab title="Worklog History">
+              <ng-template ngbTabContent>                
+                  <div class="table-responsive">
+                    <table class="table table-valign-middle force-overflow">
+                      <thead>
+                        <tr *ngIf="data['input_source']==='EMC NMS';else notemc">                         
+                          <th style="width:200px;"> Date </th>
+                          <th style="width:200px;"> User </th>
+                          <th style="width:60%;"> Description </th>      
+                        </tr>
+                        <ng-template #notemc>
+                          <tr>
+                            <th style="width:200px;"> Start Time</th>
+                            <th style="width:200px;"> End Time</th>
+                            <th style="width:200px;"> Technician</th>
+                            <th style="width:60%;"> Description</th>        
+                          </tr>
+                        </ng-template>                        
+                      </thead>
+                      <tbody>
+                        <ng-container *ngIf="data['input_source']==='EMC NMS';else notemcdata">
+                            <tr *ngFor="let data of workLogData; let i=index;" style="color: black;">
+                               
+                                <td style="width:200px;">{{data.date}}</td>
+                                <td style="width:200px;">{{data.user}}</td>
+                                <td style="width:60%;">
+                                <ng-container *ngFor="let str of breakLongText(data.message)">
+                                  {{str}}<br>
+                                </ng-container>
+                              </td>
+                              </tr>
+                        </ng-container>
+                        <ng-template #notemcdata>
+                            <tr *ngFor="let data of workLogData; let i=index;" style="color: black;">
+                                <td style="width:200px;">{{data.starttime}}</td>
+                                <td style="width:200px;">{{data.endtime}}</td>
+                                <td style="width:200px;">{{data.technician}}</td>
+                                <td style="width:60%;">
+                                  <ng-container *ngFor="let str of breakLongText(data.description)">
+                                    {{str}}<br>
+                                  </ng-container>
+                                </td>          
+                                
+                              </tr>
+                        </ng-template>                     
+                      </tbody>
+                    </table>
+                  </div>
+               
+              </ng-template>
+            </ngb-tab>
             <ngb-tab title="Public Worklog">
               <ng-template ngbTabContent>
                 <form>
@@ -94,67 +145,7 @@
               </form>
               </ng-template>
             </ngb-tab>
-            <ngb-tab title="Worklog History">
-              <ng-template ngbTabContent>
-                
-                  <div class="table-responsive">
-                    <table class="table table-valign-middle force-overflow">
-                      <thead>
-                        <tr *ngIf="data['input_source']==='EMC NMS';else notemc">
-                         
-                          <th style="width:200px;"> Date </th>
-                          <th style="width:200px;"> User </th>
-                          <th style="width:60%;"> Description </th>
-      
-                        </tr>
-                        <ng-template #notemc>
-                          <tr>
-                            <th style="width:200px;"> Start Time</th>
-                            <th style="width:200px;"> End Time</th>
-                            <th style="width:200px;"> Technician</th>
-                            <th style="width:60%;"> Description</th>
-        
-                          </tr>
-                        </ng-template>
-                        
-                      </thead>
-                      <tbody>
-                        <ng-container *ngIf="data['input_source']==='EMC NMS';else notemcdata">
-                            <tr *ngFor="let data of workLogData; let i=index;" style="color: black;">
-                               
-                                <td style="width:200px;">{{data.date}}</td>
-                                <td style="width:200px;">{{data.user}}</td>
-                                <td style="width:60%;">
-                                <ng-container *ngFor="let str of breakLongText(data.message)">
-                                  {{str}}<br>
-                                </ng-container>
-                              </td>
-                              </tr>
-                        </ng-container>
-                        <ng-template #notemcdata>
-                            <tr *ngFor="let data of workLogData; let i=index;" style="color: black;">
-                                <td style="width:200px;">{{data.starttime}}</td>
-                                <td style="width:200px;">{{data.endtime}}</td>
-                                <td style="width:200px;">{{data.technician}}</td>
-                                <td style="width:60%;">
-                                  <ng-container *ngFor="let str of breakLongText(data.description)">
-                                    {{str}}<br>
-                                  </ng-container>
-                                </td>
-            
-                                
-                              </tr>
-                        </ng-template>
-                        
-      
-                      </tbody>
-                    </table>
-                  </div>
-              
-              
-               
-              </ng-template>
-            </ngb-tab>
+           
           </ngb-tabset> 
         </ng-template>
       </ngb-tab>
