@@ -82,7 +82,7 @@ export class EventsComponent implements OnInit, OnDestroy {
       },
       {
         headerName: 'Description',
-        field: 'message',
+        field: 'description',
         sortable: true,
         filter: true,
         editable: false,
@@ -336,7 +336,7 @@ export class EventsComponent implements OnInit, OnDestroy {
     },
     {
       headerName: 'Description',
-      field: 'message',
+      field: 'description',
       sortable: true,
       filter: true,
       editable: false,
@@ -380,7 +380,7 @@ export class EventsComponent implements OnInit, OnDestroy {
     },
     {
       headerName: 'IP',
-      field: 'ip_address',
+      field: 'ip',
       sortable: true,
       editable: false,
       filter: true,
@@ -422,7 +422,7 @@ export class EventsComponent implements OnInit, OnDestroy {
     },
     {
       headerName: 'Alias Name',
-      field: 'alias_name',
+      field: 'a_name',
       sortable: true,
       editable: false,
       filter: true,
@@ -489,24 +489,24 @@ export class EventsComponent implements OnInit, OnDestroy {
         return '<span style="user-select: initial;-moz-user-select: text;-ms-user-select: text;-webkit-user-select: text;">' + params.value + '</span>'
       },
     },
-    {
-      headerName: 'Raw Event',
-      field: 'rawdata',
-      sortable: true,
-      editable: false,
-      filter: true,
-      headerTooltip: 'Raw Event',
-      resizable: true,
-      'isActive': true,
-      minWidth: 150,
-      cellRenderer: function (params) {
-        var str = params.value;
-        var str1 = str.split('<').join(' ');
-        var str2 = str1.split('>').join(' ');
-        var str3 = str2.split('.').join(' ');
-        return '<span style="user-select: initial;-moz-user-select: text;-ms-user-select: text;-webkit-user-select: text;" title="' + str3 + '">' + str3 + '</span>'
-      },
-    }
+    // {
+    //   headerName: 'Raw Event',
+    //   field: 'rawdata',
+    //   sortable: true,
+    //   editable: false,
+    //   filter: true,
+    //   headerTooltip: 'Raw Event',
+    //   resizable: true,
+    //   'isActive': true,
+    //   minWidth: 150,
+    //   cellRenderer: function (params) {
+    //     var str = params.value;
+    //     var str1 = str.split('<').join(' ');
+    //     var str2 = str1.split('>').join(' ');
+    //     var str3 = str2.split('.').join(' ');
+    //     return '<span style="user-select: initial;-moz-user-select: text;-ms-user-select: text;-webkit-user-select: text;" title="' + str3 + '">' + str3 + '</span>'
+    //   },
+    // }
   ];
   secondsToRefresh: number = 60;
   timeLeft: number = 60;
@@ -1247,7 +1247,7 @@ export class EventsComponent implements OnInit, OnDestroy {
     //     break;
     //   }
     // }
-    this.titleChart = 'Event trend - ' + event['message'];
+    this.titleChart = 'Event trend - ' + event['description'];
     var len = this.titleChart.length;
     var finalString = '';
     var desiredLength = 150;
