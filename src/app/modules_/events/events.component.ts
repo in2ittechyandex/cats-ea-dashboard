@@ -590,15 +590,15 @@ export class EventsComponent implements OnInit, OnDestroy {
     this.selectedEvent = e.rowData;
     this.selectedEventKeys = Object.keys(this.selectedEvent);
     if (this.selectedEvent) {
-      this.getRawData(this.selectedEvent.code);
+      this.getRawData(this.selectedEvent.id);
     }
 
   }
   getRawData(id) {
     this.loading = true;
     this.eventsService.getRawData(id).subscribe((res) => {
-      if (res['Status']) {
-        this.selectedEvent['rawevent'] = res['data'];
+      if (res['status']) {
+        this.selectedEvent['rawevent'] = res['data']['raw_data'];
         document.getElementById('modalViewEvent').click();
       }
       this.loading = false;

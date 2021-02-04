@@ -149,10 +149,11 @@ export class TimeFilterComponent implements OnInit, AfterViewInit, OnDestroy {
       maxDate: (this.configStyle && this.configStyle.maxDate !== undefined) ?
         this.configStyle.maxDate : undefined,
 
+        
       startDate: this.configStyle ? this.configStyle.startDate ?
-        moment(this.configStyle.startDate).toDate() : moment().startOf('day') : moment().startOf('day'),
+        moment(this.configStyle.startDate).toDate() : moment(moment().subtract(1,'hour')) : moment(moment().subtract(1,'hour')),
       endDate: this.configStyle ? this.configStyle.endDate ?
-        moment(this.configStyle.endDate).toDate() : moment().endOf('day') : moment().endOf('day'),
+        moment(this.configStyle.endDate).toDate() : moment() : moment(),
       locale: { format: this.dateFormat },
       alwaysShowCalendars: false,
       // drops: this.configStyle ? this.configStyle.drops ? this.configStyle.drops : 'up' : 'up',
@@ -229,8 +230,8 @@ export class TimeFilterComponent implements OnInit, AfterViewInit, OnDestroy {
   public getCustomRanges() {
     let strJson = {
       'Now': [moment().subtract(30, 'minutes'), moment()],
-      // 'Last 1 Hour': [moment().subtract(1, 'hours'), moment()],
-      'Last 1 Hour': [moment().startOf('hour').subtract(1, 'hours'), moment().startOf('hour')],
+      'Last 1 Hour': [moment().subtract(1, 'hours'), moment()],
+      // 'Last 1 Hour': [moment().startOf('hour').subtract(1, 'hours'), moment().startOf('hour')],
       'Today': [moment().startOf('day'), moment()],
       'Yesterday': [moment().subtract(1, 'days').startOf('day'), moment().subtract(1, 'days').endOf('day')],
       'Last 7 Days': [moment().subtract(7, 'days').startOf('day'), moment().subtract(1, 'days').endOf('day')],

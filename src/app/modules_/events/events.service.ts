@@ -375,9 +375,12 @@ export class EventsService {
     return this.http.get(URL).map(res => <any>res);
   }
   getRawData(id) {
-    const URL = environment._EventURL + 'eventengine/getrowdata?id=' + id;
+    const URL = environment._WEBGATEWAY_BASIC_URL_ + 'menu/kpi/get_event_info';
     // URL="http://172.27.64.92:7000/eventengine/getrowdata?id=EVENT-20200630-101609"
-    return this.http.get(URL).map(res => <any>res);
+    let formData: FormData = new FormData();
+    formData.append('event_id', id);
+    return this.http.post(URL,formData).map(res => <any>res); 
+
   }
 
 

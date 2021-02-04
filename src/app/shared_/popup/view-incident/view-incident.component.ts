@@ -33,13 +33,14 @@ export class ViewIncidentComponent implements OnInit {
   dialogOpened(): void {
     this.onDialogOpened.emit(true);
   }
- 
+ tool_id="";
   ngOnInit() {
    this.dialogRef.updatePosition({right: `40px`});
     this.incidentData.reason_resolve='';  
     this.showCloserNotes=false;
     // this.getActionFormData(this.data['alarm_id'],'incident');
-    this.data['ticket_no']="i-149071";
+    // this.data['ticket_no']="i-1289";
+    this.tool_id=this.data['type_id'];
     this.showIncident(this.data['ticket_no']); 
     this.getIncidentStatus();
     this.getResolutionCode()
@@ -53,7 +54,7 @@ getActionFormData(id,type) {
   this.actionformdataServiceNowKeys = [];
   this.actionformdataMailKeys = [];
   this.typeIdList = [];
-  this.alarmService.getActionFormData(id,type).subscribe((res) => {
+  this.alarmService.getActionFormData(id,this.tool_id).subscribe((res) => {
     if (res['Status']) { 
       if(type=='incident'){
          
@@ -83,7 +84,7 @@ getActionFormData(id,type) {
 showIncident(ticketId) {
   this.incidentData.reason_resolve='';  
   // document.getElementById("modalViewIncidentId1").click();
-  this.getIncident(this.typeIdList['servicenow_data'], ticketId);
+  this.getIncident(this.tool_id, ticketId);
 }
 setSelectedTabWorklog(event){
   this.incidentData.reason_resolve='';  
@@ -116,15 +117,15 @@ incidentDataReceived:boolean=false;
 public getIncident(typeid, workorderid) {
   var ticketIds=workorderid.split('-');
 
-  this.eventsService.getIncident('', ticketIds[1]).subscribe((res) => {
+  this.eventsService.getIncident(typeid, ticketIds[1]).subscribe((res) => {
     if (res.status) {
       console.log("incident info received");
       this.incidentDetails=res.data;
       this.incidentDetailsKey=Object.keys(this.incidentDetails);
       this.incidentDataReceived=true;
       // this.getallworklog(this.typeIdList['servicenow_data'], this.actionformdataServiceNow['Sys Id']);
-      this.getallworklog('', ticketIds[1]);
-      this.getallworkOrder('', ticketIds[1]);
+      this.getallworklog(this.tool_id, ticketIds[1]);
+      this.getallworkOrder(this.tool_id, ticketIds[1]);
     }
     this.dialogOpened();
   }, (err) => {
@@ -241,12 +242,12 @@ workLogData = [];
 
             // let loggedUser = JSON.parse(localStorage.getItem('loggedUser'));
             // formData.append("logged_user", loggedUser['userName']);
-            formData.append("type_id", "vikas");
+            formData.append("type_id", this.tool_id);
             formData.append("ticket_id", ticketIds[1]); // Ramji old value : "Ticket Number"
             formData.append("comment", this.incidentData.reason_resolve); // Ramji  old value :"description"
             this.eventsService.addPubliclog(formData).subscribe((res) => {
               if (res.status) {
-                this.getallworklog(this.typeIdList['servicenow_data'], ticketIds[1]);
+                this.getallworklog(this.tool_id, ticketIds[1]);
       
                 this.incidentData.reason_resolve = '';
                 alert("worklog added successfully");
@@ -290,12 +291,12 @@ workLogData = [];
 
           // let loggedUser = JSON.parse(localStorage.getItem('loggedUser'));
           // formData.append("logged_user", loggedUser['userName']);
-          formData.append("type_id", "vikas");
+          formData.append("type_id", this.tool_id);
           formData.append("ticket_id", ticketIds[1]); // Ramji old value : "Ticket Number"
           formData.append("comment", this.incidentData.reason_resolve); // Ramji  old value :"description"
           this.eventsService.addPrivatelog(formData).subscribe((res) => {
             if (res.status) {
-              this.getallworklog(this.typeIdList['servicenow_data'], ticketIds[1]);
+              this.getallworklog(this.tool_id, ticketIds[1]);
     
               this.incidentData.reason_resolve = '';
               alert("worklog added successfully");
@@ -340,12 +341,12 @@ public addWorkOrder() {
 
         // let loggedUser = JSON.parse(localStorage.getItem('loggedUser'));
         // formData.append("logged_user", loggedUser['userName']);
-        formData.append("type_id", "vikas");
+        formData.append("type_id", this.tool_id);
         formData.append("ticket_id", ticketIds[1]); // Ramji old value : "Ticket Number"
         formData.append("description", this.incidentData.reason_resolve); // Ramji  old value :"description"
         this.eventsService.addWorkOrder(formData).subscribe((res) => {
           if (res.status) {
-            this.getallworklog(this.typeIdList['servicenow_data'], ticketIds[1]);
+            this.getallworkOrder(this.tool_id, ticketIds[1]);
   
             this.incidentData.reason_resolve = '';
             alert("worklog added successfully");
@@ -404,7 +405,7 @@ public addWorkOrder() {
         var ticketIds=this.data['ticket_no'].split('-');
         let formData: FormData = new FormData();
         formData.append("ticket_id", ticketIds[1]);
-        formData.append("type_id", '');
+        formData.append("type_id", this.tool_id);
         const result = this.incidentStatus.data.find( ({ id }) => id === this.incidentStatus.selected );
         
        if(result['close note enable']){
@@ -426,7 +427,7 @@ public addWorkOrder() {
             this.incidentData.reason_resolve = '';
             this.incidentStatus.selected='';
             alert(res.msg);
-            this.getIncident(this.typeIdList['servicenow_data'], this.actionformdataServiceNow['Ticket Number']);
+            this.getIncident(this.tool_id,  ticketIds[1]);
           } else {
             alert(res.msg);
           }
