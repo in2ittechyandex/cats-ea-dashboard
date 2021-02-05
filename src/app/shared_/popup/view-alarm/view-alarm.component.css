@@ -24,3 +24,7 @@
 ::ng-deep#tab_w_50 .tab-content {width: 100%; min-height: 330px; height: auto; margin-bottom: 0px;}
 ::ng-deep #tab_w_50 .dropdown {width: 100%;}
 ::ng-deep#tab_w_50 .dropdown a {width: 40px;}
+
+.details{width:100%;}
+.details .left{float: left; width: 150px; font-weight: 700; text-transform: capitalize;}
+.details .right{color: #6f726f;}
