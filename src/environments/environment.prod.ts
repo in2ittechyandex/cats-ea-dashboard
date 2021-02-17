@@ -7,7 +7,7 @@ export const environment = {
   _APACHEDEPLOYMENTLOCATION_URL: 'http://172.27.63.163:4200/#/',
   _NMS_URL: 'http://172.27.64.61:5050/',
   _EVENT_AGGREGATOR_LINK_URL: 'http://172.27.64.61:4200/catsea/#/dashboard/summary',
-  _AUTH_GATEWAY_URL:    'http://cats.sanral.intra', // 'http://172.27.63.29:4200/logingateway', //
+  _AUTH_GATEWAY_URL: 'http://localhost:4200/auth/login',   // 'http://cats.sanral.intra', // 'http://172.27.63.29:4200/logingateway', //
   _AUTH_PRODUCT_SERVICES_URL: 'http://cats.sanral.intra/#/services/products',
    // 'http://172.27.63.29:4200/logingateway/#/services/products',
   // 'http://172.27.64.61:4200/logingateway/#/services/products', // ,

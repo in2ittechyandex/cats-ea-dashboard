@@ -1,0 +1,41 @@
+<div class="">
+  <div class="row style-4" style="max-height:200px;width:100%;overflow: auto">
+    <ng-container class="d-flex flex-row justify-content-between" *ngFor="let engineer of allEngineer;let i=index">
+       
+      <div class="mb-4 w-25">
+        <label class="check mb-0">
+          <input name="elm-{{i}}" [(ngModel)]="engineer.selected" (change)="changeParticipant($event)"
+            [checked]="engineer.selected" type="checkbox">
+            <img alt="" class="image-circle" src="assets/img/user/user-13.jpg">
+            <span><strong>{{engineer.userName}}</strong></span>
+          </label>        
+      </div>
+      
+    </ng-container>
+  </div>
+  <div class="row mt-2">
+    <button type="button" class="btn btn-primary" (click)="startMeeting()">Start Meeting</button>
+  </div>
+</div>
+
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Video Call</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div style="text-align:center">
+      <div id="meet"></div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-danger" (click)="endMeeting()">Stop</button>
+
+    <button type="button" class="btn btn-primary" (click)="startMeeting()">Start</button>
+    <button type="button" class="btn btn-primary" (click)="recordMeeting()">Record</button>
+    <button type="button" class="btn btn-primary" (click)="stopRecording()">End Recording</button>
+    <button type="button" class="btn bg-black" (click)="modal.close('Close')">Close</button>
+  </div>
+</ng-template>

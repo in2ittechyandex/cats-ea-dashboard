@@ -3,7 +3,7 @@ import { AuthComponent } from './auth.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { CommonModule } from '@angular/common';
-// import { LoginComponent } from './login/login.component';
+import { LoginComponent } from './login/login.component';
 import { AuthorizationComponent } from './authorization/authorization.component';
 import { ErrorComponent } from './error-component/error-component.component';
 import { Error401Component } from './error401-component/error401-component.component';
@@ -13,7 +13,7 @@ const routes: Routes = [
         path: '', pathMatch: 'prefix',
         component: AuthComponent,
         children: [
-            // { path: 'login', component: LoginComponent },
+            { path: 'login', component: LoginComponent },
             // { path: 'signup', component: SignupComponent },
             { path: 'authorization/:token', component: AuthorizationComponent },
             { path: 'not-found', component: ErrorComponent },

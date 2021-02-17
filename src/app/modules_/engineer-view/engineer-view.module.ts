@@ -10,6 +10,7 @@ import { LayoutsModule } from '../layouts/layouts.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';  
 import { SharedModule } from 'src/app/shared_/shared.module';
 import { CollaborateComponent } from './collaborate/collaborate.component';
+import { VideoConferencingComponent } from './video-conferencing/video-conferencing.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -20,6 +21,6 @@ import { CollaborateComponent } from './collaborate/collaborate.component';
     ReactiveFormsModule,
     SharedModule
   ],
-  declarations: [EngineerViewComponent,CloudDevOpsComponent,MyAlertsComponent,CollaborateComponent] 
+  declarations: [EngineerViewComponent,CloudDevOpsComponent,MyAlertsComponent,CollaborateComponent, VideoConferencingComponent] 
 })
 export class EngineerViewModule { }

@@ -28,5 +28,13 @@ export class AuthServices {
         return atob(encodedString);
     }
 
+    public login(userName,password){
+        const url = environment._WEBGATEWAY_BASIC_URL_ + 'user/kpi/login';
+        let formData:FormData = new FormData();
+        formData.append('userName',userName);
+        formData.append('password',password);
+        return this.httpClient_.post(url , formData); // .map(res=><any>res);
+    }
+
 
 }

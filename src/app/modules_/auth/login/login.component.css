@@ -1,0 +1,8 @@
+.login_Cats_icon{
+    color: #006699;
+}
+.eye_icon{position: absolute; right: 15px;  top: 18px;}
+
+.login_footer{background-color: #f4f4f4; padding:10px; border-top:1px solid #dddddd; bottom: 0;
+    position: absolute;    width: 100%;}
+.login_footer p{color: #444444;}

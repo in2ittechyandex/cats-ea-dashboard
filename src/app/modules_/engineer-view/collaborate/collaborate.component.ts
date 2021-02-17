@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { CollaborateService } from './collaborate.services';
-import '../../../../assets/scripts/jitsi.js';
+// import '../../../../assets/scripts/jitsi.js';
 
 declare var JitsiMeetExternalAPI: any;
 
@@ -16,7 +16,7 @@ export class CollaborateComponent implements OnInit {
   commentsLoading: boolean = false;
   commentsLoadingError: boolean = false;
   closeResult = '';
-  domain: string = "meet.jit.si";
+  domain: string = 'alphacodes.hopto.org'; // '182.76.238.200:8443';// "meet.jit.si"; // '172.16.10.112:443'; //
   options: any;
   api: any;
   modalReferenceAddReport: any;
@@ -105,6 +105,12 @@ export class CollaborateComponent implements OnInit {
   }
 
 
+  prepareVideoModal(obj, content, size) {
+    console.log(obj);
+    let uName = obj.username;
+    this.open(content, size);
+    this.jitsiMeet(obj);
+  }
 
 
   open(content, size) {
@@ -122,7 +128,7 @@ export class CollaborateComponent implements OnInit {
       this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
     });
 
-    this.jitsiMeet();
+    // this.jitsiMeet(obj);
   }
 
   private getDismissReason(reason: any): string {
@@ -135,14 +141,67 @@ export class CollaborateComponent implements OnInit {
     }
   }
 
-  jitsiMeet() {
+  jitsiMeet(user_) {
     this.options = {
-      roomName: "JitsiMeetAPIExample",
+      roomName: this.getUniqueRoomId(),
       width: '100%',
       height: 430,
-      parentNode: document.querySelector('#meet')
+      parentNode: document.querySelector('#meet'),
+      userInfo: {
+        // email: 'email@jitsiexamplemail.com',
+        displayName: user_.username
+      }
     }
     this.api = new JitsiMeetExternalAPI(this.domain, this.options);
+
+    this.api.getCurrentDevices().then(devices => {
+      console.log('************ getCurrentDevices :: ' + devices);
+    });
+
+    this.api.addEventListener('videoConferenceLeft', (e) => {
+      let rName = e.roomName;
+      console.log('--------------Listening------------:::rName : ' + rName + ' , ' + this.modalService.hasOpenModals());
+     alert('end video ... ');
+      // if (this.modalService.hasOpenModals()) {
+      //   this.modalService.dismissAll();
+      // }
+    });
+
+    this.api.addEventListener('incomingMessage', (e) => {
+      console.log('incomming ...from : '+e.from +' :message: '+e.message + ' : e.nickName: '+e.nick);
+      console.log('incomingMessage... : '+e);
+    });
+
+    this.api.addEventListener('outgoingMessage', (e) => {
+      console.log('message **** :'+e.message + ' ,isPrivateMessage : '+e.privateMessage);
+      // console.log('outgoingMessage... : '+e);
+    });
+
+    
+    this.api.addEventListener('participantJoined', (e) => {
+      console.log('participantJoined... : '+e);
+    });
+    
+    
+    // https://catsportal.dashboard.liquidtelecom.co.za/assets/img_alpha/i.png
+    this.api.executeCommand('avatarUrl', 'http://localhost:4200/assets/img/user/user-13.jpg');
+
+
   }
+
+  startMeeting(){
+    this.jitsiMeet({'username':'Test User'});
+  }
+
+  endMeeting(){
+    console.log('end meeting .....');
+    this.api.dispose();
+  }
+
+  getUniqueRoomId(){
+    // TODO : get unique room id
+     return 'Room-'+(Math.floor(Math.random() * (10 - 1 + 1)) + 1);
+  }
+
 
 }

@@ -5,11 +5,12 @@ import { AuthComponent } from './auth.component';
 import { AuthRoutingModule } from './auth.routing.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-// import { LoginComponent } from './login/login.component';
+import { LoginComponent } from './login/login.component';
 // import { SignupComponent } from './signup/signup.component';
 import { AuthorizationComponent } from './authorization/authorization.component';
 import { AuthServices } from './auth.services';
 import { HttpClientModule } from '@angular/common/http';
+
 
 @NgModule({
   imports: [
@@ -20,12 +21,13 @@ import { HttpClientModule } from '@angular/common/http';
   ],
   providers: [AuthServices],
   declarations: [
-    // LoginComponent,
+    LoginComponent,
     // SignupComponent,
     AuthComponent,
     AuthorizationComponent,
     ErrorComponent,
-    Error401Component],
+    Error401Component,
+    LoginComponent],
     bootstrap: [AuthComponent]
 }, )
 export class AuthModule {}

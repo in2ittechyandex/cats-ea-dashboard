@@ -169,7 +169,7 @@ export class LeftSiteBarComponent implements OnInit, AfterViewChecked, OnDestroy
 
     this.themeConf_ = themeConf_;
     this.pageSettings = pageSettings;
-    this.reportService_.fetchUsertabs();
+    // this.reportService_.fetchUsertabs();
   }
 
   open(content) {

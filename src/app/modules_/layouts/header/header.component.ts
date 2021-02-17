@@ -1,3 +1,4 @@
+import { SpeechRecognitionService } from './../speech-recognition/speech-recognition.service';
 import { LoggedUser } from 'src/app/models_/loggeduser';
 import { environment } from './../../../../environments/environment';
 import { Router } from '@angular/router';
@@ -19,11 +20,18 @@ import { AppConfig } from 'src/app/config/app.config';
 export class HeaderComponent implements OnInit, OnDestroy {
   loadingFeedBackButton: boolean = false;
 
+  public speechData: string;
+  public speeker = true;
+  public voices: SpeechSynthesisVoice[] = [];
+  public isConnected = true;
+
   constructor(private modalService: NgbModal, private fb: FormBuilder,
     private u_service: UserService,
-    private appConfig: AppConfig
+    private appConfig: AppConfig,
+    private speechRecognitionService: SpeechRecognitionService
   ) {
     console.log('headers :' +this.appConfig.environemnt['_WEBGATEWAY_BASIC_URL_']);
+    this.speechData = '';
   }
 
   @Input() pageSidebarTwo;
@@ -62,6 +70,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.pageSettings.pageMobileTopMenuToggled = false;
     this.pageSettings.pageMobileMegaMenuToggled = false;
+
+    this.speechRecognitionService.DestroySpeechObject();
   }
 
 
@@ -98,6 +108,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
 
   ngOnInit() {
+    this.initSpeak(); 
+    this.voices = window.speechSynthesis.getVoices();
+
+
     if (localStorage.getItem('loggedUser') != null) {
       this.loggedUser = JSON.parse(localStorage.getItem('loggedUser'));
     }
@@ -128,7 +142,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
       module: ['', Validators.required]
 
     });
+
+    
   }
+
+
 
   // Attachment Base64Decode (6-Sep-2019)
   onFileChange(event) {
@@ -316,5 +334,79 @@ export class HeaderComponent implements OnInit, OnDestroy {
     window.location.replace(environment._AUTH_PRODUCT_SERVICES_URL);
   }
 
+  // text to speech start 
+  public chatBotSpeak(message) {
+    if (this.speeker && this.isConnected) {
+      if ('speechSynthesis' in window) {
+        const msg = new SpeechSynthesisUtterance(message);
+        this.voices = window.speechSynthesis.getVoices();
+        const voiceObj_: SpeechSynthesisVoice = this.filterVoices(this.voices);
+        if (this.voices.length > 0 && voiceObj_ != null) {
+          msg.voice = voiceObj_; // this.voices[8];
+          msg.rate = 1;
+        }
+        window.speechSynthesis.speak(msg);
+      }
+    }
+  }
+
+  filterVoices(spVoices: SpeechSynthesisVoice[]): SpeechSynthesisVoice {
+    const map_: Map<string, SpeechSynthesisVoice> = new Map();
+    spVoices.forEach(v_ => {
+      map_.set(v_['lang'], v_);
+    });
+    for (const key of Array.from(map_.keys())) {
+      // // // // console.log(key);
+    }
+    if (map_.has('en-IN')) {
+      return map_.get('en-IN');
+    }
+
+    if (map_.has('en-US')) {
+      return map_.get('en-US');
+    } else if (map_.has('en-IN')) {
+      return map_.get('en-IN');
+    } else {
+      return null;
+    }
+
+  }
+
+  public initSpeak() {
+    if ('speechSynthesis' in window) {
+      const msg = new SpeechSynthesisUtterance('');
+      this.voices = window.speechSynthesis.getVoices();
+      const voiceObj_: SpeechSynthesisVoice = this.filterVoices(this.voices);
+      if (this.voices.length > 0 && voiceObj_ != null) {
+        msg.voice = voiceObj_; // this.voices[8];
+        msg.volume = 100;
+        msg.rate = 0.4;
+      }
+      window.speechSynthesis.speak(msg);
+    }
+  }
+
+  public AbortSpeak() {
+    if (this.speeker) {
+      window.speechSynthesis.cancel();
+    }
+  }
+
+
+  openChange(isOpen){
+    console.log('....event_..... : '+isOpen);
+    if(isOpen){
+      // DD is open
+      console.log('About to speak');
+      // this.initSpeak();
+      this.chatBotSpeak('Arjun Invites You to Join Jitsi Call');
+      // will setup text to speak modal
+      // this.voices = window.speechSynthesis.getVoices();
+    }else{
+      // DD is close
+     
+    }
+  }
+  // text to speech next 
 
 }

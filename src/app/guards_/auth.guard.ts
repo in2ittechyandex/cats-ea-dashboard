@@ -14,7 +14,7 @@ export class AuthGuard implements CanActivate {
      */
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
         const currentUser = localStorage.getItem('currentUser');
-        if (environment.gateWayAuthorization) {
+        if (environment.gateWayAuthorization || true) {
             // TODO : we will use gateway for authorization
             if (currentUser && JSON.parse(currentUser).access_token != '') {
                 return true;

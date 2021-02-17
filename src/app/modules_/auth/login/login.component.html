@@ -1,0 +1,63 @@
+<!-- begin login -->
+<div class="login login-with-news-feed">
+  <!-- begin news-feed -->
+  <div class="news-feed">
+      <div class="news-image" style="background-image: url(assets/images/page-cover.jpg)"></div>
+      <div class="news-caption">
+          <h4 class="caption-title"><b>CATS</b> | <span style="font-size: 30px;">Cognitive and Automated Tools and
+                  Services</span></h4>
+      </div>
+  </div>
+  <!-- end news-feed -->
+  <!-- begin right-content -->
+  <div class="right-content">
+      <!-- begin login-header -->
+      <div class="login-header">
+          <div class="brand text-center">
+              <span class="login_Cats_icon">
+                  <!-- <i class="fa fa-cogs"></i></span><b> CATS</b> -->
+                  <img class="liquidLogo" src="assets/images/liquid.png" alt="" /></span>
+              <!-- <small>responsive bootstrap 3 admin template</small> -->
+          </div>
+          <div class="icon">
+              <i class="fa fa-sign-in"></i>
+          </div>
+      </div>
+      <!-- end login-header -->
+      <!-- begin login-content -->
+      <div class="login-content">
+          <form #f="ngForm" (ngSubmit)="formSubmit(f)" class="margin-bottom-0">
+              <div class="form-group m-b-15">
+                  <input type="text" class="form-control form-control-lg" name="userName"  [(ngModel)]="lStr.userName" placeholder="User Name" required />
+              </div>
+              <div class="form-group m-b-15" style="position: relative;">
+                  <input type="password" class="form-control form-control-lg" id="password" name="password" [(ngModel)]="lStr.password" placeholder="Password" required />
+                  <a href="javascript:void(0)" id="crossEye" class="fa fa-eye eye_icon" (click)="viewPassword()"></a>
+              </div>
+              <div class="checkbox checkbox-css m-b-30">
+                  <input type="checkbox" name="remember" [(ngModel)]="checked" id="remember_me_checkbox"  />
+                  <label for="remember_me_checkbox">
+                      Remember Me
+                  </label>
+              </div>
+              <div class="login-buttons">
+                  <button type="submit" class="btn btn-primary btn-block btn-lg text-uppercase">Login</button>
+              </div>
+            
+              <!-- <div class="m-t-20 m-b-40 p-b-40 text-inverse">
+                  <span class="float-left"><a href="#" class="text-primary">Request Access</a></span>
+                 <span class="float-right"> Forgot password <a href="/ForgetPassword" class="text-primary">Click here</a></span>
+              </div> -->
+     
+          </form>
+      </div>
+
+      <div class="login_footer">
+          <p class="text-center mb-0">CATS Suite | In2IT Technologies. All Rights Reserved 2019</p>
+          </div>
+      <!-- end login-content -->
+  </div>
+  <!-- end right-container -->
+</div>
+<!-- end login -->
+

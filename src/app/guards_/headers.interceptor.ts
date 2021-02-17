@@ -17,7 +17,7 @@ export class AddHeaderInterceptor implements HttpInterceptor {
     if (!this.checkUrlHaveToIgnoreAuthHeaders(req.url)) {
       const currentUser_ = localStorage.getItem('currentUser');
       const token = currentUser_ ? JSON.parse(currentUser_).access_token : 'none';
-
+      const userName = currentUser_ ? JSON.parse(currentUser_).userName : 'none';
       if (environment.gateWayAuthorization) {
         // *** For Production ***********
         const reqCloned = this.handleBodyIn(req, token, 'token');
@@ -25,9 +25,9 @@ export class AddHeaderInterceptor implements HttpInterceptor {
         return next.handle(copiedReq);
       } else {
         /**  WARNING : use this block to connect without login gateway Or Auth Token */
-        let reqCloned: HttpRequest<any> = this.handleBodyIn(req, 'vikas', 'userName'); // WARNING for Testing ONly
+        let reqCloned: HttpRequest<any> = this.handleBodyIn(req, userName, 'userName'); // WARNING for Testing ONly // this.handleBodyIn(req, 'vikas', 'userName');
         reqCloned = reqCloned.clone({
-          headers: req.headers.set('userName', 'vikas')
+          headers: req.headers.set('userName', userName).set('token',token)
         });
         const copiedReq = reqCloned;
         return next.handle(copiedReq);
