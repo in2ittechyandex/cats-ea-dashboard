@@ -30,7 +30,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     private appConfig: AppConfig,
     private speechRecognitionService: SpeechRecognitionService
   ) {
-    console.log('headers :' +this.appConfig.environemnt['_WEBGATEWAY_BASIC_URL_']);
+    // console.log('headers :' +this.appConfig.environemnt['_WEBGATEWAY_BASIC_URL_']);
     this.speechData = '';
   }
 
