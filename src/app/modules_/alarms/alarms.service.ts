@@ -92,6 +92,12 @@ export class AlarmsService {
     formData.append("alarm_id",id);
     return this.http.post(URL,formData).map(res => <any>res);
   }
+  getDeviceInfoData(id){
+    const URL = environment._WEBGATEWAY_BASIC_URL_ + 'menu/kpi/get_device_info';
+    var formData=new FormData();
+    formData.append("device_id",id);
+    return this.http.post(URL,formData).map(res => <any>res);
+  }
   /**
      *
      * to get all incident status
@@ -105,6 +111,12 @@ export class AlarmsService {
     const URL = environment._WEBGATEWAY_BASIC_URL_ + 'menu/kpi/get_resolution_code';
     return this.http.post(URL,{}).map(res => <any>res);
   }
+  getNotificationInfo(id) {
+    const URL = environment._WEBGATEWAY_BASIC_URL_ + 'menu/kpi/get_notification_info';
+    var formData=new FormData();
+    formData.append("ticket_no",id);
+    return this.http.post(URL,formData).map(res => <any>res);
+  }
   getEmailLlist() {
     const URL = environment._AlarmURL + 'get_mail';
     return this.http.get(URL).map(res => <any>res);
@@ -115,9 +127,9 @@ export class AlarmsService {
     return this.http.get(URL).map(res => <any>res);
   }
   sendMail(formData: FormData) {
-    const URL = environment._AlarmURL + 'send_mail';
-    // const URL = "http://172.27.64.61:8000/send_mail";
-    return this.http.post(URL, formData).map(res => <any>res);
+    const URL = environment._WEBGATEWAY_BASIC_URL_ + 'menu/kpi/send_mail_notification';
+    
+    return this.http.post(URL,formData).map(res => <any>res);
   }
   sendNotification(formData) {
     const URL = environment._AlarmURL + 'eventengine/send_notification';

@@ -299,7 +299,26 @@ getActionFormData(id,type) {
        
           this.actionformdataEvents = res.data.event;
           this.actionformdataEventsKeys = Object.keys(this.actionformdataEvents); 
+          this.getDeviceInfoData(this.actionformdataEvents['Host']);
       }     
+          
+    }else{
+   alert(res['data']);
+    } 
+    this.dialogOpened();
+  }, (err) => {  
+    this.dialogOpened();
+  });
+}
+
+deviceInfoData;
+getDeviceInfoData(id) {   
+  this.alarmService.getDeviceInfoData("172.16.17.25").subscribe((res) => {
+    if (res['status']) {  
+      this.deviceInfoData=res['data'];
+          // this.actionformdataEvents = res.data.event;
+          // this.actionformdataEventsKeys = Object.keys(this.actionformdataEvents); 
+          
           
     }else{
    alert(res['data']);

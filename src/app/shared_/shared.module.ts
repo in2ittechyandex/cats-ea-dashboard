@@ -1,6 +1,6 @@
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+import { CommonModule,DatePipe } from '@angular/common';
 import { TimeFilterService } from './time-filter/time-filter.service.component';
 import { NgModule } from '@angular/core';
 import { TimeFilterComponent } from './time-filter/time-filter.component';
@@ -121,7 +121,7 @@ import { NgxLoadingModule, ngxLoadingAnimationTypes } from "ngx-loading";
     SHARED_VISUALS,NumberToDatePipe,
     D3_DIRECTIVES,
   ],
-  providers: [TimeFilterService, SharedServices,PopupService,D3Service
+  providers: [TimeFilterService, SharedServices,PopupService,D3Service,DatePipe
   ]
 })
 export class SharedModule { }

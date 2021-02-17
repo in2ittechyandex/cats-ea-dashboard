@@ -633,13 +633,13 @@ export class AgGridTableComponent implements OnInit, OnChanges ,OnDestroy ,After
   showMenuOptions() {
     if (this.contextmenu) {
 
-      if (this.selectedRowObject.input_source == "INALA" || this.selectedRowObject.input_source == "RFTS") {
+      // if (this.selectedRowObject.input_source == "INALA" || this.selectedRowObject.input_source == "RFTS") {
         this.rightClickTopMargin = 180;
         return ['View Alarm', 'View Incident', 'Assign To Me', 'Send Mail', 'Send SMS', 'Go to SIA', 'Go to NIA'];
-      } else {
-        this.rightClickTopMargin = 130;
-        return ['View Alarm', 'View Incident', 'Go to SIA', 'Go to NIA'];
-      }
+      // } else {
+      //   this.rightClickTopMargin = 130;
+      //   return ['View Alarm', 'View Incident', 'Go to SIA', 'Go to NIA'];
+      // }
     }
   }
   selectedRowObject = null;

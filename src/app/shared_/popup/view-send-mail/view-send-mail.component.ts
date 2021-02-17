@@ -29,19 +29,38 @@ export class ViewSendMailComponent implements OnInit {
  noRecordFound:boolean=false;
   ngOnInit() {
     // this.dialogRef.updatePosition({right: `40px`});
-    this.dialogOpened();
+    
   console.log("ashhgaskjkjda jkasgfbasjc jssjcs acascas csic as"+this.selectedRowObject['ticket_no']);
     this.getResolutionCode();
     this.getIncidentStatus();
+
     if(this.selectedRowObject['ticket_no']==''){
       this.noRecordFound=false;
     }else{
       this.noRecordFound=true;
-      this.clickOnSendNotification();
+      this.getNotificationInfo(this.selectedRowObject['ticket_no']);
+      
     }
     
   }
-
+  update_notification_time="";
+getNotificationInfo(id){
+  this.alarmService.getNotificationInfo(id).subscribe((res) => {
+    if (res.status) {
+      var data=res['data']
+        var datakeys=Object.keys(data);
+        if(datakeys.length>0){
+          this.update_notification_time=data['update_notification_time'];
+        }
+        this.dialogOpened();
+        this.clickOnSendNotification();
+    }
+    this.loading=false;
+  }, (err) => {
+    this.loading=false;
+    // this.completeLoading();
+  });
+}
   enableResolutionTab:boolean=true;
 clickOnSendNotification(){
   this.resetNotificationPopup();
@@ -58,7 +77,7 @@ this.modelSendMail.to_addr_list='';
     this.notificationAlarmData["NMS IP"]="";
     this.notificationAlarmData["StackCode"]="";
     this.notificationAlarmData["Initial Fault Analysis"]=this.selectedRowObject["alarm_name"];
-    this.notificationAlarmData["Sender"]=this.alarmService.getUser().userName;
+    this.notificationAlarmData["Sender"]="vikas"//this.alarmService.getUser().userName;
     this.notificationAlarmData["Comments"]="";
 
     this.updateAlarmData["Site Name"]=this.selectedRowObject['host_name'];
@@ -67,16 +86,16 @@ this.modelSendMail.to_addr_list='';
     this.updateAlarmData["Alarms Triggered"]=this.selectedRowObject['message'];
     this.updateAlarmData["Alarm Status"]=this.selectedRowObject['state'];
     this.updateAlarmData["UNoc Case Number"]=this.selectedRowObject['ticket_no'];
-    this.updateAlarmData["Case Updated By"]=this.alarmService.getUser().userName;
+    this.updateAlarmData["Case Updated By"]="vikas"//this.alarmService.getUser().userName;
     this.updateAlarmData["Current Battery Voltage"]='';
     this.updateAlarmData["Current Site Temperature"]='';
     this.updateAlarmData["DG deployed"]="NO";
     
-    this.updateAlarmData["Deployment Date/Time"]=this.selectedRowObject['update_notification_time'];
+    this.updateAlarmData["Deployment Date/Time"]=this.update_notification_time;
     if(this.updateAlarmData["Deployment Date/Time"]!=""){
       this.updateAlarmData["DG deployed"]="YES";
     }
-    this.updateAlarmData["Sender"]=this.alarmService.getUser().userName;
+    this.updateAlarmData["Sender"]="vikas"//this.alarmService.getUser().userName;
     this.updateAlarmData["Comments"]=""
 
     this.resolutionAlarmData["Site Name"]=this.selectedRowObject['host_name'];
@@ -89,7 +108,7 @@ this.modelSendMail.to_addr_list='';
       this.enableResolutionTab=true;
     }
     this.resolutionAlarmData["UNoc Case Number"]=this.selectedRowObject['ticket_no'];
-    this.resolutionAlarmData["Case Closed By"]=this.alarmService.getUser().userName;
+    this.resolutionAlarmData["Case Closed By"]="vikas"//this.alarmService.getUser().userName;
     var str=this.selectedRowObject['first_time']; 
     var dt  = str.split(/\-|\s/);
   var  firstDate = new Date(dt.slice(0,3).reverse().join('/')+' '+dt[3]);
@@ -101,7 +120,7 @@ this.modelSendMail.to_addr_list='';
      var dif=Number(lastDate)-Number(firstDate);
 
     this.resolutionAlarmData["Period"]=this.toHHMMSS(dif);//((dif/ 60 / 60 / 1000).toFixed(2)).toString()+' Hr',
-    this.resolutionAlarmData["DG Deployed Date/Time"]=this.selectedRowObject['update_notification_time'];
+    this.resolutionAlarmData["DG Deployed Date/Time"]=this.update_notification_time;
      if(this.resolutionAlarmData["DG Deployed Date/Time"]!=""){
       this.resolutionAlarmData["DG recovered Date/Time"]=this.datePipe.transform( 
         new Date().toString(),"dd-MM-yyyy hh:mm:ss");
@@ -109,7 +128,7 @@ this.modelSendMail.to_addr_list='';
         
          
      }
-     var str1=this.selectedRowObject['update_notification_time'];
+     var str1=this.update_notification_time;
         var dt1 = str1.split(/\-|\s/);
        
         var firstDate1 =  new Date(dt1.slice(0,3).reverse().join('/')+' '+dt1[3]);
@@ -124,7 +143,7 @@ this.modelSendMail.to_addr_list='';
    
     this.resolutionAlarmData["DG fuel supplied"]="";
     this.resolutionAlarmData["DG Deployed duration"]=this.toHHMMSS(dif1);
-    this.resolutionAlarmData["Sender"]=this.alarmService.getUser().userName;
+    this.resolutionAlarmData["Sender"]="vikas"//this.alarmService.getUser().userName;
     this.resolutionCode.selected="";
     this.resolutionAlarmData["Comments"]="";
     // this.notificationAlarmData.email_order_list=this.listOfEmail;
@@ -320,17 +339,17 @@ sendMail(){
   this.loading=true; 
     
   
-  
+  var ticketIds=this.selectedRowObject['ticket_no'].split('-');
     console.log("send mail");
   var formData=new FormData();
   formData.append("alarm_info",JSON.stringify(this.notificationAlarmData));
   formData.append("alarm_id",this.selectedRowObject['alarm_id']);
   formData.append("email_id",this.notificationAlarmData.email_order_list);
-  formData.append("ticket_no",this.selectedRowObject['ticket_no']); 
+  formData.append("ticket_no",ticketIds[1]); 
   formData.append("notification_sent_time",this.datePipe.transform(new Date().toString(),"dd-MM-yyyy hh:mm:ss"));
-  formData.append("Initial Fault Analysis",this.selectedRowObject['alarm_name']); 
+  formData.append("initial_fault_analysis",this.selectedRowObject['alarm_name']); 
   this.alarmService.sendMail(formData).subscribe((res) => {
-    if (res.Status) {
+    if (res.status) {
       alert('Mail sent successfully');
       // this.close();
     } else {
@@ -382,13 +401,14 @@ updateNotification(){
     // // var str=temp.split('.');
     // // console.log("Deployment Date/Time"+str[0]);
     // this.updateAlarmData["Deployment Date/Time"]=temp;
+    var ticketIds=this.selectedRowObject['ticket_no'].split('-');
   var formData=new FormData();
   formData.append("alarm_info",JSON.stringify(this.updateAlarmData));
   formData.append("alarm_id",this.selectedRowObject['alarm_id']);
   formData.append("email_id",this.updateAlarmData.email_order_list);
-  formData.append("ticket_no",this.selectedRowObject['ticket_no']); 
+  formData.append("ticket_no",ticketIds[1]); 
   formData.append("update_notification_time",this.updateAlarmData["Deployment Date/Time"]);
-  formData.append("Initial Fault Analysis",this.selectedRowObject['alarm_name']); 
+  formData.append("initial_fault_analysis",this.selectedRowObject['alarm_name']); 
   this.loading=true; 
   this.alarmService.sendMail(formData).subscribe((res) => {
     if (res.Status) {
@@ -415,14 +435,15 @@ updateNotification(){
 resolutionMail(){
   this.loading=true; 
   console.log("send mail");
+  var ticketIds=this.selectedRowObject['ticket_no'].split('-');
   var formData=new FormData();
   formData.append("alarm_info",JSON.stringify(this.resolutionAlarmData));
   formData.append("alarm_id",this.selectedRowObject['alarm_id']);
   formData.append("email_id",this.resolutionAlarmData.email_order_list);
   formData.append("close_code", this.resolutionCode.selected);
-  formData.append("ticket_no",this.selectedRowObject['ticket_no']);
+  formData.append("ticket_no",ticketIds[1]);
   formData.append("resolve_notification_time",this.datePipe.transform(new Date().toString(),"dd-MM-yyyy hh:mm:ss"));
-  formData.append("Initial Fault Analysis",this.selectedRowObject['alarm_name']); 
+  formData.append("initial_fault_analysis",this.selectedRowObject['alarm_name']); 
   this.alarmService.sendMail(formData).subscribe((res) => {
     if (res.Status) {
       // this.alarmLoading=true;
@@ -479,7 +500,7 @@ checkDisableUpdateMail(){
 }
 getResolutionCode(){
   this.alarmService.getResolutionCode().subscribe((res) => {
-    if (res.Status) {
+    if (res.status) {
        this.resolutionCode.data=res['data'];
     }
     this.loading=false;

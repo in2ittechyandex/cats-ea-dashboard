@@ -25,16 +25,101 @@
           <ng-template ngbTabContent>
             <div class="style-4 row">
               <div class="col-md-12">
-                <p class="mb-3"><strong>Description : </strong>The object is Down and causing underlying object problems IF-172.18.32.36/3 [MgmtEth0/RSP0/CPU0/0] Interface::IF-172.18.32.36/3 </p>
+                <p class="mb-3"><strong>Description : </strong>{{this.actionformdataEvents?this.actionformdataEvents['Description']:""}} </p>
                 <div class="row details" >
                   <div class="col-md-6" *ngFor="let key of actionformdataEventsKeys">
                     <div class="row mb-3">
-                      <div class="col-md-4 text-capitalize"><strong>{{key}}</strong></div>
-                      <div class="col-md-8">{{this.actionformdataEvents?this.actionformdataEvents[key]:""}}</div>
+                      <div class="col-md-4 text-capitalize" *ngIf="key!='Description' && actionformdataEvents[key]!=' ' && actionformdataEvents[key]!='undefined' && actionformdataEvents[key]!='null'"><strong>{{key}}</strong></div>
+                      <div class="col-md-8"  *ngIf="key!='Description' && actionformdataEvents[key]!=' ' && actionformdataEvents[key]!='undefined' && actionformdataEvents[key]!='null'">{{this.actionformdataEvents?this.actionformdataEvents[key]:""}}</div>
                     </div>
                     <!-- <div class="left">{{key}} </div>
                     <div class="right">{{this.actionformdataEvents?this.actionformdataEvents[key]:""}}</div> -->
-                  </div>                 
+                  </div>  
+                  <div class="col-md-6">
+                    <div class="row mb-3">
+                      <div class="col-md-4 text-capitalize"><strong>Device Name</strong></div>
+                      <div class="col-md-8">{{this.deviceInfoData?this.deviceInfoData['device_name']:""}}</div>
+                    </div>
+                   </div>   
+                   <div class="col-md-6">
+                    <div class="row mb-3">
+                      <div class="col-md-4 text-capitalize"><strong>Latitude</strong></div>
+                      <div class="col-md-8">{{this.deviceInfoData?this.deviceInfoData['latitude']:""}}</div>
+                    </div>
+                   </div>   
+                   <div class="col-md-6">
+                    <div class="row mb-3">
+                      <div class="col-md-4 text-capitalize"><strong>Longitude</strong></div>
+                      <div class="col-md-8">{{this.deviceInfoData?this.deviceInfoData['longitude']:""}}</div>
+                    </div>
+                   </div>   
+                   <div class="col-md-6">
+                    <div class="row mb-3">
+                      <div class="col-md-4 text-capitalize"><strong>Address</strong></div>
+                      <div class="col-md-8">{{this.deviceInfoData?this.deviceInfoData['address']:""}}</div>
+                    </div>
+                   </div>
+                   <div class="col-md-6">
+                    <div class="row mb-3">
+                      <div class="col-md-4 text-capitalize"><strong>Building</strong></div>
+                      <div class="col-md-8">{{this.deviceInfoData?this.deviceInfoData['building']:""}}</div>
+                    </div>
+                   </div>  
+                   <div class="col-md-6">
+                    <div class="row mb-3">
+                      <div class="col-md-4 text-capitalize"><strong>City</strong></div>
+                      <div class="col-md-8">{{this.deviceInfoData?this.deviceInfoData['city']:""}}</div>
+                    </div>
+                   </div>  
+                   <div class="col-md-6">
+                    <div class="row mb-3">
+                      <div class="col-md-4 text-capitalize"><strong>suburb</strong></div>
+                      <div class="col-md-8">{{this.deviceInfoData?this.deviceInfoData['suburb']:""}}</div>
+                    </div>
+                   </div> 
+                   <div class="col-md-6">
+                    <div class="row mb-3">
+                      <div class="col-md-4 text-capitalize"><strong>Sub Division</strong></div>
+                      <div class="col-md-8">{{this.deviceInfoData?this.deviceInfoData['sub_division']:""}}</div>
+                    </div>
+                   </div>  
+                   <div class="col-md-6">
+                    <div class="row mb-3">
+                      <div class="col-md-4 text-capitalize"><strong>Device Type</strong></div>
+                      <div class="col-md-8">{{this.deviceInfoData?this.deviceInfoData['device_type']:""}}</div>
+                    </div>
+                   </div>  
+                   <div class="col-md-6">
+                    <div class="row mb-3">
+                      <div class="col-md-4 text-capitalize"><strong>Pe Pop City</strong></div>
+                      <div class="col-md-8">{{this.deviceInfoData?this.deviceInfoData['pe_pop_city']:""}}</div>
+                    </div>
+                   </div> 
+                   <div class="col-md-6">
+                    <div class="row mb-3">
+                      <div class="col-md-4 text-capitalize"><strong>Pe Pop Latitude South</strong></div>
+                      <div class="col-md-8">{{this.deviceInfoData?this.deviceInfoData['pe_pop_latitude_south']:""}}</div>
+                    </div>
+                   </div> 
+                   <div class="col-md-6">
+                    <div class="row mb-3">
+                      <div class="col-md-4 text-capitalize"><strong>Pe Pop Longitude East</strong></div>
+                      <div class="col-md-8">{{this.deviceInfoData?this.deviceInfoData['pe_pop_longitude_east']:""}}</div>
+                    </div>
+                   </div> 
+                   <div class="col-md-6">
+                    <div class="row mb-3">
+                      <div class="col-md-4 text-capitalize"><strong>Pe Pop Name</strong></div>
+                      <div class="col-md-8">{{this.deviceInfoData?this.deviceInfoData['pe_pop_name']:""}}</div>
+                    </div>
+                   </div> 
+                   <div class="col-md-6">
+                    <div class="row mb-3">
+                      <div class="col-md-4 text-capitalize"><strong>Pe Pop Province</strong></div>
+                      <div class="col-md-8">{{this.deviceInfoData?this.deviceInfoData['pe_pop_province']:""}}</div>
+                    </div>
+                   </div>
+                                    
                 </div>
               </div>
 
