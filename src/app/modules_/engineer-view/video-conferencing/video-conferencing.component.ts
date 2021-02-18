@@ -1,6 +1,7 @@
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { VideoConferencingService } from './video-conferencing.service';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, Input } from '@angular/core';
+import { JitsiService } from '../../jitsi/jitsi.service';
 
 declare var JitsiMeetExternalAPI: any;
 
@@ -19,7 +20,9 @@ export class VideoConferencingComponent implements OnInit {
   modalReferenceAddReport: any;
   @ViewChild('content') content;
 
-  constructor(private vcService_: VideoConferencingService, private modalService: NgbModal) { }
+  @Input() episoadId;
+
+  constructor(private vcService_: VideoConferencingService, private modalService: NgbModal , private jitsiService_:JitsiService) { }
 
   ngOnInit() {
     this.getAllEngineer();
@@ -44,9 +47,9 @@ export class VideoConferencingComponent implements OnInit {
     // TODO : show participant list 
     let inviteeList = this.allEngineer.filter(elm => elm.selected);
     console.log('To be invite : ' + inviteeList);
-    this.prepareVideoModal({ 'username': 'Test User' }, this.content, 'lg');
+    // this.prepareVideoModal({ 'username': 'Test User' }, this.content, 'lg');
     //  this.jitsiMeet({'username':'Test User'});
-
+     this.jitsiService_.scheduleMeeting(inviteeList,this.episoadId);
   }
 
   changeParticipant(e) {
@@ -79,7 +82,7 @@ export class VideoConferencingComponent implements OnInit {
       this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
     });
 
-    this.jitsiMeet({ user: 'Test User' });
+    // this.jitsiMeet({ user: 'Test User' });
   }
 
   private getDismissReason(reason: any): string {
@@ -92,86 +95,86 @@ export class VideoConferencingComponent implements OnInit {
     }
   }
 
-  jitsiMeet(user_) {
-    this.options = {
-      roomName: this.getUniqueRoomId(),
-      width: '100%',
-      height: 430,
-      parentNode: document.querySelector('#meet'),
-      userInfo: {
-        // email: 'email@jitsiexamplemail.com',
-        displayName: user_.username
-      }
-    }
-    this.api = new JitsiMeetExternalAPI(this.domain, this.options);
+  // jitsiMeet(user_) {
+  //   this.options = {
+  //     roomName: this.getUniqueRoomId(),
+  //     width: '100%',
+  //     height: 430,
+  //     parentNode: document.querySelector('#meet'),
+  //     userInfo: {
+  //       // email: 'email@jitsiexamplemail.com',
+  //       displayName: user_.username
+  //     }
+  //   }
+  //   this.api = new JitsiMeetExternalAPI(this.domain, this.options);
 
-    this.api.getCurrentDevices().then(devices => {
-      console.log('************ getCurrentDevices :: ' + devices);
-    });
+  //   this.api.getCurrentDevices().then(devices => {
+  //     console.log('************ getCurrentDevices :: ' + devices);
+  //   });
 
-    this.api.addEventListener('videoConferenceLeft', (e) => {
-      let rName = e.roomName;
-      console.log('--------------Listening------------:::rName : ' + rName + ' , ' + this.modalService.hasOpenModals());
-      alert('end video ... ');
-      // if (this.modalService.hasOpenModals()) {
-      //   this.modalService.dismissAll();
-      // }
-    });
+  //   this.api.addEventListener('videoConferenceLeft', (e) => {
+  //     let rName = e.roomName;
+  //     console.log('--------------Listening------------:::rName : ' + rName + ' , ' + this.modalService.hasOpenModals());
+  //     alert('end video ... ');
+  //     // if (this.modalService.hasOpenModals()) {
+  //     //   this.modalService.dismissAll();
+  //     // }
+  //   });
 
-    this.api.addEventListener('incomingMessage', (e) => {
-      console.log('incomming ...from : ' + e.from + ' :message: ' + e.message + ' : e.nickName: ' + e.nick);
-      console.log('incomingMessage... : ' + e);
-    });
+  //   this.api.addEventListener('incomingMessage', (e) => {
+  //     console.log('incomming ...from : ' + e.from + ' :message: ' + e.message + ' : e.nickName: ' + e.nick);
+  //     console.log('incomingMessage... : ' + e);
+  //   });
 
-    this.api.addEventListener('outgoingMessage', (e) => {
-      console.log('message **** :' + e.message + ' ,isPrivateMessage : ' + e.privateMessage);
-      // console.log('outgoingMessage... : '+e);
-    });
-
-
-    this.api.addEventListener('participantJoined', (e) => {
-      console.log('participantJoined... : ' + e);
-    });
+  //   this.api.addEventListener('outgoingMessage', (e) => {
+  //     console.log('message **** :' + e.message + ' ,isPrivateMessage : ' + e.privateMessage);
+  //     // console.log('outgoingMessage... : '+e);
+  //   });
 
 
-    // https://catsportal.dashboard.liquidtelecom.co.za/assets/img_alpha/i.png
-    this.api.executeCommand('avatarUrl', 'http://localhost:4200/assets/img/user/user-13.jpg');
+  //   this.api.addEventListener('participantJoined', (e) => {
+  //     console.log('participantJoined... : ' + e);
+  //   });
 
 
-    this.api.isVideoAvailable().then(function (available) {
-      console.log('....isVideoAvailable... ' + available);
-    })
+  //   // https://catsportal.dashboard.liquidtelecom.co.za/assets/img_alpha/i.png
+  //   this.api.executeCommand('avatarUrl', 'http://localhost:4200/assets/img/user/user-13.jpg');
+
+
+  //   this.api.isVideoAvailable().then(function (available) {
+  //     console.log('....isVideoAvailable... ' + available);
+  //   })
 
 
 
-  }
+  // }
 
-  recordMeeting() {
-    console.log('.... inside recordMeeting...');
-    this.api.executeCommand('startRecording', {
-      mode: 'file', //string //recording mode, either `file` or `stream`.
-      dropboxToken: 'sl.Aq8Be2tM4SiugIrczWGrXw1TJyTT_HsY2QzvzJgRD3QPrx78_PJQy209nZ4wm6btExnF9Kv7dql9sHeOOF1Znh154yClxnC1zsCGG-Wt2vJJZJuOG3hyIsTBygTb3BAk60cF1fs', //string, //dropbox oauth2 token.
-      shouldShare: true,// boolean, //whether the recording should be shared with the participants or not. Only applies to certain jitsi meet deploys.
-      // rtmpStreamKey: string, //the RTMP stream key.
-      // rtmpBroadcastID: string, //the RTMP broadcast ID.
-      // youtubeStreamKey: string, //the youtube stream key.
-      // youtubeBroadcastID: string //the youtube broacast ID.
-    });
-  }
+  // recordMeeting() {
+  //   console.log('.... inside recordMeeting...');
+  //   this.api.executeCommand('startRecording', {
+  //     mode: 'file', //string //recording mode, either `file` or `stream`.
+  //     dropboxToken: 'sl.Aq8Be2tM4SiugIrczWGrXw1TJyTT_HsY2QzvzJgRD3QPrx78_PJQy209nZ4wm6btExnF9Kv7dql9sHeOOF1Znh154yClxnC1zsCGG-Wt2vJJZJuOG3hyIsTBygTb3BAk60cF1fs', //string, //dropbox oauth2 token.
+  //     shouldShare: true,// boolean, //whether the recording should be shared with the participants or not. Only applies to certain jitsi meet deploys.
+  //     // rtmpStreamKey: string, //the RTMP stream key.
+  //     // rtmpBroadcastID: string, //the RTMP broadcast ID.
+  //     // youtubeStreamKey: string, //the youtube stream key.
+  //     // youtubeBroadcastID: string //the youtube broacast ID.
+  //   });
+  // }
 
-  stopRecording(){
-    console.log('stop Recording options .....');
-    this.api.executeCommand('stopRecording','file');
-  }
+  // stopRecording(){
+  //   console.log('stop Recording options .....');
+  //   this.api.executeCommand('stopRecording','file');
+  // }
 
-  endMeeting() {
-    console.log('end meeting .....');
-    this.api.dispose();
-  }
+  // endMeeting() {
+  //   console.log('end meeting .....');
+  //   this.api.dispose();
+  // }
 
-  getUniqueRoomId() {
-    // TODO : get unique room id
-    return 'Room-' + (Math.floor(Math.random() * (10 - 1 + 1)) + 1);
-  }
+  // getUniqueRoomId() {
+  //   // TODO : get unique room id
+  //   return 'Room-' + (Math.floor(Math.random() * (10 - 1 + 1)) + 1);
+  // }
 
 }

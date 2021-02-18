@@ -30,6 +30,7 @@
     "ag-grid-angular": "^21.2.2",
     "ag-grid-community": "^21.2.2",
     "angular-mat-datepicker": "0.0.2",
+    "angular2-websocket": "^0.9.8",
     "bootstrap-datepicker": "^1.9.0",
     "core-js": "^2.5.4",
     "d3": "^4.11.0",

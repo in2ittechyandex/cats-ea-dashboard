@@ -1,3 +1,4 @@
+import { JitsiModule } from './modules_/jitsi/jitsi.module';
 import { CustomPermissionGuard } from './guards_/custom-permission.guard';
 
 import { AppRoutingModule } from './app.routing.module';
@@ -57,6 +58,7 @@ export function initConfig(config: AppConfig) {
     SharedModule,
     NgbModule,
     // DragDropModule
+    JitsiModule
   ],
 
   providers: [

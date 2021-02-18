@@ -1,3 +1,4 @@
+import { Subscription } from 'rxjs';
 import { SpeechRecognitionService } from './../speech-recognition/speech-recognition.service';
 import { LoggedUser } from 'src/app/models_/loggeduser';
 import { environment } from './../../../../environments/environment';
@@ -10,6 +11,7 @@ import { UserService } from '../../../services_/user.services';
 import swal from 'sweetalert2';
 import * as $ from 'jquery';
 import { AppConfig } from 'src/app/config/app.config';
+import { JitsiService } from '../../jitsi/jitsi.service';
 
 
 @Component({
@@ -25,13 +27,44 @@ export class HeaderComponent implements OnInit, OnDestroy {
   public voices: SpeechSynthesisVoice[] = [];
   public isConnected = true;
 
+  public jitsiSubscr_: Subscription;
   constructor(private modalService: NgbModal, private fb: FormBuilder,
     private u_service: UserService,
     private appConfig: AppConfig,
-    private speechRecognitionService: SpeechRecognitionService
+    private speechRecognitionService: SpeechRecognitionService,
+    private jitsiService_: JitsiService
   ) {
     // console.log('headers :' +this.appConfig.environemnt['_WEBGATEWAY_BASIC_URL_']);
     this.speechData = '';
+
+    this.jitsiSubscr_ = this.jitsiService_.getJitsiSubscriber().subscribe(msz => {
+      alert('jitsi message : '+msz);
+      this.startCall(msz);
+    });
+  }
+
+  startCall(obj_){
+    let roomId = obj_['session_id'];
+    let part_ = obj_['participants'];
+    let msg_ = obj_['msg'];
+    const currentUser_ = localStorage.getItem('currentUser');
+    const userName = currentUser_ ? JSON.parse(currentUser_).userName : 'none';
+    let isMatch = false; let areYouOrganizer = false;
+    part_.forEach(element => {
+        if(element['user_name'] == userName){
+          isMatch = true;
+          areYouOrganizer = (element['org'] == 'y');
+        }
+    });
+    if(isMatch){
+      if(areYouOrganizer){
+        this.chatBotSpeak(msg_);
+      }
+      this.jitsiService_.open({'username':userName , 'roomId':roomId}).then(() => {
+        console.log('jitsiService Login');
+      });
+    }
+
   }
 
   @Input() pageSidebarTwo;
@@ -72,6 +105,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.pageSettings.pageMobileMegaMenuToggled = false;
 
     this.speechRecognitionService.DestroySpeechObject();
+
+    if (!this.jitsiSubscr_.closed) {
+      this.jitsiSubscr_.unsubscribe();
+    }
+    this.jitsiService_.socketDisconnect();
   }
 
 
@@ -108,7 +146,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
 
   ngOnInit() {
-    this.initSpeak(); 
+
+    this.initSpeak();
     this.voices = window.speechSynthesis.getVoices();
 
 
@@ -143,7 +182,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
     });
 
-    
+
   }
 
 
@@ -322,7 +361,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     // $("#submitFeedBackBtn").attr("disabled", false)
     // this.modalReferenceAddReport = this.modalService.open(content, { size: size ? size : 'lg', backdrop: 'static' });
     this.modalReferenceAddReport = this.modalService.open(content, { backdrop: 'static' });
-    this.modalReferenceAddReport.result.then((result) => { 
+    this.modalReferenceAddReport.result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
       this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
@@ -393,18 +432,19 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
 
-  openChange(isOpen){
-    console.log('....event_..... : '+isOpen);
-    if(isOpen){
+  openChange(isOpen) {
+    console.log('....event_..... : ' + isOpen);
+    if (isOpen) {
+      // open popup 
       // DD is open
       console.log('About to speak');
       // this.initSpeak();
-      this.chatBotSpeak('Arjun Invites You to Join Jitsi Call');
+      // this.chatBotSpeak('Arjun Invites You to Join Jitsi Call');
       // will setup text to speak modal
       // this.voices = window.speechSynthesis.getVoices();
-    }else{
+    } else {
       // DD is close
-     
+
     }
   }
   // text to speech next 
