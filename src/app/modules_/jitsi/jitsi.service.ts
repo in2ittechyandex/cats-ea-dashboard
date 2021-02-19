@@ -15,7 +15,7 @@ import { JsonPipe } from '@angular/common';
 export class JitsiService {
 
   ws: $WebSocket;
-
+  dialogRef_:any;
 
   loading = new EventEmitter<boolean>();
   onRefresh = new EventEmitter<boolean>();
@@ -115,8 +115,12 @@ export class JitsiService {
         resolve(res);
       })
     });
-
+    this.dialogRef_ = dialogRef;
     return promise;
+  }
+
+  closePopup(){
+    this.dialogRef_.componentInstance.dialogClose();
   }
 
   // public jitsiNotificatiions= [];

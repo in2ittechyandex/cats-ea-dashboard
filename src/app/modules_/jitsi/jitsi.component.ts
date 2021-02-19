@@ -28,6 +28,11 @@ export class JitsiComponent implements OnInit, AfterViewInit {
   dialogOpened(data): void {
     this.onDialogOpened.emit(data);
   }
+
+  dialogClose(){
+    this.dialogRef.close();
+  }
+
   ngOnInit() {
     
     console.log('  data : ' + this.data);
@@ -55,11 +60,11 @@ export class JitsiComponent implements OnInit, AfterViewInit {
 
     this.api.addEventListener('videoConferenceLeft', (e) => {
       let rName = e.roomName;
+      console.log(' end from my end ');
       // console.log('--------------Listening------------:::rName : ' + rName + ' , ' + this.modalService.hasOpenModals());
       // alert('end video ... ');
-      // // if (this.modalService.hasOpenModals()) {
-      // //   this.modalService.dismissAll();
-      // // }
+      this.dialogOpened({"msg":"end_self"});
+      // this.api.dispose();
     });
 
     this.api.addEventListener('incomingMessage', (e) => {
@@ -75,6 +80,10 @@ export class JitsiComponent implements OnInit, AfterViewInit {
 
     this.api.addEventListener('participantJoined', (e) => {
       console.log('participantJoined... : ' + e);
+    });
+
+    this.api.addEventListener('participantLeft', (e) => {
+      console.log('participantLeft... : ' + e);
     });
 
 

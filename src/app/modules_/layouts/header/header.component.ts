@@ -62,6 +62,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
       }
       this.jitsiService_.open({'username':userName , 'roomId':roomId}).then((res) => {
         console.log('jitsiService Login'+JSON.stringify( res));
+        if(res['msg'] == 'end_self'){
+          // TODO : Dispose popup 
+          this.jitsiService_.closePopup();
+        }
 
       });
     }
