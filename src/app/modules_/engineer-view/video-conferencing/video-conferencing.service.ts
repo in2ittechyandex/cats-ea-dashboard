@@ -11,7 +11,7 @@ export class VideoConferencingService {
 
   public getAllEngineer() {
     const url = environment._WEBGATEWAY_BASIC_URL_ + 'user/kpi/get_user_list';
-    // return this.http.get('https://run.mocky.io/v3/39a677c7-e89a-4c9a-9a7c-ab64274cb74b').map(res => <any>res);
+    // return this.http.get('https://run.mocky.io/v3/f15b4479-02d4-4052-908a-2a800222c446').map(res => <any>res);
     return this.http.post(url,[]).map(res => <any>res);
 
   }

@@ -38,7 +38,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.speechData = '';
 
     this.jitsiSubscr_ = this.jitsiService_.getJitsiSubscriber().subscribe(msz => {
-      alert('jitsi message : '+msz);
+      // alert('jitsi message : '+msz);
       this.startCall(msz);
     });
   }
@@ -109,6 +109,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     if (!this.jitsiSubscr_.closed) {
       this.jitsiSubscr_.unsubscribe();
     }
+    console.log('....socket Disconnecting......');
     this.jitsiService_.socketDisconnect();
   }
 
