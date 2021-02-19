@@ -60,8 +60,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
       if(areYouOrganizer){
         this.chatBotSpeak(msg_);
       }
-      this.jitsiService_.open({'username':userName , 'roomId':roomId}).then(() => {
-        console.log('jitsiService Login');
+      this.jitsiService_.open({'username':userName , 'roomId':roomId}).then((res) => {
+        console.log('jitsiService Login'+JSON.stringify( res));
+
       });
     }
 

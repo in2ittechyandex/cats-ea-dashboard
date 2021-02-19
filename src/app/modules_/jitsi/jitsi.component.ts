@@ -25,11 +25,11 @@ export class JitsiComponent implements OnInit, AfterViewInit {
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
     public dialogRef: MatDialogRef<JitsiComponent>) { }
 
-  dialogOpened(): void {
-    this.onDialogOpened.emit(true);
+  dialogOpened(data): void {
+    this.onDialogOpened.emit(data);
   }
   ngOnInit() {
-    this.dialogOpened();
+    
     console.log('  data : ' + this.data);
   }
 
@@ -89,6 +89,7 @@ export class JitsiComponent implements OnInit, AfterViewInit {
 
   endMeeting() {
     console.log('end meeting .....');
+    this.dialogOpened({"msg":"end meeting"});
     this.api.dispose();
   }
 

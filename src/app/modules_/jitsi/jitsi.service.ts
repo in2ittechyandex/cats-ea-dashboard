@@ -6,6 +6,7 @@ import { JitsiComponent } from './jitsi.component';
 import { Injectable, EventEmitter } from '@angular/core';
 
 import { $WebSocket, WebSocketSendMode } from 'angular2-websocket/angular2-websocket';
+import { JsonPipe } from '@angular/common';
 
 
 @Injectable({
@@ -110,8 +111,8 @@ export class JitsiService {
         data: data
       });
       dialogRef.componentInstance.onDialogOpened.subscribe((res) => {
-        console.log("opened");
-        resolve();
+        console.log("opened"+JSON.stringify( res));
+        resolve(res);
       })
     });
 
