@@ -7,7 +7,10 @@ import { Injectable, EventEmitter } from '@angular/core';
 
 import { $WebSocket, WebSocketSendMode } from 'angular2-websocket/angular2-websocket';
 import { JsonPipe } from '@angular/common';
-
+import 'rxjs/add/operator/map';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs/internal/Observable';
+import { UserService } from 'src/app/services_/user.services'; 
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +23,8 @@ export class JitsiService {
   loading = new EventEmitter<boolean>();
   onRefresh = new EventEmitter<boolean>();
 
-  constructor(private dialog: MatDialog) {
+  constructor(private dialog: MatDialog,private http: HttpClient, private userService: UserService
+    ) {
     this.ws = new $WebSocket('ws://172.27.63.182:8088/name');
     this.ws.onOpen(() => {
       console.log("connected");
@@ -49,6 +53,7 @@ export class JitsiService {
           console.log('..... socket ...Connection :'+msg['msg']);
         }else if(msg['status'] == true && msg['type'] == 'res_start_call'){
           console.log('..... socket ...start call :'+msg['msg']);
+          this.sessionId=msg['session_id'];
           this.sendNotificationsToSubscribers(msg);
         }
         
@@ -58,7 +63,7 @@ export class JitsiService {
 
 
   }
-
+sessionId;
   sendMessage(params_: any) {
     this.ws.send(params_).subscribe(
       (msg) => {
@@ -121,8 +126,18 @@ export class JitsiService {
 
   closePopup(){
     this.dialogRef_.componentInstance.dialogClose();
+    this.endCall().subscribe((res)=>{
+    if(res.status){
+      
+    }
+    })
   }
-
+  public endCall() { 
+    const url = environment._WEBGATEWAY_BASIC_URL_ + 'call/kpi/call_end';
+    const formData: FormData = new FormData();
+            formData.append('session_id', this.sessionId);
+    return this.http.post(url, formData).map(res => <any>res);
+}
   // public jitsiNotificatiions= [];
   public subjectTabs = new Subject();
 

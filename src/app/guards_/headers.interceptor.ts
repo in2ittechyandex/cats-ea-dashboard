@@ -27,7 +27,7 @@ export class AddHeaderInterceptor implements HttpInterceptor {
         /**  WARNING : use this block to connect without login gateway Or Auth Token */
         let reqCloned: HttpRequest<any> = this.handleBodyIn(req, userName, 'userName'); // WARNING for Testing ONly // this.handleBodyIn(req, 'vikas', 'userName');
         reqCloned = reqCloned.clone({
-          headers: req.headers.set('userName', userName).set('token',token)
+          headers: req.headers.set('userName', userName)
         });
         const copiedReq = reqCloned;
         return next.handle(copiedReq);
