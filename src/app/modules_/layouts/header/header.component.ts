@@ -38,12 +38,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.speechData = '';
 
     this.jitsiSubscr_ = this.jitsiService_.getJitsiSubscriber().subscribe(msz => {
-      // alert('jitsi message : '+msz);
       this.startCall(msz);
     });
   }
 
-  startCall(obj_){
+
+  startCall(obj_) {
     let roomId = obj_['session_id'];
     let part_ = obj_['participants'];
     let msg_ = obj_['msg'];
@@ -51,23 +51,45 @@ export class HeaderComponent implements OnInit, OnDestroy {
     const userName = currentUser_ ? JSON.parse(currentUser_).userName : 'none';
     let isMatch = false; let areYouOrganizer = false;
     part_.forEach(element => {
-        if(element['user_name'] == userName){
-          isMatch = true;
-          areYouOrganizer = (element['org'] == 'y');
-        }
-    });
-    if(isMatch){
-      if(areYouOrganizer){
-        this.chatBotSpeak(msg_);
+      if (element['user_name'] == userName) {
+        isMatch = true;
+        areYouOrganizer = (element['org'] === 'y');
       }
-      this.jitsiService_.open({'username':userName , 'roomId':roomId}).then((res) => {
-        console.log('jitsiService Login'+JSON.stringify( res));
-        if(res['msg'] == 'end_self'){
-          // TODO : Dispose popup 
-          this.jitsiService_.closePopup();
-        }
+    });
+    if (isMatch) {
+      if (areYouOrganizer) {
+        this.jitsiService_.open({ 'username': userName, 'roomId': roomId }).then((res) => {
+          if (res['msg'] == 'end_self') {
+            // TODO : Dispose popup 
+            this.jitsiService_.closePopup();
+          }
+        });
+      } else {
+        this.chatBotSpeak(msg_);
+        swal({
+          // position: 'top-end',
+          title: msg_,
+          showCancelButton: true,
+          showConfirmButton: true,
+          confirmButtonText: `Accept`,
+          cancelButtonText: `Decline`,
+        }).then((result) => {
+          console.log(' ... : ' + result);
+          if (result.value) {
+            this.jitsiService_.open({ 'username': userName, 'roomId': roomId }).then((res) => {
+              if (res['msg'] == 'end_self') {
+                // TODO : Dispose popup 
+                this.jitsiService_.closePopup();
+              }
+            });
+          }
+          if (result.dismiss) {
+            // Decline Call
+          }
+        });
+        //---------------------------
+      }
 
-      });
     }
 
   }

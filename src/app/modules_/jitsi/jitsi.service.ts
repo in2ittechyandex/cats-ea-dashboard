@@ -47,10 +47,10 @@ export class JitsiService {
           console.log('..... socket ...Handshake :'+msg['msg']);
         }else if (msg['status'] == true && msg['type'] == 'Connection Open'){
           console.log('..... socket ...Connection :'+msg['msg']);
-        }else {  //if(msg['status'] == true && msg['type'] == 'start_call'){
+        }else if(msg['status'] == true && msg['type'] == 'res_start_call'){
+          console.log('..... socket ...start call :'+msg['msg']);
           this.sendNotificationsToSubscribers(msg);
         }
-
         
       },
       { autoApply: false }
