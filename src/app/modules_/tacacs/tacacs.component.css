@@ -1,5 +1,4 @@
-table tbody, table thead
-{ display: block;}
+table tbody, table thead{ display: block;}
 table tbody 
 {
    overflow: auto;
@@ -156,10 +155,14 @@ nav-pills>li+li {
 ::-webkit-scrollbar-thumb {
     background: #eee
 }
-.row>[class^=col-] {
+
+::ng-deep.pull-left.btn{font-size:11px; padding:4px;}
+
+
+/* .row>[class^=col-] {
     padding-left: 5px !important;
     padding-right: 5px!important;
-}
+} */
 .active{
   background: #227aaa !important;
    color: #fff !important; 
