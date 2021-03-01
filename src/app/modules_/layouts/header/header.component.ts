@@ -27,6 +27,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
   public voices: SpeechSynthesisVoice[] = [];
   public isConnected = true;
 
+  public isPlayingTone = false;
+  public audioElm: HTMLAudioElement;
+  public jitsiAudioTime = 1000 * 60;
+  // public notification:Notification;
+
   public jitsiSubscr_: Subscription;
   constructor(private modalService: NgbModal, private fb: FormBuilder,
     private u_service: UserService,
@@ -36,6 +41,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   ) {
     // console.log('headers :' +this.appConfig.environemnt['_WEBGATEWAY_BASIC_URL_']);
     this.speechData = '';
+    this.audioElm = new Audio("assets/cats-jitsi.mp3");
+    this.audioElm.preload;
 
     this.jitsiSubscr_ = this.jitsiService_.getJitsiSubscriber().subscribe(msz => {
       this.startCall(msz);
@@ -65,6 +72,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
           }
         });
       } else {
+        this.playSound();
+        this.showNotification(msg_);
         this.chatBotSpeak(msg_);
         swal({
           // position: 'top-end',
@@ -73,8 +82,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
           showConfirmButton: true,
           confirmButtonText: `Accept`,
           cancelButtonText: `Decline`,
+          allowOutsideClick: false
         }).then((result) => {
-          console.log(' ... : ' + result);
+          this.audioElm.pause();
           if (result.value) {
             this.jitsiService_.open({ 'username': userName, 'roomId': roomId }).then((res) => {
               if (res['msg'] == 'end_self') {
@@ -172,8 +182,18 @@ export class HeaderComponent implements OnInit, OnDestroy {
     });
   }
 
+  permissionAllowed = false;
+  audio = null;
 
   ngOnInit() {
+    if (Notification.permission === "granted") {
+      this.permissionAllowed = true;
+    } else if (Notification.permission !== "denied") {
+      Notification.requestPermission().then(permission => {
+        console.log('denied : ' + permission);
+        this.permissionAllowed = false;
+      });
+    }
 
     this.initSpeak();
     this.voices = window.speechSynthesis.getVoices();
@@ -213,6 +233,53 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   }
 
+
+  public showNotification(message, icon = "assets/img/user/user-13.jpg") {
+    if (this.permissionAllowed) {
+
+      // Create Notification
+      // var options = {
+      //   body: message, 
+      //   dir: 'ltr', // direction of message ltr: left to right. rtl : right to left.
+      //   image: 'assets/images/cats-ea-logo.png', // Add image if required to show
+      //   icon: icon, // Add icon if required to show
+      // }
+
+      var title = "Video Conferencing Notification";
+      const notification = new Notification(title, {
+        body: '\n'+message,
+        dir: 'ltr', // direction of message ltr: left to right. rtl : right to left.
+        image: 'assets/images/cats-ea-logo.png', // Add image if required to show
+        icon: icon, // Add icon if required to show
+      });
+
+      // const notification = new Notification("Video Conferencing Notification", {
+      //   body: message,
+      //   icon: icon
+      // })
+    }
+  }
+
+/**
+ * 
+ */
+  playSound() {
+    this.audioElm.loop = true;
+    this.audioElm.play();
+    this.audioElm.onplaying = () => {
+      //get handle to selected song NOT working as "this" refers to the audio object
+      this.isPlayingTone = true;
+    }
+    this.audioElm.onpause = () => {
+      //get handle to selected song NOT working as "this" refers to the audio object
+      this.isPlayingTone = false;
+    }
+    setTimeout(() => {
+      if (this.isPlayingTone) {
+        this.audioElm.pause();
+      }
+    }, this.jitsiAudioTime);
+  }
 
 
   // Attachment Base64Decode (6-Sep-2019)

@@ -29,12 +29,12 @@ export class JitsiComponent implements OnInit, AfterViewInit {
     this.onDialogOpened.emit(data);
   }
 
-  dialogClose(){
+  dialogClose() {
     this.dialogRef.close();
   }
 
   ngOnInit() {
-    
+
     console.log('  data : ' + this.data);
   }
 
@@ -50,7 +50,15 @@ export class JitsiComponent implements OnInit, AfterViewInit {
       userInfo: {
         // email: 'email@jitsiexamplemail.com',
         displayName: user_.username
-      }
+      },
+      // startWithVideoMuted:false,
+      // noticeMessage:'Hi User',
+      // interfaceConfigOverwrite: {
+      //   TOOLBAR_BUTTONS: ['microphone', 'camera', 'hangup'
+      //     // , 'profile', 'settings', 'raisehand', 'videoquality'
+      //   ]
+      // },
+      // jwt:'Bearer 9ece9020d584e0af80ea00cf12f54db17fe4812f15308ae33a'
     }
     this.api = new JitsiMeetExternalAPI(this.domain, this.options);
 
@@ -63,28 +71,28 @@ export class JitsiComponent implements OnInit, AfterViewInit {
       console.log(' end from my end ');
       // console.log('--------------Listening------------:::rName : ' + rName + ' , ' + this.modalService.hasOpenModals());
       // alert('end video ... ');
-      this.dialogOpened({"msg":"end_self"});
+      this.dialogOpened({ "msg": "end_self" });
       // this.api.dispose();
     });
 
-    this.api.addEventListener('incomingMessage', (e) => {
-      console.log('incomming ...from : ' + e.from + ' :message: ' + e.message + ' : e.nickName: ' + e.nick);
-      console.log('incomingMessage... : ' + e);
-    });
+    // this.api.addEventListener('incomingMessage', (e) => {
+    //   console.log('incomming ...from : ' + e.from + ' :message: ' + e.message + ' : e.nickName: ' + e.nick);
+    //   console.log('incomingMessage... : ' + e);
+    // });
 
-    this.api.addEventListener('outgoingMessage', (e) => {
-      console.log('message **** :' + e.message + ' ,isPrivateMessage : ' + e.privateMessage);
-      // console.log('outgoingMessage... : '+e);
-    });
+    // this.api.addEventListener('outgoingMessage', (e) => {
+    //   console.log('message **** :' + e.message + ' ,isPrivateMessage : ' + e.privateMessage);
+    //   // console.log('outgoingMessage... : '+e);
+    // });
 
 
-    this.api.addEventListener('participantJoined', (e) => {
-      console.log('participantJoined... : ' + e);
-    });
+    // this.api.addEventListener('participantJoined', (e) => {
+    //   console.log('participantJoined... : ' + e);
+    // });
 
-    this.api.addEventListener('participantLeft', (e) => {
-      console.log('participantLeft... : ' + e);
-    });
+    // this.api.addEventListener('participantLeft', (e) => {
+    //   console.log('participantLeft... : ' + e);
+    // });
 
 
     // https://catsportal.dashboard.liquidtelecom.co.za/assets/img_alpha/i.png
@@ -98,7 +106,7 @@ export class JitsiComponent implements OnInit, AfterViewInit {
 
   endMeeting() {
     console.log('end meeting .....');
-    this.dialogOpened({"msg":"end meeting"});
+    this.dialogOpened({ "msg": "end meeting" });
     this.api.dispose();
   }
 

@@ -88,7 +88,7 @@ sessionId;
     let str = {
       "type": "start_call",
       "org": userName,
-      "episode_id": "123",
+      "episode_id": episode_id,
       "participants": inv
     }
     this.sendMessage(str);

@@ -14,7 +14,7 @@ import { DateconvPipe, PrioritySepPipe } from './pipes_/dateconv.pipe';
 import { FilterByNotKeyPipe } from './pipes_/filter-by-not-key.pipe';
 import { FilterByKeyPipe, SearchSortByKeyPipe } from './pipes_/filter-by-key.pipe';
 import { NoDoubleClickDirective } from '../directives_/noDoubleClick.directive';
-import { NumberToDatePipe } from './pipes_/number-to-date.pipe';
+import { NumberToDatePipe, MinuteCountToHHMMSS } from './pipes_/number-to-date.pipe';
 import { MatTableModule, MatPaginatorModule } from '@angular/material';
 import { GridSmartTableComponent } from './grid-smart-table/grid-smart-table.component';
 import { AgGridModule } from 'ag-grid-angular';
@@ -90,6 +90,7 @@ import { NgxLoadingModule, ngxLoadingAnimationTypes } from "ngx-loading";
     ViewSendSmsComponent, 
     GraphComponent,
     SHARED_VISUALS,D3_DIRECTIVES,
+    MinuteCountToHHMMSS
   ],
   entryComponents: [ViewAlarmComponent,
     ViewIncidentComponent,
@@ -120,6 +121,7 @@ import { NgxLoadingModule, ngxLoadingAnimationTypes } from "ngx-loading";
     GraphComponent,
     SHARED_VISUALS,NumberToDatePipe,
     D3_DIRECTIVES,
+    MinuteCountToHHMMSS
   ],
   providers: [TimeFilterService, SharedServices,PopupService,D3Service,DatePipe
   ]
