@@ -25,6 +25,12 @@ export class CollaborateService {
             formData.append('situation_id', episodeId);
             return this.http.post(url, formData).map(res => <any>res);
         }
+        public getInnerDiscussions(episodeId) { 
+            const url = environment._WEBGATEWAY_BASIC_URL_ + 'menu/kpi/get_child_discussions_comment';
+            const formData: FormData = new FormData();
+            formData.append('comment_id', episodeId);
+            return this.http.post(url, formData).map(res => <any>res);
+        }
 
         public comment(episode_id,comment_text) { 
                const url = environment._WEBGATEWAY_BASIC_URL_ + 'menu/kpi/comment';
@@ -33,6 +39,13 @@ export class CollaborateService {
                formData.append('comment_text', comment_text);
                return this.http.post(url, formData).map(res => <any>res);
            }
+           public editComment(comment_id,comment_text) { 
+            const url = environment._WEBGATEWAY_BASIC_URL_ + 'menu/kpi/edit_discussion_comment';
+            const formData: FormData = new FormData();
+            formData.append('comment_id', comment_id);
+            formData.append('text', comment_text);
+            return this.http.post(url, formData).map(res => <any>res);
+        }
            public commentReply(comment_id,reply_text) {  
                const url = environment._WEBGATEWAY_BASIC_URL_ + 'menu/kpi/comment_reply';
                const formData: FormData = new FormData();
@@ -48,4 +61,10 @@ export class CollaborateService {
                return this.http.post(url, formData).map(res => <any>res);
            }
 
+            public commentDelete(comment_id) {  
+               const url = environment._WEBGATEWAY_BASIC_URL_ + 'menu/kpi/delete_discussion_comment';
+               const formData: FormData = new FormData();
+               formData.append('comment_id', comment_id); 
+               return this.http.post(url, formData).map(res => <any>res);
+           }
 }

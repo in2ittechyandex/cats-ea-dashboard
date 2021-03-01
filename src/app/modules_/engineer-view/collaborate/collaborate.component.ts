@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { CollaborateService } from './collaborate.services';
 // import '../../../../assets/scripts/jitsi.js';
-
+import swal from 'sweetalert2';
 declare var JitsiMeetExternalAPI: any;
 
 @Component({
@@ -12,6 +12,7 @@ declare var JitsiMeetExternalAPI: any;
 })
 export class CollaborateComponent implements OnInit {
   allComments = [];
+  allInnerComments=[];
   commentText = "";
   commentsLoading: boolean = false;
   commentsLoadingError: boolean = false;
@@ -20,19 +21,24 @@ export class CollaborateComponent implements OnInit {
   options: any;
   api: any;
   modalReferenceAddReport: any;
+  @Input() episode={};
   constructor(private collaborateService: CollaborateService, private modalService: NgbModal) {
 
   }
 
-
+   token =""; 
+   loggedUserName=""; 
   ngOnInit() {
-
-    this.getDiscussions();
+    console.log(this.episode);
+    const currentUser_ = localStorage.getItem('currentUser');
+      this.token = currentUser_ ? JSON.parse(currentUser_).access_token : 'none';
+     this.loggedUserName = currentUser_ ? JSON.parse(currentUser_).userName : 'none';
+    this.getDiscussions(this.episode['caseId']);
 
   }
-  getDiscussions() {
+  getDiscussions(id) {
     this.commentsLoading = true;
-    this.collaborateService.getDiscussions(28).subscribe((res) => {
+    this.collaborateService.getDiscussions(id).subscribe((res) => {
       console.log(res);
       if (res['status']) {
         this.allComments = res['data'];
@@ -45,17 +51,42 @@ export class CollaborateComponent implements OnInit {
       this.commentsLoadingError = true;
     })
   }
+  getInnerDiscussions(id) {
+     
+    this.allInnerComments=[];
+    this.collaborateService.getInnerDiscussions(id).subscribe((res) => {
+      console.log(res);
+      if (res['status']) {
+        this.allInnerComments = res['data'];
+      } else {
+        // this.commentsLoadingError = true;
+      }
+      // this.commentsLoading = false;
+    }, (err) => {
+      // this.commentsLoading = false;
+      // this.commentsLoadingError = true;
+    })
+  }
   doComment(comment_text, commentTextBox) {
-    this.collaborateService.comment(28, comment_text).subscribe((res) => {
+    this.collaborateService.comment(this.episode['caseId'], comment_text).subscribe((res) => {
       console.log(res);
       if (res['status']) {
         commentTextBox.value = "";
-        this.getDiscussions();
+        this.getDiscussions(this.episode['caseId']);
       }
     })
   }
   editComment(comment_text, commentTextBo, commentId) {
-
+    this.collaborateService.editComment(commentId, comment_text).subscribe((res) => {
+      console.log(res);
+      if (res['status']) {
+        commentTextBo.value = "";
+        this.showTemplate = null;
+        this.showTemplate = null;
+            this.collabHideShowReply=null;
+        this.getDiscussions(this.episode['caseId']);
+      }
+    })
   }
   commentReply(replytext, replyTextBox, commentId) {
     this.collaborateService.commentReply(commentId, replytext).subscribe((res) => {
@@ -70,7 +101,7 @@ export class CollaborateComponent implements OnInit {
     this.collaborateService.commentAction(commentId, action).subscribe((res) => {
       console.log(res);
       if (res['status']) {
-        this.getDiscussions();
+        this.getDiscussions(this.episode['caseId']);
       }
     })
   }
@@ -90,21 +121,73 @@ export class CollaborateComponent implements OnInit {
     this.showTemplate = n;
   }
 
-  collabOnDelete(objID, outerInner) {
-
+  collabOnDelete(objID) {
+    let postObj = { "parent": objID };
+console.log("comment to e deleted"+ objID);
+    swal({
+      position: 'center',
+      type: "warning",
+      title: "Are you sure?",
+      text: "You will not be able to recover this!",
+      showCancelButton: true,
+      confirmButtonColor: "#DD6B55",
+      confirmButtonText: "Yes, delete it!"
+      // closeOnConfirm: false
+    }).then((result) => {
+      if (result.value) {
+        this.collaborateService.commentDelete(objID).subscribe((res) => {
+          console.log(res);
+          if (res['status']) {
+            this.showTemplate = null;
+            this.collabHideShowReply=null;
+            this.getDiscussions(this.episode['caseId']);
+          }
+        })
+      }
+    });
   }
 
   collabEditCancel() {
     this.showTemplate = null;
+    this.collabReplyEdit = null;
+    this.collabHideShowReply=null;
+    this.collabReplyCancel();
   }
 
   collabReplyCancel() {     //on clicking inner reply cancel button
     this.username = '';
     this.clickedID = null;
     this.showTemplate = null;
+    this.collabHideShowReply=null;
+  }
+  collabHideShowCheck:boolean;
+  collabHideShowReply:number;
+  collabHideShowTab(id, outerID){
+    // this.outerID = outerID;
+
+    if(this.collabHideShowCheck){
+      this.collabHideShowCheck = !this.collabHideShowCheck;      
+    }
+    if(this.collabHideShowReply == id){
+      this.collabHideShowReply = null;
+      return;
+    }
+    this.collabHideShowReply = id;
+    this.collabHideShowCheck = !this.collabHideShowCheck;
   }
 
 
+  replyToChildComment(commentVal, el: HTMLInputElement, id) {
+
+    this.collaborateService.commentReply(id, commentVal).subscribe((res) => {
+      console.log(res);
+      if (res['status']) {
+        el.value = "";
+        this.collabReplyCancel();
+        this.getDiscussions(this.episode['caseId']);
+      }
+    })
+  }
   prepareVideoModal(obj, content, size) {
     console.log(obj);
     let uName = obj.username;

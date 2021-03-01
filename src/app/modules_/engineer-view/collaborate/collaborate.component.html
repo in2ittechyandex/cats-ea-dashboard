@@ -60,12 +60,13 @@
                             (click)="collabOnReply(userName.innerHTML, comment.commentId, i)"
                             [disabled]="username || showTemplate"><i class="fa fa-reply" aria-hidden="true"></i>
                             Reply</button>
-                        <button type="button" [disabled]="username || showTemplate"
+                        <button type="button" *ngIf="comment.username == loggedUserName" [disabled]="username || showTemplate"
                             (click)="collabOnEdit(collabReplyComment.innerHTML, i)" class="btn btn-primary replyBtn"><i
                                 class="fa fa-edit" aria-hidden="true"></i> Edit</button>
-                        <button type="button" [disabled]="username || showTemplate" class="btn btn-primary replyBtn"><i
-                                class="fa fa-trash" aria-hidden="true"></i>
+                        <button type="button" *ngIf="comment.username == loggedUserName" [disabled]="username || showTemplate" class="btn btn-primary replyBtn"  (click)="collabOnDelete(comment.commentId)" ><i
+                             class="fa fa-trash" aria-hidden="true"></i>
                             Delete</button>
+                             
                         <span class="replySpan">
                             <span class="thumbCount">{{comment.likecount}} </span><i class="fas fa-thumbs-up m-l-5"
                                 (click)="commentAction(comment.commentId,'like')"></i> &nbsp;
@@ -73,72 +74,150 @@
                             <i class="fas fa-thumbs-down m-l-5"
                                 (click)="commentAction(comment.commentId,'dislike')"></i> &nbsp;
                             <i class="far fa-check-circle"></i> &nbsp;&nbsp;&nbsp;
-                            <!-- <i class="fas fa-video" (click)="prepareVideoModal(comment,content,'lg')"></i> -->
-
+                          
                             <!-- <span class="likeDislike"
                >likeDislikeComment</span>
               <span><i
                   class="fa fa-spinner fa-spin fa-fw"></i></span> -->
                         </span>
 
-                        <div class="innerReply">View replies
+                       
+
+                        <div class="innerReply"
+                        *ngIf="comment.child_count>0 &&   !showTemplate && (!collabHideShowCheck || (i!=collabHideShowReply))"
+                        (click)="getInnerDiscussions(comment.commentId); collabHideShowTab(i, comment.commentId)">View
+                        {{comment.child_count==1? '1 reply':'all ' + comment.child_count + ' replies'}}
+                      </div>
+          
+                      <div class="innerReply"
+                        *ngIf="comment.child_count>0 &&   !showTemplate && (collabHideShowCheck && (i==collabHideShowReply))"
+                        (click)="collabHideShowTab(i, comment.commentId)">Hide
+                        {{comment.child_count==1? 'reply':'all replies'}}
+                      </div>
+                      
+
+                        <!-- Start Inner Reply-->
+            <div  [ngbCollapse]="!collabHideShowCheck || (i!=collabHideShowReply)"
+            style="margin-top: 15px; border: solid 1px #f1f3f5;">
+            <div class="card">
+              <div class="card-body">
+
+                <div class="panel-body text-inverse collaborateReply text-center" *ngIf="convoInnerDetailsLoading">
+                  <i class="fa fa-spinner fa-spin fa-3x"></i>
+                </div>
+                <div class="panel-body text-inverse collaborateReply" *ngIf="convoInnerDetailsErrorMsg">
+                  <div class="alert alert-danger">
+                    <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>&nbsp;&nbsp; There is some technical
+                    error, please try after sometime.
+                  </div>
+                </div>
+
+                <!-- <div class="panel-body text-inverse collaborateReply" *ngIf="!convoInnerDetailsLoading && (convoInnerDetails.length == 0)">
+                                      <div class="alert alert-success">
+                                        <i class="fa fa-check-circle" aria-hidden="true"></i>&nbsp;&nbsp; There is no solution available, add a comment.
+                                      </div>
+                                    </div> -->
+
+                <div class="panel-body text-inverse collaborateReply"
+                  *ngFor="let collabInnerObj of allInnerComments; let idxIN = index;">
+                  <div class="collaborateReplyInner">
+                    <div class="fa-stack fa-4x pull-left text-inverse collaborateReplyL">
+                      <img src="assets/img/user/user-13.jpg" alt="" class="img-circle" height="50"
+                        style="border-radius: 40px;">
+                    </div>
+                    <div class="collaborateReplyR">
+                      <h6 style="margin-top: 0;" #userInnerName>{{collabInnerObj.username}}</h6>
+                      <p style="font-size: 10px;margin-top: -0.8em;">
+                        {{collabInnerObj.time}}</p>
+                      <ng-container *ngIf="collabReplyEdit && (i+'inner'+idxIN==showTemplate)">
+                        <textarea class="form-control m-b-5" rows="1" placeholder="Type Comments..." rows="4"
+                          style="min-height: 60px;" #editInnerReply  [ngModel]="collabReplyEdit"></textarea>
+                        <span class="text-danger" *ngIf="collabValidation2">This field is
+                          required.</span>
+                        <span class="text-danger" *ngIf="commentValidation2">Please enter atleast
+                          2
+                          words.</span>
+                        <span class="text-success" *ngIf="collabSuccessMsg2">{{collabSuccessMsg2}}</span>
+                        <button type="button" class="btn btn-primary pull-right m-b-20 m-l-5"
+                          (click)="collabEditCancel()">Cancel <i class="fa fa-close" aria-hidden="true"></i></button>
+                        <button type="button" class="btn btn-primary pull-right m-b-20"
+                          (click)="editComment(editInnerReply.value,editInnerReply,collabInnerObj.commentId)"
+                          >Submit
+                          <i class="fa fa-paper-plane" aria-hidden="true" *ngIf="!collabLoading2"></i><i
+                            class="fa fa-spinner fa-spin fa-fw" *ngIf="collabLoading2"></i></button>
+                      </ng-container>
+
+                      <div *ngIf="!collabReplyEdit || (i+'inner'+idxIN!=showTemplate)">
+                        <p style="font-size: 10px;margin-top: -0.8em;">
+                          <!-- {{collabInnerObj.time | date: 'dd MMM yyyy hh:mm a'}}</p> -->
+                        <p style="font-size: 13px;margin-top: -0.8em;" #collabInnerReplyComment
+                          [innerHTML]="collabInnerObj.comment"></p>
+                        <button type="button" class="btn btn-primary replyBtn"
+                          (click)="collabOnReply(userInnerName.innerHTML, collabInnerObj.id, i+'inner'+idxIN)"
+                          [disabled]="username || showTemplate"><i class="fa fa-reply" aria-hidden="true"></i>
+                          Reply</button>
+                        <button type="button" [disabled]="username || showTemplate" 
+                          *ngIf="collabInnerObj.username == loggedUserName" class="btn btn-primary replyBtn"
+                          (click)="collabOnEdit(collabInnerReplyComment.innerHTML, i+'inner'+idxIN)" ><i
+                            class="fa fa-edit" aria-hidden="true"></i> Edit</button>
+                        <button type="button" [disabled]="username || showTemplate"
+                          *ngIf="collabInnerObj.username == loggedUserName" class="btn btn-primary replyBtn"
+                          (click)="collabOnDelete(collabInnerObj.commentId)"><i class="fa fa-trash" aria-hidden="true"></i>
+                          Delete</button>
+                        <span class="replySpan">
+                          <span class="thumbCount">{{collabInnerObj.likecount || 0}}</span><i
+                            class="fas fa-thumbs-up m-l-5"
+                            [ngClass]="(username || showTemplate || likeDislikecheck || (likeDislikecheck==0))?'cursInitial':'cursPointer'"
+                            (click)="(username || showTemplate || likeDislikecheck || (likeDislikecheck==0))?'':collabLikeDislike(collabInnerObj.id, collabInnerObj.created_by, idxIN, 'inner', 1)"></i>
+                          &nbsp;
+                          <span class="thumbCount">{{collabInnerObj.dislikecount || 0}}</span><i
+                            class="fas fa-thumbs-down m-l-5"
+                            [ngClass]="(username || showTemplate || likeDislikecheck || (likeDislikecheck==0))?'cursInitial':'cursPointer'"
+                            (click)="(username || showTemplate || likeDislikecheck || (likeDislikecheck==0))?'':collabLikeDislike(collabInnerObj.id, collabInnerObj.created_by, idxIN, 'inner', 2)"></i>
+                          &nbsp;
+                          <i class="far fa-check-circle"
+                            [style.color]="collabInnerObj.isResolved?'green':'inherit'"></i>
+                        </span>
+                        &nbsp;&nbsp;&nbsp;
+                        <span class="likeDislike" *ngIf="likeDislikeComment && (i+'inner'+idxIN==likeDislikecheck)">{{likeDislikeComment}}</span>
+                        <span *ngIf="likeDislikeLoader && (i+'inner'+idxIN==likeDislikecheck)"><i class="fa fa-spinner fa-spin fa-fw"></i></span>
+                        <!-- <div class="innerReply"
+                                              *ngIf="collabInnerObj.commentcount>0 && !showTemplate">View
+                                              {{collabInnerObj.commentcount==1? '1 reply':'all ' + collabInnerObj.commentcount + ' replies'}}
+                                            </div> -->
+
+                        <div class="postReply" *ngIf="username && (i+'inner'+idxIN==showTemplate)" #replyInnerTarget>
+                          <h6 class="replyToHead">Reply to {{username}}</h6>
+                          <textarea class="form-control m-b-5" rows="1" placeholder="Type Comments..." rows="4"
+                            style="min-height: 60px;border-top-left-radius: 0;" #replyInnerText
+                            ></textarea>
+
+                          <span class="text-danger" *ngIf="collabValidation3">This field is
+                            required.</span>
+                          <span class="text-danger" *ngIf="commentValidation3">Please enter
+                            atleast 2
+                            words.</span>
+                          <span class="text-success" *ngIf="collabSuccessMsg3">{{collabSuccessMsg3}}</span>
+
+                          <button type="button" class="btn btn-primary pull-right m-l-5"
+                            (click)="collabReplyCancel()">Cancel <i class="fa fa-close"
+                              aria-hidden="true"></i></button>
+                          <button type="button" class="btn btn-primary pull-right"
+                            (click)="replyToChildComment(replyInnerText.value, replyInnerText, comment.commentId)">Submit
+                            <i class="fa fa-paper-plane" aria-hidden="true" *ngIf="!collabLoading3"></i><i
+                              class="fa fa-spinner fa-spin fa-fw" *ngIf="collabLoading3"></i></button>
                         </div>
 
-                        <div class="innerReply">Hide reply
-                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <hr class="m-t-5 m-b-5">
+                </div>
 
-
-
-                        <!-- <ng-template #content let-modal>
-                            <div class="modal-header">
-                                <h4 class="modal-title" id="modal-basic-title">Video Call</h4>
-                                <button type="button" class="close" aria-label="Close"
-                                    (click)="modal.dismiss('Cross click')">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <div style="text-align:center">
-                                    <div id="meet"></div>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                    <button type="button" class="btn btn-primary"
-                                    (click)="endMeeting()">Stop</button>
-
-                                    <button type="button" class="btn btn-primary"
-                                    (click)="startMeeting()">Start</button>
-
-                                <button type="button" class="btn btn-primary"
-                                    (click)="modal.close('Close')">Close</button>
-                            </div>
-                        </ng-template> -->
-
-
-                        <!-- Start Inner Reply -->
-                        <!-- <div [ngbCollapse]="!collabHideShowCheck || (i!=collabHideShowReply)"
-style="margin-top: 15px; border: solid 1px #f1f3f5;">
-<div class="card">
-  <div class="card-body">
-
-    <div class="panel-body text-inverse collaborateReply text-center" *ngIf="convoInnerDetailsLoading">
-      <i class="fa fa-spinner fa-spin fa-3x"></i>
-    </div>
-    <div class="panel-body text-inverse collaborateReply" *ngIf="convoInnerDetailsErrorMsg">
-      <div class="alert alert-danger">
-        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>&nbsp;&nbsp; There is some technical
-        error, please try after sometime.
-      </div>
-    </div>
-
-    
-
-     
-
-  </div>
-</div>
-</div> -->
-                        <!-- End Inner Reply -->
+              </div>
+            </div>
+          </div>
+          <!-- End Inner Reply -->
 
 
                         <div class="postReply" *ngIf="username && (i==showTemplate)" #replyTarget>
