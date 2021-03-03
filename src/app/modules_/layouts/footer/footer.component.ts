@@ -1,3 +1,4 @@
+import { environment } from './../../../../environments/environment';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -7,7 +8,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class FooterComponent implements OnInit {
 
-  constructor() { }
+  public footerCopyrights = '';
+  public footerPoweredBy = '';
+  constructor() { 
+    this.footerCopyrights =  environment.envConfig['footer_Copyrights']? environment.envConfig['footer_Copyrights']:'';
+    this.footerPoweredBy =  environment.envConfig['footer_poweredBy']? environment.envConfig['footer_poweredBy']:'';
+  }
 
   ngOnInit() {
   }

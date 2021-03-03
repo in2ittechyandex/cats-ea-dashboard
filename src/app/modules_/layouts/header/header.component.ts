@@ -32,6 +32,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   public jitsiAudioTime = 1000 * 60;
   // public notification:Notification;
 
+  public logoIcon = '';
+
   public jitsiSubscr_: Subscription;
   constructor(private modalService: NgbModal, private fb: FormBuilder,
     private u_service: UserService,
@@ -39,7 +41,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
     private speechRecognitionService: SpeechRecognitionService,
     private jitsiService_: JitsiService
   ) {
+    this.logoIcon =  environment.envConfig['logoIcon']? environment.envConfig['logoIcon']:'';
     // console.log('headers :' +this.appConfig.environemnt['_WEBGATEWAY_BASIC_URL_']);
+    // this.logoIcon = environment. 
     this.speechData = '';
     this.audioElm = new Audio("assets/cats-jitsi.mp3");
     this.audioElm.preload;

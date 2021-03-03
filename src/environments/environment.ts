@@ -46,7 +46,8 @@ export const environment = {
     'api.myjson', 'env.json','172.27.64.92:9000'
   ],
   version: '0.1.0',
-  gateWayAuthorization: false
+  gateWayAuthorization: false,
+  envConfig:{}
 };
 
 /*

@@ -45,27 +45,28 @@ export class AppConfig {
                 this.env = envResponse;
                 let request: any = null;
                 console.log('init ' + envResponse.env);
-                switch (envResponse.env) {
-                    case 'production': {
-                        // TODO : production related work
-                        request = this.http.get('./assets/ext_config/config.' + envResponse.env + '.json');
-                    }
-                    break;
-                    case 'development': {
-                        // TODO : development related work
-                        request = this.http.get('./assets/ext_config/config.' + envResponse.env + '.json');
-                    }
-                    break;
-                    case 'uat': {
-                        // TODO : uat related work
-                        request = this.http.get('./assets/ext_config/config.' + envResponse.env + '.json');
-                    }
-                    break;
-                    case 'default': {
-                        console.error('Environment file is not set or invalid');
-                        resolve(true);
-                    } break;
-                }
+                request = this.http.get('./assets/ext_config/config.' + envResponse.env + '.json');
+                // switch (envResponse.env) {
+                //     case 'production': {
+                //         // TODO : production related work
+                //         request = this.http.get('./assets/ext_config/config.' + envResponse.env + '.json');
+                //     }
+                //     break;
+                //     case 'development': {
+                //         // TODO : development related work
+                //         request = this.http.get('./assets/ext_config/config.' + envResponse.env + '.json');
+                //     }
+                //     break;
+                //     case 'uat': {
+                //         // TODO : uat related work
+                //         request = this.http.get('./assets/ext_config/config.' + envResponse.env + '.json');
+                //     }
+                //     break;
+                //     case 'default': {
+                //         console.error('Environment file is not set or invalid');
+                //         resolve(true);
+                //     } break;
+                // }
 
                 if (request) {
                     request

@@ -3,5 +3,10 @@
     "_AUTH_GATEWAY_URL": "http://172.27.63.29:4200/logingateway",
     "_AUTH_PRODUCT_SERVICES_URL": "http://172.27.63.29:4200/logingateway/#/services/products",
     "_CHATBOT_URL": "http://172.27.63.162:5501",
-    "gateWayAuthorization":false
- }
+    "gateWayAuthorization": false,
+    "envConfig": {
+        "logoIcon": "assets/images/cats-ea-logo.png",
+        "footer_Copyrights": "2019 & All Rights Reserved by CATS",
+        "footer_poweredBy": ""
+    }
+}

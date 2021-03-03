@@ -24,6 +24,7 @@ export class AppComponent implements OnInit {
     environment._AUTH_PRODUCT_SERVICES_URL = appConfig.getConfig('_AUTH_PRODUCT_SERVICES_URL');
     environment._CHATBOT_URL = appConfig.getConfig('_CHATBOT_URL');
     environment.gateWayAuthorization = appConfig.getConfig('gateWayAuthorization')  ? appConfig.getConfig('gateWayAuthorization') : false;
+    environment.envConfig = appConfig.getConfig('envConfig')  ? appConfig.getConfig('envConfig') : {};
     router.events.subscribe((e) => {
       if (e instanceof NavigationStart) {
         if (window.innerWidth < 768) {
