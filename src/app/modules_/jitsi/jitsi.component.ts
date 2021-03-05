@@ -1,3 +1,5 @@
+import { environment } from './../../../environments/environment';
+
 import { Component, OnInit, ViewChild, Inject, EventEmitter, AfterViewInit } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 declare var JitsiMeetExternalAPI: any;
@@ -14,7 +16,7 @@ export interface DialogData {
 export class JitsiComponent implements OnInit, AfterViewInit {
 
   closeResult = '';
-  domain: string = 'alphacodes.hopto.org'; // '182.76.238.200:8443';// "meet.jit.si"; // '172.16.10.112:443'; //
+  domain: string =  "meet.jit.si"; // '172.16.10.112:443'; // 'alphacodes.hopto.org'; // '182.76.238.200:8443';//
   options: any;
   api: any;
   modalReferenceAddReport: any;
@@ -42,6 +44,9 @@ export class JitsiComponent implements OnInit, AfterViewInit {
     this.jitsiMeet(this.data);
   }
   jitsiMeet(user_) {
+    let interfaceConfig_ = environment.envConfig['jitsi_interfaceConfigOverwrite'] ? environment.envConfig['jitsi_interfaceConfigOverwrite'] : {};
+    let config_ = environment.envConfig['jitsi_configOverwrite'] ? environment.envConfig['jitsi_configOverwrite'] : {};
+
     this.options = {
       roomName: user_.roomId,
       width: '100%',
@@ -58,7 +63,28 @@ export class JitsiComponent implements OnInit, AfterViewInit {
       //     // , 'profile', 'settings', 'raisehand', 'videoquality'
       //   ]
       // },
-      // jwt:'Bearer 9ece9020d584e0af80ea00cf12f54db17fe4812f15308ae33a'
+    //   "jitsi_interfaceConfigOverwrite": {
+    //     "filmStripOnly": false,
+    //     "SHOW_JITSI_WATERMARK": false,
+    //     "SHOW_WATERMARK_FOR_GUESTS": false,
+    //     "DEFAULT_REMOTE_DISPLAY_NAME": "New User",
+    //     "TOOLBAR_BUTTONS": []
+    // },
+    // "jitsi_configOverwrite": {
+    //     "doNotStoreRoom": true,
+    //     "startVideoMuted": 0,
+    //     "startWithVideoMuted": true,
+    //     "startWithAudioMuted": true,
+    //     "enableWelcomePage": false,
+    //     "prejoinPageEnabled": false,
+    //     "disableRemoteMute": true,
+    //     "remoteVideoMenu": {
+    //         "disableKick": true
+    //     }
+    // }
+
+      interfaceConfigOverwrite: interfaceConfig_,
+      configOverwrite: config_
     }
     this.api = new JitsiMeetExternalAPI(this.domain, this.options);
 

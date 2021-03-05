@@ -7,6 +7,34 @@
     "envConfig": {
         "logoIcon": "assets/images/cats-ea-logo.png",
         "footer_Copyrights": "2019 & All Rights Reserved by CATS",
-        "footer_poweredBy": ""
+        "footer_poweredBy": "",
+        "jitsi_interfaceConfigOverwrite": {
+            "filmStripOnly": false,
+            "showBrandWatermark": true,
+            "SHOW_JITSI_WATERMARK": false,
+            "SHOW_WATERMARK_FOR_GUESTS": false,
+            "DEFAULT_REMOTE_DISPLAY_NAME": "New User",
+            "TOOLBAR_BUTTONS": [
+                "microphone",
+                "camera",
+                "hangup",
+                "profile",
+                "settings",
+                "raisehand",
+                "videoquality"
+            ]
+        },
+        "jitsi_configOverwrite": {
+            "doNotStoreRoom": true,
+            "startVideoMuted": 0,
+            "startWithVideoMuted": true,
+            "startWithAudioMuted": true,
+            "enableWelcomePage": false,
+            "prejoinPageEnabled": false,
+            "disableRemoteMute": true,
+            "remoteVideoMenu": {
+                "disableKick": true
+            }
+        }
     }
 }

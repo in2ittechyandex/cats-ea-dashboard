@@ -30,7 +30,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   public isPlayingTone = false;
   public audioElm: HTMLAudioElement;
   public jitsiAudioTime = 1000 * 60;
-  // public notification:Notification;
+  public notification: Notification;
 
   public logoIcon = '';
 
@@ -41,7 +41,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     private speechRecognitionService: SpeechRecognitionService,
     private jitsiService_: JitsiService
   ) {
-    this.logoIcon =  environment.envConfig['logoIcon']? environment.envConfig['logoIcon']:'';
+    this.logoIcon = environment.envConfig['logoIcon'] ? environment.envConfig['logoIcon'] : '';
     // console.log('headers :' +this.appConfig.environemnt['_WEBGATEWAY_BASIC_URL_']);
     // this.logoIcon = environment. 
     this.speechData = '';
@@ -89,6 +89,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
           allowOutsideClick: false
         }).then((result) => {
           this.audioElm.pause();
+          if (this.notification) {
+            this.notification.close();
+          }
+
           if (result.value) {
             this.jitsiService_.open({ 'username': userName, 'roomId': roomId }).then((res) => {
               if (res['msg'] == 'end_self') {
@@ -250,8 +254,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
       // }
 
       var title = "Video Conferencing Notification";
-      const notification = new Notification(title, {
-        body: '\n'+message,
+      this.notification = new Notification(title, {
+        body: '\n' + message,
         dir: 'ltr', // direction of message ltr: left to right. rtl : right to left.
         image: 'assets/images/cats-ea-logo.png', // Add image if required to show
         icon: icon, // Add icon if required to show
@@ -264,9 +268,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
     }
   }
 
-/**
- * 
- */
+  /**
+   * 
+   */
   playSound() {
     this.audioElm.loop = true;
     this.audioElm.play();
