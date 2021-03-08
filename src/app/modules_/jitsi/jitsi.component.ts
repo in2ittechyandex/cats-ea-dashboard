@@ -16,7 +16,7 @@ export interface DialogData {
 export class JitsiComponent implements OnInit, AfterViewInit {
 
   closeResult = '';
-  domain: string =  "meet.jit.si"; // '172.16.10.112:443'; // 'alphacodes.hopto.org'; //  '182.76.238.200:8443';//
+  domain: string = ''; //"meet.jit.si"; // '172.16.10.112:443'; // 'alphacodes.hopto.org'; //  '182.76.238.200:8443';//
   options: any;
   api: any;
   modalReferenceAddReport: any;
@@ -25,7 +25,9 @@ export class JitsiComponent implements OnInit, AfterViewInit {
   onDialogOpened = new EventEmitter();
   constructor(private dialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
-    public dialogRef: MatDialogRef<JitsiComponent>) { }
+    public dialogRef: MatDialogRef<JitsiComponent>) { 
+      this.domain = environment.envConfig['jitsiDomain'] ? environment.envConfig['jitsiDomain'] : '';
+    }
 
   dialogOpened(data): void {
     this.onDialogOpened.emit(data);

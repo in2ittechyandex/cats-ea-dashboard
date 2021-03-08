@@ -28,13 +28,14 @@
             "doNotStoreRoom": true,
             "startVideoMuted": 0,
             "startWithVideoMuted": true,
-            "startWithAudioMuted": true,
+            "startWithAudioMuted": false,
             "enableWelcomePage": false,
             "prejoinPageEnabled": false,
             "disableRemoteMute": true,
             "remoteVideoMenu": {
                 "disableKick": true
             }
-        }
+        },
+        "jitsiDomain":"supportcall.in2ittech.com"
     }
 }
