@@ -40,6 +40,7 @@ import { Am4DonutChartComponent } from './am4-donut-chart/am4-donut-chart.compon
 import { Am4ColumnChartComponent } from './am4-column-chart/am4-column-chart.component';
 import { Am4MslineChartComponent } from './am4-msline-chart/am4-msline-chart.component';
 import { Am4ForceDirectedNetworkComponent } from './am4-force-directed-network/am4-force-directed-network.component';
+import { AmClusterChartComponent } from './am-cluster-chart/am-cluster-chart.component';
 // import { AmMapWithCurvedLinesComponent } from './am-map-with-curved-lines/am-map-with-curved-lines.component';
 // import { AmAreaInoutChartNewComponent } from './am-area-inout-chart-new/am-area-inout-chart-new.component';
 
@@ -88,7 +89,8 @@ import { Am4ForceDirectedNetworkComponent } from './am4-force-directed-network/a
     AmAreaRangeChartComponent,
     Am4ColumnChartComponent,
     Am4MslineChartComponent,
-    Am4ForceDirectedNetworkComponent
+    Am4ForceDirectedNetworkComponent,
+    AmClusterChartComponent
   ],
   exports: [AmPieChartComponent,
     AmBarChartComponent,
@@ -127,7 +129,8 @@ import { Am4ForceDirectedNetworkComponent } from './am4-force-directed-network/a
     AmAreaRangeChartComponent,
     Am4ColumnChartComponent,
     Am4MslineChartComponent,
-    Am4ForceDirectedNetworkComponent
+    Am4ForceDirectedNetworkComponent,
+    AmClusterChartComponent
   ]
 })
 export class CustomizedAmChartModule { }

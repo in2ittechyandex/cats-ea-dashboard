@@ -5,8 +5,10 @@ import swal from 'sweetalert2';
 import { PatternService } from './pattern.service';
 import { EventsService } from '../events/events.service';
 import { ActivatedRoute } from '@angular/router';
-
+declare var moment: any;
 import themeConf_ from '../../config/theme-settings';
+import { SharedServices } from 'src/app/shared_/shared.services';
+import { TimeFilterService } from 'src/app/shared_/time-filter/time-filter.service.component';
 @Component({
   selector: 'cats-pattern',
   templateUrl: './pattern.component.html',
@@ -70,20 +72,126 @@ export class PatternComponent implements OnInit {
   themeConf_;
   chartId = "patternChart"
   titleChart = "patternChart";
+  daysClusterData = '7';
+  chartData: Array<any> = [];
+  isChartDataReceived: boolean = false;
+  modelButton = {
+    "isButton7DaysClicked": true,
+    "isButton14DaysClicked": false,
+    "isButton21DaysClicked": false,
+    "isButton28DaysClicked": false
+  }
   constructor(private router: Router,
     private route: ActivatedRoute,
     private userService: EventsService,
     private modalService: NgbModal,
     private patternService: PatternService,
-    private renderer: Renderer2) {
+    private renderer: Renderer2,
+    private sharedServices_: SharedServices,
+    private timeServices_: TimeFilterService) {
     this.dataSource = this.data;
   }
   ngOnInit() {
 
     this.themeConf_ = themeConf_;
     this.getAllMessagePattern();
+    this.getClusteringChartData();
+  }
+  getClusteringChartData() {
+    this.loading = true;
+    this.isChartDataReceived = false;
+    this.dateRange=this.getTimeString().str;
+    this.patternService.getClusteringChartData(this.daysClusterData).subscribe(res => {
+      if (res['status']) {
+        this.chartData = res;
+        this.isChartDataReceived = true;
+      }
+      this.loading = false;
+    },
+      error => {
+        this.loading = false;
+      }
+
+    )
+  }
+  changeDaysClusterData(days) {
+
+
+
+    switch (days) {
+      case '7': {
+        this.modelButton.isButton7DaysClicked = true;
+        this.modelButton.isButton14DaysClicked = false;
+        this.modelButton.isButton21DaysClicked = false;
+        this.modelButton.isButton28DaysClicked = false;
+        break;
+      }
+      case '14': {
+        this.modelButton.isButton14DaysClicked = true;
+        this.modelButton.isButton7DaysClicked = false;
+        this.modelButton.isButton21DaysClicked = false;
+        this.modelButton.isButton28DaysClicked = false;
+        break;
+      }
+      case '21': {
+        this.modelButton.isButton21DaysClicked = true;
+        this.modelButton.isButton14DaysClicked = false;
+        this.modelButton.isButton7DaysClicked = false;
+        this.modelButton.isButton28DaysClicked = false;
+        break;
+      }
+      case '28': {
+        this.modelButton.isButton28DaysClicked = true;
+        this.modelButton.isButton14DaysClicked = false;
+        this.modelButton.isButton21DaysClicked = false;
+        this.modelButton.isButton7DaysClicked = false;
+        break;
+      }
+
+      default:
+        break;
+    }
+    this.daysClusterData = days;
+    this.getClusteringChartData();
+  }
+  dateRange;
+  getCustomRanges(days){
+    return [moment().subtract(days, 'days').startOf('day'), moment().endOf('day')]
+  }
+  getTimeString() {
+    const tAlias = '';//this.sharedServices_.timeMap[timeType];
+    var daysT= parseInt( this.daysClusterData);
+    const t = this.getCustomRanges((daysT-1));
+    const startTime = t[0];
+    const endTime = t[1];
+    let str = tAlias + ' ';
+    const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const myDateStart = new Date(startTime);
+    const myDateEnd = new Date(endTime);
+    str += '(';
+    // if (timeType == 'l1h') {
+    //   str += this.getDatePart(myDateStart)['full'] + ' - ' + this.getDatePart(myDateEnd)['full'];
+    // } else {
+      str += this.getDatePart(myDateStart)['d_'] + '' + ' - ' + this.getDatePart(myDateEnd)['d_'] + '';
+    // }
+    str += ')';
+    return { str: str, startDate: Date.parse(startTime), endDate: Date.parse(endTime) };
   }
 
+  getDatePart(myDateStart: Date) {
+    const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const datePart_ = monthNames[myDateStart.getMonth()] + ' '
+      + (myDateStart.getDate() < 10 ? '0' : '') + myDateStart.getDate() + ', ' + myDateStart.getFullYear();
+    const timePart = (myDateStart.getHours() < 10 ? '0' : '') + myDateStart.getHours()
+      + ':' + (myDateStart.getMinutes() < 10 ? '0' : '') + myDateStart.getMinutes() + ':'
+      + (myDateStart.getSeconds() < 10 ? '0' : '') + myDateStart.getSeconds();
+
+    return {
+      d_: datePart_,
+      t_: timePart,
+      full: datePart_ + ' ' + timePart
+    };
+  }
   getAllMessagePattern() {
     this.patternService.getAllMessagePattern(this.size).subscribe((res) => {
       if (res.status) {
@@ -124,9 +232,9 @@ export class PatternComponent implements OnInit {
       this.loading = false;
     });
   }
-loaderProbability:boolean=false;
+  loaderProbability: boolean = false;
   getProbabilityByMsg(msg) {
-    
+
     this.patternService.getAllCIByMesage(msg, this.sizeCi).subscribe((res) => {
       if (res.status) {
         this.cilist = res.data;
@@ -134,9 +242,9 @@ loaderProbability:boolean=false;
       } else {
         alert(res.msg);
       }
-       
+
     }, (err) => {
-      
+
     });
   }
   showCilist: boolean = false;
@@ -190,7 +298,7 @@ loaderProbability:boolean=false;
       "last30days": 0,
       "last90days": 0
     };
-    this.loaderProbability=true;
+    this.loaderProbability = true;
     this.patternService.getAllProbabilityByMesage(msg).subscribe((res) => {
       if (res.status) {
         this.probability.next7day = res.data.next7days;

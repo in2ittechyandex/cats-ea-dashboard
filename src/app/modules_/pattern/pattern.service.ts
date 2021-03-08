@@ -17,7 +17,13 @@ export class PatternService {
      */
     constructor(private http: HttpClient 
     ) { }
-
+    getClusteringChartData(days){
+      var URL = environment._AlarmURL;
+      URL=environment._WEBGATEWAY_BASIC_URL_+"menu/kpi/get_cluster_chart_data";
+      var form=new FormData();
+      form.append("days",days);
+      return this.http.post(URL,form).map(res=><any>res);
+    }
     /**
      * 
      * to get all Message Pattern

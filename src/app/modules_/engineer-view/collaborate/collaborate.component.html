@@ -168,12 +168,12 @@
                           <span class="thumbCount">{{collabInnerObj.likecount || 0}}</span><i
                             class="fas fa-thumbs-up m-l-5"
                             [ngClass]="(username || showTemplate || likeDislikecheck || (likeDislikecheck==0))?'cursInitial':'cursPointer'"
-                            (click)="(username || showTemplate || likeDislikecheck || (likeDislikecheck==0))?'':collabLikeDislike(collabInnerObj.id, collabInnerObj.created_by, idxIN, 'inner', 1)"></i>
+                            (click)="commentAction(collabInnerObj.commentId,'like')"></i>
                           &nbsp;
                           <span class="thumbCount">{{collabInnerObj.dislikecount || 0}}</span><i
                             class="fas fa-thumbs-down m-l-5"
                             [ngClass]="(username || showTemplate || likeDislikecheck || (likeDislikecheck==0))?'cursInitial':'cursPointer'"
-                            (click)="(username || showTemplate || likeDislikecheck || (likeDislikecheck==0))?'':collabLikeDislike(collabInnerObj.id, collabInnerObj.created_by, idxIN, 'inner', 2)"></i>
+                            (click)="commentAction(collabInnerObj.commentId,'like')"></i>
                           &nbsp;
                           <i class="far fa-check-circle"
                             [style.color]="collabInnerObj.isResolved?'green':'inherit'"></i>

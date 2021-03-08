@@ -4,9 +4,21 @@
     <ngx-loading [show]="loading" style="width:'100%';height:'100%'" [config]="{ backdropBorderRadius: '3px' }">
       </ngx-loading>
       
-  <h1 class="page-header summary-heading mb-1">Pattern out of : {{totalEventCount}}</h1>
   
-  <div class="row mb-3">
+  
+<div class="row">
+  <div class="col-sm-6"><h1 class="page-header summary-heading mb-1">Event cluster of last {{daysClusterData}} days <small class="f-s-12 text-dark">{{dateRange}}</small></h1></div>
+  <div class="col-sm-6">
+    <div class="btn-group pull-right" role="group" aria-label="Basic outlined example">
+      <button #7days type="button" class="btn btn-outline-primary" [ngClass]="modelButton.isButton7DaysClicked?'active':''" (click)="changeDaysClusterData('7')">7 Days</button>
+      <button #14days type="button" class="btn btn-outline-primary" [ngClass]="modelButton.isButton14DaysClicked?'active':''"  (click)="changeDaysClusterData('14')">14 Days</button>
+      <button #21days type="button" class="btn btn-outline-primary" [ngClass]="modelButton.isButton21DaysClicked?'active':''" (click)="changeDaysClusterData('21')">21 Days</button>
+      <button #28days type="button" class="btn btn-outline-primary" [ngClass]="modelButton.isButton28DaysClicked?'active':''" (click)="changeDaysClusterData('28')">24 Days</button>
+    </div>
+  </div>
+</div>
+
+  <!-- <div class="row mb-3">
     <div class="col-md-8" style="padding-right:0px;">
       <div class="list-group cursor-pointer" style="height: 543px; overflow-y: auto;">
         <a class="list-group-item list-group-item-action" *ngFor="let pattern of patternlist;let i=index;"
@@ -23,9 +35,7 @@
       <div class="divst">
         <h6 class="text-center cursor-pointer" style="color:#888888;">ESTIMATED EVENTS</h6>
         <h1 class="textsty">{{msgCount}}</h1>
-        <h5 class="font-weight-bold pl-3">Top 5 Contributing Hosts</h5>
-        <!-- <p class="text-center cursor-pointer"
-   style="letter-spacing: 0px;color:blue"><a (click)="viewEvent()">{{ciMsg}} Events</a></p> -->
+        <h5 class="font-weight-bold pl-3">Top 5 Contributing Hosts</h5> 
         <div class="list-group">
           <a (click)="clickOnHost(ci.tag)" class="list-group-item list-group-item-action cursor-pointer"
             style="font-size:12px; font-weight: bold;color: black; background: #00000000;border-color: #00000000;"
@@ -34,123 +44,15 @@
 
       </div>
     </div>
-  </div>
+  </div> -->
 
 
-  <div class="mb-3">
+  <div class="mb-3 my-2">
     <div class="col-md-12 widget">
-      <img src="../../../assets/charts/bar.JPG" alt="" style="width:100%; height:200px; " />
+      <cats-am-cluster-chart [chartData]="chartData" (alarmIdChange)='alarmIdChange($event)' *ngIf="isChartDataReceived"></cats-am-cluster-chart>
     </div>
 
-    <div class="col-md-12">
-      <div class="row widget">
-        <div class="col-lg-12 widget">
-          <cats-am4-column-chart  [titleChart]="titleChart" [chartUniqueId]="chartId" [heightPixel]="height" [widthPer]="width"
-            [dataProvider]="dataSource.data" *ngIf="dataSource.data?.length>0"></cats-am4-column-chart>
-        </div>
-        
-        <div class="col-md-12 widget mb-0 pt-3">
-          <div class="row">
-            <div class="col-md-6">
-              <h5>Stats</h5>
-              <div class="table-responsive">
-                <table class="table widget-table widget-table-rounded" data-id="widget">
-                  <tbody>
-                    <tr>
-                      <td width="30%">Last 28 Days </td>
-                      <td>
-                        <div class="progress progress-sm rounded-corner m-b-5 cursor-pointer"
-                          (click)="getChartProbability(90)">
-                          <div class="progress-bar progress-bar-striped progress-bar-animated bg-orange f-s-10 f-w-600"
-                            [style.width]="probability.last90days+'%'">{{probability.last90days}}%</div>
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td width="30%">Last 21 Days </td>
-                      <td>
-                        <div class="progress progress-sm rounded-corner m-b-5 cursor-pointer"
-                          (click)="getChartProbability(30)">
-                          <div class="progress-bar progress-bar-striped progress-bar-animated bg-orange f-s-10 f-w-600"
-                            [style.width]="probability.last30days+'%'">{{probability.last30days}}%</div>
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td width="30%">Last 14 Days </td>
-                      <td>
-                        <div class="progress progress-sm rounded-corner m-b-5 cursor-pointer"
-                          (click)="getChartProbability(15)">
-                          <div class="progress-bar progress-bar-striped progress-bar-animated bg-success f-s-10 f-w-600"
-                            [style.width]="probability.last15days+'%'">{{probability.last15days}}%</div>
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td width="30%">Last 7 Days </td>
-                      <td>
-                        <div class="progress progress-sm rounded-corner m-b-5 cursor-pointer"
-                          (click)="getChartProbability(7)">
-                          <div class="progress-bar progress-bar-striped progress-bar-animated bg-indigo f-s-10 f-w-600"
-                            [style.width]="probability.last7days+'%'">{{probability.last7days}}%</div>
-                        </div>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-            <div class="col-md-6">
-              <h5>Probability</h5>
-              <div class="table-responsive">
-                <table class="table widget-table widget-table-rounded" data-id="widget">
-                  <tbody>
-                    <tr>
-                      <td width="30%">Next 28 Days </td>
-                      <td>
-                        <div class="progress progress-sm rounded-corner m-b-5">
-                          <div class="progress-bar progress-bar-striped progress-bar-animated bg-orange f-s-10 f-w-600"
-                            [style.width]="probability.next90days+'%'">{{probability.next90days}}%</div>
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td width="30%">Next 21 Days </td>
-                      <td>
-                        <div class="progress progress-sm rounded-corner m-b-5">
-                          <div class="progress-bar progress-bar-striped progress-bar-animated bg-orange f-s-10 f-w-600"
-                            [style.width]="probability.next30days+'%'">{{probability.next30days}}%</div>
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td width="30%">Next 14 Days </td>
-                      <td>
-                        <div class="progress progress-sm rounded-corner m-b-5">
-                          <div class="progress-bar progress-bar-striped progress-bar-animated bg-success f-s-10 f-w-600"
-                            [style.width]="probability.next15days+'%'">{{probability.next15days}}%</div>
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td width="30%"> Next 7 Days </td>
-                      <td>
-                        <div class="progress progress-sm rounded-corner m-b-5">
-                          <div class="progress-bar progress-bar-striped progress-bar-animated bg-indigo f-s-10 f-w-600"
-                            [style.width]="probability.next7day+'%'">{{probability.next7day}}%</div>
-                        </div>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-    
-        </div>
-      </div>
-  
-         </div>
+     
   </div>
 
 
