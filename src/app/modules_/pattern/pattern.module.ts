@@ -7,6 +7,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap'; 
 import { NgxLoadingModule, ngxLoadingAnimationTypes } from 'ngx-loading';   
 import { CustomizedAmChartModule } from '../customized-am-chart/customized-am-chart.module';
+import { SharedModule } from 'src/app/shared_/shared.module';
+import { NumberToDatePipe } from 'src/app/shared_/pipes_/number-to-date.pipe';
 @NgModule({
   imports: [
     CommonModule,
@@ -22,8 +24,10 @@ import { CustomizedAmChartModule } from '../customized-am-chart/customized-am-ch
       secondaryColour: '#ffffff', 
       tertiaryColour: '#ffffff'
   }), 
-  CustomizedAmChartModule
+  CustomizedAmChartModule,
+  SharedModule
   ],
+  providers: [NumberToDatePipe],
   declarations: [PatternComponent]
 })
 export class PatternModule { }

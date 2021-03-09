@@ -13,7 +13,7 @@
       <button #7days type="button" class="btn btn-outline-primary" [ngClass]="modelButton.isButton7DaysClicked?'active':''" (click)="changeDaysClusterData('7')">7 Days</button>
       <button #14days type="button" class="btn btn-outline-primary" [ngClass]="modelButton.isButton14DaysClicked?'active':''"  (click)="changeDaysClusterData('14')">14 Days</button>
       <button #21days type="button" class="btn btn-outline-primary" [ngClass]="modelButton.isButton21DaysClicked?'active':''" (click)="changeDaysClusterData('21')">21 Days</button>
-      <button #28days type="button" class="btn btn-outline-primary" [ngClass]="modelButton.isButton28DaysClicked?'active':''" (click)="changeDaysClusterData('28')">24 Days</button>
+      <button #28days type="button" class="btn btn-outline-primary" [ngClass]="modelButton.isButton28DaysClicked?'active':''" (click)="changeDaysClusterData('28')">28 Days</button>
     </div>
   </div>
 </div>
@@ -58,7 +58,7 @@
 
   
 </div>
-
+<button [hidden]='true' id="modelDialogButton" (click)="openFullScreen(modalDialog)"></button>
 <!-- #modal-dialog -->
 <ng-template #modalDialog let-c="close" let-d="dismiss">
   <div class="modal-header" style="background: #242a30; padding:9px 15px;">
@@ -74,102 +74,127 @@
           [dataProvider]="dataSource.data" *ngIf="dataSource.data?.length>0"></cats-am4-column-chart>
       </div>
     </div>
+    <ngb-tabset>
+      <ngb-tab>
+        <ng-template ngbTabTitle>
+          <span class="d-sm-none">Description</span>
+          <span class="d-sm-block d-none">Description</span>
+        </ng-template>
+        <ng-template ngbTabContent>
+          <div class="style-4" style="height:200px; overflow:auto;">
+            <div class="row">
+              <div class="col-md-6">
+                <h5>Stats</h5>
+                <div class="table-responsive">
+                  <table class="table widget-table widget-table-rounded" data-id="widget">
+                    <tbody>
+                      <tr>
+                        <td width="30%">Last 28 Days </td>
+                        <td>
+                          <div class="progress progress-sm rounded-corner m-b-5 cursor-pointer"
+                            (click)="getChartProbability(90)">
+                            <div class="progress-bar progress-bar-striped progress-bar-animated bg-orange f-s-10 f-w-600"
+                              [style.width]="probability.last90days+'%'">{{probability.last90days}}%</div>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td width="30%">Last 21 Days </td>
+                        <td>
+                          <div class="progress progress-sm rounded-corner m-b-5 cursor-pointer"
+                            (click)="getChartProbability(30)">
+                            <div class="progress-bar progress-bar-striped progress-bar-animated bg-orange f-s-10 f-w-600"
+                              [style.width]="probability.last30days+'%'">{{probability.last30days}}%</div>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td width="30%">Last 14 Days </td>
+                        <td>
+                          <div class="progress progress-sm rounded-corner m-b-5 cursor-pointer"
+                            (click)="getChartProbability(15)">
+                            <div class="progress-bar progress-bar-striped progress-bar-animated bg-success f-s-10 f-w-600"
+                              [style.width]="probability.last15days+'%'">{{probability.last15days}}%</div>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td width="30%">Last 7 Days </td>
+                        <td>
+                          <div class="progress progress-sm rounded-corner m-b-5 cursor-pointer"
+                            (click)="getChartProbability(7)">
+                            <div class="progress-bar progress-bar-striped progress-bar-animated bg-indigo f-s-10 f-w-600"
+                              [style.width]="probability.last7days+'%'">{{probability.last7days}}%</div>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <h5>Probability</h5>
+                <div class="table-responsive">
+                  <table class="table widget-table widget-table-rounded" data-id="widget">
+                    <tbody>
+                      <tr>
+                        <td width="30%">Next 28 Days </td>
+                        <td>
+                          <div class="progress progress-sm rounded-corner m-b-5">
+                            <div class="progress-bar progress-bar-striped progress-bar-animated bg-orange f-s-10 f-w-600"
+                              [style.width]="probability.next90days+'%'">{{probability.next90days}}%</div>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td width="30%">Next 21 Days </td>
+                        <td>
+                          <div class="progress progress-sm rounded-corner m-b-5">
+                            <div class="progress-bar progress-bar-striped progress-bar-animated bg-orange f-s-10 f-w-600"
+                              [style.width]="probability.next30days+'%'">{{probability.next30days}}%</div>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td width="30%">Next 14 Days </td>
+                        <td>
+                          <div class="progress progress-sm rounded-corner m-b-5">
+                            <div class="progress-bar progress-bar-striped progress-bar-animated bg-success f-s-10 f-w-600"
+                              [style.width]="probability.next15days+'%'">{{probability.next15days}}%</div>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td width="30%"> Next 7 Days </td>
+                        <td>
+                          <div class="progress progress-sm rounded-corner m-b-5">
+                            <div class="progress-bar progress-bar-striped progress-bar-animated bg-indigo f-s-10 f-w-600"
+                              [style.width]="probability.next7day+'%'">{{probability.next7day}}%</div>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+      </ngb-tab>
 
-    <div class="row">
-      <div class="col-md-6">
-        <h5>Stats</h5>
-        <div class="table-responsive">
-          <table class="table widget-table widget-table-rounded" data-id="widget">
-            <tbody>
-              <tr>
-                <td width="30%">Last 3 Months </td>
-                <td>
-                  <div class="progress progress-sm rounded-corner m-b-5 cursor-pointer"
-                    (click)="getChartProbability(90)">
-                    <div class="progress-bar progress-bar-striped progress-bar-animated bg-orange f-s-10 f-w-600"
-                      [style.width]="probability.last90days+'%'">{{probability.last90days}}%</div>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td width="30%">Last 1 Months </td>
-                <td>
-                  <div class="progress progress-sm rounded-corner m-b-5 cursor-pointer"
-                    (click)="getChartProbability(30)">
-                    <div class="progress-bar progress-bar-striped progress-bar-animated bg-orange f-s-10 f-w-600"
-                      [style.width]="probability.last30days+'%'">{{probability.last30days}}%</div>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td width="30%">Last 15 Days </td>
-                <td>
-                  <div class="progress progress-sm rounded-corner m-b-5 cursor-pointer"
-                    (click)="getChartProbability(15)">
-                    <div class="progress-bar progress-bar-striped progress-bar-animated bg-success f-s-10 f-w-600"
-                      [style.width]="probability.last15days+'%'">{{probability.last15days}}%</div>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td width="30%">Last 7 Days </td>
-                <td>
-                  <div class="progress progress-sm rounded-corner m-b-5 cursor-pointer"
-                    (click)="getChartProbability(7)">
-                    <div class="progress-bar progress-bar-striped progress-bar-animated bg-indigo f-s-10 f-w-600"
-                      [style.width]="probability.last7days+'%'">{{probability.last7days}}%</div>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-      <div class="col-md-6">
-        <h5>Probability</h5>
-        <div class="table-responsive">
-          <table class="table widget-table widget-table-rounded" data-id="widget">
-            <tbody>
-              <tr>
-                <td width="30%">Next 3 Months </td>
-                <td>
-                  <div class="progress progress-sm rounded-corner m-b-5">
-                    <div class="progress-bar progress-bar-striped progress-bar-animated bg-orange f-s-10 f-w-600"
-                      [style.width]="probability.next90days+'%'">{{probability.next90days}}%</div>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td width="30%">Next 1 Months </td>
-                <td>
-                  <div class="progress progress-sm rounded-corner m-b-5">
-                    <div class="progress-bar progress-bar-striped progress-bar-animated bg-orange f-s-10 f-w-600"
-                      [style.width]="probability.next30days+'%'">{{probability.next30days}}%</div>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td width="30%">Next 15 Days </td>
-                <td>
-                  <div class="progress progress-sm rounded-corner m-b-5">
-                    <div class="progress-bar progress-bar-striped progress-bar-animated bg-success f-s-10 f-w-600"
-                      [style.width]="probability.next15days+'%'">{{probability.next15days}}%</div>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td width="30%"> Next 7 Days </td>
-                <td>
-                  <div class="progress progress-sm rounded-corner m-b-5">
-                    <div class="progress-bar progress-bar-striped progress-bar-animated bg-indigo f-s-10 f-w-600"
-                      [style.width]="probability.next7day+'%'">{{probability.next7day}}%</div>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
+      <ngb-tab>
+        <ng-template ngbTabTitle>
+          <span class="d-sm-none">Child Events</span>
+          <span class="d-sm-block d-none">Child Events</span>
+        </ng-template>
+        <ng-template ngbTabContent>
+          <cats-ag-grid-table [title]="titleChart" [myGridId]="'alarmEventChild'" [rowData]="alarmChildEvent"
+            [dbAllcolumns]="dbAllcolumns" [tableHeight]="tableHeight" [timeRange]="timeRange"
+            [responseTime]="responseTime" [showSetting]="showSetting" (eventDetect)="onEventDetect($event)">
+          </cats-ag-grid-table>
+        </ng-template>
+      </ngb-tab>
+    </ngb-tabset>
+    
   </div>
 </ng-template>

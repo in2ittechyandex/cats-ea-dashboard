@@ -54,7 +54,7 @@ export class AmClusterChartComponent implements OnInit {
       "c5": 0.3,
       "c6": 0.1
     }];
-chart.data=this.chartData['data'];
+    chart.data = this.chartData['data'];
     // chart.data = this.getChartData(); 
 
     // Create axes
@@ -70,32 +70,15 @@ chart.data=this.chartData['data'];
     valueAxis.min = 0;
     valueAxis.title.text = "Clusters";
 
-    // Create series
-    function createSeries(field, name, stacked, color) {
-      var series = chart.series.push(new am4charts.ColumnSeries());
-      series.dataFields.valueY = field;
-      series.dataFields.categoryX = "nms";
-      series.name = name;
-      series.stacked = stacked;
-      series.fillOpacity = 0;
-      series.strokeOpacity = 1;
-      series.columns.template.width = 0.0;
+    
 
-      var closeBullet:any = series.bullets.create(am4charts.CircleBullet);
-      closeBullet.locationY = 0; 
-      closeBullet.align = "center";
-      closeBullet.valign = "middle";
-      closeBullet.fill = am4core.color(color);
-      closeBullet.stroke = closeBullet.fill;
-      closeBullet.tooltipText = "{name}: [bold]{valueY}[/]";
-    }
 
-     
+
     let legenddata = [];
-    var seriesData=this.chartData["config"]["legend"];
-    var seriesDataKeys=Object.keys(seriesData);
-    for(var i=0;i<seriesDataKeys.length;i++){
-      createSeries(seriesDataKeys[i], seriesData[seriesDataKeys[i]].displayname, false, seriesData[seriesDataKeys[i]].color);
+    var seriesData = this.chartData["config"]["legend"];
+    var seriesDataKeys = Object.keys(seriesData);
+    for (var i = 0; i < seriesDataKeys.length; i++) {
+      this.createSeries(chart,seriesDataKeys[i], seriesData[seriesDataKeys[i]].displayname, false, seriesData[seriesDataKeys[i]].color);
       legenddata.push({
         name: seriesData[seriesDataKeys[i]].displayname,
         fill: am4core.color(seriesData[seriesDataKeys[i]].color)
@@ -104,21 +87,21 @@ chart.data=this.chartData['data'];
 
     //Add legend
     chart.legend = new am4charts.Legend();
-   
-/* Create a separate container to put legend in */
-var legendContainer = am4core.create("legenddiv", am4core.Container);
-legendContainer.width = am4core.percent(100);
-legendContainer.height = am4core.percent(100);
-chart.legend.parent = legendContainer;
 
-legendContainer.logo.hidden = true; // hide amchart4 icon
-legendContainer.logo.disabled = true;
-chart.events.on("datavalidated", resizeLegend);
-chart.events.on("maxsizechanged", resizeLegend);
+    /* Create a separate container to put legend in */
+    var legendContainer = am4core.create("legenddiv", am4core.Container);
+    legendContainer.width = am4core.percent(100);
+    legendContainer.height = am4core.percent(100);
+    chart.legend.parent = legendContainer;
 
-function resizeLegend(ev) {
-  document.getElementById("legenddiv").style.height = chart.legend.contentHeight + "px";
-}
+    legendContainer.logo.hidden = true; // hide amchart4 icon
+    legendContainer.logo.disabled = true;
+    chart.events.on("datavalidated", resizeLegend);
+    chart.events.on("maxsizechanged", resizeLegend);
+
+    function resizeLegend(ev) {
+      document.getElementById("legenddiv").style.height = chart.legend.contentHeight + "px";
+    }
 
 
     let markerTemplate = chart.legend.markers.template;
@@ -126,11 +109,76 @@ function resizeLegend(ev) {
     markerTemplate.height = 15;
 
     chart.legend.data = legenddata;
-
-
-
   }
 
+// Create series
+  createSeries(chart,field, name, stacked, color) {
+  var series = chart.series.push(new am4charts.ColumnSeries());
+  series.dataFields.valueY = field;
+  series.dataFields.valueX = name;
+  series.dataFields.categoryX = "nms";
+  series.dataFields.categoryY = name;
+  series.name = name;
+  series.stacked = stacked;
+  series.fillOpacity = 0;
+  series.strokeOpacity = 1;
+  series.columns.template.width = 0.0;
+
+  // var closeBullet: any = series.bullets.create(am4charts.CircleBullet);
+  // closeBullet.locationY = 0;
+  // closeBullet.align = "center";
+  // closeBullet.valign = "middle";
+  // closeBullet.fill = am4core.color(color);
+  // closeBullet.stroke = closeBullet.fill;
+  // closeBullet.tooltipText = "{name}: [bold]{valueY}[/]";
+  // closeBullet.events.on('hit', (ev: any) => {
+  //   const val = ev.target;//._dataContext.alarm_id;
+  //   console.log(val); 
+  //   this.alarmIdChange.emit(val);
+  // }, this);
+
+  // closeBullet.events.on("hit" ,(ev) =>{
+  //   console.log('ev : '+ev);
+  //   this.doOperationClickOnChart(null);
+  // });
+
+  var bullet1 = series.bullets.push(new am4charts.CircleBullet());
+// bullet1.tooltipText = "{name}: [bold]{valueY}[/]";
+
+bullet1.tooltipText = name+`----[/]
+NMS: {categoryX}
+Count: {valueY}`;
+
+bullet1.dummyData="its dummy data";
+bullet1.circle.fill = am4core.color(color);
+bullet1.clickable=true; 
+bullet1.events.on('hit', (ev: any) => {
+  const val = ev.target;//._dataItem;//._dataContext;
+  // console.log(val.properties.tooltipText); 
+  let toolTip=val.properties.tooltipText;
+  var splitted = toolTip.split("----"); 
+  let clusterName=splitted[0];
+// console.log(splitted)
+  // console.log( ev.target._dataItem.categories.categoryX);
+ let tData={
+   'cluster':clusterName,
+   'nms':ev.target._dataItem.categories.categoryX
+ }
+  this.alarmIdChange.emit(tData);
+}, this);
+// series.columns.template.events.on("hit", function(ev) {
+//   console.log("clicked on ", ev.target);
+// }, this);
+series.heatRules.push({
+  target: bullet1.circle,
+  min: 10,
+  max: 60,
+  property: "radius"
+});
+
+}
+
+  
 
 
 }

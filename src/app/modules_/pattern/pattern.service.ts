@@ -56,10 +56,10 @@ export class PatternService {
      * 
      */
 
-    getAllProbabilityByMesage(msg){
-      var URL=environment._WEBGATEWAY_BASIC_URL_+"menu/kpi/probable_message";
+    getAllProbabilityByMesage(cluster,nms){
+      var URL=environment._WEBGATEWAY_BASIC_URL_+"menu/kpi/probable_cluster";
       var form=new FormData(); 
-      form.append("message",msg);
+      form.append("cluster",cluster);
       return this.http.post(URL,form).map(res=><any>res);
     }
     /**
@@ -68,10 +68,19 @@ export class PatternService {
      * 
      */
 
-    getChartProbability(msg,days){
-      var URL=environment._WEBGATEWAY_BASIC_URL_+"menu/kpi/get_trend_chart";
+    getChartProbability(cluster,nms,days){
+      var URL=environment._WEBGATEWAY_BASIC_URL_+"menu/kpi/get_trend_chart_cluster";
       var form=new FormData(); 
-      form.append("message",msg);
+      form.append("cluster",cluster);
+      // form.append("nms",nms);
+      form.append("days",days);
+      return this.http.post(URL,form).map(res=><any>res);
+    }
+    getChildEventinCluster(cluster,nms,days){
+      var URL=environment._WEBGATEWAY_BASIC_URL_+"menu/kpi/get_events_in_cluster";
+      var form=new FormData(); 
+      form.append("cluster",cluster);
+      // form.append("nms",nms);
       form.append("days",days);
       return this.http.post(URL,form).map(res=><any>res);
     }
