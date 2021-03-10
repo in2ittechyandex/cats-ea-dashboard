@@ -1,24 +1,26 @@
+<ngx-loading [show]="loading" style="width:'100%';height:'100%'" [config]="{ backdropBorderRadius: '3px' }">
+</ngx-loading>
 
-
-<div class="">
-    <ngx-loading [show]="loading" style="width:'100%';height:'100%'" [config]="{ backdropBorderRadius: '3px' }">
-      </ngx-loading>
-      
-  
-  
 <div class="row">
-  <div class="col-sm-6"><h1 class="page-header summary-heading mb-1">Event cluster of last {{daysClusterData}} days <small class="f-s-12 text-dark">{{dateRange}}</small></h1></div>
+  <div class="col-sm-6">
+    <h1 class="page-header summary-heading mb-1 f-s-18">Event cluster of last {{daysClusterData}} days <small
+        class="f-s-12 text-dark">{{dateRange}}</small></h1>
+  </div>
   <div class="col-sm-6">
     <div class="btn-group pull-right" role="group" aria-label="Basic outlined example">
-      <button #7days type="button" class="btn btn-outline-primary" [ngClass]="modelButton.isButton7DaysClicked?'active':''" (click)="changeDaysClusterData('7')">7 Days</button>
-      <button #14days type="button" class="btn btn-outline-primary" [ngClass]="modelButton.isButton14DaysClicked?'active':''"  (click)="changeDaysClusterData('14')">14 Days</button>
-      <button #21days type="button" class="btn btn-outline-primary" [ngClass]="modelButton.isButton21DaysClicked?'active':''" (click)="changeDaysClusterData('21')">21 Days</button>
-      <button #28days type="button" class="btn btn-outline-primary" [ngClass]="modelButton.isButton28DaysClicked?'active':''" (click)="changeDaysClusterData('28')">28 Days</button>
+      <button #7days type="button" class="btn btn-outline-dark"
+        [ngClass]="modelButton.isButton7DaysClicked?'active':''" (click)="changeDaysClusterData('7')">7 Days</button>
+      <button #14days type="button" class="btn btn-outline-dark"
+        [ngClass]="modelButton.isButton14DaysClicked?'active':''" (click)="changeDaysClusterData('14')">14 Days</button>
+      <button #21days type="button" class="btn btn-outline-dark"
+        [ngClass]="modelButton.isButton21DaysClicked?'active':''" (click)="changeDaysClusterData('21')">21 Days</button>
+      <button #28days type="button" class="btn btn-outline-dark"
+        [ngClass]="modelButton.isButton28DaysClicked?'active':''" (click)="changeDaysClusterData('28')">28 Days</button>
     </div>
   </div>
 </div>
 
-  <!-- <div class="row mb-3">
+<!-- <div class="row mb-3">
     <div class="col-md-8" style="padding-right:0px;">
       <div class="list-group cursor-pointer" style="height: 543px; overflow-y: auto;">
         <a class="list-group-item list-group-item-action" *ngFor="let pattern of patternlist;let i=index;"
@@ -46,32 +48,27 @@
     </div>
   </div> -->
 
-
-  <div class="mb-3 my-2">
-    <div class="col-md-12 widget">
-      <cats-am-cluster-chart [chartData]="chartData" (alarmIdChange)='alarmIdChange($event)' *ngIf="isChartDataReceived"></cats-am-cluster-chart>
-    </div>
-
-     
-  </div>
-
-
-  
+<div class="col-md-12 widget mb-0 mt-2">
+  <cats-am-cluster-chart [chartData]="chartData" (alarmIdChange)='alarmIdChange($event)' *ngIf="isChartDataReceived">
+  </cats-am-cluster-chart>
 </div>
+
 <button [hidden]='true' id="modelDialogButton" (click)="openFullScreen(modalDialog)"></button>
 <!-- #modal-dialog -->
 <ng-template #modalDialog let-c="close" let-d="dismiss">
   <div class="modal-header" style="background: #242a30; padding:9px 15px;">
     <h5 class="modal-title" style="color:#ffffff;">Message Trend</h5>
-    <button type="button" class="close" style="padding:5px 10px; color:#ffffff;" (click)="d('Cross click')" data-dismiss="modal" aria-hidden="true">×</button>
+    <button type="button" class="close" style="padding:5px 10px; color:#ffffff;" (click)="d('Cross click')"
+      data-dismiss="modal" aria-hidden="true">×</button>
   </div>
   <div class="modal-body">
-      <ngx-loading [show]="loaderProbability" style="width:'100%';height:'100%'" [config]="{ backdropBorderRadius: '3px' }">
-        </ngx-loading>
+    <ngx-loading [show]="loaderProbability" style="width:'100%';height:'100%'"
+      [config]="{ backdropBorderRadius: '3px' }">
+    </ngx-loading>
     <div class="row">
       <div class="col-lg-12">
-        <cats-am4-column-chart  [titleChart]="titleChart" [chartUniqueId]="chartId" [heightPixel]="height" [widthPer]="width"
-          [dataProvider]="dataSource.data" *ngIf="dataSource.data?.length>0"></cats-am4-column-chart>
+        <cats-am4-column-chart [titleChart]="titleChart" [chartUniqueId]="chartId" [heightPixel]="height"
+          [widthPer]="width" [dataProvider]="dataSource.data" *ngIf="dataSource.data?.length>0"></cats-am4-column-chart>
       </div>
     </div>
     <ngb-tabset>
@@ -93,7 +90,8 @@
                         <td>
                           <div class="progress progress-sm rounded-corner m-b-5 cursor-pointer"
                             (click)="getChartProbability(90)">
-                            <div class="progress-bar progress-bar-striped progress-bar-animated bg-orange f-s-10 f-w-600"
+                            <div
+                              class="progress-bar progress-bar-striped progress-bar-animated bg-orange f-s-10 f-w-600"
                               [style.width]="probability.last90days+'%'">{{probability.last90days}}%</div>
                           </div>
                         </td>
@@ -103,7 +101,8 @@
                         <td>
                           <div class="progress progress-sm rounded-corner m-b-5 cursor-pointer"
                             (click)="getChartProbability(30)">
-                            <div class="progress-bar progress-bar-striped progress-bar-animated bg-orange f-s-10 f-w-600"
+                            <div
+                              class="progress-bar progress-bar-striped progress-bar-animated bg-orange f-s-10 f-w-600"
                               [style.width]="probability.last30days+'%'">{{probability.last30days}}%</div>
                           </div>
                         </td>
@@ -113,7 +112,8 @@
                         <td>
                           <div class="progress progress-sm rounded-corner m-b-5 cursor-pointer"
                             (click)="getChartProbability(15)">
-                            <div class="progress-bar progress-bar-striped progress-bar-animated bg-success f-s-10 f-w-600"
+                            <div
+                              class="progress-bar progress-bar-striped progress-bar-animated bg-success f-s-10 f-w-600"
                               [style.width]="probability.last15days+'%'">{{probability.last15days}}%</div>
                           </div>
                         </td>
@@ -123,7 +123,8 @@
                         <td>
                           <div class="progress progress-sm rounded-corner m-b-5 cursor-pointer"
                             (click)="getChartProbability(7)">
-                            <div class="progress-bar progress-bar-striped progress-bar-animated bg-indigo f-s-10 f-w-600"
+                            <div
+                              class="progress-bar progress-bar-striped progress-bar-animated bg-indigo f-s-10 f-w-600"
                               [style.width]="probability.last7days+'%'">{{probability.last7days}}%</div>
                           </div>
                         </td>
@@ -141,7 +142,8 @@
                         <td width="30%">Next 28 Days </td>
                         <td>
                           <div class="progress progress-sm rounded-corner m-b-5">
-                            <div class="progress-bar progress-bar-striped progress-bar-animated bg-orange f-s-10 f-w-600"
+                            <div
+                              class="progress-bar progress-bar-striped progress-bar-animated bg-orange f-s-10 f-w-600"
                               [style.width]="probability.next90days+'%'">{{probability.next90days}}%</div>
                           </div>
                         </td>
@@ -150,7 +152,8 @@
                         <td width="30%">Next 21 Days </td>
                         <td>
                           <div class="progress progress-sm rounded-corner m-b-5">
-                            <div class="progress-bar progress-bar-striped progress-bar-animated bg-orange f-s-10 f-w-600"
+                            <div
+                              class="progress-bar progress-bar-striped progress-bar-animated bg-orange f-s-10 f-w-600"
                               [style.width]="probability.next30days+'%'">{{probability.next30days}}%</div>
                           </div>
                         </td>
@@ -159,7 +162,8 @@
                         <td width="30%">Next 14 Days </td>
                         <td>
                           <div class="progress progress-sm rounded-corner m-b-5">
-                            <div class="progress-bar progress-bar-striped progress-bar-animated bg-success f-s-10 f-w-600"
+                            <div
+                              class="progress-bar progress-bar-striped progress-bar-animated bg-success f-s-10 f-w-600"
                               [style.width]="probability.next15days+'%'">{{probability.next15days}}%</div>
                           </div>
                         </td>
@@ -168,7 +172,8 @@
                         <td width="30%"> Next 7 Days </td>
                         <td>
                           <div class="progress progress-sm rounded-corner m-b-5">
-                            <div class="progress-bar progress-bar-striped progress-bar-animated bg-indigo f-s-10 f-w-600"
+                            <div
+                              class="progress-bar progress-bar-striped progress-bar-animated bg-indigo f-s-10 f-w-600"
                               [style.width]="probability.next7day+'%'">{{probability.next7day}}%</div>
                           </div>
                         </td>
@@ -195,6 +200,6 @@
         </ng-template>
       </ngb-tab>
     </ngb-tabset>
-    
+
   </div>
 </ng-template>
