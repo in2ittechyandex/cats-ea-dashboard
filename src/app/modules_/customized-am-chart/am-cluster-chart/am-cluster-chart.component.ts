@@ -60,7 +60,7 @@ export class AmClusterChartComponent implements OnInit {
     // Create axes
     var categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
     categoryAxis.dataFields.category = "nms";
-    categoryAxis.title.text = "Clusters in each nms";
+    categoryAxis.title.text = "Element Manager";
     categoryAxis.renderer.grid.template.location = 0;
     categoryAxis.renderer.minGridDistance = 20;
     categoryAxis.renderer.cellStartLocation = 0.1;
@@ -68,7 +68,7 @@ export class AmClusterChartComponent implements OnInit {
 
     var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
     valueAxis.min = 0;
-    valueAxis.title.text = "Clusters";
+    valueAxis.title.text = "Count";
 
     
 
@@ -123,29 +123,10 @@ export class AmClusterChartComponent implements OnInit {
   series.fillOpacity = 0;
   series.strokeOpacity = 1;
   series.columns.template.width = 0.0;
+ 
+  var bullet1 = series.bullets.push(new am4charts.CircleBullet()); 
 
-  // var closeBullet: any = series.bullets.create(am4charts.CircleBullet);
-  // closeBullet.locationY = 0;
-  // closeBullet.align = "center";
-  // closeBullet.valign = "middle";
-  // closeBullet.fill = am4core.color(color);
-  // closeBullet.stroke = closeBullet.fill;
-  // closeBullet.tooltipText = "{name}: [bold]{valueY}[/]";
-  // closeBullet.events.on('hit', (ev: any) => {
-  //   const val = ev.target;//._dataContext.alarm_id;
-  //   console.log(val); 
-  //   this.alarmIdChange.emit(val);
-  // }, this);
-
-  // closeBullet.events.on("hit" ,(ev) =>{
-  //   console.log('ev : '+ev);
-  //   this.doOperationClickOnChart(null);
-  // });
-
-  var bullet1 = series.bullets.push(new am4charts.CircleBullet());
-// bullet1.tooltipText = "{name}: [bold]{valueY}[/]";
-
-bullet1.tooltipText = name+`----[/]
+bullet1.tooltipText = field+'----'+name+`----[/]
 NMS: {categoryX}
 Count: {valueY}`;
 
