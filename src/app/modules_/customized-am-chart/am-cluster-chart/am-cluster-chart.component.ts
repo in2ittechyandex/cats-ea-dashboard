@@ -126,9 +126,9 @@ export class AmClusterChartComponent implements OnInit {
  
   var bullet1 = series.bullets.push(new am4charts.CircleBullet()); 
 
-bullet1.tooltipText = field+'----'+name+`----[/]
-NMS: {categoryX}
-Count: {valueY}`;
+bullet1.tooltipText = field+' -- '+name+`[/]
+NMS : {categoryX}
+Count : {valueY}`;
 
 bullet1.dummyData="its dummy data";
 bullet1.circle.fill = am4core.color(color);
@@ -137,13 +137,16 @@ bullet1.events.on('hit', (ev: any) => {
   const val = ev.target;//._dataItem;//._dataContext;
   // console.log(val.properties.tooltipText); 
   let toolTip=val.properties.tooltipText;
-  var splitted = toolTip.split("----"); 
-  let clusterName=splitted[0];
+  var splitted = toolTip.split(" -- "); 
+  let clusterId=splitted[0];
+  let splitted1=splitted[1].split('[/]');
+  let clusterName=splitted1[0];
 // console.log(splitted)
   // console.log( ev.target._dataItem.categories.categoryX);
  let tData={
-   'cluster':clusterName,
-   'nms':ev.target._dataItem.categories.categoryX
+   'cluster':clusterId,
+   'nms':ev.target._dataItem.categories.categoryX,
+   'clusterName':clusterName,
  }
   this.alarmIdChange.emit(tData);
 }, this);

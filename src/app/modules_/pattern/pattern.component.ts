@@ -103,7 +103,7 @@ export class PatternComponent implements OnInit {
   alarmIdChange(event){
     console.log(event);
     this.loading=true;
-    this.getChartProbability(event.cluster,event.nms,this.daysClusterData)
+    this.getChartProbability(event.clusterName,event.cluster,event.nms,this.daysClusterData)
   }
   getClusteringChartData() {
     this.loading = true;
@@ -276,7 +276,7 @@ export class PatternComponent implements OnInit {
       this.ciMsg = 'View';
     }
   }
-  getChartProbability(cluster,nms,days) {
+  getChartProbability(clusterName,cluster,nms,days) {
     // this.loading = true;
 
     this.patternService.getChartProbability(cluster,nms, days).subscribe((res) => {
@@ -284,7 +284,7 @@ export class PatternComponent implements OnInit {
         this.data.data = res.data;
         this.dataSource = this.data;
 
-        this.titleChart = cluster;
+        this.titleChart = clusterName;
         var len = this.titleChart.length;
         var finalString = "";
         var desiredLength = 100;
@@ -297,7 +297,7 @@ export class PatternComponent implements OnInit {
           }
           this.titleChart = finalString;
         }
-        this.getChildEventinCluster(cluster,nms, days);
+        this.getChildEventinCluster(clusterName,cluster,nms, days);
         this.getProbabilityOfCluster(cluster,nms);
         document.getElementById('modelDialogButton').click();
 
@@ -545,7 +545,7 @@ showSetting:boolean=false;
 title="Child Events";
 
  
-getChildEventinCluster(cluster,nms,days) {  
+getChildEventinCluster(clusterName,cluster,nms,days) {  
 const startTime: number = new Date().getTime();
 this.patternService.getChildEventinCluster(cluster,nms,days).subscribe((res) => {
   if (res['status']) {  
