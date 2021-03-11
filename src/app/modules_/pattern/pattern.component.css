@@ -46,3 +46,12 @@ width: 0; */}
     padding: 5px 10px;
     font-size: 12px;
 }
+
+
+
+::ng-deep#tab_w_50 .nav-item {width: 50%; text-align: center; font-weight: 600; font-size:13px;}
+::ng-deep #tab_w_50 .nav-tabs {border: 1px solid #ddd !important; background: #c1ccd1 !important;}
+::ng-deep #tab_w_50 .nav-tabs .nav-link {padding: 6px 15px !important; color: #000000;}
+::ng-deep#tab_w_50 .tab-content {width: 100%; min-height: 330px; height: auto; margin-bottom: 0px;}
+::ng-deep #tab_w_50 .dropdown {width: 100%;}
+::ng-deep#tab_w_50 .dropdown a {width: 40px;}
