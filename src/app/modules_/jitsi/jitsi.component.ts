@@ -16,7 +16,7 @@ export interface DialogData {
 export class JitsiComponent implements OnInit, AfterViewInit {
 
   closeResult = '';
-  domain: string = ''; //"meet.jit.si"; // '172.16.10.112:443'; // 'alphacodes.hopto.org'; //  '182.76.238.200:8443';//
+  domain: string = 'supportcall.in2ittech.com'; //"meet.jit.si"; // '172.16.10.112:443'; // 'alphacodes.hopto.org'; //  '182.76.238.200:8443';//
   options: any;
   api: any;
   modalReferenceAddReport: any;
@@ -26,7 +26,7 @@ export class JitsiComponent implements OnInit, AfterViewInit {
   constructor(private dialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
     public dialogRef: MatDialogRef<JitsiComponent>) { 
-      this.domain = environment.envConfig['jitsiDomain'] ? environment.envConfig['jitsiDomain'] : '';
+      // this.domain = environment.envConfig['jitsiDomain'] ? environment.envConfig['jitsiDomain'] : '';
     }
 
   dialogOpened(data): void {
@@ -85,8 +85,8 @@ export class JitsiComponent implements OnInit, AfterViewInit {
     //     }
     // }
 
-      interfaceConfigOverwrite: interfaceConfig_,
-      configOverwrite: config_
+      // interfaceConfigOverwrite: interfaceConfig_,
+      // configOverwrite: config_
     }
     this.api = new JitsiMeetExternalAPI(this.domain, this.options);
 
@@ -124,7 +124,7 @@ export class JitsiComponent implements OnInit, AfterViewInit {
 
 
     // https://catsportal.dashboard.liquidtelecom.co.za/assets/img_alpha/i.png
-    this.api.executeCommand('avatarUrl', 'http://localhost:4200/assets/img/user/user-13.jpg');
+    // this.api.executeCommand('avatarUrl', 'http://localhost:4200/assets/img/user/user-13.jpg');
 
 
     this.api.isVideoAvailable().then(function (available) {

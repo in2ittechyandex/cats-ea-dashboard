@@ -267,7 +267,7 @@ console.log("comment to e deleted"+ objID);
     
     
     // https://catsportal.dashboard.liquidtelecom.co.za/assets/img_alpha/i.png
-    this.api.executeCommand('avatarUrl', 'http://localhost:4200/assets/img/user/user-13.jpg');
+    this.api.executeCommand('avatarUrl', 'assets/img/user/user-13.jpg');
 
 
   }
