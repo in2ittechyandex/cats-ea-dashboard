@@ -1,4 +1,4 @@
-import { environment } from './../../../environments/environment';
+import { environment } from 'src/environments/environment';
 import { Subject } from 'rxjs/Subject';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -25,7 +25,8 @@ export class JitsiService {
 
   constructor(private dialog: MatDialog,private http: HttpClient, private userService: UserService
     ) {
-    this.ws = new $WebSocket('ws://172.27.63.182:8088/name');
+    // this.ws = new $WebSocket('ws://172.27.63.182:8088/name');
+    this.ws = new $WebSocket(environment._WS_JITSI_WEBGATEWAY);
     this.ws.onOpen(() => {
       console.log("connected");
       const currentUser_ = localStorage.getItem('currentUser');

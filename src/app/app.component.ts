@@ -25,6 +25,8 @@ export class AppComponent implements OnInit {
     environment._CHATBOT_URL = appConfig.getConfig('_CHATBOT_URL');
     environment.gateWayAuthorization = appConfig.getConfig('gateWayAuthorization')  ? appConfig.getConfig('gateWayAuthorization') : false;
     environment.envConfig = appConfig.getConfig('envConfig')  ? appConfig.getConfig('envConfig') : {};
+    environment._WS_JITSI_WEBGATEWAY = appConfig.getConfig('_WS_JITSI_WEBGATEWAY');
+    
     router.events.subscribe((e) => {
       if (e instanceof NavigationStart) {
         if (window.innerWidth < 768) {

@@ -1,6 +1,7 @@
 export const environment = {
   production: true,
   _WEBGATEWAY_BASIC_URL_:  'http://cats.sanral.intra/API/', 
+  _WS_JITSI_WEBGATEWAY:'ws://172.27.63.182:8088/name',
   _AlarmURL : 'http://172.27.64.92:9000/',
   _EventURL : 'http://172.27.64.92:9000/',
   // 'http://172.27.63.59:7070/', // 'http://172.20.8.120:8089/', // 'http://172.27.63.61:8089/',
