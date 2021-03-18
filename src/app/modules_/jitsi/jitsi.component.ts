@@ -46,6 +46,7 @@ export class JitsiComponent implements OnInit, AfterViewInit {
     this.jitsiMeet(this.data);
   }
   jitsiMeet(user_) {
+    console.log('.... user_ : '+user_);
     let interfaceConfig_ = environment.envConfig['jitsi_interfaceConfigOverwrite'] ? environment.envConfig['jitsi_interfaceConfigOverwrite'] : {};
     let config_ = environment.envConfig['jitsi_configOverwrite'] ? environment.envConfig['jitsi_configOverwrite'] : {};
 
@@ -85,10 +86,13 @@ export class JitsiComponent implements OnInit, AfterViewInit {
     //     }
     // }
 
-      // interfaceConfigOverwrite: interfaceConfig_,
-      // configOverwrite: config_
+      interfaceConfigOverwrite: interfaceConfig_,
+      configOverwrite: config_
     }
     this.api = new JitsiMeetExternalAPI(this.domain, this.options);
+
+    this.api.executeCommand('subject', 'CATS Meeting : '+user_.episode_name);
+
 
     this.api.getCurrentDevices().then(devices => {
       console.log('************ getCurrentDevices :: ' + devices);
@@ -130,6 +134,24 @@ export class JitsiComponent implements OnInit, AfterViewInit {
     this.api.isVideoAvailable().then(function (available) {
       console.log('....isVideoAvailable... ' + available);
     })
+  }
+
+ recordMeeting() {
+    console.log('.... inside recordMeeting...');
+    this.api.executeCommand('startRecording', {
+      mode: 'file', //string //recording mode, either `file` or `stream`.
+      // dropboxToken: 'sl.Aq8Be2tM4SiugIrczWGrXw1TJyTT_HsY2QzvzJgRD3QPrx78_PJQy209nZ4wm6btExnF9Kv7dql9sHeOOF1Znh154yClxnC1zsCGG-Wt2vJJZJuOG3hyIsTBygTb3BAk60cF1fs', //string, //dropbox oauth2 token.
+      // shouldShare: true,// boolean, //whether the recording should be shared with the participants or not. Only applies to certain jitsi meet deploys.
+      // rtmpStreamKey: string, //the RTMP stream key.
+      // rtmpBroadcastID: string, //the RTMP broadcast ID.
+      // youtubeStreamKey: string, //the youtube stream key.
+      // youtubeBroadcastID: string //the youtube broacast ID.
+    });
+  }
+
+  stopRecording(){
+    console.log('stop Recording options .....');
+    this.api.executeCommand('stopRecording','file');
   }
 
   endMeeting() {

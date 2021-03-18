@@ -79,7 +79,7 @@ sessionId;
     );
   }
 
-  scheduleMeeting(participants_: any[], episode_id: any) {
+  scheduleMeeting(participants_: any[], episode_id: any , episoadName:any) {
     const currentUser_ = localStorage.getItem('currentUser');
     const userName = currentUser_ ? JSON.parse(currentUser_).userName : 'none';
     let inv = [];
@@ -90,7 +90,8 @@ sessionId;
       "type": "start_call",
       "org": userName,
       "episode_id": episode_id,
-      "participants": inv
+      "participants": inv,
+      "episode_name":episoadName
     }
     this.sendMessage(str);
   }
@@ -114,10 +115,11 @@ sessionId;
         width: '65%',
         backdropClass: 'backdropBackground',
         panelClass: 'my-popup-dialog',
-        data: data
+        data: data,
+        hasBackdrop: false
       });
       dialogRef.componentInstance.onDialogOpened.subscribe((res) => {
-        console.log("opened"+JSON.stringify( res));
+        console.log("opened : "+JSON.stringify( res));
         resolve(res);
       })
     });
@@ -126,6 +128,7 @@ sessionId;
   }
 
   closePopup(){
+    console.log('closePopup ');
     this.dialogRef_.componentInstance.dialogClose();
     this.endCall().subscribe((res)=>{
     if(res.status){

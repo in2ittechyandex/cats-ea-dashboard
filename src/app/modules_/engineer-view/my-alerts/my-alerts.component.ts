@@ -20,6 +20,7 @@ export class MyAlertsComponent implements OnInit {
     network:"",
     time:"",
     tech:"",
+    caseName:'',
     ticket_number:""
   };
   @ViewChild('tabs') public tabs:NgbTabset;
@@ -28,6 +29,7 @@ export class MyAlertsComponent implements OnInit {
     console.log(currentCase);
     if(currentCase!=undefined){
       this.caseData.caseId=currentCase['caseId'];
+      this.caseData.caseName=currentCase['caseName'];
       this.caseData.caseStatus=currentCase['caseStatus'];
       this.caseData.network=currentCase['network'];
       this.caseData.time=currentCase['time'];

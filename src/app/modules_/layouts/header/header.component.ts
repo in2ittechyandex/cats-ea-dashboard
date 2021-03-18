@@ -58,6 +58,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
     let roomId = obj_['session_id'];
     let part_ = obj_['participants'];
     let msg_ = obj_['msg'];
+    let episode_name = obj_['episode_name'];
+    let episode_id = obj_['episode_id'];
     const currentUser_ = localStorage.getItem('currentUser');
     const userName = currentUser_ ? JSON.parse(currentUser_).userName : 'none';
     let isMatch = false; let areYouOrganizer = false;
@@ -69,7 +71,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     });
     if (isMatch) {
       if (areYouOrganizer) {
-        this.jitsiService_.open({ 'username': userName, 'roomId': roomId }).then((res) => {
+        this.jitsiService_.open({ 'username': userName, 'roomId': roomId ,'episode_id':episode_id , 'episode_name':episode_name }).then((res) => {
           if (res['msg'] == 'end_self') {
             // TODO : Dispose popup 
             this.jitsiService_.closePopup();
@@ -199,7 +201,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
     } else if (Notification.permission !== "denied") {
       Notification.requestPermission().then(permission => {
         console.log('denied : ' + permission);
-        this.permissionAllowed = false;
+        if (permission === "granted") {
+          this.permissionAllowed = true;
+        }
       });
     }
 
@@ -243,6 +247,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
 
   public showNotification(message, icon = "assets/img/user/user-13.jpg") {
+    // console.log('....permissionAllowed....:' + this.permissionAllowed);
     if (this.permissionAllowed) {
 
       // Create Notification

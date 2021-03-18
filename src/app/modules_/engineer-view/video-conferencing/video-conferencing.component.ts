@@ -21,6 +21,7 @@ export class VideoConferencingComponent implements OnInit {
   @ViewChild('content') content;
 
   @Input() episoadId;
+  @Input() episoadName;
 
   constructor(private vcService_: VideoConferencingService, private modalService: NgbModal , private jitsiService_:JitsiService) { }
 
@@ -49,7 +50,7 @@ export class VideoConferencingComponent implements OnInit {
     console.log('To be invite : ' + inviteeList);
     // this.prepareVideoModal({ 'username': 'Test User' }, this.content, 'lg');
     //  this.jitsiMeet({'username':'Test User'});
-     this.jitsiService_.scheduleMeeting(inviteeList,this.episoadId);
+     this.jitsiService_.scheduleMeeting(inviteeList,this.episoadId ,this.episoadName);
   }
 
   changeParticipant(e) {

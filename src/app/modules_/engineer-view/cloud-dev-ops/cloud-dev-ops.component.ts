@@ -206,6 +206,7 @@ export class CloudDevOpsComponent implements OnInit {
      network:"",
      time:"",
      tech:"",
+     caseName:'',
      ticket_number:""
    };
     
@@ -215,6 +216,7 @@ export class CloudDevOpsComponent implements OnInit {
    caseData.time=caseItem.time;
    caseData.ticket_number=caseItem.ticket_number;
    caseData.tech=caseItem.tech;
+   caseData.caseName=caseItem.episode;
    
    localStorage.setItem('currentCase',JSON.stringify(caseData));
    this.router.navigateByUrl('dashboard/engineer-view/my-alerts');
