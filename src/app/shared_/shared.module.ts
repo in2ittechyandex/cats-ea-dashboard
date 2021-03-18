@@ -119,6 +119,7 @@ import { NgxLoadingModule, ngxLoadingAnimationTypes } from "ngx-loading";
     ContextmenuComponent,
     MatCheckboxComponent,
     GraphComponent,
+    DemoMaterialModule,
     SHARED_VISUALS,NumberToDatePipe,
     D3_DIRECTIVES,
     MinuteCountToHHMMSS

@@ -1,4 +1,4 @@
-.scroll_div{width:348px;}
+.scroll_div{width:250px;}
 .scroll_div .container1{padding: 0 10px;}
 
 .switch {
@@ -60,3 +60,82 @@
   .slider.round:before {
     border-radius: 50%;
   }
+  .example-chip-list {
+    width: 100%;
+  }
+
+
+
+  .container1 {
+    display: block;
+    position: relative;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.container1 label {
+    padding-left: 30px;
+}
+
+
+/* Hide the browser's default checkbox */
+
+.container1 input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+
+/* Create a custom checkbox */
+
+.checkmark {
+    position: absolute;
+    top: 0;
+    left: 7px;
+    height: 15px;
+    width: 15px;
+    background-color: #dddddd;
+}
+
+
+/* When the checkbox is checked, add a blue background */
+
+input:checked~.checkmark {
+    background-color: #2196F3;
+}
+
+
+/* Create the checkmark/indicator (hidden when not checked) */
+
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+
+/* Show the checkmark when checked */
+
+input:checked~.checkmark:after {
+    display: block;
+}
+
+
+/* Style the checkmark/indicator */
+
+.checkmark:after {
+    left: 5px;
+    top: 2px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+}

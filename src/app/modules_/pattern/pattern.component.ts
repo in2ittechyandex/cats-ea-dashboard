@@ -278,7 +278,8 @@ export class PatternComponent implements OnInit {
   }
   getChartProbability(clusterName,cluster,nms,days) {
     // this.loading = true;
-
+    this.data.data = [];
+    this.dataSource = [];
     this.patternService.getChartProbability(cluster,nms, days).subscribe((res) => {
       if (res.status) {
         this.data.data = res.data;
@@ -546,6 +547,7 @@ title="Child Events";
 
  
 getChildEventinCluster(clusterName,cluster,nms,days) {  
+  this.alarmChildEvent=[];
 const startTime: number = new Date().getTime();
 this.patternService.getChildEventinCluster(cluster,nms,days).subscribe((res) => {
   if (res['status']) {  

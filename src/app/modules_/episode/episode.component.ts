@@ -165,4 +165,8 @@ getAllEpisode() {
       }
    }
   }
+
+  submit(){
+    console.log(JSON.stringify(this.episodeModel));
+  }
 }

@@ -39,6 +39,10 @@ import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatTreeModule} from '@angular/material/tree';
 
+
+import {OverlayModule} from '@angular/cdk/overlay';
+import {ScrollingModule} from '@angular/cdk/scrolling'; 
+import {DragDropModule} from '@angular/cdk/drag-drop';
 @NgModule({
   exports: [
     A11yModule, 
@@ -80,7 +84,10 @@ import {MatTreeModule} from '@angular/material/tree';
     MatToolbarModule,
     MatTooltipModule,
     MatTreeModule,
-    PortalModule, 
+    PortalModule,
+    DragDropModule,
+    OverlayModule,
+    ScrollingModule,
   ]
 })
 export class DemoMaterialModule {}
