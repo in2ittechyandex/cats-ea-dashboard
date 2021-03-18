@@ -79,7 +79,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
         });
       } else {
         this.playSound();
-        this.showNotification(msg_);
+        this.showNotification(msg_,episode_name);
         this.chatBotSpeak(msg_);
         swal({
           // position: 'top-end',
@@ -246,7 +246,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
 
-  public showNotification(message, icon = "assets/img/user/user-13.jpg") {
+  public showNotification(message,episode_name, icon = "assets/img/user/user-13.jpg") {
     // console.log('....permissionAllowed....:' + this.permissionAllowed);
     if (this.permissionAllowed) {
 
@@ -258,7 +258,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       //   icon: icon, // Add icon if required to show
       // }
 
-      var title = "Video Conferencing Notification";
+      var title = "Jitsi Meeting :"+episode_name;
       this.notification = new Notification(title, {
         body: '\n' + message,
         dir: 'ltr', // direction of message ltr: left to right. rtl : right to left.

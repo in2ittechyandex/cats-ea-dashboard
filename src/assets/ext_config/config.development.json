@@ -19,10 +19,9 @@
                 "microphone",
                 "camera",
                 "hangup",
-                "profile",
-                "settings",
                 "raisehand",
-                "videoquality"
+                "chat",
+                "tileview"
             ]
         },
         "jitsi_configOverwrite": {

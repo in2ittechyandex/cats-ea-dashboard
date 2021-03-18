@@ -16,13 +16,12 @@
           "SHOW_WATERMARK_FOR_GUESTS": false,
           "DEFAULT_REMOTE_DISPLAY_NAME": "New User",
           "TOOLBAR_BUTTONS": [
-              "microphone",
-              "camera",
-              "hangup",
-              "profile",
-              "settings",
-              "raisehand",
-              "videoquality"
+            "microphone",
+            "camera",
+            "hangup",
+            "raisehand",
+            "chat",
+            "tileview"
           ]
       },
       "jitsi_configOverwrite": {
