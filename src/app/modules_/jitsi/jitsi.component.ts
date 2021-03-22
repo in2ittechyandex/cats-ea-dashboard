@@ -1,5 +1,4 @@
 import { environment } from './../../../environments/environment';
-
 import { Component, OnInit, ViewChild, Inject, EventEmitter, AfterViewInit } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 declare var JitsiMeetExternalAPI: any;
@@ -25,9 +24,9 @@ export class JitsiComponent implements OnInit, AfterViewInit {
   onDialogOpened = new EventEmitter();
   constructor(private dialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
-    public dialogRef: MatDialogRef<JitsiComponent>) { 
-      // this.domain = environment.envConfig['jitsiDomain'] ? environment.envConfig['jitsiDomain'] : '';
-    }
+    public dialogRef: MatDialogRef<JitsiComponent>) {
+    // this.domain = environment.envConfig['jitsiDomain'] ? environment.envConfig['jitsiDomain'] : '';
+  }
 
   dialogOpened(data): void {
     this.onDialogOpened.emit(data);
@@ -46,7 +45,7 @@ export class JitsiComponent implements OnInit, AfterViewInit {
     this.jitsiMeet(this.data);
   }
   jitsiMeet(user_) {
-    console.log('.... user_ : '+user_);
+    console.log('.... user_ : ' + user_);
     let interfaceConfig_ = environment.envConfig['jitsi_interfaceConfigOverwrite'] ? environment.envConfig['jitsi_interfaceConfigOverwrite'] : {};
     let config_ = environment.envConfig['jitsi_configOverwrite'] ? environment.envConfig['jitsi_configOverwrite'] : {};
 
@@ -66,32 +65,32 @@ export class JitsiComponent implements OnInit, AfterViewInit {
       //     // , 'profile', 'settings', 'raisehand', 'videoquality'
       //   ]
       // },
-    //   "jitsi_interfaceConfigOverwrite": {
-    //     "filmStripOnly": false,
-    //     "SHOW_JITSI_WATERMARK": false,
-    //     "SHOW_WATERMARK_FOR_GUESTS": false,
-    //     "DEFAULT_REMOTE_DISPLAY_NAME": "New User",
-    //     "TOOLBAR_BUTTONS": []
-    // },
-    // "jitsi_configOverwrite": {
-    //     "doNotStoreRoom": true,
-    //     "startVideoMuted": 0,
-    //     "startWithVideoMuted": true,
-    //     "startWithAudioMuted": true,
-    //     "enableWelcomePage": false,
-    //     "prejoinPageEnabled": false,
-    //     "disableRemoteMute": true,
-    //     "remoteVideoMenu": {
-    //         "disableKick": true
-    //     }
-    // }
+      //   "jitsi_interfaceConfigOverwrite": {
+      //     "filmStripOnly": false,
+      //     "SHOW_JITSI_WATERMARK": false,
+      //     "SHOW_WATERMARK_FOR_GUESTS": false,
+      //     "DEFAULT_REMOTE_DISPLAY_NAME": "New User",
+      //     "TOOLBAR_BUTTONS": []
+      // },
+      // "jitsi_configOverwrite": {
+      //     "doNotStoreRoom": true,
+      //     "startVideoMuted": 0,
+      //     "startWithVideoMuted": true,
+      //     "startWithAudioMuted": true,
+      //     "enableWelcomePage": false,
+      //     "prejoinPageEnabled": false,
+      //     "disableRemoteMute": true,
+      //     "remoteVideoMenu": {
+      //         "disableKick": true
+      //     }
+      // }
 
       interfaceConfigOverwrite: interfaceConfig_,
       configOverwrite: config_
     }
     this.api = new JitsiMeetExternalAPI(this.domain, this.options);
 
-    this.api.executeCommand('subject', 'CATS Meeting : '+user_.episode_name);
+    this.api.executeCommand('subject', 'CATS Meeting : ' + user_.episode_name);
 
 
     this.api.getCurrentDevices().then(devices => {
@@ -106,6 +105,22 @@ export class JitsiComponent implements OnInit, AfterViewInit {
       this.dialogOpened({ "msg": "end_self" });
       // this.api.dispose();
     });
+
+    // set new password for channel
+    // this.api.addEventListener('participantRoleChanged', function (event) {
+    //   console.log(' Role  event.role  : '+event.role);
+    //   // if (event.role === "moderator") {
+    //     this.api.executeCommand('password', 'The Password');
+    //   // }
+    // });
+
+    // this.api.addEventListener("participantRoleChanged", this.makePassword.bind(this));
+    // this.api.on("passwordRequired", this.addPassword.bind(this));
+
+    // join a protected channel
+    // this.api.on('passwordRequired', function () {
+    //   this.api.executeCommand('password', 'The Password');
+    // });
 
     // this.api.addEventListener('incomingMessage', (e) => {
     //   console.log('incomming ...from : ' + e.from + ' :message: ' + e.message + ' : e.nickName: ' + e.nick);
@@ -136,7 +151,7 @@ export class JitsiComponent implements OnInit, AfterViewInit {
     })
   }
 
- recordMeeting() {
+  recordMeeting() {
     console.log('.... inside recordMeeting...');
     this.api.executeCommand('startRecording', {
       mode: 'file', //string //recording mode, either `file` or `stream`.
@@ -149,10 +164,27 @@ export class JitsiComponent implements OnInit, AfterViewInit {
     });
   }
 
-  stopRecording(){
+  stopRecording() {
     console.log('stop Recording options .....');
-    this.api.executeCommand('stopRecording','file');
+    this.api.executeCommand('stopRecording', 'file');
   }
+
+  // makePassword(event) {
+  //   console.log('makePassword : '  + event +' :isOrganizer :  '+this.data['areYouOrganizer']);
+  //   let areYouOrganizer = this.data['areYouOrganizer'];
+  //   if(areYouOrganizer){
+  //     this.api.executeCommand('password', 'The Password');
+  //   }
+  // }
+
+  // addPassword(event) {
+  //   console.log('addPassword : ' + event +' :isOrganizer :  '+this.data['areYouOrganizer']);
+  //   let areYouOrganizer = this.data['areYouOrganizer'];
+  //  // if(!areYouOrganizer){
+  //     this.api.executeCommand('password', 'The Password');
+  //   //}
+  //   // this.api.executeCommand('password', 'The Password');
+  // }
 
   endMeeting() {
     console.log('end meeting .....');

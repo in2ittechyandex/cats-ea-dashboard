@@ -101,6 +101,7 @@ export class LoginComponent implements OnInit, OnDestroy {
             this.router.navigate(['dashboard/home']);
           } else {
             // TODO : get handled error mszz
+            swal('Invalid Login Credential', '', 'warning');
           }
           console.log(res);
         }, err => {
@@ -109,7 +110,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
 
     } else {
-      swal('Invalid Credential', '', 'warning');
+      swal(f.controls['userName'].value.trim() == ''?'Please Enter Your User Name': 'Please Enter Your Password', '', 'warning');
     }
   }
 

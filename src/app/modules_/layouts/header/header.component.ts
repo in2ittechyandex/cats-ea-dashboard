@@ -71,7 +71,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     });
     if (isMatch) {
       if (areYouOrganizer) {
-        this.jitsiService_.open({ 'username': userName, 'roomId': roomId ,'episode_id':episode_id , 'episode_name':episode_name }).then((res) => {
+        this.jitsiService_.open({ 'username': userName, 'roomId': roomId ,'episode_id':episode_id , 'episode_name':episode_name ,'areYouOrganizer':areYouOrganizer }).then((res) => {
           if (res['msg'] == 'end_self') {
             // TODO : Dispose popup 
             this.jitsiService_.closePopup();
@@ -96,7 +96,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
           }
 
           if (result.value) {
-            this.jitsiService_.open({ 'username': userName, 'roomId': roomId }).then((res) => {
+            this.jitsiService_.open({ 'username': userName, 'roomId': roomId , 'episode_id':episode_id , 'episode_name':episode_name ,'areYouOrganizer':areYouOrganizer }).then((res) => {
               if (res['msg'] == 'end_self') {
                 // TODO : Dispose popup 
                 this.jitsiService_.closePopup();
