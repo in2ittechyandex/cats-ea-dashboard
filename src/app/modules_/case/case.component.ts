@@ -1,9 +1,12 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 import { RuleService } from './rule.services';
-import {COMMA, ENTER} from '@angular/cdk/keycodes'; 
+import {COMMA, ENTER} from '@angular/cdk/keycodes';  
+import { FormControl } from '@angular/forms'; 
+import {MatAutocompleteSelectedEvent, MatAutocomplete} from '@angular/material/autocomplete';
 import {MatChipInputEvent} from '@angular/material/chips';
-
+import {Observable} from 'rxjs';
+import {map, startWith} from 'rxjs/operators';
 export interface Fruit {
   name: string;
 }
@@ -76,6 +79,7 @@ export class CaseComponent implements OnInit {
     'mail':true,
     'hostIp':[],
     'hostName':[],
+    'customer':[],
     'nms':[],
     'priority':''
   };
@@ -221,8 +225,7 @@ export class CaseComponent implements OnInit {
   responseTime=0;
 alarmList;
 isView:boolean=true;
-operatorList;
-filterList;
+ 
 nmsList; 
  
 toggleView(){
@@ -237,10 +240,40 @@ onEventDetect(event){
   } 
 }
 
-   
+hostCtrl = new FormControl();
+filteredHosts: Observable<any>; 
+allHosts: string[];// = ['Apple', 'Lemon', 'Lime', 'Orange', 'Strawberry'];
 
-   
+
+hostIpCtrl = new FormControl();
+filteredHostsIp: Observable<any>; 
+allHostsIp: string[];// = ['Apple', 'Lemon', 'Lime', 'Orange', 'Strawberry'];
+
+@ViewChild('hostIpInput') hostInput: ElementRef<HTMLInputElement>;
+@ViewChild('auto') matAutocomplete: MatAutocomplete;
+@ViewChild('hostInput') hostIpInput: ElementRef<HTMLInputElement>;
+@ViewChild('autoHostIp') matHostIpAutocomplete: MatAutocomplete;
   ngOnInit() {
+    // this.filteredHosts = this.hostCtrl.valueChanges.pipe(
+    //   startWith(null),
+    //   map(
+    //     (host: string | null) =>{
+    //       if(host){
+    //         return this._filterHost(host)
+    //       }
+    //   //  return  host ? this._filterHost(host) : this.allHosts.slice()
+    //     }
+    //     )
+    //     );
+        this.hostCtrl.valueChanges
+        // .debounceTime(200)
+        // .distinctUntilChanged()
+        .subscribe(result => this._filterHost(result));
+        this.hostIpCtrl.valueChanges
+        // .debounceTime(200)
+        // .distinctUntilChanged()
+        .subscribe(result => this._filterHostIp(result));
+
     this.ruleService.getInputSourceList().subscribe((res)=>{
       if(res['status']){
         this.nmsList=res['data'];
@@ -282,11 +315,19 @@ onEventDetect(event){
   alarms = [];
   hostips= [];
   hostnames= [];
+  customers=[];
   add(event: MatChipInputEvent,filter): void {
     const value = (event.value || '').trim();
 
 
   switch (filter) {
+    case 'customer':
+      if (value) {
+        this.customers.push(value);
+        event.value='';
+        event.input.value ='';
+      }
+      break;
     case 'alarm':
       if (value) {
         this.alarms.push(value);
@@ -299,6 +340,7 @@ onEventDetect(event){
           this.hostips.push(value);
           event.value='';
           event.input.value ='';
+          this.hostIpCtrl.setValue(null);
         }
         break;
         case 'hostname':
@@ -306,6 +348,8 @@ onEventDetect(event){
             this.hostnames.push(value);
             event.value='';
             event.input.value ='';
+            // event.chipInput!.clear();
+            this.hostCtrl.setValue(null);
           }
           break;
   
@@ -326,6 +370,13 @@ onEventDetect(event){
   remove(item,filter): void {
     let index;
     switch (filter) {
+      case 'customer':
+          index = this.customers.indexOf(item);
+
+        if (index >= 0) {
+          this.customers.splice(index, 1);
+        }
+        break;
       case 'alarm':
           index = this.alarms.indexOf(item);
 
@@ -353,7 +404,71 @@ onEventDetect(event){
     }
     
   }
+  selected(event: MatAutocompleteSelectedEvent): void {
+    this.hostnames.push(event.option.viewValue);
+    this.hostInput.nativeElement.value = '';
+    this.hostCtrl.setValue(null);
+  }
 
+  private _filterHost(value: string){
+    if(value!=null && value!=undefined){
+      const filterValue = value.toLowerCase();
+      this.ruleService.search_host(filterValue).subscribe((res) => {
+        this.allHosts= [];
+        if (res.status == true) {
+          if (res.data.length > 0){
+            let results = res.data;
+            let host=[];
+            results.forEach(element => {
+               host.push(element.name)
+            });
+             this.allHosts=host;
+            //  return this.allHosts;
+            // return this.allHosts.filter(host => host.toLowerCase().indexOf(filterValue) === 0);
+          }
+            
+        }
+      }, (err) => {
+        this.allHosts= [];
+        // return this.allHosts;
+      });
+    }
+    
+    
+    
+  }
+  selectedHostIp(event: MatAutocompleteSelectedEvent): void {
+    this.hostips.push(event.option.viewValue);
+    this.hostIpInput.nativeElement.value = '';
+    this.hostIpCtrl.setValue(null);
+  }
+  private _filterHostIp(value: string){
+    if(value!=null && value!=undefined){
+      const filterValue = value.toLowerCase();
+      this.ruleService.search_host_ip(filterValue).subscribe((res) => {
+        this.allHostsIp= [];
+        if (res.status == true) {
+          if (res.data.length > 0){
+            let results = res.data;
+            let host=[];
+            results.forEach(element => {
+               host.push(element)
+            });
+             this.allHostsIp=host;
+            //  return this.allHosts;
+            // return this.allHosts.filter(host => host.toLowerCase().indexOf(filterValue) === 0);
+          }
+            
+        }
+      }, (err) => {
+        this.allHostsIp= [];
+        // return this.allHosts;
+      });
+    }
+    
+    
+    
+  }
   onSubmit(){
 this.caseModel.nms=[];
   for(let i=0;i<this.globalFilterModal.nms.length;i++){
@@ -364,10 +479,29 @@ this.caseModel.nms=[];
   this.caseModel.hostName=this.hostnames;
   this.caseModel.hostIp=this.hostips;
   this.caseModel.alertname=this.alarms;
+  this.caseModel.customer=this.customers;
+
+  var data={
+    "rule_name" : this.caseModel.ruleName,
+     "host_name" : this.caseModel.hostName,
+     "alert_name" : this.caseModel.alertname,
+     "description" : this.caseModel.ruleDescription,
+     "wait_time" : this.caseModel.waittime,
+     "sms" : this.caseModel.sms,
+     "incident" : this.caseModel.incident,
+     "mail" : this.caseModel.mail,
+     "host_ip_address": this.caseModel.hostIp,
+     "customer" : this.caseModel.customer,
+     "nms":this.caseModel.nms,
+     "priority":this.caseModel.priority
+
+}
+
   console.log(this.caseModel);
-this.ruleService.createRule(this.caseModel).subscribe((res)=>{
+this.ruleService.createRule(data).subscribe((res)=>{
 if(res.status){
 alert(res.msg);
+this.toggleView();
 this.getAllRules();
 }
 })

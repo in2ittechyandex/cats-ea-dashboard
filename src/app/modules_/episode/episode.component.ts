@@ -75,14 +75,113 @@ nmsList;
 episodeModel={
   "name":"",
   "description":"",
-  "selectedNms":"",
-  "selectedAlarm":"",
+  "selectedNms":[],
+  "selectedAlarm":[],
   "filterMapping":[{'filter':"",'operator':"",'value':""}],
   "notificationMapping":[{'type':"",'value':""}],
   "subject":"",
   "body":""
 }
- 
+globalFilterModal = {
+  isListenOnBlur: false,
+  identifier: 'global-customer-filter',
+  filtersToggle: false,
+  userTabFilters: null,
+  masterSelectedNMS: false,
+  nms: [],
+  editNMS: [],
+  modifyNMS: [],
+  timeType: 'cu'
+};
+ /**
+   * Ramji : 03-11-2020
+   * @param event
+   * @param obj_
+   */
+  showDDNMS(event, obj_) {
+    setTimeout(function () {
+      const element_: Element = (event.target as Element);
+      const elementDD: Element = element_.nextElementSibling;
+      const existingClass = elementDD.getAttribute('class');
+      const toggleClass = (existingClass.indexOf('show') > -1) ? existingClass.replace('show', '').trim() : existingClass + ' show';
+      obj_['isListenOnBlur'] = (toggleClass.indexOf('show') > -1);
+      elementDD.setAttribute('class', toggleClass);
+    }, 100);
+  }
+
+ /**
+   * Ramji : 03-11-2020
+   * @param event
+   */
+  globalFilterClickOutSideNMS(event) {
+    const identifir = event.Identifier;
+    this.globalFilterModal.isListenOnBlur = false;
+    document.getElementById(identifir).click();
+  }
+
+  checkUncheckAll(checklist, masterSelected) {
+    for (let i = 0; i < checklist.length; i++) {
+      checklist[i].value = masterSelected;
+    }
+  }
+  isAllSelected(checklist, masterSelected) {
+    this.globalFilterModal[masterSelected] = checklist.every(function (item: any) {
+      return item.value == true;
+    });
+  }
+
+
+
+
+  globalFilterModalAlarmsType = {
+    isListenOnBlur: false,
+    identifier: 'global-customer-filter-alarm-type',
+    filtersToggle: false,
+    userTabFilters: null,
+    masterSelectedAlarmsType: false,
+    AlarmsType: [],
+    editAlarmsType: [],
+    modifyAlarmsType: [],
+    timeType: 'cu'
+  };
+   /**
+     * Ramji : 03-11-2020
+     * @param event
+     * @param obj_
+     */
+    showDDAlarmsType(event, obj_) {
+      setTimeout(function () {
+        const element_: Element = (event.target as Element);
+        const elementDD: Element = element_.nextElementSibling;
+        const existingClass = elementDD.getAttribute('class');
+        const toggleClass = (existingClass.indexOf('show') > -1) ? existingClass.replace('show', '').trim() : existingClass + ' show';
+        obj_['isListenOnBlur'] = (toggleClass.indexOf('show') > -1);
+        elementDD.setAttribute('class', toggleClass);
+      }, 100);
+    }
+  
+   /**
+     * Ramji : 03-11-2020
+     * @param event
+     */
+    globalFilterClickOutSideAlarmsType(event) {
+      const identifir = event.Identifier;
+      this.globalFilterModalAlarmsType.isListenOnBlur = false;
+      document.getElementById(identifir).click();
+    }
+  
+    checkUncheckAllAlarmsType(checklist, masterSelected) {
+      for (let i = 0; i < checklist.length; i++) {
+        checklist[i].value = masterSelected;
+      }
+    }
+    isAllSelectedAlarmsType(checklist, masterSelected) {
+      this.globalFilterModalAlarmsType[masterSelected] = checklist.every(function (item: any) {
+        return item.value == true;
+      });
+    }
+
+
 toggleView(){
   this.isView=!this.isView;
 }
@@ -116,6 +215,10 @@ getAllEpisode() {
     this.episodeService.getAlarmList().subscribe((res)=>{
       if(res['status']){
         this.alarmList=res['data'];
+        this.globalFilterModalAlarmsType.AlarmsType = res['data'].map((elm)=>{
+          elm['value'] = false;
+          return elm;
+        });
       }
     });
     this.episodeService.getOperatorList().subscribe((res)=>{
@@ -131,6 +234,10 @@ getAllEpisode() {
     this.episodeService.getInputSourceList().subscribe((res)=>{
       if(res['status']){
         this.nmsList=res['data'];
+        this.globalFilterModal.nms = res['data'].map((elm)=>{
+          elm['value'] = false;
+          return elm;
+        }); 
       }
     });
     this.callKpis();
@@ -167,6 +274,36 @@ getAllEpisode() {
   }
 
   submit(){
-    console.log(JSON.stringify(this.episodeModel));
+    this.episodeModel.selectedNms=[];
+  for(let i=0;i<this.globalFilterModal.nms.length;i++){
+      if(this.globalFilterModal.nms[i].value==true){
+        this.episodeModel.selectedNms.push(this.globalFilterModal.nms[i].name);
+      }
+  }
+  for(let i=0;i<this.globalFilterModalAlarmsType.AlarmsType.length;i++){
+    if(this.globalFilterModalAlarmsType.AlarmsType[i].value==true){
+      this.episodeModel.selectedAlarm.push(this.globalFilterModalAlarmsType.AlarmsType[i].master_alarm_guid);
+    }
+}
+  var data={
+  "name": this.episodeModel.name,
+  "description": this.episodeModel.description,
+  "selectedNms": this.episodeModel.selectedNms,
+  "selectedAlarms":this.episodeModel.selectedAlarm,
+  "filterMapping": this.episodeModel.filterMapping,
+  "notificationMapping": this.episodeModel.notificationMapping,
+  "subject":this.episodeModel.subject,
+  "body": this.episodeModel.body
+}
+
+this.episodeService.createEpisode(data).subscribe((res)=>{
+if(res.status){
+alert(res.msg);
+this.toggleView(); 
+this.getAllEpisode();
+}
+})
+
+    console.log(JSON.stringify(data));
   }
 }

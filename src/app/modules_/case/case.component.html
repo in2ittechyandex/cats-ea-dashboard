@@ -157,10 +157,18 @@
             {{hostip}}
             <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
           </mat-chip>
-          <input placeholder="New Host Ip..." [matChipInputFor]="chipListHostIp"
-            [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="addOnBlur"
+          <input placeholder="New Host Ip..."
+          #hostIpInput
+          [formControl]="hostIpCtrl"
+          [matAutocomplete]="autoHostIp" [matChipInputFor]="chipListHostIp"
+            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
             (matChipInputTokenEnd)="add($event,'hostip')">
         </mat-chip-list>
+        <mat-autocomplete #autoHostIp="matAutocomplete" (optionSelected)="selectedHostIp($event)">
+          <mat-option *ngFor="let host of allHostsIp" [value]="host">
+            {{host}}
+          </mat-option>
+        </mat-autocomplete>
       </mat-form-field>
     </div>
   </div>
@@ -181,10 +189,19 @@
             {{hostname}}
             <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
           </mat-chip>
-          <input placeholder="New Host Name..." [matChipInputFor]="chipListHostName"
-            [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="addOnBlur"
+          <input placeholder="New Host Name..." 
+          #hostInput
+          [formControl]="hostCtrl"
+          [matAutocomplete]="auto"
+          [matChipInputFor]="chipListHostName"
+            [matChipInputSeparatorKeyCodes]="separatorKeysCodes" 
             (matChipInputTokenEnd)="add($event,'hostname')">
         </mat-chip-list>
+        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+          <mat-option *ngFor="let host of allHosts" [value]="host">
+            {{host}}
+          </mat-option>
+        </mat-autocomplete>
       </mat-form-field>
     </div>
   </div>
@@ -247,7 +264,26 @@
     </div>
   </div>
 
-
+  <div class="row">
+    <div class="col-md-3">
+      <label for="">Customer Name</label>
+    </div>
+    <div class="col-md-9">
+      <mat-form-field class="example-chip-list">
+        <!-- <mat-label>Favorite Fruits</mat-label> -->
+        <mat-chip-list #chipListCustomer aria-label="Customer selection">
+          <mat-chip *ngFor="let customer of customers" [selectable]="selectable" [removable]="removable"
+            (removed)="remove(customer,'customer')">
+            {{customer}}
+            <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+          </mat-chip>
+          <input placeholder="New Customer..." [matChipInputFor]="chipListCustomer"
+            [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="addOnBlur"
+            (matChipInputTokenEnd)="add($event,'customer')">
+        </mat-chip-list>
+      </mat-form-field>
+    </div>
+  </div>
   <div class="row">
     <div class="col-sm-6 mb-2">
       <div class="row">

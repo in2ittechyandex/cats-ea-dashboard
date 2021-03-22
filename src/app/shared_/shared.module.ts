@@ -122,7 +122,9 @@ import { NgxLoadingModule, ngxLoadingAnimationTypes } from "ngx-loading";
     DemoMaterialModule,
     SHARED_VISUALS,NumberToDatePipe,
     D3_DIRECTIVES,
-    MinuteCountToHHMMSS
+    MinuteCountToHHMMSS,
+    FormsModule,
+    ReactiveFormsModule,
   ],
   providers: [TimeFilterService, SharedServices,PopupService,D3Service,DatePipe
   ]

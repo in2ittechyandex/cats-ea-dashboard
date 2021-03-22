@@ -44,10 +44,39 @@
       <label for="">NMS</label>
     </div>
     <div class="col-md-4">
-      <select class="form-control m-b-10" [(ngModel)]="episodeModel.selectedNms" >
-        <option value=''> Select NMS</option>
-        <option *ngFor="let nms of nmsList" [value]='nms.name'>{{nms.name}}</option>
-      </select>
+      <div class="btn-group">
+        <button type="button" class="btn btn-default" style="width:216px; color:#000000;">Select NMS</button>
+        <a href="javascript:;" style="color: #000000;" class="btn btn-default dropdown-toggle"
+          (click)="showDDNMS($event,globalFilterModal)" id="{{globalFilterModal.identifier}}"></a>
+        <ul class="dropdown-menu pull-right" click-outside [listening]="globalFilterModal.isListenOnBlur"
+          [Ident]="globalFilterModal.identifier" (clickOutSide)="globalFilterClickOutSideNMS($event)">
+          <!-- <form name="search">
+            <div class="mx-2 mb-2">
+              <input type="search" #searchVal class="form-control form-control-sm" placeholder="Search..."
+                aria-controls="data-table-default">
+            </div>
+          </form> -->
+          <div class="scroll_div" id="style-4">
+            <li class="container1">
+              <label class=""><strong>Select/ Unselect All</strong>
+                <input type="checkbox" [(ngModel)]="globalFilterModal.masterSelectedNMS" name="list_name"
+                  (change)="checkUncheckAll(globalFilterModal.nms,globalFilterModal.masterSelectedNMS)" />
+                <span class="checkmark"
+                  [ngClass]="(globalFilterModal.masterSelectedNMS) ?'bg-blue':''"></span>
+              </label>
+            </li>
+            <!-- | filterByKey: 'name' :searchVal.value; let fvndx_=index; trackBy: trackByFn -->
+            <li class="container1"
+              *ngFor="let fVal_ of globalFilterModal.nms ">
+              <label class="">{{fVal_.name}}
+                <input type="checkbox" id="{{fvndx_}}" [(ngModel)]="fVal_.value" [checked]="fVal_.value"
+                  (change)="isAllSelected(globalFilterModal.nms,'masterSelectedNMS')" />
+                <span class="checkmark" [ngClass]="(fVal_.value) ?'bg-blue':''"></span>
+              </label>
+            </li>
+          </div>
+        </ul>
+      </div>
     </div>
   </div>
   
@@ -57,10 +86,45 @@
       <label for="">Alarms</label>
     </div>
     <div class="col-md-4">
-      <select class="form-control m-b-10" [(ngModel)]="episodeModel.selectedAlarm" >
+      <!-- <select class="form-control m-b-10" [(ngModel)]="episodeModel.selectedAlarm" >
         <option  value=''>Select Alarms</option>
         <option *ngFor="let alarm of alarmList" [value]='alarm.master_alarm_guid'>{{alarm.alarm_name}}</option>
-      </select>
+      </select> -->
+      <div class="col-md-4">
+        <div class="btn-group">
+          <button type="button" class="btn btn-default" style="width:216px; color:#000000;">Select Alarm Type</button>
+          <a href="javascript:;" style="color: #000000;" class="btn btn-default dropdown-toggle"
+            (click)="showDDAlarmsType($event,globalFilterModalAlarmsType)" id="{{globalFilterModalAlarmsType.identifier}}"></a>
+          <ul class="dropdown-menu pull-right" click-outside [listening]="globalFilterModalAlarmsType.isListenOnBlur"
+            [Ident]="globalFilterModalAlarmsType.identifier" (clickOutSide)="globalFilterClickOutSideAlarmsType($event)">
+            <!-- <form name="search">
+              <div class="mx-2 mb-2">
+                <input type="search" #searchVal class="form-control form-control-sm" placeholder="Search..."
+                  aria-controls="data-table-default">
+              </div>
+            </form> -->
+            <div class="scroll_div" id="style-4">
+              <li class="container1">
+                <label class=""><strong>Select/ Unselect All</strong>
+                  <input type="checkbox" [(ngModel)]="globalFilterModalAlarmsType.masterSelectedAlarmsType" name="list_name"
+                    (change)="checkUncheckAllAlarmsType(globalFilterModalAlarmsType.AlarmsType,globalFilterModalAlarmsType.masterSelectedAlarmsType)" />
+                  <span class="checkmark"
+                    [ngClass]="(globalFilterModalAlarmsType.masterSelectedAlarmsType) ?'bg-blue':''"></span>
+                </label>
+              </li>
+              <!-- | filterByKey: 'name' :searchVal.value; let fvndx_=index; trackBy: trackByFn -->
+              <li class="container1"
+                *ngFor="let fVal_ of globalFilterModalAlarmsType.AlarmsType ">
+                <label class="">{{fVal_.alarm_name}}
+                  <input type="checkbox" id="{{fvndx_}}" [(ngModel)]="fVal_.value" [checked]="fVal_.value"
+                    (change)="isAllSelectedAlarmsType(globalFilterModalAlarmsType.AlarmsType,'masterSelectedAlarmsType')" />
+                  <span class="checkmark" [ngClass]="(fVal_.value) ?'bg-blue':''"></span>
+                </label>
+              </li>
+            </div>
+          </ul>
+        </div>
+      </div>
     </div>
   </div>
   
@@ -68,19 +132,19 @@
   <h1 class="page-header f-s-18">Filter Mapping </h1>
   <div class="row" *ngFor="let ele of episodeModel.filterMapping;let i=index;let last=last;">
     <div class="col-md-3">
-      <select class="form-control m-b-10">
-        <option>Select Filter</option>
-        <option *ngFor="let filter of filterList" [value]='filter.name'>{{filter.display_name}}</option>
+      <select class="form-control m-b-10"  [(ngModel)]="ele.filter"> 
+        <option value=''>Select Filter</option>
+        <option *ngFor="let filter of filterList" [value]='filter.id'>{{filter.display_name}}</option>
       </select>
     </div>
     <div class="col-md-3">
-      <select class="form-control m-b-10">
-        <option>Select Operator</option>
-        <option *ngFor="let operator of operatorList" [value]='operator.name'>{{operator.display_name}}</option>
+      <select class="form-control m-b-10"  [(ngModel)]="ele.operator">
+        <option value=''>Select Operator</option>
+        <option *ngFor="let operator of operatorList" [value]='operator.id'>{{operator.display_name}}</option>
       </select>
     </div>
     <div class="col-md-3">
-      <input type="text" class="form-control" placeholder="Enter Value">
+      <input type="text" class="form-control"   [(ngModel)]="ele.value"placeholder="Enter Value">
     </div>
     <div class="col-md-3">
       <a (click)="addFilter()" class="btn btn-dark mr-2" *ngIf="last">ADD</a>
@@ -93,15 +157,15 @@
   <h1 class="page-header f-s-18">Notification </h1>
   <div class="row" *ngFor="let ele of episodeModel.notificationMapping;let i=index;let last=last;"> 
     <div class="col-md-3">
-      <select class="form-control m-b-10">
+      <select class="form-control m-b-10"   [(ngModel)]="ele.type">
         <option>Select Types</option>
-        <option>Email</option>
-        <option>SMS</option>
-        <option>Ticket</option>
+        <option value='Email'>Email</option>
+        <option value='SMS'>SMS</option>
+        <option value='Ticket'>Ticket</option>
       </select>
     </div>
     <div class="col-md-3">
-      <input type="text" class="form-control" placeholder="Enter Value">
+      <input type="text" class="form-control" placeholder="Enter Value"   [(ngModel)]="ele.value">
     </div>
     <div class="col-md-3">
       <a  (click)="addNotification()" class="btn btn-dark mr-2" *ngIf="last">ADD</a>

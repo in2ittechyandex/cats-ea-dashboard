@@ -18,8 +18,25 @@ export class RuleService {
     constructor(private http: HttpClient, private userService: UserService
     ) { }
 
-
     
+    search_host(name) {
+      // const URL = environment._EventURL + 'hosts/host/search_host?name=' + name;
+  
+      const URL = environment._WEBGATEWAY_BASIC_URL_ + 'menu/kpi/get_host_list';
+      const formData: FormData = new FormData();
+      formData.append('name', name);
+      return this.http.post(URL, formData).map(res => <any>res);
+      // return this.http.get(URL).map(res => <any>res);
+    }
+    search_host_ip(name) {
+      // const URL = environment._EventURL + 'hosts/host/search_host?name=' + name;
+  
+      const URL = environment._WEBGATEWAY_BASIC_URL_ + 'menu/kpi/get_host_ip_address_list';
+      const formData: FormData = new FormData();
+      formData.append('ipAddress', name);
+      return this.http.post(URL, formData).map(res => <any>res);
+      // return this.http.get(URL).map(res => <any>res);
+    }
 /**
    *
    * to get all input source list
@@ -37,8 +54,10 @@ export class RuleService {
     return this.http.post(URL, {}).map(res => <any>res);
   }
   createRule(data){
-    const URL = environment._WEBGATEWAY_BASIC_URL_ + 'menu/kpi/create_rule';
-    // const URL = 'https://run.mocky.io/v3/832984eb-82f4-4d35-a400-5507cbe3f481';
-    return this.http.post(URL, data).map(res => <any>res);
+    const URL = environment._WEBGATEWAY_BASIC_URL_ + 'menu/kpi/create_rule_config';
+    const formData: FormData = new FormData();
+      formData.append('data', JSON.stringify(data));
+      // formData.append('data', 'ytrew');
+    return this.http.post(URL, formData).map(res => <any>res);
   }
 }

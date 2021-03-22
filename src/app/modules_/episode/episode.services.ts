@@ -18,7 +18,13 @@ export class EpisodeService {
     constructor(private http: HttpClient, private userService: UserService
     ) { }
 
-
+    createEpisode(data){
+      const URL = environment._WEBGATEWAY_BASIC_URL_ + 'menu/kpi/create_episode_config';
+      const formData: FormData = new FormData();
+        // formData.append('data', JSON.stringify(data));
+        // formData.append('data', 'ytrew');
+      return this.http.post(URL, data).map(res => <any>res);
+    }
     public getAlarmList() { 
             const url = environment._WEBGATEWAY_BASIC_URL_ + 'menu/kpi/get_alarm_list'; 
             return this.http.post(url, {}).map(res => <any>res);
