@@ -39,7 +39,7 @@
   
   <hr class="bg-grey">
   <h1 class="page-header f-s-18">Alarm Mapping </h1>
-  <div class="row">
+  <div class="row mb-3">
     <div class="col-md-3">
       <label for="">NMS</label>
     </div>
@@ -58,17 +58,18 @@
           </form> -->
           <div class="scroll_div" id="style-4">
             <li class="container1">
-              <label class=""><strong>Select/ Unselect All</strong>
+              <label class="mb-0">
                 <input type="checkbox" [(ngModel)]="globalFilterModal.masterSelectedNMS" name="list_name"
                   (change)="checkUncheckAll(globalFilterModal.nms,globalFilterModal.masterSelectedNMS)" />
                 <span class="checkmark"
                   [ngClass]="(globalFilterModal.masterSelectedNMS) ?'bg-blue':''"></span>
+                  <strong  class="ml-2">Select/ Unselect All</strong>
               </label>
             </li>
             <!-- | filterByKey: 'name' :searchVal.value; let fvndx_=index; trackBy: trackByFn -->
             <li class="container1"
               *ngFor="let fVal_ of globalFilterModal.nms ">
-              <label class="">{{fVal_.name}}
+              <label class="mb-0">{{fVal_.name}}
                 <input type="checkbox" id="{{fvndx_}}" [(ngModel)]="fVal_.value" [checked]="fVal_.value"
                   (change)="isAllSelected(globalFilterModal.nms,'masterSelectedNMS')" />
                 <span class="checkmark" [ngClass]="(fVal_.value) ?'bg-blue':''"></span>
@@ -85,7 +86,6 @@
     <div class="col-md-3">
       <label for="">Alarms</label>
     </div>
-    <div class="col-md-4">
       <!-- <select class="form-control m-b-10" [(ngModel)]="episodeModel.selectedAlarm" >
         <option  value=''>Select Alarms</option>
         <option *ngFor="let alarm of alarmList" [value]='alarm.master_alarm_guid'>{{alarm.alarm_name}}</option>
@@ -105,11 +105,12 @@
             </form> -->
             <div class="scroll_div" id="style-4">
               <li class="container1">
-                <label class=""><strong>Select/ Unselect All</strong>
+                <label class="mb-0">
                   <input type="checkbox" [(ngModel)]="globalFilterModalAlarmsType.masterSelectedAlarmsType" name="list_name"
                     (change)="checkUncheckAllAlarmsType(globalFilterModalAlarmsType.AlarmsType,globalFilterModalAlarmsType.masterSelectedAlarmsType)" />
                   <span class="checkmark"
                     [ngClass]="(globalFilterModalAlarmsType.masterSelectedAlarmsType) ?'bg-blue':''"></span>
+                    <strong class="ml-2">Select/ Unselect All</strong>
                 </label>
               </li>
               <!-- | filterByKey: 'name' :searchVal.value; let fvndx_=index; trackBy: trackByFn -->
@@ -125,7 +126,6 @@
           </ul>
         </div>
       </div>
-    </div>
   </div>
   
   <hr class="bg-grey">
@@ -147,8 +147,8 @@
       <input type="text" class="form-control"   [(ngModel)]="ele.value"placeholder="Enter Value">
     </div>
     <div class="col-md-3">
-      <a (click)="addFilter()" class="btn btn-dark mr-2" *ngIf="last">ADD</a>
-      <a (click)="removeFilter(i)" class="btn btn-dark"><i class="fa fa-times"></i></a>
+      <a (click)="addFilter()" class="btn btn-dark mr-2 text-white" *ngIf="last">ADD</a>
+      <a (click)="removeFilter(i)" class="btn btn-dark  text-white"><i class="fa fa-times"></i></a>
     </div>
   </div>
   
@@ -168,8 +168,8 @@
       <input type="text" class="form-control" placeholder="Enter Value"   [(ngModel)]="ele.value">
     </div>
     <div class="col-md-3">
-      <a  (click)="addNotification()" class="btn btn-dark mr-2" *ngIf="last">ADD</a>
-      <a (click)="removeNotification(i)" class="btn btn-dark"><i class="fa fa-times"></i></a>
+      <a  (click)="addNotification()" class="btn btn-dark text-white mr-2" *ngIf="last">ADD</a>
+      <a (click)="removeNotification(i)" class="btn btn-dark text-white"><i class="fa fa-times"></i></a>
     </div>
   </div>
   
