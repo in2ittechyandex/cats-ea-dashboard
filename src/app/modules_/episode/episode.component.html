@@ -63,7 +63,7 @@
                   (change)="checkUncheckAll(globalFilterModal.nms,globalFilterModal.masterSelectedNMS)" />
                 <span class="checkmark"
                   [ngClass]="(globalFilterModal.masterSelectedNMS) ?'bg-blue':''"></span>
-                  <strong  class="ml-2">Select/ Unselect All</strong>
+                  <strong>Select/ Unselect All</strong>
               </label>
             </li>
             <!-- | filterByKey: 'name' :searchVal.value; let fvndx_=index; trackBy: trackByFn -->
@@ -110,13 +110,13 @@
                     (change)="checkUncheckAllAlarmsType(globalFilterModalAlarmsType.AlarmsType,globalFilterModalAlarmsType.masterSelectedAlarmsType)" />
                   <span class="checkmark"
                     [ngClass]="(globalFilterModalAlarmsType.masterSelectedAlarmsType) ?'bg-blue':''"></span>
-                    <strong class="ml-2">Select/ Unselect All</strong>
+                    <strong>Select/ Unselect All</strong>
                 </label>
               </li>
               <!-- | filterByKey: 'name' :searchVal.value; let fvndx_=index; trackBy: trackByFn -->
               <li class="container1"
                 *ngFor="let fVal_ of globalFilterModalAlarmsType.AlarmsType ">
-                <label class="">{{fVal_.alarm_name}}
+                <label class="mb-0">{{fVal_.alarm_name}}
                   <input type="checkbox" id="{{fvndx_}}" [(ngModel)]="fVal_.value" [checked]="fVal_.value"
                     (change)="isAllSelectedAlarmsType(globalFilterModalAlarmsType.AlarmsType,'masterSelectedAlarmsType')" />
                   <span class="checkmark" [ngClass]="(fVal_.value) ?'bg-blue':''"></span>

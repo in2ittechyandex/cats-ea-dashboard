@@ -1,5 +1,5 @@
 .scroll_div{width:250px;}
-.scroll_div .container1{padding: 0 10px;}
+.scroll_div .container1{padding: 0 10px 5px 10px;}
 
 .switch {
     position: relative;
@@ -63,8 +63,7 @@
   .example-chip-list {
     width: 100%;
   }
-
-
+  
 
   .container1 {
     display: block;
