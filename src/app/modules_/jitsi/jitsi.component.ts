@@ -114,8 +114,8 @@ export class JitsiComponent implements OnInit, AfterViewInit {
     //   // }
     // });
 
-    // this.api.addEventListener("participantRoleChanged", this.makePassword.bind(this));
-    // this.api.on("passwordRequired", this.addPassword.bind(this));
+    this.api.addEventListener("participantRoleChanged", this.makePassword.bind(this));
+    this.api.on("passwordRequired", this.addPassword.bind(this));
 
     // join a protected channel
     // this.api.on('passwordRequired', function () {
@@ -169,22 +169,22 @@ export class JitsiComponent implements OnInit, AfterViewInit {
     this.api.executeCommand('stopRecording', 'file');
   }
 
-  // makePassword(event) {
-  //   console.log('makePassword : '  + event +' :isOrganizer :  '+this.data['areYouOrganizer']);
-  //   let areYouOrganizer = this.data['areYouOrganizer'];
-  //   if(areYouOrganizer){
-  //     this.api.executeCommand('password', 'The Password');
-  //   }
-  // }
+  makePassword(event) {
+    console.log('makePassword : '  + event +' :isOrganizer :  '+this.data['areYouOrganizer']);
+    let areYouOrganizer = this.data['areYouOrganizer'];
+    if(areYouOrganizer){
+      this.api.executeCommand('password', 'The Password');
+    }
+  }
 
-  // addPassword(event) {
-  //   console.log('addPassword : ' + event +' :isOrganizer :  '+this.data['areYouOrganizer']);
-  //   let areYouOrganizer = this.data['areYouOrganizer'];
-  //  // if(!areYouOrganizer){
-  //     this.api.executeCommand('password', 'The Password');
-  //   //}
-  //   // this.api.executeCommand('password', 'The Password');
-  // }
+  addPassword(event) {
+    console.log('addPassword : ' + event +' :isOrganizer :  '+this.data['areYouOrganizer']);
+    let areYouOrganizer = this.data['areYouOrganizer'];
+   // if(!areYouOrganizer){
+      this.api.executeCommand('password', 'The Password');
+    //}
+    // this.api.executeCommand('password', 'The Password');
+  }
 
   endMeeting() {
     console.log('end meeting .....');
