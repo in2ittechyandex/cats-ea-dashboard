@@ -158,7 +158,7 @@
   <div class="row" *ngFor="let ele of episodeModel.notificationMapping;let i=index;let last=last;"> 
     <div class="col-md-3">
       <select class="form-control m-b-10"   [(ngModel)]="ele.type">
-        <option>Select Types</option>
+        <option value=''>Select Types</option>
         <option value='Email'>Email</option>
         <option value='SMS'>SMS</option>
         <option value='Ticket'>Ticket</option>
