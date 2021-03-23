@@ -37,6 +37,12 @@ export class RuleService {
       return this.http.post(URL, formData).map(res => <any>res);
       // return this.http.get(URL).map(res => <any>res);
     }
+    deleteRuleConfig(id){
+      const URL = environment._WEBGATEWAY_BASIC_URL_ + 'menu/kpi/delete_rule_config';
+      const formData: FormData = new FormData(); 
+        formData.append('rule_config_id', id);
+      return this.http.post(URL, formData).map(res => <any>res);
+    }
 /**
    *
    * to get all input source list

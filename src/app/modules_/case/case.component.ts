@@ -28,7 +28,14 @@ export class CaseComponent implements OnInit {
     modifyNMS: [],
     timeType: 'cu'
   };
-
+  onBtnClick1(e) { 
+    this.ruleService.deleteRuleConfig(e.rowData.rule_id).subscribe((res)=>{
+      if(res['status']){
+        alert(res['msg']);
+        this.getAllRules();
+      }
+    });
+  }
     /**
    * Ramji : 03-11-2020
    * @param event
@@ -87,7 +94,17 @@ export class CaseComponent implements OnInit {
   public columnDefs;
   constructor(private ruleService:RuleService, private modalService: NgbModal) { 
     this.columnDefs = [
-      
+      {
+        headerName: 'Action',
+        'isActive': true,
+        minWidth: 100,
+        cellRenderer: 'buttonRenderer',
+        cellRendererParams: {
+          onClick: this.onBtnClick1.bind(this),
+          label: 'Delete',
+          rendererType: 'button'
+        }
+      },
       { 
         headerName: 'Rule Name',
         field: 'rule_name', 

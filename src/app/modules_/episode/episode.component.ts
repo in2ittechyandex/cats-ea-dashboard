@@ -13,7 +13,17 @@ export class EpisodeComponent implements OnInit {
   public columnDefs;
   constructor(private episodeService:EpisodeService, private modalService: NgbModal) { 
     this.columnDefs = [
-      
+      {
+        headerName: 'Action',
+        'isActive': true,
+        minWidth: 100,
+        cellRenderer: 'buttonRenderer',
+        cellRendererParams: {
+          onClick: this.onBtnClick1.bind(this),
+          label: 'Delete',
+          rendererType: 'button'
+        }
+      },
       { 
         headerName: 'Time',
         field: 'created_time', 
@@ -93,6 +103,14 @@ globalFilterModal = {
   modifyNMS: [],
   timeType: 'cu'
 };
+onBtnClick1(e) { 
+  this.episodeService.deleteEpisodeConfig(e.rowData.guid).subscribe((res)=>{
+    if(res['status']){
+      alert(res['msg']);
+      this.getAllEpisode();
+    }
+  });
+}
  /**
    * Ramji : 03-11-2020
    * @param event

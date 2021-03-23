@@ -17,7 +17,12 @@ export class EpisodeService {
 
     constructor(private http: HttpClient, private userService: UserService
     ) { }
-
+    deleteEpisodeConfig(id){
+      const URL = environment._WEBGATEWAY_BASIC_URL_ + 'menu/kpi/delete_episode_config';
+      const formData: FormData = new FormData(); 
+        formData.append('episode_config_id', id);
+      return this.http.post(URL, formData).map(res => <any>res);
+    }
     createEpisode(data){
       const URL = environment._WEBGATEWAY_BASIC_URL_ + 'menu/kpi/create_episode_config';
       const formData: FormData = new FormData();
