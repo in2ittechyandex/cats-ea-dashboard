@@ -234,7 +234,7 @@
           </form> -->
           <div class="scroll_div" id="style-4">
             <li class="container1">
-              <label class=""><strong>Select/ Unselect All</strong>
+              <label class="mb-0"><strong>Select/ Unselect All</strong>
                 <input type="checkbox" [(ngModel)]="globalFilterModal.masterSelectedNMS" name="list_name"
                   (change)="checkUncheckAll(globalFilterModal.nms,globalFilterModal.masterSelectedNMS)" />
                 <span class="checkmark"
@@ -244,7 +244,7 @@
             <!-- | filterByKey: 'name' :searchVal.value; let fvndx_=index; trackBy: trackByFn -->
             <li class="container1"
               *ngFor="let fVal_ of globalFilterModal.nms ">
-              <label class="">{{fVal_.name}}
+              <label class="mb-0">{{fVal_.name}}
                 <input type="checkbox" id="{{fvndx_}}" [(ngModel)]="fVal_.value" [checked]="fVal_.value"
                   (change)="isAllSelected(globalFilterModal.nms,'masterSelectedNMS')" />
                 <span class="checkmark" [ngClass]="(fVal_.value) ?'bg-blue':''"></span>
