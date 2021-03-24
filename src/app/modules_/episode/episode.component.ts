@@ -1,6 +1,7 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { EpisodeService } from './episode.services';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
+import swal from 'sweetalert2';
 
 
 @Component({
@@ -104,10 +105,24 @@ globalFilterModal = {
   timeType: 'cu'
 };
 onBtnClick1(e) { 
-  this.episodeService.deleteEpisodeConfig(e.rowData.guid).subscribe((res)=>{
-    if(res['status']){
-      alert(res['msg']);
-      this.getAllEpisode();
+  
+  swal({
+    position: 'center',
+    type: "warning",
+    title: "Are you sure?",
+    text: "You will not be able to recover this!",
+    showCancelButton: true,
+    confirmButtonColor: "#DD6B55",
+    confirmButtonText: "Yes, delete it!"
+    // closeOnConfirm: false
+  }).then((result) => {
+    if (result.value) {
+      this.episodeService.deleteEpisodeConfig(e.rowData.guid).subscribe((res)=>{
+        if(res['status']){
+          alert(res['msg']);
+          this.getAllEpisode();
+        }
+      });
     }
   });
 }

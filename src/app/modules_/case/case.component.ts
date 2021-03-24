@@ -7,6 +7,7 @@ import {MatAutocompleteSelectedEvent, MatAutocomplete} from '@angular/material/a
 import {MatChipInputEvent} from '@angular/material/chips';
 import {Observable} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
+import swal from 'sweetalert2';
 export interface Fruit {
   name: string;
 }
@@ -29,12 +30,26 @@ export class CaseComponent implements OnInit {
     timeType: 'cu'
   };
   onBtnClick1(e) { 
-    this.ruleService.deleteRuleConfig(e.rowData.rule_id).subscribe((res)=>{
-      if(res['status']){
-        alert(res['msg']);
-        this.getAllRules();
+    swal({
+      position: 'center',
+      type: "warning",
+      title: "Are you sure?",
+      text: "You will not be able to recover this!",
+      showCancelButton: true,
+      confirmButtonColor: "#DD6B55",
+      confirmButtonText: "Yes, delete it!"
+      // closeOnConfirm: false
+    }).then((result) => {
+      if (result.value) {
+        this.ruleService.deleteRuleConfig(e.rowData.rule_id).subscribe((res)=>{
+          if(res['status']){
+            alert(res['msg']);
+            this.getAllRules();
+          }
+        });
       }
     });
+    
   }
     /**
    * Ramji : 03-11-2020
