@@ -47,6 +47,12 @@ export class JitsiComponent implements OnInit, AfterViewInit {
   jitsiMeet(user_) {
     console.log('.... user_ : ' + user_);
     let interfaceConfig_ = environment.envConfig['jitsi_interfaceConfigOverwrite'] ? environment.envConfig['jitsi_interfaceConfigOverwrite'] : {};
+    // interfaceConfig_['DISABLE_JOIN_LEAVE_NOTIFICATIONS'] = true;
+    // interfaceConfig_['DISABLE_PRESENCE_STATUS'] = true;
+    // interfaceConfig_['DISABLE_TRANSCRIPTION_SUBTITLES'] = true;
+    // interfaceConfig_['ENFORCE_NOTIFICATION_AUTO_DISMISS_TIMEOUT'] = 10000;
+
+
     let config_ = environment.envConfig['jitsi_configOverwrite'] ? environment.envConfig['jitsi_configOverwrite'] : {};
 
     this.options = {
@@ -84,7 +90,6 @@ export class JitsiComponent implements OnInit, AfterViewInit {
       //         "disableKick": true
       //     }
       // }
-
       interfaceConfigOverwrite: interfaceConfig_,
       configOverwrite: config_
     }
@@ -114,8 +119,17 @@ export class JitsiComponent implements OnInit, AfterViewInit {
     //   // }
     // });
 
-    this.api.addEventListener("participantRoleChanged", this.makePassword.bind(this));
-    this.api.on("passwordRequired", this.addPassword.bind(this));
+    // this.api.isVideoAvailable().then(function (available) {
+    //   console.log('....isVideoAvailable... ' + available);
+    //   if (!this.data['areYouOrganizer']) {
+    //     this.api.executeCommand('password', 'The Password');
+    //   }
+    // })
+
+
+    // this.api.isVideoAvailable().then(this.isVideoAvailable.bind(this));
+    // this.api.addEventListener("participantRoleChanged", this.makePassword.bind(this));
+    // this.api.on("passwordRequired", this.addPassword.bind(this));
 
     // join a protected channel
     // this.api.on('passwordRequired', function () {
@@ -133,9 +147,13 @@ export class JitsiComponent implements OnInit, AfterViewInit {
     // });
 
 
-    // this.api.addEventListener('participantJoined', (e) => {
-    //   console.log('participantJoined... : ' + e);
-    // });
+    this.api.addEventListener('participantJoined', (e) => {
+      console.log('participantJoined... : ' + e);
+    });
+
+    this.api.addEventListener('videoConferenceJoined', (response) => {
+      console.log('videoConferenceJoined... : ');
+    });
 
     // this.api.addEventListener('participantLeft', (e) => {
     //   console.log('participantLeft... : ' + e);
@@ -146,9 +164,7 @@ export class JitsiComponent implements OnInit, AfterViewInit {
     // this.api.executeCommand('avatarUrl', 'http://localhost:4200/assets/img/user/user-13.jpg');
 
 
-    this.api.isVideoAvailable().then(function (available) {
-      console.log('....isVideoAvailable... ' + available);
-    })
+
   }
 
   recordMeeting() {
@@ -169,22 +185,43 @@ export class JitsiComponent implements OnInit, AfterViewInit {
     this.api.executeCommand('stopRecording', 'file');
   }
 
+  //   api.addEventListener('participantRoleChanged', function (event) {
+  //     if(event.role === 'moderator') {
+  //        api.executeCommand('password', 'The Password');
+  //     }
+  // });
+
   makePassword(event) {
-    console.log('makePassword : '  + event +' :isOrganizer :  '+this.data['areYouOrganizer']);
+    console.log('makePassword : ' + JSON.stringify(event) + ' :isOrganizer :  ' + this.data['areYouOrganizer'] + 'role: ' + event.role);
     let areYouOrganizer = this.data['areYouOrganizer'];
-    if(areYouOrganizer){
+    // if(areYouOrganizer){
+    //   this.api.executeCommand('password', 'The Password');
+    // }
+    if (event.role === 'moderator') {
+      console.log('&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& MAKING PASSWORD &&&&&&&&&&&&&&&&&& :isOrganizer :' + areYouOrganizer + ' :role: ' + event.role);
       this.api.executeCommand('password', 'The Password');
     }
   }
 
   addPassword(event) {
-    console.log('addPassword : ' + event +' :isOrganizer :  '+this.data['areYouOrganizer']);
+    console.log('addPassword : ' + JSON.stringify(event) + ' :isOrganizer :  ' + this.data['areYouOrganizer']);
     let areYouOrganizer = this.data['areYouOrganizer'];
-   // if(!areYouOrganizer){
-      this.api.executeCommand('password', 'The Password');
+    // if(!areYouOrganizer){
+    console.log(' REQUIRED PASSWORD ----------------------------- :isOrganizer :' + areYouOrganizer + ' :role: ' + event.role);
+    this.api.executeCommand('password', 'The Password');
     //}
     // this.api.executeCommand('password', 'The Password');
   }
+
+
+  isVideoAvailable(event) {
+    console.log('... isVideoAvailable... : ' + event);
+    let areYouOrganizer = this.data['areYouOrganizer'];
+    if (!areYouOrganizer) {
+      this.api.executeCommand('password', 'The Password');
+    }
+  }
+
 
   endMeeting() {
     console.log('end meeting .....');
