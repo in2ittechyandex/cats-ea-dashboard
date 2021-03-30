@@ -89,7 +89,8 @@ export class JitsiComponent implements OnInit, AfterViewInit {
       //     "remoteVideoMenu": {
       //         "disableKick": true
       //     }
-      // }
+      // },
+      // "jwt":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.IgfIWP_XtusfBW3ltGuDKdGk4xJZkOjmyoqkjkAkWSI",
       interfaceConfigOverwrite: interfaceConfig_,
       configOverwrite: config_
     }
@@ -126,7 +127,7 @@ export class JitsiComponent implements OnInit, AfterViewInit {
     //   }
     // })
 
-
+    // this.api.on("videoConferenceJoined", this.addPassword.bind(this));
     // this.api.isVideoAvailable().then(this.isVideoAvailable.bind(this));
     // this.api.addEventListener("participantRoleChanged", this.makePassword.bind(this));
     // this.api.on("passwordRequired", this.addPassword.bind(this));
@@ -151,9 +152,9 @@ export class JitsiComponent implements OnInit, AfterViewInit {
       console.log('participantJoined... : ' + e);
     });
 
-    this.api.addEventListener('videoConferenceJoined', (response) => {
-      console.log('videoConferenceJoined... : ');
-    });
+    // this.api.addEventListener('videoConferenceJoined', (response) => {
+    //   console.log('videoConferenceJoined... : ');
+    // });
 
     // this.api.addEventListener('participantLeft', (e) => {
     //   console.log('participantLeft... : ' + e);
@@ -199,7 +200,22 @@ export class JitsiComponent implements OnInit, AfterViewInit {
     // }
     if (event.role === 'moderator') {
       console.log('&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& MAKING PASSWORD &&&&&&&&&&&&&&&&&& :isOrganizer :' + areYouOrganizer + ' :role: ' + event.role);
-      this.api.executeCommand('password', 'The Password');
+      this.api.executeCommand('password', 'Password');
+    }else {
+      setTimeout(() => {
+        console.log("..............................................");
+        // why timeout: I got some trouble calling event listeners without setting a timeout :)
+            // when local user is trying to enter in a locked room 
+            this.api.addEventListener('passwordRequired', () => {
+                this.api.executeCommand('password', "Password");
+            });
+
+            // when local user has joined the video conference 
+            this.api.addEventListener('videoConferenceJoined', (response) => {
+                setTimeout(function(){ this.api.executeCommand('password', "Password");}, 300);
+            });
+
+        }, 10);
     }
   }
 
@@ -208,9 +224,12 @@ export class JitsiComponent implements OnInit, AfterViewInit {
     let areYouOrganizer = this.data['areYouOrganizer'];
     // if(!areYouOrganizer){
     console.log(' REQUIRED PASSWORD ----------------------------- :isOrganizer :' + areYouOrganizer + ' :role: ' + event.role);
-    this.api.executeCommand('password', 'The Password');
+    // this.api.executeCommand('password', 'The Password');
     //}
     // this.api.executeCommand('password', 'The Password');
+    setTimeout(()=>{  
+      this.api.executeCommand('password', 'The Password');
+      }, 200);
   }
 
 
@@ -218,7 +237,7 @@ export class JitsiComponent implements OnInit, AfterViewInit {
     console.log('... isVideoAvailable... : ' + event);
     let areYouOrganizer = this.data['areYouOrganizer'];
     if (!areYouOrganizer) {
-      this.api.executeCommand('password', 'The Password');
+      // this.api.executeCommand('password', 'The Password');
     }
   }
 
