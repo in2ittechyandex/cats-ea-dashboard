@@ -9,7 +9,7 @@
           [configStyle]="{'width':'200','bgColor':'#ffffff','border':'0px','font-size':'11px','padding':'4px'}">
         </app-time-filter>
       </div>    
-      <div class="col-md-2">
+      <div class="col-md-3">
         <div class="input-group filterbar">
           <select class="form-control m-b-10 form-control-sm" name="event_status" id="event_status" [(ngModel)]="model.severity"
             (change)="filterData()">
@@ -18,7 +18,7 @@
           </select>
         </div>
       </div>
-      <div class="col-md-2">
+      <!-- <div class="col-md-2">
         <div class="input-group filterbar">
           <select class="form-control m-b-10 form-control-sm" name="event_status" id="event_status" [(ngModel)]="model.state"
             (change)="filterData()">
@@ -26,11 +26,11 @@
             <option value="{{status.name}}" *ngFor="let status of eventStatusList">{{status.name}}</option>
           </select>
         </div>
-      </div>
-      <div class="col-md-2">
+      </div> -->
+      <div class="col-md-3">
         <div class="input-group">
           <input type="text" [formControl]="queryFieldCi" id="keyword" list="languages" class="form-control form-control-sm"
-            placeholder="Search Host Ip" autocomplete="off">
+            placeholder="Search Host" autocomplete="off">
           <div class="input-group-append">
             <button class="btn btn-sm btn-dark bg-{{themeConf_.selectedColor}}" type="button" (click)="searchCiFilter()">
               <i class="fa fa-search"></i>

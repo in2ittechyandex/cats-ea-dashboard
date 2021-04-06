@@ -60,7 +60,7 @@ export class SyslogService {
    }
    getEventsByTagsFilter(host,severity,state,description,startDate,endDate){
     var URL;
-    URL = environment._WEBGATEWAY_BASIC_URL_ + "menu/kpi/get_syslog_data";
+    URL = environment._WEBGATEWAY_BASIC_URL_ + 'menu/kpi/get_syslog_data';
     // ?host="+host+
     // "&date_hour="+date_hour+
     // "&date_mday="+date_mday+
@@ -78,8 +78,7 @@ export class SyslogService {
  
     let formData=new FormData();
     formData.append("host",host); 
-    formData.append("severity",severity); 
-    formData.append("state",state); 
+    formData.append("severity",severity);  
     formData.append("startDate",startDate); 
     formData.append("description",description); 
     formData.append("endDate",endDate); 

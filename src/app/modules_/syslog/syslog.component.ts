@@ -83,15 +83,15 @@ export class SyslogComponent implements OnInit {
         resizable: true,
         'isActive':true
       },
-      {
-        headerName: 'state', 
-        field: 'state', 
-        sortable: true,
-        editable: false,
-        filter: true,
-        resizable: true,
-        'isActive':true
-      },
+      // {
+      //   headerName: 'state', 
+      //   field: 'state', 
+      //   sortable: true,
+      //   editable: false,
+      //   filter: true,
+      //   resizable: true,
+      //   'isActive':true
+      // },
       // {
       //   headerName: 'Severity Label', 
       //   field: 'severity_label', 
@@ -306,7 +306,7 @@ public stopSchedular() {
     const startTime: number = new Date().getTime();
     this.allEventService = this.eventsService.getEventsByTagsFilter(
       host,severity,state,description,startDate,endDate).subscribe((res) => {
-        if (res.status) {
+        if (res.status) { 
           this.timeLeft=60;
           const endTime: number = new Date().getTime();
       const diffTime = endTime - startTime;
